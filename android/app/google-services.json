@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "808372705014",
+    "firebase_url": "https://meeting-module-4959e-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "meeting-module-4959e",
+    "storage_bucket": "meeting-module-4959e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808372705014:android:8c7376135d66f720c1bed7",
+        "android_client_info": {
+          "package_name": "com.downtownengineers.meeting_module2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "808372705014-0u6kg4lh86fj8edlcal9r8uueftadal1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgnqE0erpdE9-AHD6YtGgwQeNuiT62CFc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "808372705014-0u6kg4lh86fj8edlcal9r8uueftadal1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "808372705014-mrgne7j6bqpfrbruoumlf7bn79jevhmq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.downtownengineers.meetingModule2"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
