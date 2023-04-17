@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:meeting_module2/ui/screens/addMoreNotes.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
 import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/theme.dart';
@@ -428,18 +429,23 @@ class MeetingDetails extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Spacer(),
-                      Container(
-                        width: 152,
-                        height: double.infinity,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xffff9900)),
-                          borderRadius: BorderRadius.circular(20),
+                      InkWell(
+                        onTap: () {
+                          Get.toNamed(AddMoreNotes.routeNamed);
+                        },
+                        child: Container(
+                          width: 152,
+                          height: double.infinity,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: const Color(0xffff9900)),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Center(
+                              child: CustomAutoSizeTextMontserrat(
+                            text: "Add more Notes",
+                            textColor: ThemeConstants.firstColor,
+                          )),
                         ),
-                        child: Center(
-                            child: CustomAutoSizeTextMontserrat(
-                          text: "Add more Notes",
-                          textColor: ThemeConstants.firstColor,
-                        )),
                       ),
                       const Spacer(),
                       Container(

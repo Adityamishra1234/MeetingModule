@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:meeting_module2/ui/screens/addMoreNotes.dart';
 import 'package:meeting_module2/ui/screens/add_representative.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting.dart';
 import 'package:meeting_module2/ui/screens/dashboard_page.dart';
@@ -280,6 +281,10 @@ class MyApp extends StatelessWidget {
           GetPage(
             name: RescheduleMeeting.routeNamed,
             page: () => RescheduleMeeting(),
+          ),
+          GetPage(
+            name: AddMoreNotes.routeNamed,
+            page: () => AddMoreNotes(),
           ),
         ]);
   }
