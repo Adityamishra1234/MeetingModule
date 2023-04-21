@@ -7,9 +7,12 @@ import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/Custom%20Dropdown/custom_dropdown.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/customdropdownsingle.dart';
+import 'package:meeting_module2/widget/customtextfield.dart';
 // test
 
 class MeetingDetails extends StatelessWidget {
+  static final TextEditingController controller = TextEditingController();
+
   static const routeNamed = '/MeetingDetails';
   @override
   Widget build(BuildContext context) {
@@ -395,11 +398,11 @@ class MeetingDetails extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
                 child: SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: CustomDropDown(
-                        model: ["1", "2", "3"],
-                        callbackFunction: callback,
-                        editEnable: true,
-                        initialSelectedValue: "1")),
+                    child: CustomTextField(
+                      hint: "enter your name",
+                      controller: controller,
+                      validator: Validator.email,
+                    )),
                 // TextField(
                 //   // controller: firstName,
                 //   scrollPadding: EdgeInsets.symmetric(
