@@ -4,6 +4,7 @@ import 'package:meeting_module2/ui/screens/addMoreNotes.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
 import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/theme.dart';
+import 'package:meeting_module2/widget/Custom%20Dropdown/custom_dropdown.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/customdropdownsingle.dart';
 // test
@@ -389,23 +390,25 @@ class MeetingDetails extends StatelessWidget {
                 ],
               ),
               // DropDown
-              Padding(
-                  padding: const EdgeInsets.only(left: 0, right: 10, top: 10),
-                  child: CustomDropDownSingle(
-                      model: ["1", "2", "3"],
-                      callbackFunction: callback,
-                      choosefieldtype: false,
-                      initialSelectedValue: "1")
-                  // TextField(
-                  //   // controller: firstName,
-                  //   scrollPadding: EdgeInsets.symmetric(
-                  //       vertical: MediaQuery.of(context).viewInsets.bottom + 30),
-                  //   style: ThemeConstants.montserrattextstyle2,
-                  //   // readOnly: saveAndEdit,
-                  //   decoration: textFieldDecoration("Demo Text Field"),
-                  // ),
 
-                  ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: CustomDropDown(
+                        model: ["1", "2", "3"],
+                        callbackFunction: callback,
+                        editEnable: true,
+                        initialSelectedValue: "1")),
+                // TextField(
+                //   // controller: firstName,
+                //   scrollPadding: EdgeInsets.symmetric(
+                //       vertical: MediaQuery.of(context).viewInsets.bottom + 30),
+                //   style: ThemeConstants.montserrattextstyle2,
+                //   // readOnly: saveAndEdit,
+                //   decoration: textFieldDecoration("Demo Text Field"),
+                // ),
+              ),
               //Text filed
               Padding(
                 padding: const EdgeInsets.only(left: 15, top: 10, right: 15),
