@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meeting_module2/widget/Custom%20Dropdown/expand_section.dart';
+import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 
 class CustomizableDropdown extends StatefulWidget {
   /// Color of the dropdown list
@@ -135,10 +136,11 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
               });
             },
             child: Container(
+              // decoration: BoxDecoration(color: Colors.red),
               decoration: widget.decoration,
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 Container(
-                  padding: widget.dropDownPadding,
+                  // padding: widget.dropDownPadding,
                   color: widget.colorDropDown,
                   constraints: widget.constraintsDropDown,
                   margin: widget.marginDropDown,
@@ -159,9 +161,11 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
                               // if selectedItem has null placeholder string available
                               selectedItem == null
                                   ? widget.placeholder
-                                  : Text(selectedItem ?? "",
-                                      textAlign: widget.titleAlign,
-                                      style: widget.titleStyle),
+                                  : CustomAutoSizeTextMontserrat(
+                                      text: selectedItem ?? "",
+                                      // textAlign: widget.titleAlign,
+                                      // style: widget.titleStyle
+                                    ),
                         ),
                       )),
                       // if it has icon dropdown available on right side icon and with rotate animated
@@ -200,14 +204,15 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
       child: SizedBox(
         height: widget.maxHeight,
         child: Scrollbar(
-          child: ListView.separated(
+          child: ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(2),
             itemCount: widget.itemList.length,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
                   onTap: () {
+                    print("aman");
                     widget.onSelectedItem(widget.itemList[index]);
                     isExpanded
                         ? _controller.reverse(from: 0.5)
@@ -220,20 +225,23 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
                     });
                   },
                   child: Container(
+                      height: 40,
+                      width: MediaQuery.of(context).size.width,
+                      // color: Colors.red,
                       color: widget.listColor,
-                      child: Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: widget.listTitle ??
-                              Text(widget.itemList.elementAt(index),
-                                  textAlign: widget.titleAlign,
-                                  style: widget.titleStyle),
-                        ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: widget.listTitle ??
+                            Text(widget.itemList.elementAt(index),
+                                textAlign: TextAlign.start,
+                                style: widget.titleStyle),
                       )));
             },
-            separatorBuilder: (BuildContext context, int index) =>
-                widget.seperator ?? const Divider(),
+            // separatorBuilder: (BuildContext context, int index) =>
+            //     widget.seperator ??
+            //     const Divider(
+            //       thickness: 0.5,
+            //     ),
           ),
         ),
       ));
