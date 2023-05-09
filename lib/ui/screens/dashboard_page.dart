@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
+import 'package:meeting_module2/ui/screens/reschedule_meeting.dart';
+import 'package:meeting_module2/widget/Custom_Tabbar/test.dart';
 import 'dart:ui';
 
 import 'package:meeting_module2/utils/theme.dart';
@@ -344,10 +346,15 @@ class DashBoard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Spacer(),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: CustomAutoSizeTextMontserrat(
-                                    text: "Reschedule Meeting",
+                                InkWell(
+                                  onTap: () {
+                                    Get.toNamed(RescheduleMeeting.routeNamed);
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: CustomAutoSizeTextMontserrat(
+                                      text: "Reschedule Meeting",
+                                    ),
                                   ),
                                 ),
                                 Padding(
