@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:meeting_module2/utils/theme.dart';
 
-class Test extends StatefulWidget {
+class CustomTabbar extends StatefulWidget {
   List<String> tablist;
   List<Widget> listWidget;
-  Test({Key? key, required this.tablist, required this.listWidget});
+  CustomTabbar({Key? key, required this.tablist, required this.listWidget});
 
   @override
-  State<Test> createState() => _TestState();
+  State<CustomTabbar> createState() => _CustomTabbarState();
 }
 
-class _TestState extends State<Test> with SingleTickerProviderStateMixin {
-  static late final TabController _tabController;
+class _CustomTabbarState extends State<CustomTabbar>
+    with SingleTickerProviderStateMixin {
+  late final TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: 11);
+    _tabController = TabController(vsync: this, length: widget.tablist.length);
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    print("dispose");
     super.dispose();
   }
 

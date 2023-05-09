@@ -85,7 +85,10 @@ class CreateNewMeeting extends StatelessWidget {
             if (controller.internalMeetingMode.value == true)
               ...getListInternalmeeting(context),
             if (controller.internalMeetingMode.value == false)
-              ...getExternalMeeting(context)
+              if (controller.enaleParticipants.value == false)
+                ...getExternalMeeting(context),
+            if (controller.enaleParticipants.value == true)
+              ...getparticipants(context)
           ],
         ),
       );
@@ -611,25 +614,40 @@ class CreateNewMeeting extends StatelessWidget {
             color: ThemeConstants.lightgreycolor,
             borderRadius: const BorderRadius.all(Radius.circular(10.0))),
       ),
-      Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: Container(
-          height: 38,
-          width: 150,
-          decoration: BoxDecoration(
-              color: ThemeConstants.bluecolor,
-              borderRadius: const BorderRadius.all(Radius.circular(30.0))),
-          child: Center(
-            child: CustomAutoSizeTextMontserrat(
-              text: "Next",
-              textColor: ThemeConstants.whitecolor,
-              fontSize: 20,
+      InkWell(
+        onTap: () {
+          controller.enaleParticipants.value = true;
+          controller.update();
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Container(
+            height: 38,
+            width: 150,
+            decoration: BoxDecoration(
+                color: ThemeConstants.bluecolor,
+                borderRadius: const BorderRadius.all(Radius.circular(30.0))),
+            child: Center(
+              child: CustomAutoSizeTextMontserrat(
+                text: "Next",
+                textColor: ThemeConstants.whitecolor,
+                fontSize: 20,
+              ),
             ),
           ),
         ),
       ),
 
       // Participants
+
+      const SizedBox(
+        height: 15,
+      ),
+    ];
+  }
+
+  List<Widget> getparticipants(BuildContext context) {
+    return [
       Padding(
         padding: const EdgeInsets.only(left: 15, top: 15),
         child: Align(
@@ -697,7 +715,6 @@ class CreateNewMeeting extends StatelessWidget {
           ],
         ),
       ),
-
       const SizedBox(
         height: 10,
       ),
@@ -933,26 +950,60 @@ class CreateNewMeeting extends StatelessWidget {
             color: ThemeConstants.lightgreycolor,
             borderRadius: const BorderRadius.all(Radius.circular(10.0))),
       ),
-      Padding(
-        padding: const EdgeInsets.only(left: 20, top: 15),
-        child: Container(
-          height: 38,
-          width: 150,
-          decoration: BoxDecoration(
-              color: ThemeConstants.bluecolor,
-              borderRadius: const BorderRadius.all(Radius.circular(30.0))),
-          child: Center(
-            child: CustomAutoSizeTextMontserrat(
-              text: "Create",
-              textColor: ThemeConstants.whitecolor,
-              fontSize: 16,
+      Row(
+        children: [
+          const Spacer(),
+          InkWell(
+            onTap: () {
+              controller.enaleParticipants.value = false;
+              controller.update();
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, top: 15),
+              child: Container(
+                height: 38,
+                width: 100,
+                decoration: BoxDecoration(
+                    color: ThemeConstants.whitecolor,
+                    border: Border.all(color: ThemeConstants.firstColor),
+                    borderRadius:
+                        const BorderRadius.all(Radius.circular(30.0))),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: CustomAutoSizeTextMontserrat(
+                      text: "Back",
+                      textColor: ThemeConstants.firstColor,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, top: 15),
+            child: Container(
+              height: 38,
+              width: 150,
+              decoration: BoxDecoration(
+                  color: ThemeConstants.bluecolor,
+                  borderRadius: const BorderRadius.all(Radius.circular(30.0))),
+              child: Center(
+                child: CustomAutoSizeTextMontserrat(
+                  text: "Create",
+                  textColor: ThemeConstants.whitecolor,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+          const Spacer(),
+        ],
       ),
       const SizedBox(
-        height: 15,
-      ),
+        height: 20,
+      )
     ];
   }
 }

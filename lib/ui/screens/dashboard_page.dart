@@ -5,7 +5,7 @@ import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
 import 'package:meeting_module2/ui/screens/reschedule_meeting.dart';
-import 'package:meeting_module2/ui/screens/test/test.dart';
+import 'package:meeting_module2/widget/Custom_Tabbar/test.dart';
 import 'dart:ui';
 
 import 'package:meeting_module2/utils/theme.dart';
@@ -348,14 +348,7 @@ class DashBoard extends StatelessWidget {
                                 const Spacer(),
                                 InkWell(
                                   onTap: () {
-                                    Get.to(Test(
-                                      tablist: ["test1", "test2"],
-                                      listWidget: [
-                                        Text("text1"),
-                                        Text("test2")
-                                      ],
-                                    ));
-                                    // Get.toNamed(RescheduleMeeting.routeNamed);
+                                    Get.toNamed(RescheduleMeeting.routeNamed);
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 10),
