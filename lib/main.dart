@@ -37,7 +37,7 @@ Future<void> setupFlutterNotifications() async {
     'high_importance_channel', // id
     'High Importance Notifications', // title
     description:
-        'This channelDDDSSS is used for important notifications.', // description
+        'This channelDDDSSSSSSSEEEESS is used for important notifications.', // description
     importance: Importance.high,
   );
 
