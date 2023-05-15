@@ -21,4 +21,16 @@ class ApiServices extends BaseServices implements API {
     // TODO: implement getAllMeetings
     // throw UnimplementedError();
   }
+
+  @override
+  getAllUsers() {
+    var url = '${Endpoints.baseUrl}${Endpoints.allUser}';
+
+    var res = httpPostNullBody(url);
+
+    return res;
+
+    // TODO: implement getAllUsers
+    // throw UnimplementedError();
+  }
 }

@@ -15,7 +15,7 @@ class AllMeetings {
   int? siecBranch;
   String? specificLocationOfTheMeeting;
   List<SiecParticipants>? siecParticipants;
-  SiecParticipants? meetingCoordinator;
+  List<SiecParticipants>? meetingCoordinator;
   bool? meetingStarted;
   bool? isReschedule;
   bool? meetingEnded;
@@ -73,12 +73,32 @@ class AllMeetings {
     if (json['siec_participants'] != null) {
       siecParticipants = <SiecParticipants>[];
       json['siec_participants'].forEach((v) {
-        siecParticipants!.add(new SiecParticipants.fromJson(v));
+        if (v != null) {
+          siecParticipants!.add(new SiecParticipants.fromJson(v));
+        } else {
+          '';
+        }
       });
+    } else {
+      null;
     }
-    meetingCoordinator = json['meeting_coordinator'] != null
-        ? new SiecParticipants.fromJson(json['meeting_coordinator'])
-        : null;
+
+    // meetingCoordinator = json['meeting_coordinator'];
+    if (json['meeting_coordinator'] != null) {
+      meetingCoordinator = <SiecParticipants>[];
+      json['meeting_coordinator'].forEach((v) {
+        if (v != null) {
+          meetingCoordinator!.add(new SiecParticipants.fromJson(v));
+        } else {
+          '';
+        }
+      });
+    } else {
+      null;
+    }
+    // meetingCoordinator = json['meeting_coordinator'] != null
+    //     ? new SiecParticipants.fromJson(json['meeting_coordinator'])
+    //     : null;
     meetingStarted = json['meeting_started'];
     isReschedule = json['is_reschedule'];
     meetingEnded = json['meeting_ended'];
@@ -113,7 +133,9 @@ class AllMeetings {
           siecParticipants!.map((v) => v.toJson()).toList();
     }
     if (meetingCoordinator != null) {
-      data['meeting_coordinator'] = meetingCoordinator!.toJson();
+      data['meeting_coordinator'] =
+          meetingCoordinator!.map((v) => v.toJson()).toList();
+      // data['meeting_coordinator'] = meetingCoordinator!.toJson();
     }
     data['meeting_started'] = meetingStarted;
     data['is_reschedule'] = isReschedule;

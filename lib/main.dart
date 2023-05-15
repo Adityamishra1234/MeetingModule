@@ -7,10 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:meeting_module2/bindings/dashboardBindings.dart';
+import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/add_representative.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting.dart';
 import 'package:meeting_module2/ui/screens/dashboard_page.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
+import 'package:meeting_module2/ui/screens/nfvf.dart';
 import 'package:meeting_module2/ui/screens/participants_details.dart';
 import 'package:meeting_module2/ui/screens/reschedule_meeting.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
@@ -250,41 +253,44 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(builder: (context, child) {
-      return GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          initialRoute: DashBoard.routeNamed,
-          getPages: [
-            GetPage(
-              name: "/",
-              page: () => DashBoard(),
-            ),
-            GetPage(
-              name: ViewNotesDetails.routeNamed,
-              page: () => ViewNotesDetails(),
-            ),
-            GetPage(
-              name: ParticipantsDetails.routeNamed,
-              page: () => ParticipantsDetails(),
-            ),
-            GetPage(
-              name: MeetingDetails.routeNamed,
-              page: () => MeetingDetails(),
-            ),
-            GetPage(
-              name: CreateNewMeeting.routeNamed,
-              page: () => CreateNewMeeting(),
-            ),
-            GetPage(
-              name: AddRepresentative.routeNamed,
-              page: () => AddRepresentative(),
-            ),
-            GetPage(
-              name: RescheduleMeeting.routeNamed,
-              page: () => RescheduleMeeting(),
-            ),
-          ]);
-    });
+    return GetMaterialApp(
+        // debugShowCheckedModeBanner: false,
+        initialRoute: '/',
+        getPages: [
+          GetPage(
+            name: DashBoard.routeNamed,
+            page: () => DashBoard(),
+          ),
+          GetPage(
+            name: ViewNotesDetails.routeNamed,
+            page: () => ViewNotesDetails(),
+          ),
+          GetPage(
+            name: ParticipantsDetails.routeNamed,
+            page: () => ParticipantsDetails(),
+          ),
+          // GetPage(
+          //   name: MeetingDetails.routeNamed,
+          //   page: () => MeetingDetails(),
+          // ),
+          GetPage(
+            name: CreateNewMeeting.routeNamed,
+            page: () => CreateNewMeeting(),
+          ),
+          GetPage(
+            name: AddRepresentative.routeNamed,
+            page: () => AddRepresentative(),
+          ),
+          GetPage(
+            name: RescheduleMeeting.routeNamed,
+            page: () => RescheduleMeeting(),
+          ),
+          GetPage(
+            name: DashBoard.routeNamed,
+            page: () => const DashBoard(),
+            // binding: DashboardBinding()
+          )
+        ]);
   }
 }
 

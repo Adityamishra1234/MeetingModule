@@ -17,8 +17,8 @@ import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/text_underline.dart';
 
 class DashBoard extends StatefulWidget {
-  static const routeNamed = '/DashBoard';
-
+  static const routeNamed = '/';
+  const DashBoard({Key? key}) : super(key: key);
   @override
   State<DashBoard> createState() => _DashBoardState();
 }
@@ -26,7 +26,7 @@ class DashBoard extends StatefulWidget {
 class _DashBoardState extends State<DashBoard> {
   int siecParticipantsLength = 0;
 
-  var controller = Get.put(DashBoardController());
+  var controller = Get.put(DashBoardController(), permanent: true);
 
   String? selectedValue = 'All Meetings';
   bool showFilterList = true;
@@ -34,7 +34,7 @@ class _DashBoardState extends State<DashBoard> {
     'All Meetings',
     'University Meeting',
     'Bank Meeting',
-    'Vendow Meeting',
+    'Vendor Meeting',
     'Internal Meeting'
   ];
 
@@ -73,12 +73,26 @@ class _DashBoardState extends State<DashBoard> {
                     child: Row(
                       children: [
                         SizedBox(
-                          width: 70,
-                          height: 70,
-                          child: Image.asset(
-                            'assets/page-1/images/group-2-WX2.png',
-                          ),
-                        ),
+                            width: 70,
+                            height: 70,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: ThemeConstants.bluecolor,
+                                  radius: 35,
+                                ),
+                                CircleAvatar(
+                                  backgroundColor: ThemeConstants.whitecolor,
+                                  radius: 32,
+                                ),
+                                CircleAvatar(
+                                  backgroundColor:
+                                      ThemeConstants.ultraLightgreyColor,
+                                  radius: 30,
+                                ),
+                              ],
+                            )),
                         Padding(
                           padding: const EdgeInsets.only(left: 10),
                           child: Container(
@@ -129,6 +143,7 @@ class _DashBoardState extends State<DashBoard> {
                               title0: "Upcoming",
                               title1: "Done",
                               callback: (val) => {
+                                controller.indexOfTab.value = val,
                                 print(val == 1),
                                 if (val == 0)
                                   {
@@ -167,48 +182,60 @@ class _DashBoardState extends State<DashBoard> {
                           //   }).toList(),
                           // ),
 
-                          DropdownButton2(
-                            underline: Container(),
-                            buttonStyleData: ButtonStyleData(
-                                elevation: 0,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(
-                                        width: 1,
-                                        color: ThemeConstants.blackcolor))),
-                            dropdownStyleData: DropdownStyleData(elevation: 1),
-                            hint: Text(
-                              '$selectedValue',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Theme.of(context).hintColor,
+                          Obx(
+                            () => DropdownButton2(
+                              underline: Container(),
+                              buttonStyleData: ButtonStyleData(
+                                  elevation: 0,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: Border.all(
+                                          width: 1,
+                                          color: ThemeConstants.blackcolor))),
+                              dropdownStyleData:
+                                  DropdownStyleData(elevation: 1),
+                              hint: Text(
+                                '${controller.selectedFilter.value}',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Theme.of(context).hintColor,
+                                ),
                               ),
-                            ),
 
-                            items: list
-                                .map((item) => DropdownMenuItem<String>(
-                                      value: item,
-                                      child: Text(
-                                        item,
-                                        style: const TextStyle(
-                                          fontSize: 14,
+                              items: list
+                                  .map((item) => DropdownMenuItem<String>(
+                                        value: item,
+                                        child: Text(
+                                          item,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                          ),
                                         ),
-                                      ),
-                                    ))
-                                .toList(),
-                            value: selectedValue,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedValue = value as String;
-                              });
-                            },
-                            // buttonHeight: 40,
-                            // buttonWidth: 140,
-                            // itemHeight: 40,
-                            // itemWidth: 140,
-                          ),
+                                      ))
+                                  .toList(),
+                              value: controller.selectedFilter.value == null
+                                  ? selectedValue
+                                  : controller.selectedFilter.value,
+                              onChanged: (value) {
+                                // controller.frfr(value);
+
+                                controller.selectedFilter.value =
+                                    value.toString();
+
+                                controller.changeInFilter();
+
+                                controller.update();
+
+                                // controller.showSpecificMeeting(value);
+                              },
+                              // buttonHeight: 40,
+                              // buttonWidth: 140,
+                              // itemHeight: 40,
+                              // itemWidth: 140,
+                            ),
+                          )
 
                           // CustomFilterSelector(
                           //   callBack: (val) {
@@ -271,11 +298,11 @@ class _DashBoardState extends State<DashBoard> {
                 // }
 
                 Expanded(child: Obx(() {
-                  return ListView.builder(
-                      itemCount: controller.listToShow.length,
-                      itemBuilder: (context, index) {
-                        return singleMeetingDetails(context, index);
-                      });
+                  if (controller.loading.value == true) {
+                    return getLoading(context);
+                  } else {
+                    return showFilter();
+                  }
                 })),
 
                 // Row(
@@ -345,14 +372,17 @@ class _DashBoardState extends State<DashBoard> {
           ),
         ),
       ),
-      // }, onLoading: getLoading(context)),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         // isExtended: true,
         child: Icon(Icons.add),
         backgroundColor: ThemeConstants.bluecolor,
         onPressed: () {
-          Get.toNamed(CreateNewMeeting.routeNamed);
+          // Get.toNamed(CreateNewMeeting.routeNamed);
+
+          // Get.to(
+          //   () => MeetingDetails(),
+          // );
         },
       ),
     );
@@ -390,7 +420,7 @@ class _DashBoardState extends State<DashBoard> {
               border: Border.all(color: const Color(0xff1940b3)),
               borderRadius: BorderRadius.circular(10.0)),
           child: Padding(
-            padding: const EdgeInsets.only(left: 20, top: 8),
+            padding: const EdgeInsets.only(left: 25, top: 8),
             child: Stack(
               children: [
                 Column(
@@ -401,7 +431,10 @@ class _DashBoardState extends State<DashBoard> {
                       children: [
                         InkWell(
                           onTap: () {
-                            Get.toNamed(MeetingDetails.routeNamed);
+                            Get.to(MeetingDetails(),
+                                arguments: controller.listToShow[indexs]);
+                            // Get.toNamed(MeetingDetails.routeNamed,
+                            //     arguments: controller.listToShow[indexs]);
                           },
                           child: SizedBox(
                             width: 300,
@@ -571,6 +604,12 @@ class _DashBoardState extends State<DashBoard> {
             height: 36.0,
             width: 36.0,
             decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    blurRadius: 2,
+                    spreadRadius: 1,
+                    color: Color.fromARGB(87, 0, 0, 0))
+              ],
               color: colorDark[i],
               shape: BoxShape.circle,
               border: Border.all(
@@ -592,6 +631,12 @@ class _DashBoardState extends State<DashBoard> {
             height: 36.0,
             width: 36.0,
             decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    blurRadius: 2,
+                    spreadRadius: 1,
+                    color: Color.fromARGB(87, 0, 0, 0))
+              ],
               color: Color(0xFFFEF0F0),
               shape: BoxShape.circle,
               border: Border.all(color: Color(0xFFFF7171)),
@@ -669,4 +714,29 @@ class _DashBoardState extends State<DashBoard> {
     //   ),
     // ];
   }
+
+  showFilter() {
+    // if (val == "Vendor Meeting") {
+    //   return ListView.builder(
+    //       itemCount: controller.listToShow
+    //           .where((p0) =>
+    //               p0.meetingType!.toLowerCase() == val.toString().toLowerCase())
+    //           .length,
+    //       itemBuilder: (context, index) {
+    //         return singleMeetingDetails(context, index);
+    //       });
+    // }
+    return ListView.builder(
+        itemCount: controller.listToShow.length,
+        itemBuilder: (context, index) {
+          return singleMeetingDetails(context, index);
+        });
+  }
 }
+
+
+//  'All Meetings',
+//     'University Meeting',
+//     'Bank Meeting',
+//     'Vendow Meeting',
+//     'Internal Meeting'
