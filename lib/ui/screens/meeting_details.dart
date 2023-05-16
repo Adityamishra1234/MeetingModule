@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/ui/screens/addMoreNotes.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
-import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/Custom%20Dropdown/custom_dropdown.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';

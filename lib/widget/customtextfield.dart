@@ -6,18 +6,21 @@ class CustomTextField extends StatelessWidget {
   TextEditingController controller;
   String hint;
   Validator? validator;
+  TextInputType? keybord;
 
   CustomTextField({
     Key? key,
     required this.hint,
     required this.controller,
     this.validator,
+    this.keybord,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      keyboardType: keybord ?? TextInputType.text,
 
       controller: controller,
       scrollPadding: EdgeInsets.symmetric(
@@ -27,7 +30,7 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hint,
         filled: true,
-        fillColor: ThemeConstants.lightgreycolor,
+        fillColor: ThemeConstants.lightblueColor,
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.circular(15.0),
@@ -45,4 +48,10 @@ class CustomTextField extends StatelessWidget {
       },
     );
   }
+}
+
+enum Validator {
+  phone,
+  email,
+  password,
 }
