@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/services/api.dart';
@@ -114,5 +115,71 @@ class ApiServices extends BaseServices implements API {
 
     print(res);
     // TODO: implement addNotes
+  }
+
+  @override
+  addMeeting() async {
+    var url = '${Endpoints.baseUrl}${Endpoints.addMeeting}';
+    // var data = json.encode(model);
+    var modeldata = """{
+        "id": 12,
+        "meeting_type": "Internal Meeting",
+        "meeting_with": "",
+        "meeting_agenda": "Institute Partner Meet",
+        "specific_purpose_of_the_meeting": "",
+        "name_of_the_meeting": "xyzaa my testing",
+        "date_of_meeting": "2023-04-27",
+        "time_of_the_meeting": "17:20",
+        "duration_of_meeting": "5 hours 4 minutes",
+        "meeting_mode": true,
+        "meeting_mode_type": "Zoom",
+        "meeting_link": "test by aman",
+        "location_of_the_meeting": "",
+        "siec_branch": 0,
+        "specific_location_of_the_meeting": "",
+        "siec_participants": [
+            {
+                "name": "Kashish IT",
+                "id": 136
+            },
+            {
+                "name": "Shreya IT",
+                "id": 107
+            },
+            {
+                "name": "Taniya IT",
+                "id": 338
+            }
+        ],
+        "meeting_coordinator": [
+            {
+                "name": "Shreya IT",
+                "id": 107
+            },
+            {
+                "name": "Kashish IT",
+                "id": 136
+            }
+        ],
+        "meeting_started": true,
+        "is_reschedule": false,
+        "meeting_ended": true,
+        "meeting_exceeded": false,
+        "is_active": true,
+        "created_by": 105,
+        "updated_by": 105,
+        "created_at": "2023-04-07T09:48:35.000Z",
+        "updated_at": "2023-04-07T09:48:35.000Z",
+        "meeting_started_time": null,
+        "meeting_ended_time": null,
+        "meeting_started_by": null,
+        "meeting_ended_by": null
+    }""";
+
+    AllMeetings model = AllMeetings.fromJson(json.decode(modeldata));
+    var data = json.encode(model);
+
+    var res = await httpPostHeader(url, data);
+    print(res);
   }
 }

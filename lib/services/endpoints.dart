@@ -8,4 +8,6 @@ class Endpoints {
   static String findNotes = 'findNotes';
 
   static String addNotes = 'addNotes';
+
+  static String addMeeting = 'createMeeting';
 }
