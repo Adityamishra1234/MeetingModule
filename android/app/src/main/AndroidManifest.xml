@@ -1,5 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.downtownengineers.meeting_module2">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+
+
+
    <application
         android:label="meeting_module2"
         android:name="${applicationName}"

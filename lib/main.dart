@@ -5,12 +5,15 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:meeting_module2/ui/screens/addMoreNotes.dart';
+import 'package:meeting_module2/bindings/dashboardBindings.dart';
+import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/add_representative.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting.dart';
 import 'package:meeting_module2/ui/screens/dashboard_page.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
+import 'package:meeting_module2/ui/screens/nfvf.dart';
 import 'package:meeting_module2/ui/screens/participants_details.dart';
 import 'package:meeting_module2/ui/screens/reschedule_meeting.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
@@ -82,32 +85,32 @@ void showFlutterNotification(RemoteMessage message) {
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 Future<void> main() async {
-  String? initialMessage;
-  bool _resolved = false;
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // String? initialMessage;
+  // bool _resolved = false;
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  if (!kIsWeb) {
-    await setupFlutterNotifications();
-  }
-  FirebaseMessaging.instance.getInitialMessage().then((value) {
-    _resolved = true;
-    initialMessage = value?.data.toString();
-  });
+  // if (!kIsWeb) {
+  //   await setupFlutterNotifications();
+  // }
+  // FirebaseMessaging.instance.getInitialMessage().then((value) {
+  //   _resolved = true;
+  //   initialMessage = value?.data.toString();
+  // });
 
-  FirebaseMessaging.onMessage.listen(showFlutterNotification);
+  // FirebaseMessaging.onMessage.listen(showFlutterNotification);
 
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-    print('A new onMessageOpenedApp event was published!');
-    Navigator.pushNamed(
-      Get.context!,
-      '/message',
-      arguments: MessageArguments(message, true),
-    );
-  });
-  onActionSelected;
-  createtoken();
+  // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+  //   print('A new onMessageOpenedApp event was published!');
+  //   Navigator.pushNamed(
+  //     Get.context!,
+  //     '/message',
+  //     arguments: MessageArguments(message, true),
+  //   );
+  // });
+  // onActionSelected;
+  // // createtoken();
   runApp(MyApp());
 }
 
@@ -154,36 +157,36 @@ Future<void> onActionSelected(String value) async {
   }
 }
 
-createtoken() async {
-  var token = await FirebaseMessaging.instance.getToken(
-      vapidKey:
-          'BNKkaUWxyP_yC_lki1kYazgca0TNhuzt2drsOrL6WrgGbqnMnr8ZMLzg_rSPDm6HKphABS0KzjPfSqCXHXEd06Y');
+// createtoken() async {
+//   var token = await FirebaseMessaging.instance.getToken(
+//       vapidKey:
+//           'BNKkaUWxyP_yC_lki1kYazgca0TNhuzt2drsOrL6WrgGbqnMnr8ZMLzg_rSPDm6HKphABS0KzjPfSqCXHXEd06Y');
 
-  if (token != null) {
-    sendPushMessage(token);
-  }
-}
+//   if (token != null) {
+//     sendPushMessage(token);
+//   }
+// }
 
-// FCM send Notification using Token
-sendPushMessage(String token) async {
-  if (token == null) {
-    print('Unable to send FCM message, no token exists.');
-    return;
-  }
+// // FCM send Notification using Token
+// sendPushMessage(String token) async {
+//   if (token == null) {
+//     print('Unable to send FCM message, no token exists.');
+//     return;
+//   }
 
-  try {
-    await http.post(
-      Uri.parse('https://api.rnfirebase.io/messaging/send'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: constructFCMPayload(token),
-    );
-    print('FCM request for device sent!');
-  } catch (e) {
-    print(e);
-  }
-}
+//   try {
+//     await http.post(
+//       Uri.parse('https://api.rnfirebase.io/messaging/send'),
+//       headers: <String, String>{
+//         'Content-Type': 'application/json; charset=UTF-8',
+//       },
+//       body: constructFCMPayload(token),
+//     );
+//     print('FCM request for device sent!');
+//   } catch (e) {
+//     print(e);
+//   }
+// }
 
 int _messageCount = 0;
 String constructFCMPayload(String? token) {
@@ -251,11 +254,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: DashBoard.routeNamed,
+        // debugShowCheckedModeBanner: false,
+        initialRoute: '/',
         getPages: [
           GetPage(
-            name: "/",
+            name: DashBoard.routeNamed,
             page: () => DashBoard(),
           ),
           GetPage(
@@ -266,10 +269,10 @@ class MyApp extends StatelessWidget {
             name: ParticipantsDetails.routeNamed,
             page: () => ParticipantsDetails(),
           ),
-          GetPage(
-            name: MeetingDetails.routeNamed,
-            page: () => MeetingDetails(),
-          ),
+          // GetPage(
+          //   name: MeetingDetails.routeNamed,
+          //   page: () => MeetingDetails(),
+          // ),
           GetPage(
             name: CreateNewMeeting.routeNamed,
             page: () => CreateNewMeeting(),
@@ -283,9 +286,10 @@ class MyApp extends StatelessWidget {
             page: () => RescheduleMeeting(),
           ),
           GetPage(
-            name: AddMoreNotes.routeNamed,
-            page: () => AddMoreNotes(),
-          ),
+            name: DashBoard.routeNamed,
+            page: () => const DashBoard(),
+            // binding: DashboardBinding()
+          )
         ]);
   }
 }

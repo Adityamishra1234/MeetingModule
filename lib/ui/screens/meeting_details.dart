@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:meeting_module2/ui/screens/addMoreNotes.dart';
+import 'package:meeting_module2/models/allMeetingsModels.dart';
+import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
 import 'package:meeting_module2/utils/theme.dart';
-import 'package:meeting_module2/widget/Custom%20Dropdown/custom_dropdown.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/customdropdownsingle.dart';
-import 'package:meeting_module2/widget/customtextfield.dart';
+import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dart';
 // test
 
 class MeetingDetails extends StatelessWidget {
-  static final TextEditingController controller = TextEditingController();
-
+  // MeetingDetails();
   static const routeNamed = '/MeetingDetails';
+
   @override
   Widget build(BuildContext context) {
+    AllMeetings meetingData = Get.arguments;
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -23,25 +25,31 @@ class MeetingDetails extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 15),
+                padding: const EdgeInsets.only(left: 15, top: 10),
                 child: CustomAutoSizeTextMontserrat(
-                  text: "Meeting With Vendor",
+                  text: "${meetingData.meetingAgenda}",
                   fontSize: 28,
                   fontWeight: FontWeight.w700,
                   textColor: ThemeConstants.bluecolor,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 10, left: 0),
+                padding: const EdgeInsets.only(top: 10, left: 15),
                 child: SizedBox(
                   height: 72,
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const Spacer(),
                       Container(
                         height: 72,
                         decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                blurRadius: 1,
+                                spreadRadius: 0.5,
+                                color: Color.fromARGB(40, 0, 0, 0))
+                          ],
                           color: const Color(0xfffff9ee),
                           borderRadius: BorderRadius.circular(13),
                         ),
@@ -91,6 +99,12 @@ class MeetingDetails extends StatelessWidget {
                       Container(
                         height: 72,
                         decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                blurRadius: 1,
+                                spreadRadius: 0.7,
+                                color: Color.fromARGB(40, 0, 0, 0)),
+                          ],
                           color: const Color(0xfffff9ee),
                           borderRadius: BorderRadius.circular(13),
                         ),
@@ -148,7 +162,7 @@ class MeetingDetails extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 15),
                 child: CustomAutoSizeTextMontserrat(
-                  text: "30-03-2023 06:09 PM",
+                  text: "${meetingData.timeOfTheMeeting}",
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   textColor: ThemeConstants.TextColor,
@@ -170,7 +184,8 @@ class MeetingDetails extends StatelessWidget {
                       textColor: ThemeConstants.TextColor,
                     ),
                     CustomAutoSizeTextMontserrat(
-                      text: "online",
+                      text:
+                          "${meetingData.meetingMode == false ? "offline" : "online"}",
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       textColor: ThemeConstants.TextColor,
@@ -200,7 +215,7 @@ class MeetingDetails extends StatelessWidget {
                         width: 10,
                       ),
                       CustomAutoSizeTextMontserrat(
-                        text: "3 hours 1 minutes",
+                        text: "${meetingData.durationOfMeeting}",
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         textColor: ThemeConstants.TextColor,
@@ -228,7 +243,7 @@ class MeetingDetails extends StatelessWidget {
                     ),
                     Container(
                         child: CustomAutoSizeTextMontserrat(
-                      text: 'Meeting Mode Type: ',
+                      text: "${meetingData.meetingModeType}",
                     )),
                     Container(
                         // zoomxZE (211:610)
@@ -258,7 +273,7 @@ class MeetingDetails extends StatelessWidget {
                       ),
                     ),
                     CustomAutoSizeTextMontserrat(
-                      text: "Meeting link",
+                      text: "${meetingData.meetingLink}",
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       textColor: ThemeConstants.TextColor,
@@ -295,7 +310,8 @@ class MeetingDetails extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 50),
                 child: CustomAutoSizeTextMontserrat(
-                  text: 'Chitra IT, Lakshay Singh IT, Taniya IT',
+                  text:
+                      "${meetingData.siecParticipants!.map((e) => e.name).toList().toString().substring(1, meetingData.siecParticipants!.map((e) => e.name).toList().toString().length - 1)}",
                   textColor: ThemeConstants.TextColor,
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
@@ -323,7 +339,7 @@ class MeetingDetails extends StatelessWidget {
                       width: 15,
                     ),
                     CustomAutoSizeTextMontserrat(
-                      text: "Meeting Coordinators",
+                      text: "Meeting Cordinator",
                       fontSize: 16,
                       fontWeight: FontWeight.w800,
                     ),
@@ -333,7 +349,8 @@ class MeetingDetails extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 52),
                 child: CustomAutoSizeTextMontserrat(
-                  text: 'Chitra IT, Lakshay Singh IT, Taniya IT',
+                  text:
+                      '${meetingData.meetingCoordinator!.map((e) => e.name).toString().substring(1, meetingData.meetingCoordinator!.map((e) => e.name).toString().length - 1)}',
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   textColor: ThemeConstants.TextColor,
@@ -394,23 +411,25 @@ class MeetingDetails extends StatelessWidget {
               // DropDown
 
               Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-                child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: CustomTextField(
-                      hint: "enter your name",
-                      controller: controller,
-                      validator: Validator.email,
-                    )),
-                // TextField(
-                //   // controller: firstName,
-                //   scrollPadding: EdgeInsets.symmetric(
-                //       vertical: MediaQuery.of(context).viewInsets.bottom + 30),
-                //   style: ThemeConstants.montserrattextstyle2,
-                //   // readOnly: saveAndEdit,
-                //   decoration: textFieldDecoration("Demo Text Field"),
-                // ),
-              ),
+                  padding: const EdgeInsets.only(left: 0, right: 10, top: 10),
+                  child: CustomMultiDownSingle(
+                      // model: ['d', 'd'],
+                      model: Get.find<DashBoardController>().listBro,
+                      // callbackFunction: callback,
+                      callbackFunctionMulti: () {},
+                      enableMultiSelect: true,
+                      choosefieldtype: false,
+                      initialSelectedValue: "1")
+                  // TextField(
+                  //   // controller: firstName,
+                  //   scrollPadding: EdgeInsets.symmetric(
+                  //       vertical: MediaQuery.of(context).viewInsets.bottom + 30),
+                  //   style: ThemeConstants.montserrattextstyle2,
+                  //   // readOnly: saveAndEdit,
+                  //   decoration: textFieldDecoration("Demo Text Field"),
+                  // ),
+
+                  ),
               //Text filed
               Padding(
                 padding: const EdgeInsets.only(left: 15, top: 10, right: 15),
@@ -434,23 +453,18 @@ class MeetingDetails extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Spacer(),
-                      InkWell(
-                        onTap: () {
-                          Get.toNamed(AddMoreNotes.routeNamed);
-                        },
-                        child: Container(
-                          width: 152,
-                          height: double.infinity,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: const Color(0xffff9900)),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Center(
-                              child: CustomAutoSizeTextMontserrat(
-                            text: "Add more Notes",
-                            textColor: ThemeConstants.firstColor,
-                          )),
+                      Container(
+                        width: 152,
+                        height: double.infinity,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: const Color(0xffff9900)),
+                          borderRadius: BorderRadius.circular(20),
                         ),
+                        child: Center(
+                            child: CustomAutoSizeTextMontserrat(
+                          text: "Add more Notes",
+                          textColor: ThemeConstants.firstColor,
+                        )),
                       ),
                       const Spacer(),
                       Container(
