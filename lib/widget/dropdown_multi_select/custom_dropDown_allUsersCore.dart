@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/expand_section.dart';
 
 // import 'package:studentpanel/widgets/Custom%20Dropdown/expand_section.dart';
 // import 'package:studentpanel/widgets/customautosizetextmontserrat.dart';
 
-class CustomizableDropdown extends StatefulWidget {
+class CustomizableDropdownAllUsers extends StatefulWidget {
   /// Color of the dropdown list
   final Color? listColor;
 
@@ -46,7 +47,7 @@ class CustomizableDropdown extends StatefulWidget {
   final Widget? placeholder;
 
   /// must set the dropdown item list
-  final List<dynamic> itemList;
+  final List<AllUserModel> itemList;
 
   /// receive the selected item call back function
   /// The list of items the user can select
@@ -75,7 +76,7 @@ class CustomizableDropdown extends StatefulWidget {
   final bool multiSelectEnable;
 
   /// Here we go the dropdown StateFull Widget
-  const CustomizableDropdown(
+  const CustomizableDropdownAllUsers(
       {Key? key,
       required this.initalValue,
       this.selectedItem,
@@ -103,10 +104,12 @@ class CustomizableDropdown extends StatefulWidget {
       : super(key: key);
 
   @override
-  _CustomizableDropdownState createState() => _CustomizableDropdownState();
+  _CustomizableDropdownAllUsersState createState() =>
+      _CustomizableDropdownAllUsersState();
 }
 
-class _CustomizableDropdownState extends State<CustomizableDropdown>
+class _CustomizableDropdownAllUsersState
+    extends State<CustomizableDropdownAllUsers>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   final ScrollController scrollControler = ScrollController();
@@ -120,7 +123,9 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
   bool isExpanded = false;
 
 // Create list using for search
-  List items = [];
+  List<AllUserModel> items = [];
+
+  List idList = [];
 
   List selectedItemsList = [];
 
@@ -152,7 +157,7 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
     super.initState();
     items = widget.itemList;
 
-    selectedItemsList.add(items[0]);
+    // selectedItemsList.add(items[0].name);
   }
 
   @override
@@ -164,7 +169,7 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
   }
 
   @override
-  void didUpdateWidget(covariant CustomizableDropdown oldWidget) {
+  void didUpdateWidget(covariant CustomizableDropdownAllUsers oldWidget) {
     // TODO: implement didUpdateWidget
 
     // filterSearchResults(editingController.text);
@@ -175,7 +180,7 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
   @override
   Widget build(BuildContext context) {
     // print(widget.selectedItem);
-    selectedItem = widget.selectedItem;
+    // selectedItem = widget.selectedItem;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -367,19 +372,21 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
                         return GestureDetector(
                             onTap: () {
                               if (widget.multiSelectEnable == true) {
-                                if (selectedItemsList.contains(items[index])) {
-                                  selectedItemsList.remove(items[index]);
-                                  widget
-                                      .onMultiSelectedItem!(selectedItemsList);
+                                if (selectedItemsList
+                                    .contains(items[index].name)) {
+                                  selectedItemsList.remove(items[index].name);
+                                  idList.remove(items[index].id);
+                                  widget.onMultiSelectedItem!(idList);
                                   setState(() {
                                     // isSelected = false;
                                   });
-                                  widget
-                                      .onMultiSelectedItem!(selectedItemsList);
+                                  // widget
+                                  //     .onMultiSelectedItem!(selectedItemsList);
                                 } else {
-                                  selectedItemsList.add(items[index]);
-                                  widget
-                                      .onMultiSelectedItem!(selectedItemsList);
+                                  selectedItemsList.add(items[index].name);
+                                  idList.add(items[index].id);
+
+                                  widget.onMultiSelectedItem!(idList);
                                   setState(() {
                                     // isSelected = false;
                                   });
@@ -392,7 +399,7 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
                                     : _controller.forward(from: 0.25);
                                 isExpanded = !isExpanded;
 
-                                singleSelectedItem = items[index];
+                                // singleSelectedItem = items[index];
 
                                 widget.onSingleSelectedItem(singleSelectedItem);
 
@@ -416,7 +423,7 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(widget.itemList.elementAt(index),
+                                        Text('${widget.itemList[index].name}',
                                             textAlign: TextAlign.start,
                                             style: widget.titleStyle),
                                         if (widget.multiSelectEnable ==
@@ -462,7 +469,8 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
   void filterSearchResults(String query) {
     setState(() {
       items = widget.itemList
-          .where((item) => item.toLowerCase().contains(query.toLowerCase()))
+          .where(
+              (item) => item.name!.toLowerCase().contains(query.toLowerCase()))
           .toList();
     });
   }
@@ -495,6 +503,7 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
                   GestureDetector(
                     onTap: () {
                       selectedItemsList.remove(selectedItemsList[i]);
+                      idList.remove(idList[i]);
                       setState(() {});
                       widget.onMultiSelectedItem!(selectedItemsList);
 

@@ -6,6 +6,7 @@ import 'package:meeting_module2/services/apiServices.dart';
 
 class AddMoreNotesController extends GetxController {
   Rx<TextEditingController> noteText = TextEditingController().obs;
+
   RxInt noteType = 0.obs;
   // RxList<AllUserModel> notesVisibleToList = <AllUserModel>[].obs;
   RxList<int> notesVisibleToList = <int>[5, 80, 77].obs;

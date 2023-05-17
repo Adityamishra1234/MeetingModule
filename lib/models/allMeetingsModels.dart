@@ -27,7 +27,7 @@ class AllMeetings {
   String? updatedAt;
 
   AllMeetings(
-      {this.id,
+      {this.id = 0,
       this.meetingType,
       this.meetingWith,
       this.meetingAgenda,

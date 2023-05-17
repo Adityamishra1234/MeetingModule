@@ -7,14 +7,14 @@ import 'package:meeting_module2/widget/dropdown_multi_select/customizable_dropdo
 // import 'package:studentpanel/widgets/Custom%20Dropdown/customizable_dropdown.dart';
 // import 'package:studentpanel/widgets/customautosizetextmontserrat.dart';
 
-class CustomMultiDownSingle extends StatelessWidget {
+class CustomMultiDownSingleAllUsers extends StatelessWidget {
   bool? choosefieldtype;
-  List model;
+  List<AllUserModel> model;
   bool? enableMultiSelect;
   String initialSelectedValue;
   final Function? callbackFunctionSingle;
   final Function? callbackFunctionMulti;
-  CustomMultiDownSingle(
+  CustomMultiDownSingleAllUsers(
       {Key? key,
       required this.model,
       this.callbackFunctionSingle,

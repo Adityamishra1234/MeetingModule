@@ -1,3 +1,4 @@
+import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 
 abstract class API {
@@ -11,4 +12,6 @@ abstract class API {
   //     List<int> visibleToList);
 
   addNotes(FindNotesModel model);
+
+  createMeeting(AllMeetings model);
 }

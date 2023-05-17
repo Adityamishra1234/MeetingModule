@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/services/api.dart';
@@ -104,5 +105,17 @@ class ApiServices extends BaseServices implements API {
     print(res);
     // TODO: implement addNotes
     // throw UnimplementedError();
+  }
+
+  @override
+  createMeeting(AllMeetings model) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.createMeeting}';
+
+    var jsonData = json.encode(model);
+    print(jsonData);
+
+    // TODO: implement createInternalMeeting
+
+    var res = await httpPostApplication(url, jsonData);
   }
 }

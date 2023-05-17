@@ -66,10 +66,13 @@ class BaseServices {
   httpPostApplication(String url, jsonData) async {
     // String? token = await getToken();
     await checkUserConnection();
+
+    print('dd');
     // jsonData = jsonData.replaceAll('"null"', "");
     var response = await http.post(Uri.parse(url),
         headers: {"Content-Type": "application/json"}, body: jsonData);
 
+    print(response.body);
     switch (response.statusCode) {
       case 200:
         return response.body.isNotEmpty
