@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/bindings/dashboardBindings.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
+import 'package:meeting_module2/ui/screens/add_more_notes.dart';
 import 'package:meeting_module2/ui/screens/add_representative.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting.dart';
 import 'package:meeting_module2/ui/screens/dashboard_page.dart';
@@ -288,6 +289,11 @@ class MyApp extends StatelessWidget {
           GetPage(
             name: DashBoard.routeNamed,
             page: () => const DashBoard(),
+            // binding: DashboardBinding()
+          ),
+          GetPage(
+            name: AddMoreNotesView.routeName,
+            page: () => AddMoreNotesView(),
             // binding: DashboardBinding()
           )
         ]);

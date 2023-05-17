@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 
 import 'package:http/http.dart' as http;
@@ -34,20 +36,40 @@ class BaseServices {
   //   }
   // }
 
-  httpPost(String url, var jsonData) async {
+  httpPost(String url, jsonData) async {
     // String? token = await getToken();
     await checkUserConnection();
-    jsonData = jsonData.replaceAll('"null"', "");
-    var response = await http.post(Uri.parse(url),
-        headers: {
-          "Content-Type": "application/json",
-          // // 'Authorization': 'Bearer $token',
+    // jsonData = jsonData.replaceAll('"null"', "");
+    var response = await http.post(Uri.parse(url), body: jsonData);
 
-          //login
-          // "Accept": "application/json",
-          // "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: jsonData);
+    switch (response.statusCode) {
+      case 200:
+        return response.body.isNotEmpty
+            ? response.body
+            : throw EmptyDataException("440");
+      case 440:
+        throw EmptyDataException("440");
+      case 400:
+        throw BadRequestException(response.body.toString());
+      case 401:
+      case 403:
+        throw UnauthorisedException(response.body.toString());
+      case 502:
+        throw InternetError("Please try after sometime");
+      case 500:
+      default:
+        throw FetchDataException(
+            'Something went to wrong : ${response.statusCode}');
+    }
+  }
+
+  httpPostApplication(String url, jsonData) async {
+    // String? token = await getToken();
+    await checkUserConnection();
+    // jsonData = jsonData.replaceAll('"null"', "");
+    var response = await http.post(Uri.parse(url),
+        headers: {"Content-Type": "application/json"}, body: jsonData);
+
     switch (response.statusCode) {
       case 200:
         return response.body.isNotEmpty

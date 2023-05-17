@@ -1,38 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 
 class CustomTextField extends StatelessWidget {
-  const CustomTextField({super.key});
+  TextEditingController controller;
+  String hint;
+  Validator? validator;
+  TextInputType? keybord;
+  bool readOrEdit = false;
+  CustomTextField({
+    Key? key,
+    required this.hint,
+    required this.controller,
+    this.validator,
+    this.keybord,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      // autovalidateMode: AutovalidateMode.onUserInteraction,
-
-      // controller: firstName,
+    return TextFormField(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      keyboardType: keybord ?? TextInputType.text,
+      controller: controller,
       scrollPadding: EdgeInsets.symmetric(
           vertical: MediaQuery.of(context).viewInsets.bottom + 30),
       style: ThemeConstants.montserrattextstyle2,
-      // readOnly: saveAndEdit,
+      readOnly: readOrEdit,
       decoration: InputDecoration(
-        hintText: "Enter your First Name",
+        hintText: hint,
         filled: true,
-        fillColor: ThemeConstants.lightgreycolor,
+        fillColor: ThemeConstants.lightblueColor,
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.circular(15.0),
         ),
       ),
-
-      // validator: (value) {
-      //   if (value == "") {
-      //     return "Please enter First Name";
-      //   } else {
-      //     return null;
-      //   }
-      // },
+      validator: (value) {
+        if (Validator.phone == validator) {
+          return getPhoneNumbervalidation(value);
+        } else if (Validator.email == validator) {
+          return getEmailvaliation(value);
+        } else if (Validator.password == validator) {
+          print("password");
+        }
+      },
     );
   }
+}
+
+enum Validator {
+  phone,
+  email,
+  password,
 }

@@ -378,7 +378,7 @@ class _DashBoardState extends State<DashBoard> {
         child: Icon(Icons.add),
         backgroundColor: ThemeConstants.bluecolor,
         onPressed: () {
-          // Get.toNamed(CreateNewMeeting.routeNamed);
+          Get.toNamed(CreateNewMeeting.routeNamed);
 
           // Get.to(
           //   () => MeetingDetails(),
@@ -431,6 +431,8 @@ class _DashBoardState extends State<DashBoard> {
                       children: [
                         InkWell(
                           onTap: () {
+                            controller.getNotes(
+                                '${controller.listToShow[indexs].id}');
                             Get.to(MeetingDetails(),
                                 arguments: controller.listToShow[indexs]);
                             // Get.toNamed(MeetingDetails.routeNamed,

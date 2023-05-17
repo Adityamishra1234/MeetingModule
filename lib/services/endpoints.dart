@@ -4,4 +4,8 @@ class Endpoints {
   static String allMeetings = 'allMeeting';
 
   static String allUser = 'allUser';
+
+  static String findNotes = 'findNotes';
+
+  static String addNotes = 'addNotes';
 }

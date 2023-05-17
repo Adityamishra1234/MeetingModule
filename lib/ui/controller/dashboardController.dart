@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
+import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 
 class DashBoardController extends GetxController {
@@ -26,6 +27,8 @@ class DashBoardController extends GetxController {
 
   RxList<dynamic> listBro = <dynamic>[].obs;
 
+  RxList<FindNotesModel> notesList = <FindNotesModel>[].obs;
+
   // RxList<AllMeetings> internalMeetingList = <AllMeetings>[].obs;
 
   // RxList<AllMeetings> externalMeetingList = <AllMeetings>[].obs;
@@ -44,6 +47,7 @@ class DashBoardController extends GetxController {
 
     helo.value = 2;
     getsss();
+    // getNotes('1');
   }
 
   frfr(val) {
@@ -99,6 +103,23 @@ class DashBoardController extends GetxController {
 
     showUpcomingList();
     // update();
+  }
+
+  getNotes(String id) async {
+    var res = await api.findNotes(id);
+
+    print(res);
+
+    var data2 = await json.decode(res);
+
+    print(data2);
+
+    // List<FindNotesModel> data = List<FindNotesModel>.from(
+    //     json.decode(res).map((x) => FindNotesModel.fromJson(x)));
+
+    var data =
+        List<FindNotesModel>.from(data2.map((x) => FindNotesModel.fromJson(x)));
+    notesList.value = data;
   }
 
   RxBool upcomingbuttonEnable = true.obs;
