@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/services/apiServices.dart';
+import 'package:meeting_module2/services/endpoints.dart';
 
 class DashBoardController extends GetxController {
   ApiServices api = ApiServices();
@@ -62,7 +63,7 @@ class DashBoardController extends GetxController {
     allMeetingslist =
         await List<AllMeetings>.from(data.map((x) => AllMeetings.fromJson(x)));
 
-    var res2 = await api.getAllUsers();
+    var res2 = await api.getDropdown(Endpoints.allUser);
 
     var data2 = await json.decode(res2);
 

@@ -378,7 +378,7 @@ class _DashBoardState extends State<DashBoard> {
         child: Icon(Icons.add),
         backgroundColor: ThemeConstants.bluecolor,
         onPressed: () {
-          // Get.toNamed(CreateNewMeeting.routeNamed);
+          Get.toNamed(CreateNewMeeting.routeNamed);
 
           // Get.to(
           //   () => MeetingDetails(),

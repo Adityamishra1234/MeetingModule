@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/services/api.dart';
 import 'package:meeting_module2/services/base_services.dart';
 import 'package:meeting_module2/services/endpoints.dart';
+import 'package:tuple/tuple.dart';
 
 class ApiServices extends BaseServices implements API {
   @override
@@ -23,14 +25,11 @@ class ApiServices extends BaseServices implements API {
   }
 
   @override
-  getAllUsers() {
-    var url = '${Endpoints.baseUrl}${Endpoints.allUser}';
-
-    var res = httpPostNullBody(url);
-
-    return res;
-
-    // TODO: implement getAllUsers
-    // throw UnimplementedError();
+  getDropdown(String endpoint) async {
+    var url = '${Endpoints.baseUrl}${endpoint}';
+    var res = await httpPostNullBody(url);
+    if (res != null) {
+      return res;
+    }
   }
 }

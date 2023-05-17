@@ -1,5 +1,5 @@
 abstract class API {
   getAllMeetings();
 
-  getAllUsers();
+  getDropdown(String endpoint);
 }

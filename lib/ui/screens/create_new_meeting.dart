@@ -57,8 +57,8 @@ class CreateNewMeeting extends StatelessWidget {
                   // ),
                 ],
               ),
-              if (false) ...getListInternalmeeting(context),
-              if (true) ...getExternalMeeting(context)
+              if (true) ...getListInternalmeeting(context),
+              if (false) ...getExternalMeeting(context)
             ],
           ),
         ),

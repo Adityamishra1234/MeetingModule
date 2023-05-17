@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:meeting_module2/utils/constants.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:meeting_module2/utils/theme.dart';
 
 class CustomTextField extends StatelessWidget {
+<<<<<<< HEAD
   TextEditingController controller;
   String hint;
   Validator? validator;
@@ -21,14 +23,22 @@ class CustomTextField extends StatelessWidget {
     return TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: keybord ?? TextInputType.text,
+=======
+  const CustomTextField({super.key});
 
-      controller: controller,
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      // autovalidateMode: AutovalidateMode.onUserInteraction,
+>>>>>>> working_vinayak
+
+      // controller: firstName,
       scrollPadding: EdgeInsets.symmetric(
           vertical: MediaQuery.of(context).viewInsets.bottom + 30),
       style: ThemeConstants.montserrattextstyle2,
       // readOnly: saveAndEdit,
       decoration: InputDecoration(
-        hintText: hint,
+        hintText: "Enter your First Name",
         filled: true,
         fillColor: ThemeConstants.lightblueColor,
         border: OutlineInputBorder(
@@ -37,15 +47,13 @@ class CustomTextField extends StatelessWidget {
         ),
       ),
 
-      validator: (value) {
-        if (Validator.phone == validator) {
-          return getPhoneNumbervalidation(value);
-        } else if (Validator.email == validator) {
-          return getEmailvaliation(value);
-        } else if (Validator.password == validator) {
-          print("password");
-        }
-      },
+      // validator: (value) {
+      //   if (value == "") {
+      //     return "Please enter First Name";
+      //   } else {
+      //     return null;
+      //   }
+      // },
     );
   }
 }

@@ -47,6 +47,7 @@ dependencies:
   auto_size_text: ^3.0.0
   flutter_screenutil: ^5.7.0
   dropdown_button2: ^2.1.2
+  tuple: ^2.0.1
 
 dev_dependencies:
   flutter_test:
