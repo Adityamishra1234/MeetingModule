@@ -431,6 +431,8 @@ class _DashBoardState extends State<DashBoard> {
                       children: [
                         InkWell(
                           onTap: () {
+                            controller.getNotes(
+                                '${controller.listToShow[indexs].id}');
                             Get.to(MeetingDetails(),
                                 arguments: controller.listToShow[indexs]);
                             // Get.toNamed(MeetingDetails.routeNamed,

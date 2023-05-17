@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:meeting_module2/ui/controller/create_new_meeting_controller.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/custom_tab_widget.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
@@ -9,57 +11,72 @@ class CreateNewMeeting extends StatelessWidget {
   static const routeNamed = '/CreateNewMeeting';
   @override
   Widget build(BuildContext context) {
+    var controller = Get.put(CreateNewMeetingController());
+
     return Scaffold(
-      body: Container(
-        padding: EdgeInsets.only(top: ScreenUtil().statusBarHeight),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 15),
-                child: Align(
-                  alignment: AlignmentDirectional.topStart,
-                  child: CustomAutoSizeTextMontserrat(
-                    text: "Create \nNew Meeting",
-                    fontSize: 35,
-                    textColor: ThemeConstants.bluecolor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Row(
+      body: SafeArea(
+        child: Obx(
+          () => Container(
+            padding: EdgeInsets.only(top: ScreenUtil().statusBarHeight),
+            child: SingleChildScrollView(
+              child: Column(
                 children: [
-                  const SizedBox(
-                    width: 20,
-                  ),
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    child: CustomTabWidget(
-                      title0: "Internal Meetings",
-                      title1: "External Meetings",
-                      callback: (val) => val,
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Align(
+                      alignment: AlignmentDirectional.topStart,
+                      child: CustomAutoSizeTextMontserrat(
+                        text: "Create \nNew Meeting",
+                        fontSize: 35,
+                        textColor: ThemeConstants.bluecolor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  // TextUnderLine(
-                  //   text1: "Internal",
-                  //   text: "Meetings",
-                  //   textColor: ThemeConstants.firstColor,
-                  //   underlinceColor: ThemeConstants.firstColor,
-                  // ),
-                  // const SizedBox(
-                  //   width: 20,
-                  // ),
-                  // TextUnderLine(
-                  //   text1: "External",
-                  //   text: " Meeting",
-                  //   underlinceColor: Colors.transparent,
-                  // ),
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 0, vertical: 5),
+                        child: CustomTabWidget(
+                          title0: "Internal Meetings",
+                          title1: "External Meetings",
+                          callback: (val) {
+                            if (val == 1) {
+                              controller.externalMeeting.value = true;
+                              controller.update();
+                            } else {
+                              controller.externalMeeting.value = false;
+                              controller.update();
+                            }
+                          },
+                        ),
+                      ),
+                      // TextUnderLine(
+                      //   text1: "Internal",
+                      //   text: "Meetings",
+                      //   textColor: ThemeConstants.firstColor,
+                      //   underlinceColor: ThemeConstants.firstColor,
+                      // ),
+                      // const SizedBox(
+                      //   width: 20,
+                      // ),
+                      // TextUnderLine(
+                      //   text1: "External",
+                      //   text: " Meeting",
+                      //   underlinceColor: Colors.transparent,
+                      // ),
+                    ],
+                  ),
+                  if (controller.externalMeeting.value)
+                    ...getListInternalmeeting(context),
+                  if (true) ...getExternalMeeting(context)
                 ],
               ),
-              if (true) ...getListInternalmeeting(context),
-              if (false) ...getExternalMeeting(context)
-            ],
+            ),
           ),
         ),
       ),

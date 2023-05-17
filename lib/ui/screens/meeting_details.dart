@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
+import 'package:meeting_module2/ui/screens/add_more_notes.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
@@ -461,9 +462,15 @@ class MeetingDetails extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Center(
-                            child: CustomAutoSizeTextMontserrat(
-                          text: "Add more Notes",
-                          textColor: ThemeConstants.firstColor,
+                            child: GestureDetector(
+                          onTap: () {
+                            Get.toNamed(AddMoreNotesView.routeName,
+                                arguments: meetingData.id);
+                          },
+                          child: CustomAutoSizeTextMontserrat(
+                            text: "Add more Notes",
+                            textColor: ThemeConstants.firstColor,
+                          ),
                         )),
                       ),
                       const Spacer(),

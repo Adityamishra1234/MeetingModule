@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 
 class CustomTextField extends StatelessWidget {
-<<<<<<< HEAD
   TextEditingController controller;
   String hint;
   Validator? validator;
   TextInputType? keybord;
+<<<<<<< HEAD
 
+=======
+  bool readOrEdit = false;
+>>>>>>> working_vinayak
   CustomTextField({
     Key? key,
     required this.hint,
@@ -23,22 +25,17 @@ class CustomTextField extends StatelessWidget {
     return TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: keybord ?? TextInputType.text,
+<<<<<<< HEAD
+
 =======
-  const CustomTextField({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      // autovalidateMode: AutovalidateMode.onUserInteraction,
 >>>>>>> working_vinayak
-
-      // controller: firstName,
+      controller: controller,
       scrollPadding: EdgeInsets.symmetric(
           vertical: MediaQuery.of(context).viewInsets.bottom + 30),
       style: ThemeConstants.montserrattextstyle2,
-      // readOnly: saveAndEdit,
+      readOnly: readOrEdit,
       decoration: InputDecoration(
-        hintText: "Enter your First Name",
+        hintText: hint,
         filled: true,
         fillColor: ThemeConstants.lightblueColor,
         border: OutlineInputBorder(
@@ -46,14 +43,19 @@ class CustomTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0),
         ),
       ),
+<<<<<<< HEAD
 
-      // validator: (value) {
-      //   if (value == "") {
-      //     return "Please enter First Name";
-      //   } else {
-      //     return null;
-      //   }
-      // },
+=======
+>>>>>>> working_vinayak
+      validator: (value) {
+        if (Validator.phone == validator) {
+          return getPhoneNumbervalidation(value);
+        } else if (Validator.email == validator) {
+          return getEmailvaliation(value);
+        } else if (Validator.password == validator) {
+          print("password");
+        }
+      },
     );
   }
 }

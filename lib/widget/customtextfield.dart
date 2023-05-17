@@ -7,7 +7,7 @@ class CustomTextField extends StatelessWidget {
   String hint;
   Validator? validator;
   TextInputType? keybord;
-
+  bool readOrEdit = false;
   CustomTextField({
     Key? key,
     required this.hint,
@@ -21,12 +21,11 @@ class CustomTextField extends StatelessWidget {
     return TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: keybord ?? TextInputType.text,
-
       controller: controller,
       scrollPadding: EdgeInsets.symmetric(
           vertical: MediaQuery.of(context).viewInsets.bottom + 30),
       style: ThemeConstants.montserrattextstyle2,
-      // readOnly: saveAndEdit,
+      readOnly: readOrEdit,
       decoration: InputDecoration(
         hintText: hint,
         filled: true,
@@ -36,7 +35,6 @@ class CustomTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0),
         ),
       ),
-
       validator: (value) {
         if (Validator.phone == validator) {
           return getPhoneNumbervalidation(value);

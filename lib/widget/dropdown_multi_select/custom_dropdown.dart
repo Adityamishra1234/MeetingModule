@@ -51,6 +51,7 @@ class CustomMultiDownSingle extends StatelessWidget {
         : Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: CustomizableDropdown(
+              // colorDropDown: Colors.black,
               selectedItem: initialSelectedValue,
               maxHeight: 150,
               height: 50,
@@ -67,7 +68,7 @@ class CustomMultiDownSingle extends StatelessWidget {
               itemList: model,
               multiSelectEnable: enableMultiSelect ?? false,
               onSingleSelectedItem: (sele) {
-                callbackFunctionSingle!(sele);
+                print(sele);
               },
 
               onMultiSelectedItem: (item) {
