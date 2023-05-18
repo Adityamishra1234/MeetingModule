@@ -258,9 +258,10 @@ class CreateNewMeeting extends StatelessWidget {
                     height: 45,
                     width: (MediaQuery.of(context).size.width - 40) / 2,
                     child: CustomTimerWidget2(callback: (val) {
-                      controller.dateController.value = val;
+                      // print(val);
+                      controller.timeController.value = val;
                       controller.update();
-                      print(controller.dateController.value);
+                      print(controller.timeController.value);
                     }),
                   ),
                 ),
@@ -383,10 +384,8 @@ class CreateNewMeeting extends StatelessWidget {
               model: ['Siec Branch', 'Others'],
               initialSelectedValue: 'Siec Branch',
               callbackFunctionSingle: (val) {
-                if (val == 'Others') {
-                  controller.meetingLocation.value = false;
-                  controller.update();
-                }
+                controller.selectMeetingBranch.value = val;
+                controller.update();
               },
             ),
           ),
@@ -404,11 +403,9 @@ class CreateNewMeeting extends StatelessWidget {
           ),
           //
           Container(
-              // child: CustomTextField(
-              //   hint: '',
-              //   controller: controller.dateController.value,
-              // ),
-              ),
+            child: CustomTextField(
+                hint: '', controller: controller.specifyMeetingLocation.value),
+          ),
         ]
       ],
 
@@ -429,7 +426,7 @@ class CreateNewMeeting extends StatelessWidget {
           model: ['Zoom', 'Meet', 'Teams'],
           initialSelectedValue: 'Zoom',
           callbackFunctionSingle: (val) {
-            print(val);
+            controller.modeOfMeeting.value = val;
           },
         ),
         Padding(
@@ -512,11 +509,34 @@ class CreateNewMeeting extends StatelessWidget {
           ),
         ),
         CustomMultiDownSingle(
-            enableMultiSelect: false,
             callbackFunctionSingle: (val) {
+              controller.groupNames.value = val;
               controller.update();
             },
+            enableMultiSelect: false,
             model: controller.groupNamesAudienceType,
+            initialSelectedValue: ''),
+      ],
+
+      if (controller.selectedTargetAudience.value == 'Branch Based') ...[
+        Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Align(
+            alignment: AlignmentDirectional.topStart,
+            child: CustomAutoSizeTextMontserrat(
+              text: "Select Branch",
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        CustomMultiDownSingle(
+            callbackFunctionSingle: (val) {
+              controller.selectedBranch.value = val;
+              controller.update();
+            },
+            enableMultiSelect: false,
+            model: controller.branchList,
             initialSelectedValue: ''),
       ],
 
@@ -534,7 +554,14 @@ class CreateNewMeeting extends StatelessWidget {
 
       CustomMultiDownSingle(
           model: Get.find<DashBoardController>().listBro,
-          initialSelectedValue: 'Nidhi Vij',
+          initialSelectedValue: '',
+          callbackFunctionSingle: (val) {
+            // controller.selectedBranch.value = val;
+            // controller.update();
+          },
+          callbackFunctionMulti: (val) {
+            controller.selectedUsersList.value = val;
+          },
           enableMultiSelect: true),
 
       // Container(

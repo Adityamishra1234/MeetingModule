@@ -64,7 +64,7 @@ class _CustomTimerWidget2State extends State<CustomTimerWidget2> {
                             setState(() {
                               previousDate = date;
                               date = dateToShow;
-                              widget.callback(dateToShow);
+                              widget.callback(date);
                             });
                           },
                           child: const Text('Done'),
@@ -79,7 +79,7 @@ class _CustomTimerWidget2State extends State<CustomTimerWidget2> {
                           setState(() {
                             dateToShow = '${newdate.hour}:${newdate.minute}';
                           });
-                          widget.callback(date);
+                          widget.callback(dateToShow);
                         },
                         // maximumDate: DateTime(2025, 12, 30),
                         // minimumYear: 2010,

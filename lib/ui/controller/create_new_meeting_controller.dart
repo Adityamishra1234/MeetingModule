@@ -4,17 +4,80 @@ import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 
 class CreateNewMeetingController extends GetxController {
+  RxString agendaPurposeOfMeeting = 'All Meetings'.obs;
+
+//
+//
   Rx<TextEditingController> meetingNameController = TextEditingController().obs;
-  // Rx<TextEditingController> dateController = TextEditingController().obs;
+//
+//
+  RxString dateController = ''.obs;
+  //
+  //
+  RxString timeController = ''.obs;
+
+//
   Rx<TextEditingController> proposedDuration = TextEditingController().obs;
+
+  ///
+  ///
+  ///
+  RxBool MeetingType = true.obs;
+
+  RxBool meetingLocation = true.obs;
+
+  RxString selectMeetingBranch = ''.obs;
+
+  RxString modeOfMeeting = ''.obs;
+
+  ///
+  ///
+  ///
+
+  Rx<TextEditingController> specifyMeetingLocation =
+      TextEditingController().obs;
+  //
+
   Rx<TextEditingController> meetingLink = TextEditingController().obs;
+
+  //
+  List<String> selectTargetAudienceType = <String>[
+    'Select Target Audience Type',
+    'Group Wise',
+    'Branch Based',
+    'User Based',
+    'All User'
+  ];
+
+  List<String> groupNamesAudienceType = [
+    'IT Team',
+    'Australia Applications',
+    'SSU Team',
+    'Canada Advisors',
+    'Europe Team'
+  ];
+
+  RxList branchList = [
+    'IT ssss',
+    'Australia Applications',
+    'SSU Team',
+    'Canada Advisors',
+    'Europe Team'
+  ].obs;
+
+  RxString selectedBranch = ''.obs;
+
+  RxString selectedTargetAudience = ''.obs;
+
+  RxString groupNames = ''.obs;
+
+  RxList<String> selectedUsersList = <String>[].obs;
+
+  // Rx<TextEditingController> dateController = TextEditingController().obs;
+
   RxBool externalMeeting = false.obs;
   Rx<AllMeetings> meetingModel = AllMeetings().obs;
   ApiServices api = ApiServices();
-
-  RxString agendaPurposeOfMeeting = 'All Meetings'.obs;
-
-  RxString dateController = ''.obs;
 
   // RxString proposedDuration = ''.obs;
 
@@ -25,26 +88,6 @@ class CreateNewMeetingController extends GetxController {
     'Vendor Meeting',
     'Internal Meeting'
   ];
-
-  List<String> selectTargetAudienceType = <String>[
-    'Select Target Audience Type',
-    'Group Wise',
-    'Branch Based',
-    'User Based',
-    'All User'
-  ];
-
-  List<String> groupNamesAudienceType = <String>[
-    'IT Team',
-    'Australia Applications',
-    'SSU Team',
-    'Canada Advisors',
-    'Europe Team'
-  ];
-
-  RxBool MeetingType = true.obs;
-  RxBool meetingLocation = true.obs;
-  RxString selectedTargetAudience = ''.obs;
 
   ///External Meeting
   ///
