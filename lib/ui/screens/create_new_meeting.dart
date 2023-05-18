@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:meeting_module2/models/allMeetingsModels.dart';
+import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/ui/controller/create_new_meeting_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/dashboard_page.dart';
@@ -12,6 +14,7 @@ import 'package:meeting_module2/widget/custom_date_picker/custom_timer_widget.da
 import 'package:meeting_module2/widget/custom_tab_widget.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/customtextfield.dart';
+import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsers.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dart';
 import 'package:meeting_module2/widget/text_underline.dart';
 
@@ -22,78 +25,77 @@ class CreateNewMeeting extends StatelessWidget {
     var controller = Get.put(CreateNewMeetingController());
 
     return Scaffold(
-      body: SafeArea(
-        child: Obx(
-          () => Container(
-            padding: EdgeInsets.only(
-              top: ScreenUtil().statusBarHeight,
-              left: 10,
-              right: 10,
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15),
-                    child: Align(
-                      alignment: AlignmentDirectional.topStart,
-                      child: CustomAutoSizeTextMontserrat(
-                        text: "Create \nNew Meeting",
-                        fontSize: 35,
-                        textColor: ThemeConstants.bluecolor,
-                        fontWeight: FontWeight.bold,
-                      ),
+        body: controller.obx((state) => SafeArea(
+              child: Obx(
+                () => Container(
+                  padding: EdgeInsets.only(
+                    top: ScreenUtil().statusBarHeight,
+                    left: 10,
+                    right: 10,
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Align(
+                            alignment: AlignmentDirectional.topStart,
+                            child: CustomAutoSizeTextMontserrat(
+                              text: "Create \nNew Meeting",
+                              fontSize: 35,
+                              textColor: ThemeConstants.bluecolor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 0, vertical: 5),
+                              child: CustomTabWidget(
+                                title0: "Internal Meetings",
+                                title1: "External Meetings",
+                                callback: (val) {
+                                  if (val == 1) {
+                                    controller.externalMeeting.value = true;
+                                    controller.update();
+                                  } else {
+                                    controller.externalMeeting.value = false;
+                                    controller.update();
+                                  }
+                                },
+                              ),
+                            ),
+                            // TextUnderLine(
+                            //   text1: "Internal",
+                            //   text: "Meetings",
+                            //   textColor: ThemeConstants.firstColor,
+                            //   underlinceColor: ThemeConstants.firstColor,
+                            // ),
+                            // const SizedBox(
+                            //   width: 20,
+                            // ),
+                            // TextUnderLine(
+                            //   text1: "External",
+                            //   text: " Meeting",
+                            //   underlinceColor: Colors.transparent,
+                            // ),
+                          ],
+                        ),
+                        if (!controller.externalMeeting.value)
+                          ...getListInternalmeeting(context, controller),
+                        if (controller.externalMeeting.value)
+                          ...getExternalMeeting(context, controller)
+                      ],
                     ),
                   ),
-                  Row(
-                    children: [
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 0, vertical: 5),
-                        child: CustomTabWidget(
-                          title0: "Internal Meetings",
-                          title1: "External Meetings",
-                          callback: (val) {
-                            if (val == 1) {
-                              controller.externalMeeting.value = true;
-                              controller.update();
-                            } else {
-                              controller.externalMeeting.value = false;
-                              controller.update();
-                            }
-                          },
-                        ),
-                      ),
-                      // TextUnderLine(
-                      //   text1: "Internal",
-                      //   text: "Meetings",
-                      //   textColor: ThemeConstants.firstColor,
-                      //   underlinceColor: ThemeConstants.firstColor,
-                      // ),
-                      // const SizedBox(
-                      //   width: 20,
-                      // ),
-                      // TextUnderLine(
-                      //   text1: "External",
-                      //   text: " Meeting",
-                      //   underlinceColor: Colors.transparent,
-                      // ),
-                    ],
-                  ),
-                  if (!controller.externalMeeting.value)
-                    ...getListInternalmeeting(context, controller),
-                  if (controller.externalMeeting.value)
-                    ...getExternalMeeting(context, controller)
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
-      ),
-    );
+            )));
   }
 
   List<Widget> getListInternalmeeting(
@@ -316,7 +318,7 @@ class CreateNewMeeting extends StatelessWidget {
                         width: (MediaQuery.of(context).size.width - 40) / 2,
                         child: CustomMultiDownSingle(
                             callbackFunctionSingle: (val) {
-                              print(val.runtimeType);
+                              print(val);
                               if (val == 'Offline') {
                                 controller.MeetingType.value = false;
                                 controller.update();
@@ -385,7 +387,6 @@ class CreateNewMeeting extends StatelessWidget {
               initialSelectedValue: 'Siec Branch',
               callbackFunctionSingle: (val) {
                 controller.selectMeetingBranch.value = val;
-                controller.update();
               },
             ),
           ),
@@ -489,7 +490,7 @@ class CreateNewMeeting extends StatelessWidget {
           callbackFunctionSingle: (val) {
             print(val);
             controller.selectedTargetAudience.value = val;
-            controller.update();
+
             // print(controller.selectedTargetAudience.value);
           },
           enableMultiSelect: false,
@@ -509,9 +510,10 @@ class CreateNewMeeting extends StatelessWidget {
           ),
         ),
         CustomMultiDownSingle(
-            callbackFunctionSingle: (val) {
+            callbackFunctionSingle: (val) async {
+              // print(val + "sdddd");
               controller.groupNames.value = val;
-              controller.update();
+              await controller.showList(val);
             },
             enableMultiSelect: false,
             model: controller.groupNamesAudienceType,
@@ -533,7 +535,6 @@ class CreateNewMeeting extends StatelessWidget {
         CustomMultiDownSingle(
             callbackFunctionSingle: (val) {
               controller.selectedBranch.value = val;
-              controller.update();
             },
             enableMultiSelect: false,
             model: controller.branchList,
@@ -552,17 +553,36 @@ class CreateNewMeeting extends StatelessWidget {
         ),
       ),
 
-      CustomMultiDownSingle(
+      CustomMultiDownSingleAllUser(
           model: Get.find<DashBoardController>().listBro,
           initialSelectedValue: '',
-          callbackFunctionSingle: (val) {
-            // controller.selectedBranch.value = val;
+          inititalSelectedList: controller.preFilledUsers.value,
+
+          // callbackFunctionSingle: (val) {
+          //   // controller.selectedBranch.value = val;
+          //   // controller.update();
+          // },
+          callbackFunctionMulti: (List<AllUserModel> val) {
+            print(val);
+            controller.selectedUsersList.value = val;
             // controller.update();
           },
-          callbackFunctionMulti: (val) {
-            controller.selectedUsersList.value = val;
-          },
           enableMultiSelect: true),
+
+      // CustomMultiDownSingle(
+      //     model: Get.find<DashBoardController>().listBro,
+      //     initialSelectedValue: '',
+      //     inititalSelectedList: ['Nancy Gupta', 'Admin', 'Sharmila'],
+      //     // callbackFunctionSingle: (val) {
+      //     //   // controller.selectedBranch.value = val;
+      //     //   // controller.update();
+      //     // },
+      //     callbackFunctionMulti: (val) {
+      //       print(val);
+      //       controller.selectedUsersList.value = val;
+      //       // controller.update();
+      //     },
+      //     enableMultiSelect: true),
 
       // Container(
       //   height: 45,
@@ -603,16 +623,45 @@ class CreateNewMeeting extends StatelessWidget {
         ),
       ),
 
-      CustomMultiDownSingle(
-          enableMultiSelect: true,
-          callbackFunctionSingle: (val) {
-            controller.update();
+      CustomMultiDownSingleAllUser(
+          model: Get.find<DashBoardController>().listBro,
+          initialSelectedValue: '',
+
+          // callbackFunctionSingle: (val) {
+          //   // controller.selectedBranch.value = val;
+          //   // controller.update();
+          // },
+          callbackFunctionMulti: (List<AllUserModel> val) {
+            print(val);
+            controller.selectedUsersList.value = val;
+            // controller.update();
           },
-          model: controller.groupNamesAudienceType,
-          initialSelectedValue: ''),
-      const SizedBox(
-        height: 25,
-      ),
+          enableMultiSelect: true),
+      // CustomMultiDownSingle(
+      //     model: controller.groupNamesAudienceType,
+      //     initialSelectedValue: '',
+      //     // inititalSelectedList: ['Nancy Gupta', 'Admin', 'Sharmila'],
+      //     // callbackFunctionSingle: (val) {
+      //     //   // controller.selectedBranch.value = val;
+      //     //   // controller.update();
+      //     // },
+      //     callbackFunctionMulti: (val) {
+      //       print(val);
+      //       controller.selectedCoordinatorList.value = val;
+      //       // controller.update();
+      //     },
+      //     enableMultiSelect: true),
+
+      // CustomMultiDownSingle(
+      //     enableMultiSelect: true,
+      //     callbackFunctionSingle: (val) {
+      //       controller.update();
+      //     },
+      //     model: controller.groupNamesAudienceType,
+      //     initialSelectedValue: ''),
+      // const SizedBox(
+      //   height: 25,
+      // ),
 
       InkWell(
         onTap: () {
@@ -1299,10 +1348,10 @@ class CreateNewMeeting extends StatelessWidget {
         ),
       ),
 
-      CustomMultiDownSingle(
-          model: Get.find<DashBoardController>().listBro,
-          initialSelectedValue: 'Nidhi Vij',
-          enableMultiSelect: true),
+      // CustomMultiDownSingleAllUser(
+      //     model: Get.find<DashBoardController>().listBro,
+      //     initialSelectedValue: 'Nidhi Vij',
+      //     enableMultiSelect: true),
       // Container(
       //   height: 45,
       //   width: MediaQuery.of(context).size.width - 40,

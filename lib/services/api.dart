@@ -8,6 +8,8 @@ abstract class API {
 
   findNotes(String id);
   addNotes(FindNotesModel model);
-  addMeeting();
+  addMeeting(AllMeetings modelData);
   createMeeting(AllMeetings model);
+
+  selectedAudienceType();
 }

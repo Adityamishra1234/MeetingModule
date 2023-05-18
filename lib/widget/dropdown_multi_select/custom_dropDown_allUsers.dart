@@ -1,26 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
+import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsersCore.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/customizable_dropdown.dart';
 
 // import 'package:studentpanel/utils/theme.dart';
 // import 'package:studentpanel/widgets/Custom%20Dropdown/customizable_dropdown.dart';
 // import 'package:studentpanel/widgets/customautosizetextmontserrat.dart';
 
-class CustomMultiDownSingleAllUsers extends StatelessWidget {
+class CustomMultiDownSingleAllUser extends StatelessWidget {
   bool? choosefieldtype;
   List<AllUserModel> model;
   bool? enableMultiSelect;
-  String initialSelectedValue;
-  final Function? callbackFunctionSingle;
-  final Function? callbackFunctionMulti;
-  CustomMultiDownSingleAllUsers(
+  String? initialSelectedValue;
+  List<AllUserModel>? inititalSelectedList;
+  Function? callbackFunctionSingle;
+  Function? callbackFunctionMulti;
+  CustomMultiDownSingleAllUser(
       {Key? key,
       required this.model,
       this.callbackFunctionSingle,
       this.callbackFunctionMulti,
       this.choosefieldtype,
       required this.initialSelectedValue,
+      this.inititalSelectedList,
       this.enableMultiSelect})
       : super(key: key);
 
@@ -50,7 +54,7 @@ class CustomMultiDownSingleAllUsers extends StatelessWidget {
           )
         : Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
-            child: CustomizableDropdown(
+            child: CustomizableDropdownAllUser(
               // colorDropDown: Colors.black,
               selectedItem: initialSelectedValue,
               maxHeight: 150,
@@ -69,17 +73,20 @@ class CustomMultiDownSingleAllUsers extends StatelessWidget {
               multiSelectEnable: enableMultiSelect ?? false,
               onSingleSelectedItem: (sele) {
                 if (enableMultiSelect == false) {
-                  callbackFunctionSingle!(sele);
+                  // callbackFunctionSingle!(sele);
                 }
               },
 
               onMultiSelectedItem: (item) {
-                print(item);
+                // print(item);
                 // selectedItems = item;
-
-                // callbackFunctionMulti!(item);
+                if (enableMultiSelect == true) {
+                  // print(item);
+                  callbackFunctionMulti!(item);
+                }
               },
-              initalValue: initialSelectedValue,
+              initalValue: initialSelectedValue!,
+              initialSelectedList: inititalSelectedList,
 
               // placeholder: Align(
               //   alignment: AlignmentDirectional.centerStart,

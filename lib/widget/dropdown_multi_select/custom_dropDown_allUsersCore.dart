@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/expand_section.dart';
@@ -6,7 +7,7 @@ import 'package:meeting_module2/widget/dropdown_multi_select/expand_section.dart
 // import 'package:studentpanel/widgets/Custom%20Dropdown/expand_section.dart';
 // import 'package:studentpanel/widgets/customautosizetextmontserrat.dart';
 
-class CustomizableDropdownAllUsers extends StatefulWidget {
+class CustomizableDropdownAllUser extends StatefulWidget {
   /// Color of the dropdown list
   final Color? listColor;
 
@@ -51,7 +52,7 @@ class CustomizableDropdownAllUsers extends StatefulWidget {
 
   /// receive the selected item call back function
   /// The list of items the user can select
-  final Function(String item) onSingleSelectedItem;
+  final Function? onSingleSelectedItem;
 
   final Function? onMultiSelectedItem;
 
@@ -75,13 +76,15 @@ class CustomizableDropdownAllUsers extends StatefulWidget {
 //Bool for Multi
   final bool multiSelectEnable;
 
+  List<AllUserModel>? initialSelectedList;
+
   /// Here we go the dropdown StateFull Widget
-  const CustomizableDropdownAllUsers(
+  CustomizableDropdownAllUser(
       {Key? key,
       required this.initalValue,
       this.selectedItem,
       required this.itemList,
-      required this.onSingleSelectedItem,
+      this.onSingleSelectedItem,
       this.placeholder,
       this.maxHeight,
       this.height,
@@ -100,16 +103,17 @@ class CustomizableDropdownAllUsers extends StatefulWidget {
       this.titleAlign,
       this.titleStyle,
       this.onMultiSelectedItem,
+      this.initialSelectedList,
       this.multiSelectEnable = false})
       : super(key: key);
 
   @override
-  _CustomizableDropdownAllUsersState createState() =>
-      _CustomizableDropdownAllUsersState();
+  _CustomizableDropdownAllUserState createState() =>
+      _CustomizableDropdownAllUserState();
 }
 
-class _CustomizableDropdownAllUsersState
-    extends State<CustomizableDropdownAllUsers>
+class _CustomizableDropdownAllUserState
+    extends State<CustomizableDropdownAllUser>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   final ScrollController scrollControler = ScrollController();
@@ -125,9 +129,7 @@ class _CustomizableDropdownAllUsersState
 // Create list using for search
   List<AllUserModel> items = [];
 
-  List idList = [];
-
-  List selectedItemsList = [];
+  List<AllUserModel> selectedItemsList = [];
 
   late String singleSelectedItem;
 
@@ -156,8 +158,16 @@ class _CustomizableDropdownAllUsersState
     // filterSearchResults("");
     super.initState();
     items = widget.itemList;
+    if (widget.initialSelectedList != null) {
+      widget.initialSelectedList!
+          .forEach((element) => selectedItemsList.add(element));
+      // selectedItemsList.addAll(widget.initialSelectedList.map((e) => e) );
+    }
+  }
 
-    // selectedItemsList.add(items[0].name);
+  @override
+  update() {
+    setState(() {});
   }
 
   @override
@@ -169,7 +179,7 @@ class _CustomizableDropdownAllUsersState
   }
 
   @override
-  void didUpdateWidget(covariant CustomizableDropdownAllUsers oldWidget) {
+  void didUpdateWidget(covariant CustomizableDropdownAllUser oldWidget) {
     // TODO: implement didUpdateWidget
 
     // filterSearchResults(editingController.text);
@@ -180,7 +190,7 @@ class _CustomizableDropdownAllUsersState
   @override
   Widget build(BuildContext context) {
     // print(widget.selectedItem);
-    // selectedItem = widget.selectedItem;
+    selectedItem = widget.selectedItem;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -372,21 +382,19 @@ class _CustomizableDropdownAllUsersState
                         return GestureDetector(
                             onTap: () {
                               if (widget.multiSelectEnable == true) {
-                                if (selectedItemsList
-                                    .contains(items[index].name)) {
-                                  selectedItemsList.remove(items[index].name);
-                                  idList.remove(items[index].id);
-                                  widget.onMultiSelectedItem!(idList);
+                                if (selectedItemsList.contains(items[index])) {
+                                  selectedItemsList.remove(items[index]);
+                                  widget
+                                      .onMultiSelectedItem!(selectedItemsList);
                                   setState(() {
                                     // isSelected = false;
                                   });
-                                  // widget
-                                  //     .onMultiSelectedItem!(selectedItemsList);
+                                  widget
+                                      .onMultiSelectedItem!(selectedItemsList);
                                 } else {
-                                  selectedItemsList.add(items[index].name);
-                                  idList.add(items[index].id);
-
-                                  widget.onMultiSelectedItem!(idList);
+                                  selectedItemsList.add(items[index]);
+                                  widget
+                                      .onMultiSelectedItem!(selectedItemsList);
                                   setState(() {
                                     // isSelected = false;
                                   });
@@ -401,7 +409,8 @@ class _CustomizableDropdownAllUsersState
 
                                 // singleSelectedItem = items[index];
 
-                                widget.onSingleSelectedItem(singleSelectedItem);
+                                widget
+                                    .onSingleSelectedItem!(singleSelectedItem);
 
                                 // print(selectedItemsList);
 
@@ -496,14 +505,13 @@ class _CustomizableDropdownAllUsersState
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text('${selectedItemsList[i]}'),
+                  Text('${selectedItemsList[i].name}'),
                   SizedBox(
                     width: 10,
                   ),
                   GestureDetector(
                     onTap: () {
                       selectedItemsList.remove(selectedItemsList[i]);
-                      idList.remove(idList[i]);
                       setState(() {});
                       widget.onMultiSelectedItem!(selectedItemsList);
 

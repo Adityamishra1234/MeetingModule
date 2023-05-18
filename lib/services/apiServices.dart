@@ -118,65 +118,50 @@ class ApiServices extends BaseServices implements API {
   }
 
   @override
-  addMeeting() async {
+  addMeeting(AllMeetings modelData) async {
     var url = '${Endpoints.baseUrl}${Endpoints.addMeeting}';
     // var data = json.encode(model);
-    var modeldata = """{
-        "id": 12,
-        "meeting_type": "Internal Meeting",
-        "meeting_with": "",
-        "meeting_agenda": "Institute Partner Meet",
-        "specific_purpose_of_the_meeting": "",
-        "name_of_the_meeting": "xyzaa my testing",
-        "date_of_meeting": "2023-04-27",
-        "time_of_the_meeting": "17:20",
-        "duration_of_meeting": "5 hours 4 minutes",
-        "meeting_mode": true,
-        "meeting_mode_type": "Zoom",
-        "meeting_link": "test by aman",
-        "location_of_the_meeting": "",
-        "siec_branch": 0,
-        "specific_location_of_the_meeting": "",
-        "siec_participants": [
-            {
-                "name": "Kashish IT",
-                "id": 136
-            },
-            {
-                "name": "Shreya IT",
-                "id": 107
-            },
-            {
-                "name": "Taniya IT",
-                "id": 338
-            }
-        ],
-        "meeting_coordinator": [
-            {
-                "name": "Shreya IT",
-                "id": 107
-            },
-            {
-                "name": "Kashish IT",
-                "id": 136
-            }
-        ],
-        "meeting_started": true,
-        "is_reschedule": false,
-        "meeting_ended": true,
-        "meeting_exceeded": false,
-        "is_active": true,
-        "created_by": 105,
-        "updated_by": 105,
-        "created_at": "2023-04-07T09:48:35.000Z",
-        "updated_at": "2023-04-07T09:48:35.000Z",
-        "meeting_started_time": null,
-        "meeting_ended_time": null,
-        "meeting_started_by": null,
-        "meeting_ended_by": null
-    }""";
 
-    AllMeetings model = AllMeetings.fromJson(json.decode(modeldata));
+    var modeldata = {
+      "id": 12,
+      "meeting_type": "${modelData.meetingType}",
+      "meeting_with": "${modelData.meetingWith}",
+      "meeting_agenda": "${modelData.meetingAgenda}",
+      "specific_purpose_of_the_meeting":
+          "${modelData.specificPurposeOfTheMeeting}",
+      "name_of_the_meeting": "${modelData.nameOfTheMeeting}",
+      "date_of_meeting": "${modelData.dateOfMeeting}",
+      "time_of_the_meeting": "${modelData.timeOfTheMeeting}",
+      "duration_of_meeting": "${modelData.durationOfMeeting}",
+      "meeting_mode": modelData.meetingMode,
+      "meeting_mode_type": "${modelData.meetingModeType}",
+      "meeting_link": "${modelData.meetingLink}",
+      "location_of_the_meeting": "${modelData.locationOfTheMeeting}",
+      "siec_branch": modelData.siecBranch,
+      "specific_location_of_the_meeting":
+          "${modelData.specificLocationOfTheMeeting}",
+      "siec_participants": modelData.siecParticipants!
+          .map((e) => {'name': e.name, 'id': e.id})
+          .toList(),
+      "meeting_coordinator": modelData.meetingCoordinator!
+          .map((e) => {'name': e.name, 'id': e.id})
+          .toList(),
+      "meeting_started": modelData.meetingStarted,
+      "is_reschedule": modelData.isReschedule,
+      "meeting_ended": modelData.meetingEnded,
+      "meeting_exceeded": modelData.meetingExceeded,
+      "is_active": modelData.isActive,
+      "created_by": modelData.createdBy,
+      "updated_by": modelData.updatedBy,
+      "created_at": "${modelData.createdAt}",
+      "updated_at": "${modelData.updatedAt}",
+      "meeting_started_time": null,
+      "meeting_ended_time": null,
+      "meeting_started_by": null,
+      "meeting_ended_by": null
+    };
+
+    AllMeetings model = AllMeetings.fromJson(modeldata);
     var data = json.encode(model);
 
     var res = await httpPostHeader(url, data);
@@ -193,5 +178,19 @@ class ApiServices extends BaseServices implements API {
     // TODO: implement createInternalMeeting
 
     var res = await httpPostApplication(url, jsonData);
+  }
+
+  @override
+  selectedAudienceType() async {
+    var url = '${Endpoints.baseUrl}${Endpoints.selectedAudienceType}';
+
+    var res2 = await httpPostNullBody(url);
+
+    var res = jsonDecode(res2);
+
+    return res;
+
+    // TODO: implement selectedAudienceType
+    // throw UnimplementedError();
   }
 }

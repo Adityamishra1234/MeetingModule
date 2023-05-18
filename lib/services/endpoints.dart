@@ -10,4 +10,6 @@ class Endpoints {
   static String addNotes = 'addNotes';
 
   static String addMeeting = 'createMeeting';
+
+  static String selectedAudienceType = 'targetAudienceType';
 }

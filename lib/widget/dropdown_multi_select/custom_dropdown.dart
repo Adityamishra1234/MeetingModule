@@ -11,9 +11,10 @@ class CustomMultiDownSingle extends StatelessWidget {
   bool? choosefieldtype;
   List model;
   bool? enableMultiSelect;
-  String initialSelectedValue;
-  final Function? callbackFunctionSingle;
-  final Function? callbackFunctionMulti;
+  String? initialSelectedValue;
+  List? inititalSelectedList;
+  Function? callbackFunctionSingle;
+  Function? callbackFunctionMulti;
   CustomMultiDownSingle(
       {Key? key,
       required this.model,
@@ -21,6 +22,7 @@ class CustomMultiDownSingle extends StatelessWidget {
       this.callbackFunctionMulti,
       this.choosefieldtype,
       required this.initialSelectedValue,
+      this.inititalSelectedList,
       this.enableMultiSelect})
       : super(key: key);
 
@@ -76,10 +78,13 @@ class CustomMultiDownSingle extends StatelessWidget {
               onMultiSelectedItem: (item) {
                 // print(item);
                 // selectedItems = item;
-
-                // callbackFunctionMulti!(item);
+                if (enableMultiSelect == true) {
+                  // print(item);
+                  callbackFunctionMulti!(item);
+                }
               },
-              initalValue: initialSelectedValue,
+              initalValue: initialSelectedValue!,
+              initialSelectedList: inititalSelectedList,
 
               // placeholder: Align(
               //   alignment: AlignmentDirectional.centerStart,

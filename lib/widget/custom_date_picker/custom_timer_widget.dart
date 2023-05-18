@@ -15,13 +15,13 @@ class CustomTimerWidget extends StatefulWidget {
 
 class _CustomTimerWidgetState extends State<CustomTimerWidget> {
   String finaldate =
-      '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}';
+      '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
   String date =
-      '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}';
+      '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
   String previousDate =
-      '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}';
+      '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
   String dateToShow =
-      '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}';
+      '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
 
   // @override
   // void initState() {
@@ -80,7 +80,7 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
                         onDateTimeChanged: (DateTime newdate) {
                           setState(() {
                             dateToShow =
-                                '${newdate.day}-${newdate.month}-${newdate.year}';
+                                '${newdate.year}-${newdate.month}-${newdate.day}';
                           });
                           widget.callback(date);
                         },

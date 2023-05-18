@@ -50,7 +50,7 @@ class CustomizableDropdown extends StatefulWidget {
 
   /// receive the selected item call back function
   /// The list of items the user can select
-  final Function(String item) onSingleSelectedItem;
+  final Function? onSingleSelectedItem;
 
   final Function? onMultiSelectedItem;
 
@@ -74,13 +74,15 @@ class CustomizableDropdown extends StatefulWidget {
 //Bool for Multi
   final bool multiSelectEnable;
 
+  List? initialSelectedList;
+
   /// Here we go the dropdown StateFull Widget
-  const CustomizableDropdown(
+  CustomizableDropdown(
       {Key? key,
       required this.initalValue,
       this.selectedItem,
       required this.itemList,
-      required this.onSingleSelectedItem,
+      this.onSingleSelectedItem,
       this.placeholder,
       this.maxHeight,
       this.height,
@@ -99,6 +101,7 @@ class CustomizableDropdown extends StatefulWidget {
       this.titleAlign,
       this.titleStyle,
       this.onMultiSelectedItem,
+      this.initialSelectedList,
       this.multiSelectEnable = false})
       : super(key: key);
 
@@ -151,8 +154,11 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
     // filterSearchResults("");
     super.initState();
     items = widget.itemList;
-
-    selectedItemsList.add(items[0]);
+    if (widget.initialSelectedList != null) {
+      widget.initialSelectedList!
+          .forEach((element) => selectedItemsList.add(element));
+      // selectedItemsList.addAll(widget.initialSelectedList.map((e) => e) );
+    }
   }
 
   @override
@@ -394,7 +400,8 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
 
                                 singleSelectedItem = items[index];
 
-                                widget.onSingleSelectedItem(singleSelectedItem);
+                                widget
+                                    .onSingleSelectedItem!(singleSelectedItem);
 
                                 // print(selectedItemsList);
 

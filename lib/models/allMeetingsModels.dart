@@ -1,3 +1,5 @@
+import 'dart:math';
+
 class AllMeetings {
   int? id;
   String? meetingType;
@@ -25,35 +27,51 @@ class AllMeetings {
   int? updatedBy;
   String? createdAt;
   String? updatedAt;
+  String? meeting_started_time;
+  String? meeting_ended_time;
+  String? meeting_started_by;
+  String? meeting_ended_by;
 
-  AllMeetings(
-      {this.id = 0,
-      this.meetingType,
-      this.meetingWith,
-      this.meetingAgenda,
-      this.specificPurposeOfTheMeeting,
-      this.nameOfTheMeeting,
-      this.dateOfMeeting,
-      this.timeOfTheMeeting,
-      this.durationOfMeeting,
-      this.meetingMode,
-      this.meetingModeType,
-      this.meetingLink,
-      this.locationOfTheMeeting,
-      this.siecBranch,
-      this.specificLocationOfTheMeeting,
-      this.siecParticipants,
-      this.meetingCoordinator,
-      this.meetingStarted,
-      this.isReschedule,
-      this.meetingEnded,
-      this.meetingExceeded,
-      this.isActive,
-      this.createdBy,
-      this.updatedBy,
-      this.createdAt,
-      this.updatedAt});
+  AllMeetings({
+    this.id = 0,
+    this.meetingType = 'Internal Messssseting',
+    this.meetingWith = '',
+    this.meetingAgenda = '',
+    this.specificPurposeOfTheMeeting = '',
+    this.nameOfTheMeeting = '',
+    this.dateOfMeeting = '2023-04-27',
+    this.timeOfTheMeeting = '17:20',
+    this.durationOfMeeting = '',
+    this.meetingMode = true,
+    this.meetingModeType = 'Zoom',
+    this.meetingLink = 'test',
+    this.locationOfTheMeeting = '',
+    this.siecBranch = 0,
+    this.specificLocationOfTheMeeting = '',
+    this.siecParticipants,
+    this.meetingCoordinator,
+    this.meetingStarted = true,
+    this.isReschedule = false,
+    this.meetingEnded = true,
+    this.meetingExceeded = false,
+    this.isActive = true,
+    this.createdBy = 105,
+    this.updatedBy = 105,
+    this.createdAt = "2023-04-07T09:48:35.000Z",
+    this.updatedAt = "2023-04-07T09:48:35.000Z",
+    this.meeting_started_time = null,
+    this.meeting_ended_time = null,
+    this.meeting_started_by = null,
+    this.meeting_ended_by = null,
+  });
 
+  // List<SiecParticipants> defaultSiecList = [
+  //   {"name": "dddd", "id": 150},
+  //   {"name": "dddd", "id": 150}
+  // ].forEach((element) {
+  //   SiecParticipants.fromJson(element);
+
+  // });
   AllMeetings.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     meetingType = json['meeting_type'];

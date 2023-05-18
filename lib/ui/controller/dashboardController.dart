@@ -26,7 +26,7 @@ class DashBoardController extends GetxController {
 
   RxList<AllUserModel> allUserList = <AllUserModel>[].obs;
 
-  RxList<dynamic> listBro = <dynamic>[].obs;
+  RxList<AllUserModel> listBro = <AllUserModel>[].obs;
 
   RxList<FindNotesModel> notesList = <FindNotesModel>[].obs;
 
@@ -74,7 +74,8 @@ class DashBoardController extends GetxController {
     allUserList.value = await List<AllUserModel>.from(
         data2.map((x) => AllUserModel.fromJson(x)));
 
-    listBro.value = allUserList.map((element) => element.name).toList();
+    listBro.value =
+        List<AllUserModel>.from(allUserList.map((element) => element)).toList();
     loading1.value = true;
 
     // list = await data;

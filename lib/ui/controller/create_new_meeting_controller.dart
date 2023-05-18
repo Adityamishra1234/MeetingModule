@@ -1,9 +1,23 @@
+import 'dart:math';
+
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
+import 'package:meeting_module2/models/allUserModel.dart';
+import 'package:meeting_module2/models/selectedAudienceTypeModel.dart';
 import 'package:meeting_module2/services/apiServices.dart';
+import 'package:meeting_module2/ui/controller/dashboardController.dart';
+import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsersCore.dart';
 
-class CreateNewMeetingController extends GetxController {
+class CreateNewMeetingController extends GetxController with StateMixin {
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    getGroupData();
+    change(null, status: RxStatus.success());
+  }
+
   RxString agendaPurposeOfMeeting = 'All Meetings'.obs;
 
 //
@@ -11,10 +25,13 @@ class CreateNewMeetingController extends GetxController {
   Rx<TextEditingController> meetingNameController = TextEditingController().obs;
 //
 //
-  RxString dateController = ''.obs;
+  RxString dateController =
+      '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}'
+          .obs;
   //
   //
-  RxString timeController = ''.obs;
+  RxString timeController =
+      '${DateTime.now().hour}:${DateTime.now().minute}'.obs;
 
 //
   Rx<TextEditingController> proposedDuration = TextEditingController().obs;
@@ -71,7 +88,13 @@ class CreateNewMeetingController extends GetxController {
 
   RxString groupNames = ''.obs;
 
-  RxList<String> selectedUsersList = <String>[].obs;
+  RxList<AllUserModel> selectedUsersList = <AllUserModel>[].obs;
+
+  RxList<dynamic> selectedCoordinatorList = <dynamic>[].obs;
+
+  RxList<SelectAudienceType> targetAudienceList = <SelectAudienceType>[].obs;
+
+  RxList<AllUserModel> preFilledUsers = <AllUserModel>[].obs;
 
   // Rx<TextEditingController> dateController = TextEditingController().obs;
 
@@ -98,17 +121,77 @@ class CreateNewMeetingController extends GetxController {
   ];
 
   createNewMeeting() async {
-    print(selectedTargetAudience);
-    meetingModel.value.nameOfTheMeeting = meetingNameController.value.text;
-    print(meetingNameController.value.text);
-    print(dateController.value);
-    // meetingModel.value.dateOfMeeting = dateController.value.text;
+    meetingModel.value.meetingAgenda = agendaPurposeOfMeeting.value;
 
-    meetingModel.value.timeOfTheMeeting = meetingNameController.value.text;
+    meetingModel.value.nameOfTheMeeting = meetingNameController.value.text;
+
+    meetingModel.value.dateOfMeeting = dateController.value;
+
+    meetingModel.value.timeOfTheMeeting = timeController.value;
+
+    meetingModel.value.durationOfMeeting = proposedDuration.value.text;
+
+    meetingModel.value.meetingMode = MeetingType.value;
+
+    /// online
+    meetingModel.value.meetingModeType = modeOfMeeting.value;
+    print(modeOfMeeting.value);
+
+    meetingModel.value.meetingLink = meetingLink.value.text;
+
+    ///offline
+    meetingModel.value.locationOfTheMeeting = meetingLocation.value.toString();
+
+    // meetingModel.value.siecBranch =
+    // meetingModel.value.meetingType = MeetingType.value;
+
+    List cc = [
+      {"name": "Shreya IT", "id": 115},
+      {"name": "Kashish IT", "id": 142}
+    ];
+
+    // for (var i = 0; i < 5; i++) {}
+
+    // print(selectedUsersList);
+
+    meetingModel.value.siecParticipants = List<SiecParticipants>.from(
+        selectedUsersList.map((e) => SiecParticipants.fromJson(e.toJson())));
+
+    meetingModel.value.meetingCoordinator = List<SiecParticipants>.from(
+        selectedUsersList.map((e) => SiecParticipants.fromJson(e.toJson())));
 
     // var res = await api.createMeeting(meetingModel.value);
     // print(res);
 
     // meetingModel.value.timeOfTheMeeting = meetingNameController.value.text;
+    api.addMeeting(meetingModel.value);
+  }
+
+  getGroupData() async {
+    var res = await api.selectedAudienceType();
+    targetAudienceList.value = List<SelectAudienceType>.from(
+        res.map((e) => SelectAudienceType.fromJson(e)));
+    print(targetAudienceList);
+  }
+
+  showList(query) async {
+    // print(query.toString().toLowerCase());
+    // print(targetAudienceList.value
+    //     .map((e) => e.teamName.toString().toLowerCase()));
+    List<SelectAudienceType> data = await targetAudienceList.value
+        .where((element) =>
+            element.teamName!.toLowerCase() == query.toString().toLowerCase())
+        .toList();
+
+    preFilledUsers.value = await data[0].teamMembers!;
+    // await List<AllUserModel>.from(data.map((e) => e.teamMembers!));
+
+    update();
+
+    change(preFilledUsers, status: RxStatus.success());
+
+    // print(Get.find<DashBoardController>().listBro);
+
+    // print(preFilledUsers.value.toString());
   }
 }
