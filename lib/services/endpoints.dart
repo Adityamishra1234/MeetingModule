@@ -9,5 +9,5 @@ class Endpoints {
 
   static String addNotes = 'addNotes';
 
-  static String createMeeting = 'createMeeting';
+  static String addMeeting = 'createMeeting';
 }

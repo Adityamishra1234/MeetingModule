@@ -8,6 +8,7 @@ import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/services/api.dart';
 import 'package:meeting_module2/services/base_services.dart';
 import 'package:meeting_module2/services/endpoints.dart';
+import 'package:tuple/tuple.dart';
 
 class ApiServices extends BaseServices implements API {
   @override
@@ -26,14 +27,12 @@ class ApiServices extends BaseServices implements API {
   }
 
   @override
-  getAllUsers() {
-    var url = '${Endpoints.baseUrl}${Endpoints.allUser}';
-
-    var res = httpPostNullBody(url);
-
-    return res;
-
-    // TODO: implement getAllUsers
+  getDropdown(String endpoint) async {
+    var url = '${Endpoints.baseUrl}${endpoint}';
+    var res = await httpPostNullBody(url);
+    if (res != null) {
+      return res;
+    }
     // throw UnimplementedError();
   }
 
@@ -96,20 +95,97 @@ class ApiServices extends BaseServices implements API {
     print(model);
 
     // var json = await model.toJson();
+    // print(DateTime.now());
+    //  print(DateTime.now().isUtc);
+    //   print(DateTime.now());
+    model.id = 1;
+    model.meetingId = 1;
+    model.noteType = 1;
+    model.isActive = true;
+    model.createdBy = 142;
+    model.updatedBy = 142;
+    model.createdAt = "2023-05-09T09:04:55.000Z";
+    model.updatedAt = "2023-05-09T09:04:55.000Z";
+    model.isAdded = true;
 
     var data = json.encode(model);
 
     print(json);
-    var res = await httpPost(url, data);
+    var res = await httpPostHeader(url, data);
 
     print(res);
     // TODO: implement addNotes
-    // throw UnimplementedError();
+  }
+
+  @override
+  addMeeting() async {
+    var url = '${Endpoints.baseUrl}${Endpoints.addMeeting}';
+    // var data = json.encode(model);
+    var modeldata = """{
+        "id": 12,
+        "meeting_type": "Internal Meeting",
+        "meeting_with": "",
+        "meeting_agenda": "Institute Partner Meet",
+        "specific_purpose_of_the_meeting": "",
+        "name_of_the_meeting": "xyzaa my testing",
+        "date_of_meeting": "2023-04-27",
+        "time_of_the_meeting": "17:20",
+        "duration_of_meeting": "5 hours 4 minutes",
+        "meeting_mode": true,
+        "meeting_mode_type": "Zoom",
+        "meeting_link": "test by aman",
+        "location_of_the_meeting": "",
+        "siec_branch": 0,
+        "specific_location_of_the_meeting": "",
+        "siec_participants": [
+            {
+                "name": "Kashish IT",
+                "id": 136
+            },
+            {
+                "name": "Shreya IT",
+                "id": 107
+            },
+            {
+                "name": "Taniya IT",
+                "id": 338
+            }
+        ],
+        "meeting_coordinator": [
+            {
+                "name": "Shreya IT",
+                "id": 107
+            },
+            {
+                "name": "Kashish IT",
+                "id": 136
+            }
+        ],
+        "meeting_started": true,
+        "is_reschedule": false,
+        "meeting_ended": true,
+        "meeting_exceeded": false,
+        "is_active": true,
+        "created_by": 105,
+        "updated_by": 105,
+        "created_at": "2023-04-07T09:48:35.000Z",
+        "updated_at": "2023-04-07T09:48:35.000Z",
+        "meeting_started_time": null,
+        "meeting_ended_time": null,
+        "meeting_started_by": null,
+        "meeting_ended_by": null
+    }""";
+
+    AllMeetings model = AllMeetings.fromJson(json.decode(modeldata));
+    var data = json.encode(model);
+
+    var res = await httpPostHeader(url, data);
+    print(res);
   }
 
   @override
   createMeeting(AllMeetings model) async {
-    var url = '${Endpoints.baseUrl}${Endpoints.createMeeting}';
+    var url = '${Endpoints.baseUrl}${Endpoints.addMeeting}';
 
     var jsonData = json.encode(model);
     print(jsonData);

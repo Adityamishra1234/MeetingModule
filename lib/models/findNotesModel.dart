@@ -19,8 +19,8 @@ class FindNotesModel {
   bool? isActive;
   int? createdBy;
   int? updatedBy;
-  DateTime? createdAt;
-  DateTime? updatedAt;
+  String? createdAt;
+  String? updatedAt;
   String? visibleTo;
   bool? isAdded;
 
@@ -46,8 +46,8 @@ class FindNotesModel {
         isActive: json["is_active"],
         createdBy: json["created_by"],
         updatedBy: json["updated_by"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
         visibleTo: json["visible_to"],
         isAdded: json["is_added"],
       );

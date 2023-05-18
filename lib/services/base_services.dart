@@ -40,7 +40,41 @@ class BaseServices {
     // String? token = await getToken();
     await checkUserConnection();
     // jsonData = jsonData.replaceAll('"null"', "");
-    var response = await http.post(Uri.parse(url), body: jsonData);
+    var response = await http.post(
+      Uri.parse(url),
+      body: jsonData,
+    );
+
+    switch (response.statusCode) {
+      case 200:
+        return response.body.isNotEmpty
+            ? response.body
+            : throw EmptyDataException("440");
+      case 440:
+        throw EmptyDataException("440");
+      case 400:
+        throw BadRequestException(response.body.toString());
+      case 401:
+      case 403:
+        throw UnauthorisedException(response.body.toString());
+      case 502:
+        throw InternetError("Please try after sometime");
+      case 500:
+      default:
+        throw FetchDataException(
+            'Something went to wrong : ${response.statusCode}');
+    }
+  }
+
+  httpPostHeader(String url, jsonData) async {
+    // String? token = await getToken();
+    await checkUserConnection();
+    // jsonData = jsonData.replaceAll('"null"', "");
+    var response = await http.post(
+      Uri.parse(url),
+      body: jsonData,
+      headers: {"Content-Type": "application/json"},
+    );
 
     switch (response.statusCode) {
       case 200:
