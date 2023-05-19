@@ -7,6 +7,7 @@ import 'package:meeting_module2/ui/screens/view_notes.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/customdropdownsingle.dart';
+import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsers.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dart';
 // test
 
@@ -413,11 +414,14 @@ class MeetingDetails extends StatelessWidget {
 
               Padding(
                   padding: const EdgeInsets.only(left: 0, right: 10, top: 10),
-                  child: CustomMultiDownSingle(
+                  child: CustomMultiDownSingleAllUser(
+
                       // model: ['d', 'd'],
                       model: Get.find<DashBoardController>().listBro,
                       // callbackFunction: callback,
-                      callbackFunctionMulti: () {},
+                      callbackFunctionMulti: (val) {
+                        print(val);
+                      },
                       enableMultiSelect: true,
                       choosefieldtype: false,
                       initialSelectedValue: "1")

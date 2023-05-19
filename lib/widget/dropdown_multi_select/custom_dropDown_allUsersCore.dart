@@ -48,7 +48,7 @@ class CustomizableDropdownAllUser extends StatefulWidget {
   final Widget? placeholder;
 
   /// must set the dropdown item list
-  final List<AllUserModel> itemList;
+  final List<AllUserModel>? itemList;
 
   /// receive the selected item call back function
   /// The list of items the user can select
@@ -83,7 +83,7 @@ class CustomizableDropdownAllUser extends StatefulWidget {
       {Key? key,
       required this.initalValue,
       this.selectedItem,
-      required this.itemList,
+      this.itemList,
       this.onSingleSelectedItem,
       this.placeholder,
       this.maxHeight,
@@ -157,17 +157,12 @@ class _CustomizableDropdownAllUserState
     );
     // filterSearchResults("");
     super.initState();
-    items = widget.itemList;
+    items = widget.itemList!;
     if (widget.initialSelectedList != null) {
       widget.initialSelectedList!
           .forEach((element) => selectedItemsList.add(element));
       // selectedItemsList.addAll(widget.initialSelectedList.map((e) => e) );
     }
-  }
-
-  @override
-  update() {
-    setState(() {});
   }
 
   @override
@@ -181,7 +176,22 @@ class _CustomizableDropdownAllUserState
   @override
   void didUpdateWidget(covariant CustomizableDropdownAllUser oldWidget) {
     // TODO: implement didUpdateWidget
+    // if (oldWidget.initialSelectedList != widget.initialSelectedList) {
+    //   widget.initialSelectedList = selectedItemsList;
+    //   setState(() {});
+    // }
 
+    print("didChangeDependencies  cccc");
+    print(oldWidget.initialSelectedList == widget.initialSelectedList);
+    if (widget.initialSelectedList != null) {
+      selectedItemsList.clear();
+      widget.initialSelectedList!
+          .forEach((element) => selectedItemsList.add(element));
+
+      setState(() {});
+
+      // selectedItemsList.addAll(widget.initialSelectedList.map((e) => e) );
+    }
     // filterSearchResults(editingController.text);
     print("didUpdateWidget");
     super.didUpdateWidget(oldWidget);
@@ -432,7 +442,7 @@ class _CustomizableDropdownAllUserState
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('${widget.itemList[index].name}',
+                                        Text('${widget.itemList![index].name}',
                                             textAlign: TextAlign.start,
                                             style: widget.titleStyle),
                                         if (widget.multiSelectEnable ==
@@ -477,7 +487,7 @@ class _CustomizableDropdownAllUserState
   //Function
   void filterSearchResults(String query) {
     setState(() {
-      items = widget.itemList
+      items = widget.itemList!
           .where(
               (item) => item.name!.toLowerCase().contains(query.toLowerCase()))
           .toList();

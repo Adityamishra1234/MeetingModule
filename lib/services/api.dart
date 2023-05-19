@@ -12,4 +12,8 @@ abstract class API {
   createMeeting(AllMeetings model);
 
   selectedAudienceType();
+
+  allBranch();
+
+  getSpecificBranchUsers(int branchCode) {}
 }

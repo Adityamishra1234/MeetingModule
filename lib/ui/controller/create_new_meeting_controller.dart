@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:meeting_module2/models/allBranchModel.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/selectedAudienceTypeModel.dart';
@@ -74,13 +75,13 @@ class CreateNewMeetingController extends GetxController with StateMixin {
     'Europe Team'
   ];
 
-  RxList branchList = [
-    'IT ssss',
-    'Australia Applications',
-    'SSU Team',
-    'Canada Advisors',
-    'Europe Team'
-  ].obs;
+  // RxList branchList = [
+  //   'IT ssss',
+  //   'Australia Applications',
+  //   'SSU Team',
+  //   'Canada Advisors',
+  //   'Europe Team'
+  // ].obs;
 
   RxString selectedBranch = ''.obs;
 
@@ -95,6 +96,8 @@ class CreateNewMeetingController extends GetxController with StateMixin {
   RxList<SelectAudienceType> targetAudienceList = <SelectAudienceType>[].obs;
 
   RxList<AllUserModel> preFilledUsers = <AllUserModel>[].obs;
+
+  RxList<String> branchList = <String>[].obs;
 
   // Rx<TextEditingController> dateController = TextEditingController().obs;
 
@@ -120,6 +123,7 @@ class CreateNewMeetingController extends GetxController with StateMixin {
     'Bank Meeting',
   ];
 
+  RxList<AllBranchModel> allBranchList = <AllBranchModel>[].obs;
   createNewMeeting() async {
     meetingModel.value.meetingAgenda = agendaPurposeOfMeeting.value;
 
@@ -158,7 +162,8 @@ class CreateNewMeetingController extends GetxController with StateMixin {
         selectedUsersList.map((e) => SiecParticipants.fromJson(e.toJson())));
 
     meetingModel.value.meetingCoordinator = List<SiecParticipants>.from(
-        selectedUsersList.map((e) => SiecParticipants.fromJson(e.toJson())));
+        selectedCoordinatorList
+            .map((e) => SiecParticipants.fromJson(e.toJson())));
 
     // var res = await api.createMeeting(meetingModel.value);
     // print(res);
@@ -172,6 +177,42 @@ class CreateNewMeetingController extends GetxController with StateMixin {
     targetAudienceList.value = List<SelectAudienceType>.from(
         res.map((e) => SelectAudienceType.fromJson(e)));
     print(targetAudienceList);
+  }
+
+  getBranchData() async {
+    print('fvffg');
+    var res = await api.allBranch();
+
+    var data =
+        List<AllBranchModel>.from(res.map((e) => AllBranchModel.fromJson(e)));
+    print(data.toString());
+
+    branchList.value = data.map((e) => e.branchName!).toList();
+
+    allBranchList.value = data;
+
+    update();
+  }
+
+  branchSelected(val) async {
+    print(val);
+    selectedBranch.value = val;
+    // var branchCode = allBranchList.value.map(
+    //     (e) => e.branchName!.toLowerCase() == val.toString().toLowerCase(),
+    //     print(e));
+    // print(branchCode);
+    int code = 0;
+    var bb = allBranchList.forEach((e) {
+      if (e.branchName!.toLowerCase() == val.toString().toLowerCase()) {
+        code = e.id!;
+      }
+    });
+
+    var res = await api.getSpecificBranchUsers(code);
+
+    var data =
+        List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)));
+    preFilledUsers.value = await data;
   }
 
   showList(query) async {

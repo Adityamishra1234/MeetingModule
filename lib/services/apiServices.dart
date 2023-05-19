@@ -193,4 +193,34 @@ class ApiServices extends BaseServices implements API {
     // TODO: implement selectedAudienceType
     // throw UnimplementedError();
   }
+
+  @override
+  allBranch() async {
+    var url = '${Endpoints.baseUrl}${Endpoints.allBranch}';
+
+    var res2 = await httpPostNullBody(url);
+
+    var res = jsonDecode(res2);
+
+    return res;
+    // TODO: implement allBranch
+    // throw UnimplementedError();
+  }
+
+  @override
+  getSpecificBranchUsers(int branchCode) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.specificBranchUsers}';
+
+    var jsonData = {'branch_id': branchCode};
+
+    var datas = json.encode(jsonData);
+    var res2 = await httpPostHeader(url, datas);
+
+    var res = jsonDecode(res2);
+
+    return res;
+
+    // TODO: implement getSpecificBranchUsers
+    // throw UnimplementedError();
+  }
 }

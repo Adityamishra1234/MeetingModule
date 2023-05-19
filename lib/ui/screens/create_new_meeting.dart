@@ -487,9 +487,15 @@ class CreateNewMeeting extends StatelessWidget {
       ),
 
       CustomMultiDownSingle(
-          callbackFunctionSingle: (val) {
+          callbackFunctionSingle: (val) async {
             print(val);
             controller.selectedTargetAudience.value = val;
+            if (val.toString().toLowerCase() == 'branch based') {
+              controller.getBranchData();
+              controller.update();
+            }
+
+            controller.update();
 
             // print(controller.selectedTargetAudience.value);
           },
@@ -514,6 +520,7 @@ class CreateNewMeeting extends StatelessWidget {
               // print(val + "sdddd");
               controller.groupNames.value = val;
               await controller.showList(val);
+              controller.update();
             },
             enableMultiSelect: false,
             model: controller.groupNamesAudienceType,
@@ -534,7 +541,8 @@ class CreateNewMeeting extends StatelessWidget {
         ),
         CustomMultiDownSingle(
             callbackFunctionSingle: (val) {
-              controller.selectedBranch.value = val;
+              controller.branchSelected(val);
+              controller.update();
             },
             enableMultiSelect: false,
             model: controller.branchList,
@@ -565,7 +573,7 @@ class CreateNewMeeting extends StatelessWidget {
           callbackFunctionMulti: (List<AllUserModel> val) {
             print(val);
             controller.selectedUsersList.value = val;
-            // controller.update();
+            controller.update();
           },
           enableMultiSelect: true),
 
@@ -633,8 +641,8 @@ class CreateNewMeeting extends StatelessWidget {
           // },
           callbackFunctionMulti: (List<AllUserModel> val) {
             print(val);
-            controller.selectedUsersList.value = val;
-            // controller.update();
+            controller.selectedCoordinatorList.value = val;
+            controller.update();
           },
           enableMultiSelect: true),
       // CustomMultiDownSingle(

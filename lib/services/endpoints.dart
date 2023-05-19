@@ -12,4 +12,8 @@ class Endpoints {
   static String addMeeting = 'createMeeting';
 
   static String selectedAudienceType = 'targetAudienceType';
+
+  static String allBranch = 'allBranch';
+
+  static String specificBranchUsers = 'findUserByBranch';
 }

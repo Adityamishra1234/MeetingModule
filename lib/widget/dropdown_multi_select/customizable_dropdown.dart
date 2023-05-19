@@ -164,7 +164,7 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
-    print("didChangeDependencies");
+
     // filterSearchResults("");
     super.didChangeDependencies();
   }
@@ -174,6 +174,11 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
     // TODO: implement didUpdateWidget
 
     // filterSearchResults(editingController.text);
+    if (oldWidget.itemList != widget.itemList) {
+      print('ddd');
+
+      setState(() {});
+    }
     print("didUpdateWidget");
     super.didUpdateWidget(oldWidget);
   }
