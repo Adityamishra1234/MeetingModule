@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
+import 'package:meeting_module2/ui/controller/add_more_notes_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/add_more_notes.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
@@ -14,6 +15,7 @@ import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dar
 class MeetingDetails extends StatelessWidget {
   // MeetingDetails();
   static const routeNamed = '/MeetingDetails';
+  var controller = Get.put(AddMoreNotesController());
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class MeetingDetails extends StatelessWidget {
                         height: 72,
                         decoration: BoxDecoration(
                           boxShadow: [
-                            BoxShadow(
+                            const BoxShadow(
                                 blurRadius: 1,
                                 spreadRadius: 0.5,
                                 color: Color.fromARGB(40, 0, 0, 0))
@@ -101,7 +103,7 @@ class MeetingDetails extends StatelessWidget {
                       Container(
                         height: 72,
                         decoration: BoxDecoration(
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                                 blurRadius: 1,
                                 spreadRadius: 0.7,
@@ -369,7 +371,6 @@ class MeetingDetails extends StatelessWidget {
                   mandatory: true,
                 ),
               ),
-
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -415,12 +416,11 @@ class MeetingDetails extends StatelessWidget {
               Padding(
                   padding: const EdgeInsets.only(left: 0, right: 10, top: 10),
                   child: CustomMultiDownSingleAllUser(
-
                       // model: ['d', 'd'],
                       model: Get.find<DashBoardController>().listBro,
                       // callbackFunction: callback,
                       callbackFunctionMulti: (val) {
-                        print(val);
+                        print("object");
                       },
                       enableMultiSelect: true,
                       choosefieldtype: false,

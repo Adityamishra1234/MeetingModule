@@ -4,28 +4,53 @@ import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 
-class AddMoreNotesController extends GetxController {
+class AddMoreNotesController extends GetxController with StateMixin {
+  RxList<int> notesVisibleToList = <int>[5, 80, 77].obs;
+
+  // Model
+  ApiServices api = ApiServices();
+  RxList<FindNotesModel> model = <FindNotesModel>[].obs;
+
+// Text fields
   Rx<TextEditingController> noteText = TextEditingController().obs;
 
-  RxInt noteType = 0.obs;
-  // RxList<AllUserModel> notesVisibleToList = <AllUserModel>[].obs;
-  RxList<int> notesVisibleToList = <int>[5, 80, 77].obs;
-  Rx<FindNotesModel> model = FindNotesModel().obs;
-  ApiServices api = ApiServices();
+  //Selcted dropdown fields
+  RxString noteTypeSelected = "".obs;
+  RxInt noteTypeSelectedID = 0.obs;
+  RxList<AllUserModel> accessibileUserSelected = RxList<AllUserModel>();
 
-  @override
   addNote(int meetingID) async {
-    print(noteText.value.text);
-    model.value.note = await noteText.value.text;
+    // print(noteText.value.text);
+    // model.value.note = await noteText.value.text;
 
-    model.value.noteType = await noteType.value;
-    model.value.visibleTo = await notesVisibleToList.toString();
+    // model.value.noteType = await noteType.value;
+    // model.value.visibleTo = await notesVisibleToList.toString();
 
-    // print(model.value);
+    // // print(model.value);
 
-    // var res = await api.addNotes(meetingID, noteType.value, noteText.value.text,
-    //     "ddd", notesVisibleToList.value);
+    // // var res = await api.addNotes(meetingID, noteType.value, noteText.value.text,
+    // //     "ddd", notesVisibleToList.value);
 
-    var res = await api.addNotes(model.value);
+    // var res = await api.addNotes(model.value);
+  }
+
+  saveNotes(int metingID) {
+    String visibleTo = "";
+    for (var element in accessibileUserSelected) {
+      visibleTo = "$visibleTo${element.id},";
+    }
+    FindNotesModel noteModel = FindNotesModel(
+        meetingId: metingID,
+        noteType: noteTypeSelectedID.value,
+        visibleTo: visibleTo,
+        note: noteText.value.text,
+        isActive: true,
+        isAdded: true,
+        createdBy: 101,
+        updatedBy: 101);
+    model.value.add(noteModel);
+    model;
+    model.refresh();
+    update();
   }
 }
