@@ -16,4 +16,8 @@ class Endpoints {
   static String allBranch = 'allBranch';
 
   static String specificBranchUsers = 'findUserByBranch';
+
+  static String allCountry = 'allCountry';
+
+  static String universtiyByCountry = 'findUniversityByCountryId';
 }
