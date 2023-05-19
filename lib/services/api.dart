@@ -15,5 +15,9 @@ abstract class API {
 
   allBranch();
 
-  getSpecificBranchUsers(int branchCode) {}
+  getSpecificBranchUsers(int branchCode);
+
+  getAllCountries();
+
+  getAllUniversity(int countryCOde);
 }

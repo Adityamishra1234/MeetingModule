@@ -131,7 +131,7 @@ class _CustomizableDropdownAllUserState
 
   List<AllUserModel> selectedItemsList = [];
 
-  late String singleSelectedItem;
+  late AllUserModel singleSelectedItem;
 
   // For Search field
   TextEditingController editingController = TextEditingController();
@@ -147,7 +147,7 @@ class _CustomizableDropdownAllUserState
 
   @override
   void initState() {
-    singleSelectedItem = widget.initalValue;
+    singleSelectedItem = widget.itemList![0];
 
     /// We need to hold these animations as state because of their
     _controller = AnimationController(
@@ -184,11 +184,13 @@ class _CustomizableDropdownAllUserState
     print("didChangeDependencies  cccc");
     print(oldWidget.initialSelectedList == widget.initialSelectedList);
     if (widget.initialSelectedList != null) {
-      selectedItemsList.clear();
-      widget.initialSelectedList!
-          .forEach((element) => selectedItemsList.add(element));
+      if (oldWidget.initialSelectedList != widget.initialSelectedList) {
+        selectedItemsList.clear();
+        widget.initialSelectedList!
+            .forEach((element) => selectedItemsList.add(element));
 
-      setState(() {});
+        setState(() {});
+      }
 
       // selectedItemsList.addAll(widget.initialSelectedList.map((e) => e) );
     }
@@ -306,7 +308,7 @@ class _CustomizableDropdownAllUserState
                                     // )),
 
                                     )
-                                : Text('${singleSelectedItem}')
+                                : Text('${singleSelectedItem.name}')
                             // if selectedItem has null placeholder string available
 
                             // widget.placeholder

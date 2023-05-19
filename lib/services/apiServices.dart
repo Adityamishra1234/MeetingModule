@@ -221,6 +221,39 @@ class ApiServices extends BaseServices implements API {
     return res;
 
     // TODO: implement getSpecificBranchUsers
+    //
+    //throw UnimplementedError();
+  }
+
+  @override
+  getAllUniversity(int countryCode) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.universtiyByCountry}';
+
+    var jsonData = {'country_id': countryCode};
+
+    var datas = json.encode(jsonData);
+    var res2 = await httpPostHeader(url, datas);
+
+    var res = jsonDecode(res2);
+
+    return res;
+
+    // TODO: implement getAllUniversity
+  }
+
+  @override
+  getAllCountries() async {
+    var url = '${Endpoints.baseUrl}${Endpoints.allCountry}';
+
+    // var jsonData = {'country_id': countryCode};
+
+    // var datas = json.encode(jsonData);
+    var res2 = await httpPostNullBody(url);
+
+    var res = jsonDecode(res2);
+
+    return res;
+    // TODO: implement getAllCountries
     // throw UnimplementedError();
   }
 }

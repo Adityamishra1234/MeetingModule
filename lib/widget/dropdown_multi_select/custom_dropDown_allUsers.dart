@@ -73,7 +73,7 @@ class CustomMultiDownSingleAllUser extends StatelessWidget {
               multiSelectEnable: enableMultiSelect ?? false,
               onSingleSelectedItem: (sele) {
                 if (enableMultiSelect == false) {
-                  // callbackFunctionSingle!(sele);
+                  callbackFunctionSingle!(sele);
                 }
               },
 
