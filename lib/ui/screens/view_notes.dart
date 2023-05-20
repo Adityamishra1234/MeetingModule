@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/utils/theme.dart';
+import 'package:meeting_module2/widget/assignTo.dart';
 import 'package:meeting_module2/widget/custom_tab_widget.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/text_underline.dart';
@@ -82,22 +83,27 @@ class ViewNotesDetails extends StatelessWidget {
                                   fontSize: 12,
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: Align(
-                                  alignment: AlignmentDirectional.topEnd,
-                                  child: Container(
-                                    height: 30,
-                                    width: 120,
-                                    decoration: BoxDecoration(
-                                        color: ThemeConstants.bluecolor,
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(30.0))),
-                                    child: Center(
-                                      child: CustomAutoSizeTextMontserrat(
-                                        text: "Assign to",
-                                        textColor: ThemeConstants.whitecolor,
-                                        fontSize: 14,
+                              InkWell(
+                                onTap: () {
+                                  Get.to(AssignTo());
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Align(
+                                    alignment: AlignmentDirectional.topEnd,
+                                    child: Container(
+                                      height: 30,
+                                      width: 120,
+                                      decoration: BoxDecoration(
+                                          color: ThemeConstants.bluecolor,
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(30.0))),
+                                      child: Center(
+                                        child: CustomAutoSizeTextMontserrat(
+                                          text: "Assign to",
+                                          textColor: ThemeConstants.whitecolor,
+                                          fontSize: 14,
+                                        ),
                                       ),
                                     ),
                                   ),
