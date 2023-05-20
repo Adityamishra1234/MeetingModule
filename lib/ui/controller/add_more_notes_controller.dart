@@ -19,6 +19,18 @@ class AddMoreNotesController extends GetxController with StateMixin {
   RxInt noteTypeSelectedID = 0.obs;
   RxList<AllUserModel> accessibileUserSelected = RxList<AllUserModel>();
 
+  //For meeting details page
+  Rx<TextEditingController> noteText_meetingdetails =
+      TextEditingController().obs;
+  RxList<AllUserModel> accessibileUserSelected_meetingDetail =
+      RxList<AllUserModel>();
+
+  @override
+  void onInit() {
+    super.onInit();
+    change(null, status: RxStatus.success());
+  }
+
   addNote(int meetingID) async {
     // print(noteText.value.text);
     // model.value.note = await noteText.value.text;
@@ -34,7 +46,8 @@ class AddMoreNotesController extends GetxController with StateMixin {
     // var res = await api.addNotes(model.value);
   }
 
-  saveNotes(int metingID) {
+  saveAndNext(int metingID) async {
+    change(null, status: RxStatus.loading());
     String visibleTo = "";
     for (var element in accessibileUserSelected) {
       visibleTo = "$visibleTo${element.id},";
@@ -48,9 +61,45 @@ class AddMoreNotesController extends GetxController with StateMixin {
         isAdded: true,
         createdBy: 101,
         updatedBy: 101);
-    model.value.add(noteModel);
-    model;
-    model.refresh();
-    update();
+
+    var res = await api.addNotes(noteModel);
+    if (res != null) {
+      model.value.add(res);
+      model;
+      model.refresh();
+      noteTypeSelected = "".obs;
+      noteTypeSelectedID = 0.obs;
+      accessibileUserSelected = RxList<AllUserModel>();
+      noteText.value.text = "";
+      change(null, status: RxStatus.success());
+    }
+  }
+
+  saveNotes(int metingID) async {
+    change(null, status: RxStatus.loading());
+    String visibleTo = "";
+    for (var element in accessibileUserSelected_meetingDetail) {
+      visibleTo = "$visibleTo${element.id},";
+    }
+    FindNotesModel noteModel = FindNotesModel(
+        meetingId: metingID,
+        noteType: 1,
+        visibleTo: visibleTo,
+        note: noteText_meetingdetails.value.text,
+        isActive: true,
+        isAdded: true,
+        createdBy: 101,
+        updatedBy: 101);
+
+    var res = await api.addNotes(noteModel);
+    if (res != null) {
+      model.value.add(res);
+      model;
+      model.refresh();
+      noteText_meetingdetails.value.text = "";
+      accessibileUserSelected_meetingDetail.value = [];
+      accessibileUserSelected_meetingDetail.refresh();
+      change(null, status: RxStatus.success());
+    }
   }
 }
