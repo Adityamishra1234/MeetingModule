@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
@@ -254,6 +255,88 @@ class ApiServices extends BaseServices implements API {
 
     return res;
     // TODO: implement getAllCountries
+    // throw UnimplementedError();
+  }
+
+  @override
+  addRepresentative(RepresentativeModel model) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.addRepresentative}';
+
+    var modelData = {
+      "id": 3,
+      "representative_type": "${model.representativeType}",
+      "person_name": "${model.personName}",
+      "designation": "${model.designation}",
+      "email": "${model.email}",
+      "phone": model.phone,
+      "country": model.country,
+      "university": model.university,
+      "vendor_name": "${model.vendorName}",
+      "bank_name": "${model.vendorName}",
+      "is_active": model.isActive,
+      "created_by": model.createdBy,
+      "updated_by": model.updatedBy,
+      "created_at": "",
+      "updated_at": ""
+    };
+
+    RepresentativeModel data2 = RepresentativeModel.fromJson(modelData);
+    var data = json.encode(data2);
+
+    var res = await httpPostHeader(url, data);
+
+    print(res);
+
+    // TODO: implement addRepresentative
+    // throw UnimplementedError();
+  }
+
+  @override
+  findRepresentative(String representaiveType) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.findRepresentative}';
+
+    var data = {"findRepresentative": representaiveType};
+
+    var data2 = json.encode(data);
+
+    var res = await httpPostHeader(url, data2);
+
+    print(res);
+
+    // TODO:
+    // implement findRepresentative
+    // throw UnimplementedError();
+  }
+
+  @override
+  findRepresentativeForDropDown(String representaiveType) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.findRepresentativeForDropDown}';
+
+    var data = {"representative_type": representaiveType};
+
+    var data2 = json.encode(data);
+
+    var res = await httpPostHeader(url, data2);
+
+    return res;
+
+    // TODO: implement findRepresentativeForDropDown
+    // throw UnimplementedError();
+  }
+
+  @override
+  getRepresentativeAllData(int id) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.findRepresentativeByID}';
+
+    var data = {"id": id};
+
+    var data2 = json.encode(data);
+
+    var res = await httpPostHeader(url, data2);
+
+    return res;
+
+    // TODO: implement getRepresentativeAllData
     // throw UnimplementedError();
   }
 }

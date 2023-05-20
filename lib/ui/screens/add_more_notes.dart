@@ -18,7 +18,8 @@ class AddMoreNotesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int meetingID = Get.arguments;
+    // int meetingID = Get.arguments;
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -85,6 +86,8 @@ class AddMoreNotesView extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
+
+                  ////finx alll user model
                   CustomMultiDownSingle(
                     model: Get.find<DashBoardController>().listBro,
                     initialSelectedValue: "Select Add notes for",
@@ -126,7 +129,7 @@ class AddMoreNotesView extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      controller.addNote(meetingID);
+                      // controller.addNote(meetingID);
                     },
                     child: Container(
                       // color: ThemeConstants.bluecolor,

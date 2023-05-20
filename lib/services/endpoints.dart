@@ -20,4 +20,12 @@ class Endpoints {
   static String allCountry = 'allCountry';
 
   static String universtiyByCountry = 'findUniversityByCountryId';
+
+  static String addRepresentative = 'addRepresentative';
+
+  static String findRepresentative = 'findRepresentative';
+
+  static String findRepresentativeForDropDown = 'findRepresentativeForDropDown';
+
+  static String findRepresentativeByID = 'findRepresentativeByID';
 }

@@ -175,11 +175,11 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
 
     // filterSearchResults(editingController.text);
     if (oldWidget.itemList != widget.itemList) {
-      print('ddd');
+      // print('ddd');
 
       setState(() {});
     }
-    print("didUpdateWidget");
+    // print("didUpdateWidget");
     super.didUpdateWidget(oldWidget);
   }
 

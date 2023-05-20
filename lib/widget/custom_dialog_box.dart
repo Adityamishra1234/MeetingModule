@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:get/get.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 // import 'package:studentpanel/ui/screen/Profile_Module/contactinformation.dart';
@@ -14,7 +15,9 @@ import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 class CustomProfileDialogue extends StatelessWidget {
   Widget child;
   String title;
-  CustomProfileDialogue({super.key, required this.child, required this.title});
+  final Function tap;
+  CustomProfileDialogue(
+      {super.key, required this.child, required this.title, required this.tap});
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +70,9 @@ class CustomProfileDialogue extends StatelessWidget {
                         text: 'Cancel',
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          tap(5);
+                        },
                         child: Container(
                           // color: ThemeConstants.bluecolor,
                           decoration: BoxDecoration(

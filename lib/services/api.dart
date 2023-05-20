@@ -1,3 +1,4 @@
+import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 
@@ -20,4 +21,12 @@ abstract class API {
   getAllCountries();
 
   getAllUniversity(int countryCOde);
+
+  addRepresentative(RepresentativeModel model);
+
+  findRepresentative(String representaiveType);
+
+  findRepresentativeForDropDown(String representaiveType);
+
+  getRepresentativeAllData(int id);
 }

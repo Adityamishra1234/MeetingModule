@@ -48,7 +48,7 @@ class CustomizableDropdownAllUser extends StatefulWidget {
   final Widget? placeholder;
 
   /// must set the dropdown item list
-  final List<AllUserModel>? itemList;
+  List<AllUserModel>? itemList;
 
   /// receive the selected item call back function
   /// The list of items the user can select
@@ -180,7 +180,9 @@ class _CustomizableDropdownAllUserState
     //   widget.initialSelectedList = selectedItemsList;
     //   setState(() {});
     // }
-
+    if (oldWidget.itemList != widget.itemList) {
+      singleSelectedItem = widget.itemList![0];
+    }
     print("didChangeDependencies  cccc");
     print(oldWidget.initialSelectedList == widget.initialSelectedList);
     if (widget.initialSelectedList != null) {
@@ -419,7 +421,7 @@ class _CustomizableDropdownAllUserState
                                     : _controller.forward(from: 0.25);
                                 isExpanded = !isExpanded;
 
-                                // singleSelectedItem = items[index];
+                                singleSelectedItem = items[index];
 
                                 widget
                                     .onSingleSelectedItem!(singleSelectedItem);
@@ -444,9 +446,11 @@ class _CustomizableDropdownAllUserState
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('${widget.itemList![index].name}',
-                                            textAlign: TextAlign.start,
-                                            style: widget.titleStyle),
+                                        Flexible(
+                                          child: Text('${items[index].name}',
+                                              textAlign: TextAlign.start,
+                                              style: widget.titleStyle),
+                                        ),
                                         if (widget.multiSelectEnable ==
                                             true) ...[
                                           selectedItemsList
@@ -488,6 +492,7 @@ class _CustomizableDropdownAllUserState
       ));
   //Function
   void filterSearchResults(String query) {
+    print(query);
     setState(() {
       items = widget.itemList!
           .where(

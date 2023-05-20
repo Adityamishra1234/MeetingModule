@@ -132,6 +132,9 @@ class CreateNewMeeting extends StatelessWidget {
             enableMultiSelect: false,
             callbackFunctionSingle: (val) {
               controller.meetingWith.value = val;
+
+              controller.getRepresentativeDropDownData();
+              // controller.inItGetRepresentative();
               controller.update();
             },
             model: controller.meetingWithList,
@@ -476,18 +479,18 @@ class CreateNewMeeting extends StatelessWidget {
       ],
 
       if (controller.externalMeeting.value == true) ...[
-        if (controller.meetingWith.value == 'University Meetings') ...[
-          Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Align(
-              alignment: AlignmentDirectional.topStart,
-              child: CustomAutoSizeTextMontserrat(
-                text: "Participants",
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-              ),
+        Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Align(
+            alignment: AlignmentDirectional.topStart,
+            child: CustomAutoSizeTextMontserrat(
+              text: "Participants",
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
             ),
           ),
+        ),
+        if (controller.meetingWith.value == 'University Meetings') ...[
           Padding(
             padding: const EdgeInsets.only(left: 15),
             child: Align(
@@ -499,6 +502,25 @@ class CreateNewMeeting extends StatelessWidget {
               ),
             ),
           ),
+          CustomMultiDownSingleAllUser(
+              model: controller.allCountriesList,
+              initialSelectedValue: '',
+              // inititalSelectedList: ,
+              callbackFunctionSingle: (val) async {
+                // controller.selectedBranch.value = val;
+                // controller.update();
+                print(val);
+                controller.selectedCountry.value = val;
+                await controller
+                    .getUniversities(controllers.selectedCountry.value.id!);
+                controller.update();
+              },
+              callbackFunctionMulti: (List<AllUserModel> val) {
+                print(val);
+                // controller.selectedUsersList.value = val;
+                // controller.update();
+              },
+              enableMultiSelect: false),
           Padding(
             padding: const EdgeInsets.only(left: 15),
             child: Align(
@@ -510,113 +532,284 @@ class CreateNewMeeting extends StatelessWidget {
               ),
             ),
           ),
+          CustomMultiDownSingleAllUser(
+              model: controller.allUniversityList,
+              initialSelectedValue: '',
+              // inititalSelectedList: ,
+              callbackFunctionSingle: (val) {
+                // controller.selectedBranch.value = val;
+                // controller.update();
+              },
+              callbackFunctionMulti: (List<AllUserModel> val) {
+                print(val);
+                // controller.selectedUsersList.value = val;
+                // controller.update();
+              },
+              enableMultiSelect: false),
+        ],
+        if (controller.meetingWith.value == 'Vendor Meeting') ...[
           Padding(
             padding: const EdgeInsets.only(left: 15),
             child: Align(
               alignment: AlignmentDirectional.topStart,
-              child: GestureDetector(
-                onTap: () {
-                  addRepresentative(context, controllers);
-                  // showDialog(
-                  //     context: context,
-                  //     builder: (_) => CustomProfileDialogue(
-                  //         child: Container(
-                  //           child: Column(children: [
-                  //             Row(
-                  //               children: [
-                  //                 CustomButton(text: 'Unive', onPressed: () {}),
-                  //                 CustomButton(
-                  //                     text: 'Vendor', onPressed: () {}),
-                  //                 CustomButton(text: 'Bank', onPressed: () {}),
-                  //               ],
-                  //             ),
-                  //             Padding(
-                  //               padding: const EdgeInsets.only(left: 15),
-                  //               child: Align(
-                  //                 alignment: AlignmentDirectional.topStart,
-                  //                 child: CustomAutoSizeTextMontserrat(
-                  //                   text: "University",
-                  //                   fontSize: 16,
-                  //                   fontWeight: FontWeight.bold,
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //           ]),
-                  //         ),
-                  //         title: 'Add Representative'));
-                },
-                child: CustomAutoSizeTextMontserrat(
-                  text: "ADD",
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+              child: CustomAutoSizeTextMontserrat(
+                text: "Name of Vendor",
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+
+          GetX<CreateNewMeetingController>(
+              init: CreateNewMeetingController(),
+              builder: (controller) {
+                if (controller.meetingWith.value == 'Vendor Meeting') {
+                  return CustomMultiDownSingleAllUser(
+                      model: controller.listOfParticipantData,
+                      initialSelectedValue: '',
+                      // inititalSelectedList: ,
+                      callbackFunctionSingle: (val) {
+                        controller.participantID.value = val;
+                        controller.fetchParticipantData();
+                        controller.update();
+                        // controller.selectedBranch.value = val;
+                        // controller.update();
+                      },
+                      callbackFunctionMulti: (List<AllUserModel> val) {
+                        print(val);
+                        // controller.selectedUsersList.value = val;
+                        // controller.update();
+                      },
+                      enableMultiSelect: false);
+                }
+
+                return Container();
+              }),
+          // CustomMultiDownSingleAllUser(
+          //     model: controller.allUniversityList,
+          //     initialSelectedValue: '',
+          //     // inititalSelectedList: ,
+          //     callbackFunctionSingle: (val) {
+          //       // controller.selectedBranch.value = val;
+          //       // controller.update();
+          //     },
+          //     callbackFunctionMulti: (List<AllUserModel> val) {
+          //       print(val);
+          //       // controller.selectedUsersList.value = val;
+          //       // controller.update();
+          //     },
+          //     enableMultiSelect: false),
+        ],
+
+        if (controller.meetingWith.value == 'Bank Meeting') ...[
+          Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Align(
+              alignment: AlignmentDirectional.topStart,
+              child: CustomAutoSizeTextMontserrat(
+                text: "Name of Bank",
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          GetX<CreateNewMeetingController>(
+              init: CreateNewMeetingController(),
+              builder: (controller) {
+                if (controller.meetingWith.value == 'Bank Meeting') {
+                  return CustomMultiDownSingleAllUser(
+                      model: controller.listOfParticipantData,
+                      initialSelectedValue: '',
+                      // inititalSelectedList: ,
+                      callbackFunctionSingle: (val) {
+                        controller.participantID.value = val;
+                        controller.fetchParticipantData();
+                        controller.update();
+                      },
+                      callbackFunctionMulti: (List<AllUserModel> val) {
+                        print(val);
+                        // controller.selectedUsersList.value = val;
+                        // controller.update();
+                      },
+                      enableMultiSelect: false);
+                }
+
+                return Container();
+              }),
+        ],
+        Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Align(
+            alignment: AlignmentDirectional.topStart,
+            child: GestureDetector(
+              onTap: () {
+                addRepresentative(context, controllers);
+                // showDialog(
+                //     context: context,
+                //     builder: (_) => CustomProfileDialogue(
+                //         child: Container(
+                //           child: Column(children: [
+                //             Row(
+                //               children: [
+                //                 CustomButton(text: 'Unive', onPressed: () {}),
+                //                 CustomButton(
+                //                     text: 'Vendor', onPressed: () {}),
+                //                 CustomButton(text: 'Bank', onPressed: () {}),
+                //               ],
+                //             ),
+                //             Padding(
+                //               padding: const EdgeInsets.only(left: 15),
+                //               child: Align(
+                //                 alignment: AlignmentDirectional.topStart,
+                //                 child: CustomAutoSizeTextMontserrat(
+                //                   text: "University",
+                //                   fontSize: 16,
+                //                   fontWeight: FontWeight.bold,
+                //                 ),
+                //               ),
+                //             ),
+                //           ]),
+                //         ),
+                //         title: 'Add Representative'));
+              },
+
+              child: Container(
+                height: 38,
+                width: MediaQuery.of(context).size.width * 0.7,
+                decoration: BoxDecoration(
+                    color: ThemeConstants.bluecolor,
+                    borderRadius:
+                        const BorderRadius.all(Radius.circular(30.0))),
+                child: Center(
+                  child: CustomAutoSizeTextMontserrat(
+                    text: "Add Representative",
+                    textColor: ThemeConstants.whitecolor,
+                    fontSize: 20,
+                  ),
                 ),
               ),
+              // child: CustomAutoSizeTextMontserrat(
+              //   text: "ADD",
+              //   fontSize: 16,
+              //   fontWeight: FontWeight.bold,
+              // ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Align(
-              alignment: AlignmentDirectional.topStart,
+        ),
+
+        Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Align(
+            alignment: AlignmentDirectional.topStart,
+            child: CustomAutoSizeTextMontserrat(
+              text: "Name of the Person",
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Container(
+          height: 40,
+          child: Text('${controller.participantData.value.personName}'),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Align(
+            alignment: AlignmentDirectional.topStart,
+            child: CustomAutoSizeTextMontserrat(
+              text: "Designation",
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Container(
+          height: 40,
+          child: Text('${controller.participantData.value.designation}'),
+        ),
+        // CustomTextField(
+        //   hint: '',
+        //   controller: controller.designation.value,
+        // ),
+
+        // Padding(
+        //   padding: const EdgeInsets.only(left: 15),
+        //   child: Align(
+        //     alignment: AlignmentDirectional.topStart,
+        //     child: CustomAutoSizeTextMontserrat(
+        //       text: "Add Representative",
+        //       fontSize: 16,
+        //       fontWeight: FontWeight.bold,
+        //     ),
+        //   ),
+        // ),
+
+        Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Align(
+            alignment: AlignmentDirectional.topStart,
+            child: CustomAutoSizeTextMontserrat(
+              text: "Email id",
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Container(
+          height: 40,
+          child: Text('${controller.participantData.value.email}'),
+        ),
+        // CustomTextField(
+        //   hint: '',
+        //   controller: controller.designation.value,
+        // ),
+        Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Align(
+            alignment: AlignmentDirectional.topStart,
+            child: CustomAutoSizeTextMontserrat(
+              text: "Phone Number",
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Container(
+          height: 40,
+          child: Text('${controller.participantData.value.phone}'),
+        ),
+        // CustomTextField(
+        //   hint: '',
+        //   controller: controller.designation.value,
+        // ),
+
+        GestureDetector(
+          onTap: () {
+            controller.getRepresentative();
+          },
+          child: Container(
+            height: 38,
+            width: MediaQuery.of(context).size.width * 0.7,
+            decoration: BoxDecoration(
+                color: ThemeConstants.bluecolor,
+                borderRadius: const BorderRadius.all(Radius.circular(30.0))),
+            child: Center(
               child: CustomAutoSizeTextMontserrat(
-                text: "Designation",
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+                text: "Add Participants",
+                textColor: ThemeConstants.whitecolor,
+                fontSize: 20,
               ),
             ),
           ),
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 15),
-          //   child: Align(
-          //     alignment: AlignmentDirectional.topStart,
-          //     child: CustomAutoSizeTextMontserrat(
-          //       text: "Add Representative",
-          //       fontSize: 16,
-          //       fontWeight: FontWeight.bold,
-          //     ),
-          //   ),
-          // ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Align(
-              alignment: AlignmentDirectional.topStart,
-              child: CustomAutoSizeTextMontserrat(
-                text: "Name of the Person",
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Align(
-              alignment: AlignmentDirectional.topStart,
-              child: CustomAutoSizeTextMontserrat(
-                text: "Email id",
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Align(
-              alignment: AlignmentDirectional.topStart,
-              child: CustomAutoSizeTextMontserrat(
-                text: "Phone Number",
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          CustomMultiDownSingle(
-              enableMultiSelect: false,
-              callbackFunctionSingle: (val) {
-                controller.meetingWith.value = val;
-                controller.update();
-              },
-              model: controller.meetingWithList,
-              initialSelectedValue: '${controllers.meetingWith}'),
-        ]
+        ),
+        CustomMultiDownSingle(
+            enableMultiSelect: false,
+            callbackFunctionSingle: (val) {
+              controller.meetingWith.value = val;
+              controller.update();
+            },
+            model: controller.meetingWithList,
+            initialSelectedValue: '${controllers.meetingWith}'),
       ],
 
       Padding(
@@ -1633,6 +1826,10 @@ class CreateNewMeeting extends StatelessWidget {
         builder: (_) {
           print(controller.addRepresentaitveType.value);
           return Obx(() => CustomProfileDialogue(
+              tap: (val) {
+                print(val);
+                controller.addANewRepresentative();
+              },
               child: Container(
                 child: Column(children: [
                   Row(
@@ -1674,16 +1871,16 @@ class CreateNewMeeting extends StatelessWidget {
                     CustomMultiDownSingleAllUser(
                         model: controller.allCountriesList,
                         initialSelectedValue: '',
-                        inititalSelectedList: controller.preFilledUsers.value,
-
-                        // callbackFunctionSingle: (val) {
-                        //   // controller.selectedBranch.value = val;
-                        //   // controller.update();
-                        // },
-                        callbackFunctionMulti: (List<AllUserModel> val) {
-                          print(val);
-                          controller.selectedUsersList.value = val;
+                        // inititalSelectedList: controller.preFilledUsers.value,
+                        callbackFunctionSingle: (val) async {
+                          controller.selectedCountry.value = val;
                           controller.update();
+                          await controller.getUniversities(
+                              controller.selectedCountry.value.id!);
+                          controller.update();
+                        },
+                        callbackFunctionMulti: (AllUserModel val) {
+                          print(val);
                         },
                         enableMultiSelect: false),
                     Padding(
@@ -1698,20 +1895,16 @@ class CreateNewMeeting extends StatelessWidget {
                       ),
                     ),
                     CustomMultiDownSingleAllUser(
-                        model: Get.find<DashBoardController>().listBro,
+                        model: controller.allUniversityList,
                         initialSelectedValue: '',
-                        inititalSelectedList: controller.preFilledUsers.value,
-
-                        // callbackFunctionSingle: (val) {
-                        //   // controller.selectedBranch.value = val;
-                        //   // controller.update();
-                        // },
-                        callbackFunctionMulti: (List<AllUserModel> val) {
+                        // inititalSelectedList: controller.preFilledUsers.value,
+                        callbackFunctionSingle: (val) async {
                           print(val);
-                          controller.selectedUsersList.value = val;
-                          controller.update();
                         },
-                        enableMultiSelect: true),
+                        callbackFunctionMulti: (AllUserModel val) {
+                          print(val);
+                        },
+                        enableMultiSelect: false),
                   ],
                   if (controller.addRepresentaitveType.value == 'Vendor') ...[
                     Padding(
@@ -1726,8 +1919,8 @@ class CreateNewMeeting extends StatelessWidget {
                       ),
                     ),
                     CustomTextField(
-                        hint: 'hint',
-                        controller: controller.specifyMeetingLocation.value),
+                        hint: 'Vendor name',
+                        controller: controller.nameOfTheVendor.value),
                   ],
                   if (controller.addRepresentaitveType.value == 'Bank') ...[
                     Padding(
@@ -1742,8 +1935,8 @@ class CreateNewMeeting extends StatelessWidget {
                       ),
                     ),
                     CustomTextField(
-                        hint: 'hint',
-                        controller: controller.specifyMeetingLocation.value),
+                        hint: 'Name of Bank',
+                        controller: controller.nameOfTheBank.value),
                   ],
                   Padding(
                     padding: const EdgeInsets.only(left: 15),
@@ -1757,8 +1950,8 @@ class CreateNewMeeting extends StatelessWidget {
                     ),
                   ),
                   CustomTextField(
-                      hint: 'hint',
-                      controller: controller.specifyMeetingLocation.value),
+                      hint: 'Person Name',
+                      controller: controller.nameOfThePerson.value),
                   Padding(
                     padding: const EdgeInsets.only(left: 15),
                     child: Align(
@@ -1771,8 +1964,7 @@ class CreateNewMeeting extends StatelessWidget {
                     ),
                   ),
                   CustomTextField(
-                      hint: 'hint',
-                      controller: controller.specifyMeetingLocation.value),
+                      hint: 'hint', controller: controller.email.value),
                   Padding(
                     padding: const EdgeInsets.only(left: 15),
                     child: Align(
@@ -1785,8 +1977,7 @@ class CreateNewMeeting extends StatelessWidget {
                     ),
                   ),
                   CustomTextField(
-                      hint: 'hint',
-                      controller: controller.specifyMeetingLocation.value),
+                      hint: 'hint', controller: controller.designation.value),
                   Padding(
                     padding: const EdgeInsets.only(left: 15),
                     child: Align(
@@ -1800,7 +1991,7 @@ class CreateNewMeeting extends StatelessWidget {
                   ),
                   CustomTextField(
                       hint: 'hint',
-                      controller: controller.specifyMeetingLocation.value),
+                      controller: controller.RePphoneNumber.value),
                 ]),
               ),
               title: 'Add Representative'));
