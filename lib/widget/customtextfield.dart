@@ -7,11 +7,13 @@ class CustomTextField extends StatelessWidget {
   String hint;
   Validator? validator;
   TextInputType? keybord;
+  bool? obscureText = false;
   bool readOrEdit = false;
   CustomTextField({
     Key? key,
     required this.hint,
     required this.controller,
+    this.obscureText,
     this.validator,
     this.keybord,
   }) : super(key: key);
@@ -20,6 +22,7 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      obscureText: obscureText ?? false,
       keyboardType: keybord ?? TextInputType.text,
       controller: controller,
       scrollPadding: EdgeInsets.symmetric(
@@ -42,6 +45,8 @@ class CustomTextField extends StatelessWidget {
           return getEmailvaliation(value);
         } else if (Validator.password == validator) {
           print("password");
+        } else if (Validator.otp == validator) {
+          return getOtpvalidation(value);
         }
       },
     );
@@ -52,4 +57,5 @@ enum Validator {
   phone,
   email,
   password,
+  otp,
 }

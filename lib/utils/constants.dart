@@ -124,6 +124,17 @@ getPhoneNumbervalidation(String? value) {
   }
 }
 
+getOtpvalidation(String? value) {
+  if (value != null) {
+    if (value.length != 6) {
+      return 'OTP must be of 6 digit';
+    } else
+      return null;
+  } else {
+    return "OTP must be of 6 digit";
+  }
+}
+
 getsnakbar(String title, String data) {
   return Get.snackbar(
     title,

@@ -20,4 +20,12 @@ class Endpoints {
   static String allCountry = 'allCountry';
 
   static String universtiyByCountry = 'findUniversityByCountryId';
+  static String emailverification = 'Emailverification';
+  // /Otp/:email
+  static String otp = 'Otp';
+  // OtpMatch/developer4@siecindia.com/120863
+  static String otpMatch = 'OtpMatch';
+
+  // /passwordUpdate/:email/:password
+  static String passwordUpdate = 'passwordUpdate';
 }

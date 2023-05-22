@@ -251,4 +251,44 @@ class ApiServices extends BaseServices implements API {
     // TODO: implement getAllCountries
     // throw UnimplementedError();
   }
+
+  getEmailverification(String email) async {
+    var url =
+        '${Endpoints.baseUrl}${Endpoints.emailverification + "/${email}"}';
+    var res2 = await httpPostNullBody(url);
+    if (res2 != null) {
+      var res = jsonDecode(res2);
+      return res;
+    }
+    ;
+  }
+
+  getOTP(String email) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.otp + "/${email}"}';
+    var res2 = await httpPostNullBody(url);
+    if (res2 != null) {
+      var res = jsonDecode(res2);
+      return res;
+    }
+  }
+
+  otpMatch(String email, String otp) async {
+    var url =
+        '${Endpoints.baseUrl}${Endpoints.otpMatch + "/${email}" + "/${otp}"}';
+    var res2 = await httpPostNullBody(url);
+    if (res2 != null) {
+      var res = jsonDecode(res2);
+      return res;
+    }
+  }
+
+  password(String email, String password) async {
+    var url =
+        '${Endpoints.baseUrl}${Endpoints.passwordUpdate + "/${email}" + "/${password}"}';
+    var res2 = await httpPostNullBody(url);
+    if (res2 != null) {
+      var res = jsonDecode(res2);
+      return res;
+    }
+  }
 }
