@@ -13,6 +13,7 @@ import 'package:meeting_module2/ui/screens/add_more_notes.dart';
 import 'package:meeting_module2/ui/screens/add_representative.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting.dart';
 import 'package:meeting_module2/ui/screens/dashboard_page.dart';
+import 'package:meeting_module2/ui/screens/loginUi.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
 import 'package:meeting_module2/ui/screens/nfvf.dart';
 import 'package:meeting_module2/ui/screens/participants_details.dart';
@@ -256,8 +257,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: '/',
+        initialRoute: LoginView.routeNamed,
         getPages: [
+          GetPage(
+            name: LoginView.routeNamed,
+            page: () => LoginView(),
+          ),
           GetPage(
             name: DashBoard.routeNamed,
             page: () => DashBoard(),

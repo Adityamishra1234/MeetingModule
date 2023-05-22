@@ -1,6 +1,8 @@
 import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
+import 'package:meeting_module2/models/participantsModel.dart';
+import 'package:meeting_module2/ui/screens/participants_details.dart';
 
 abstract class API {
   getAllMeetings();
@@ -29,4 +31,11 @@ abstract class API {
   findRepresentativeForDropDown(String representaiveType);
 
   getRepresentativeAllData(int id);
+
+  getRepresentativeByUniversity(
+      {required String type,
+      required int collegecode,
+      required int countrycode});
+
+  addParticipants(List<ParticipantsModel> model);
 }

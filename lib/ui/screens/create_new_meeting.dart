@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
+import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/create_new_meeting_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/add_representative.dart';
@@ -135,7 +136,6 @@ class CreateNewMeeting extends StatelessWidget {
 
               controller.getRepresentativeDropDownData();
               // controller.inItGetRepresentative();
-              controller.update();
             },
             model: controller.meetingWithList,
             initialSelectedValue: '${controllers.meetingWith}'),
@@ -490,6 +490,14 @@ class CreateNewMeeting extends StatelessWidget {
             ),
           ),
         ),
+        // GetX<CreateNewMeetingController>(
+        //     init: CreateNewMeetingController(),
+        //     builder: (controller) {
+        //       if (controller.meetingWith.value == 'University Meetings')
+        //         return Column(
+        //
+        //       children: [
+
         if (controller.meetingWith.value == 'University Meetings') ...[
           Padding(
             padding: const EdgeInsets.only(left: 15),
@@ -505,38 +513,80 @@ class CreateNewMeeting extends StatelessWidget {
           CustomMultiDownSingleAllUser(
               model: controller.allCountriesList,
               initialSelectedValue: '',
-              // inititalSelectedList: ,
+              // inititalSelectedList: controller.preFilledUsers.value,
               callbackFunctionSingle: (val) async {
-                // controller.selectedBranch.value = val;
-                // controller.update();
                 print(val);
                 controller.selectedCountry.value = val;
+
                 await controller
-                    .getUniversities(controllers.selectedCountry.value.id!);
+                    .getUniversities(controller.selectedCountry.value.id!);
                 controller.update();
               },
-              callbackFunctionMulti: (List<AllUserModel> val) {
+              callbackFunctionMulti: (AllUserModel val) {
                 print(val);
-                // controller.selectedUsersList.value = val;
-                // controller.update();
               },
               enableMultiSelect: false),
+          // CustomMultiDownSingleAllUser(
+          //     model: controller.allCountriesList,
+          //     initialSelectedValue: '',
+          //     // inititalSelectedList: controller.preFilledUsers.value,
+          //     callbackFunctionSingle: (val) async {
+          //       controller.selectedCountry.value = val;
+          //       controller.update();
+          //       await controller.getUniversities(
+          //           controller.selectedCountry.value.id!);
+          //       controller.update();
+          //     },
+          //     callbackFunctionMulti: (AllUserModel val) {
+          //       print(val);
+          //     },
+          //     enableMultiSelect: false),
           Padding(
             padding: const EdgeInsets.only(left: 15),
             child: Align(
               alignment: AlignmentDirectional.topStart,
               child: CustomAutoSizeTextMontserrat(
-                text: "University",
+                text: "University Name",
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
+
           CustomMultiDownSingleAllUser(
               model: controller.allUniversityList,
               initialSelectedValue: '',
+              // inititalSelectedList: controller.preFilledUsers.value,
+              callbackFunctionSingle: (val) async {
+                controller.selectedUniversity.value = val;
+                await controller.getRepresentativesByUniversity();
+                print(val);
+              },
+              callbackFunctionMulti: (AllUserModel val) {
+                print(val);
+              },
+              enableMultiSelect: false),
+
+          Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Align(
+              alignment: AlignmentDirectional.topStart,
+              child: CustomAutoSizeTextMontserrat(
+                text: "Name of the Person",
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+
+          CustomMultiDownSingleAllUser(
+              model: controller.listOfParticipantData,
+              initialSelectedValue: '',
               // inititalSelectedList: ,
               callbackFunctionSingle: (val) {
+                controller.participantID.value = val;
+                controller.fetchParticipantData();
+                controller.update();
                 // controller.selectedBranch.value = val;
                 // controller.update();
               },
@@ -547,6 +597,66 @@ class CreateNewMeeting extends StatelessWidget {
               },
               enableMultiSelect: false),
         ],
+
+        // Padding(
+        //   padding: const EdgeInsets.only(left: 15),
+        //   child: Align(
+        //     alignment: AlignmentDirectional.topStart,
+        //     child: CustomAutoSizeTextMontserrat(
+        //       text: "Country",
+        //       fontSize: 16,
+        //       fontWeight: FontWeight.bold,
+        //     ),
+        //   ),
+        // ),
+        // CustomMultiDownSingleAllUser(
+        //     model: controller.allCountriesList,
+        //     initialSelectedValue: '',
+        //     // inititalSelectedList: ,
+        //     callbackFunctionSingle: (val) async {
+        //       // controller.selectedBranch.value = val;
+        //       // controller.update();
+        //       print(val);
+        //       controller.selectedCountry.value = val;
+        //       await controller
+        //           .getUniversities(controllers.selectedCountry.value.id!);
+        //       controller.update();
+        //     },
+        //     callbackFunctionMulti: (List<AllUserModel> val) {
+        //       print(val);
+        //       // controller.selectedUsersList.value = val;
+        //       // controller.update();
+        //     },
+        //     enableMultiSelect: false),
+        // Padding(
+        //   padding: const EdgeInsets.only(left: 15),
+        //   child: Align(
+        //     alignment: AlignmentDirectional.topStart,
+        //     child: CustomAutoSizeTextMontserrat(
+        //       text: "University",
+        //       fontSize: 16,
+        //       fontWeight: FontWeight.bold,
+        //     ),
+        //   ),
+        // ),
+        // CustomMultiDownSingleAllUser(
+        //     model: controller.allUniversityList,
+        //     initialSelectedValue: '',
+        //     // inititalSelectedList: ,
+        //     callbackFunctionSingle: (val) {
+        //       // controller.selectedBranch.value = val;
+        //       // controller.update();
+        //     },
+        //     callbackFunctionMulti: (List<AllUserModel> val) {
+        //       print(val);
+        //       // controller.selectedUsersList.value = val;
+        //       // controller.update();
+        //     },
+        //     enableMultiSelect: false),
+        //       ],
+        //     );
+        //   return Container();
+        // }),
         if (controller.meetingWith.value == 'Vendor Meeting') ...[
           Padding(
             padding: const EdgeInsets.only(left: 15),
@@ -696,22 +806,23 @@ class CreateNewMeeting extends StatelessWidget {
             ),
           ),
         ),
-
-        Padding(
-          padding: const EdgeInsets.only(left: 15),
-          child: Align(
-            alignment: AlignmentDirectional.topStart,
-            child: CustomAutoSizeTextMontserrat(
-              text: "Name of the Person",
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+        if (controller.meetingWith.value != 'University Meetings') ...[
+          Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Align(
+              alignment: AlignmentDirectional.topStart,
+              child: CustomAutoSizeTextMontserrat(
+                text: "Name of the Person",
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
-        Container(
-          height: 40,
-          child: Text('${controller.participantData.value.personName}'),
-        ),
+          Container(
+            height: 40,
+            child: Text('${controller.participantData.value.personName}'),
+          ),
+        ],
         Padding(
           padding: const EdgeInsets.only(left: 15),
           child: Align(
@@ -785,7 +896,8 @@ class CreateNewMeeting extends StatelessWidget {
 
         GestureDetector(
           onTap: () {
-            controller.getRepresentative();
+            controller.listOfParticipants
+                .add(controllers.participantData.value);
           },
           child: Container(
             height: 38,
@@ -802,14 +914,17 @@ class CreateNewMeeting extends StatelessWidget {
             ),
           ),
         ),
-        CustomMultiDownSingle(
-            enableMultiSelect: false,
-            callbackFunctionSingle: (val) {
-              controller.meetingWith.value = val;
-              controller.update();
-            },
-            model: controller.meetingWithList,
-            initialSelectedValue: '${controllers.meetingWith}'),
+        Container(
+          child: Wrap(children: [...controller.allParticipants(controllers)]),
+        )
+        // CustomMultiDownSingle(
+        //     enableMultiSelect: false,
+        //     callbackFunctionSingle: (val) {
+        //       controller.meetingWith.value = val;
+        //       controller.update();
+        //     },
+        //     model: controller.meetingWithList,
+        //     initialSelectedValue: '${controllers.meetingWith}'),
       ],
 
       Padding(
@@ -933,7 +1048,7 @@ class CreateNewMeeting extends StatelessWidget {
       ),
 
       CustomMultiDownSingleAllUser(
-          model: Get.find<DashBoardController>().listBro,
+          model: Get.find<BaseController>().allSiecMembersList,
           initialSelectedValue: '',
           inititalSelectedList: controller.preFilledUsers.value,
 
@@ -1003,7 +1118,7 @@ class CreateNewMeeting extends StatelessWidget {
       ),
 
       CustomMultiDownSingleAllUser(
-          model: Get.find<DashBoardController>().listBro,
+          model: Get.find<BaseController>().allSiecMembersList,
           initialSelectedValue: '',
 
           // callbackFunctionSingle: (val) {
@@ -1044,7 +1159,12 @@ class CreateNewMeeting extends StatelessWidget {
 
       InkWell(
         onTap: () {
-          controller.createNewMeeting();
+          print(controller.externalMeeting);
+          if (controller.externalMeeting == false) {
+            controller.createNewMeeting();
+          } else {
+            controller.createExternalNewMeeting();
+          }
         },
         child: Container(
           height: 38,
@@ -1831,168 +1951,177 @@ class CreateNewMeeting extends StatelessWidget {
                 controller.addANewRepresentative();
               },
               child: Container(
-                child: Column(children: [
-                  Row(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      CustomButton(
-                          text: 'Unive',
-                          onPressed: () {
-                            controller.addRepresentaitveType.value =
-                                'University';
-                            controller.update();
-                          }),
-                      CustomButton(
-                          text: 'Vendor',
-                          onPressed: () {
-                            controller.addRepresentaitveType.value = 'Vendor';
-                            controller.update();
-                          }),
-                      CustomButton(
-                          text: 'Bank',
-                          onPressed: () {
-                            controller.addRepresentaitveType.value = 'Bank';
-                            controller.update();
-                          }),
-                    ],
-                  ),
-                  if (controller.addRepresentaitveType.value ==
-                      'University') ...[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15),
-                      child: Align(
-                        alignment: AlignmentDirectional.topStart,
-                        child: CustomAutoSizeTextMontserrat(
-                          text: "Country",
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                      Wrap(
+                        children: [
+                          CustomButton(
+                              text: 'University',
+                              onPressed: () {
+                                controller.addRepresentaitveType.value =
+                                    'University';
+                                controller.update();
+                              }),
+                          CustomButton(
+                              text: 'Vendor',
+                              onPressed: () {
+                                controller.addRepresentaitveType.value =
+                                    'Vendor';
+                                controller.update();
+                              }),
+                          CustomButton(
+                              text: 'Bank',
+                              onPressed: () {
+                                controller.addRepresentaitveType.value = 'Bank';
+                                controller.update();
+                              }),
+                        ],
+                      ),
+                      if (controller.addRepresentaitveType.value ==
+                          'University') ...[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Align(
+                            alignment: AlignmentDirectional.topStart,
+                            child: CustomAutoSizeTextMontserrat(
+                              text: "Country",
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        CustomMultiDownSingleAllUser(
+                            model: controller.allCountriesList,
+                            initialSelectedValue: '',
+                            // inititalSelectedList: controller.preFilledUsers.value,
+                            callbackFunctionSingle: (val) async {
+                              controller.selectedCountry.value = val;
+                              controller.update();
+                              await controller.getUniversities(
+                                  controller.selectedCountry.value.id!);
+                              controller.update();
+                            },
+                            callbackFunctionMulti: (AllUserModel val) {
+                              print(val);
+                            },
+                            enableMultiSelect: false),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Align(
+                            alignment: AlignmentDirectional.topStart,
+                            child: CustomAutoSizeTextMontserrat(
+                              text: "University Name",
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        CustomMultiDownSingleAllUser(
+                            model: controller.allUniversityList,
+                            initialSelectedValue: '',
+                            // inititalSelectedList: controller.preFilledUsers.value,
+                            callbackFunctionSingle: (AllUserModel val) async {
+                              print(val);
+
+                              controller.selectedUniversityName.value = val;
+                            },
+                            callbackFunctionMulti: (AllUserModel val) {
+                              print(val);
+                            },
+                            enableMultiSelect: false),
+                      ],
+                      if (controller.addRepresentaitveType.value ==
+                          'Vendor') ...[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Align(
+                            alignment: AlignmentDirectional.topStart,
+                            child: CustomAutoSizeTextMontserrat(
+                              text: "Name of Vendor",
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        CustomTextField(
+                            hint: 'Vendor name',
+                            controller: controller.nameOfTheVendor.value),
+                      ],
+                      if (controller.addRepresentaitveType.value == 'Bank') ...[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Align(
+                            alignment: AlignmentDirectional.topStart,
+                            child: CustomAutoSizeTextMontserrat(
+                              text: "Name of Bank",
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        CustomTextField(
+                            hint: 'Name of Bank',
+                            controller: controller.nameOfTheBank.value),
+                      ],
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Align(
+                          alignment: AlignmentDirectional.topStart,
+                          child: CustomAutoSizeTextMontserrat(
+                            text: "Name of Person",
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                    CustomMultiDownSingleAllUser(
-                        model: controller.allCountriesList,
-                        initialSelectedValue: '',
-                        // inititalSelectedList: controller.preFilledUsers.value,
-                        callbackFunctionSingle: (val) async {
-                          controller.selectedCountry.value = val;
-                          controller.update();
-                          await controller.getUniversities(
-                              controller.selectedCountry.value.id!);
-                          controller.update();
-                        },
-                        callbackFunctionMulti: (AllUserModel val) {
-                          print(val);
-                        },
-                        enableMultiSelect: false),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15),
-                      child: Align(
-                        alignment: AlignmentDirectional.topStart,
-                        child: CustomAutoSizeTextMontserrat(
-                          text: "University Name",
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                      CustomTextField(
+                          hint: 'Person Name',
+                          controller: controller.nameOfThePerson.value),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Align(
+                          alignment: AlignmentDirectional.topStart,
+                          child: CustomAutoSizeTextMontserrat(
+                            text: "Email",
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                    CustomMultiDownSingleAllUser(
-                        model: controller.allUniversityList,
-                        initialSelectedValue: '',
-                        // inititalSelectedList: controller.preFilledUsers.value,
-                        callbackFunctionSingle: (val) async {
-                          print(val);
-                        },
-                        callbackFunctionMulti: (AllUserModel val) {
-                          print(val);
-                        },
-                        enableMultiSelect: false),
-                  ],
-                  if (controller.addRepresentaitveType.value == 'Vendor') ...[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15),
-                      child: Align(
-                        alignment: AlignmentDirectional.topStart,
-                        child: CustomAutoSizeTextMontserrat(
-                          text: "Name of Vendor",
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                      CustomTextField(
+                          hint: 'hint', controller: controller.email.value),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Align(
+                          alignment: AlignmentDirectional.topStart,
+                          child: CustomAutoSizeTextMontserrat(
+                            text: "Designation",
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                    CustomTextField(
-                        hint: 'Vendor name',
-                        controller: controller.nameOfTheVendor.value),
-                  ],
-                  if (controller.addRepresentaitveType.value == 'Bank') ...[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15),
-                      child: Align(
-                        alignment: AlignmentDirectional.topStart,
-                        child: CustomAutoSizeTextMontserrat(
-                          text: "Name of Bank",
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                      CustomTextField(
+                          hint: 'hint',
+                          controller: controller.designation.value),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Align(
+                          alignment: AlignmentDirectional.topStart,
+                          child: CustomAutoSizeTextMontserrat(
+                            text: "Phone Number",
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                    CustomTextField(
-                        hint: 'Name of Bank',
-                        controller: controller.nameOfTheBank.value),
-                  ],
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15),
-                    child: Align(
-                      alignment: AlignmentDirectional.topStart,
-                      child: CustomAutoSizeTextMontserrat(
-                        text: "Name of Person",
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  CustomTextField(
-                      hint: 'Person Name',
-                      controller: controller.nameOfThePerson.value),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15),
-                    child: Align(
-                      alignment: AlignmentDirectional.topStart,
-                      child: CustomAutoSizeTextMontserrat(
-                        text: "Email",
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  CustomTextField(
-                      hint: 'hint', controller: controller.email.value),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15),
-                    child: Align(
-                      alignment: AlignmentDirectional.topStart,
-                      child: CustomAutoSizeTextMontserrat(
-                        text: "Designation",
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  CustomTextField(
-                      hint: 'hint', controller: controller.designation.value),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15),
-                    child: Align(
-                      alignment: AlignmentDirectional.topStart,
-                      child: CustomAutoSizeTextMontserrat(
-                        text: "Phone Number",
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  CustomTextField(
-                      hint: 'hint',
-                      controller: controller.RePphoneNumber.value),
-                ]),
+                      CustomTextField(
+                          hint: 'hint',
+                          keybord: TextInputType.number,
+                          controller: controller.RePphoneNumber.value),
+                    ]),
               ),
               title: 'Add Representative'));
         });

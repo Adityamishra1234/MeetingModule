@@ -67,16 +67,16 @@ class DashBoardController extends GetxController {
     allMeetingslist =
         await List<AllMeetings>.from(data.map((x) => AllMeetings.fromJson(x)));
 
-    var res2 = await api.getDropdown(Endpoints.allUser);
+    // var res2 = await api.getDropdown(Endpoints.allUser);
 
-    var data2 = await json.decode(res2);
+    // var data2 = await json.decode(res2);
 
-    allUserList.value = await List<AllUserModel>.from(
-        data2.map((x) => AllUserModel.fromJson(x)));
+    // allUserList.value = await List<AllUserModel>.from(
+    //     data2.map((x) => AllUserModel.fromJson(x)));
 
-    listBro.value =
-        List<AllUserModel>.from(allUserList.map((element) => element)).toList();
-    loading1.value = true;
+    // listBro.value =
+    //     List<AllUserModel>.from(allUserList.map((element) => element)).toList();
+    // loading1.value = true;
 
     // list = await data;
 

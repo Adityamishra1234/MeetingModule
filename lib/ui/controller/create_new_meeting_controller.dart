@@ -1,15 +1,18 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allBranchModel.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
+import 'package:meeting_module2/models/participantsModel.dart';
 import 'package:meeting_module2/models/selectedAudienceTypeModel.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
+import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsersCore.dart';
 
 class CreateNewMeetingController extends GetxController with StateMixin {
@@ -20,37 +23,37 @@ class CreateNewMeetingController extends GetxController with StateMixin {
     getGroupData();
     getBranchData();
     getAllCountries();
+    getUniversities(13);
     // inItGetRepresentative();
 
     getRepresentativeDropDownData();
 
+    getRepresentativesByUniversity();
+
     change(null, status: RxStatus.success());
   }
 
+//////Common in Both
+
   RxString agendaPurposeOfMeeting = 'All Meetings'.obs;
 
-//
-//
   Rx<TextEditingController> meetingNameController = TextEditingController().obs;
-//
-//
+
   RxString dateController =
       '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}'
           .obs;
-  //
-  //
+
   RxString timeController =
       '${DateTime.now().hour}:${DateTime.now().minute}'.obs;
 
-//
   Rx<TextEditingController> proposedDuration = TextEditingController().obs;
 
   ///
   ///
   ///
-  RxBool MeetingType = true.obs;
+  RxBool MeetingType = true.obs; //true online
 
-  RxBool meetingLocation = true.obs;
+  RxBool meetingLocation = true.obs; //
 
   RxString selectMeetingBranch = ''.obs;
 
@@ -160,8 +163,6 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
   Rx<RepresentativeModel> repModel = RepresentativeModel().obs;
   addANewRepresentative() async {
-    print(repModel.value.toJson());
-
     repModel.value.representativeType = addRepresentaitveType.value;
     repModel.value.personName = nameOfThePerson.value.text;
     repModel.value.designation = designation.value.text;
@@ -169,6 +170,7 @@ class CreateNewMeetingController extends GetxController with StateMixin {
     repModel.value.phone = int.parse(RePphoneNumber.value.text);
     repModel.value.country = selectedCountry.value.id;
     repModel.value.university = selectedUniversityName.value.id;
+    print(selectedUniversityName.value.id);
     repModel.value.vendorName = nameOfTheVendor.value.text;
     repModel.value.bankName = nameOfTheBank.value.text;
     repModel.value.isActive = true;
@@ -176,7 +178,7 @@ class CreateNewMeetingController extends GetxController with StateMixin {
     ///created by dO  later
     repModel.value.createdBy = 136;
     repModel.value.updatedBy = 136;
-
+    print(repModel.value.toJson());
     await api.addRepresentative(repModel.value);
   }
 
@@ -192,9 +194,9 @@ class CreateNewMeetingController extends GetxController with StateMixin {
     var res = await api.getAllUniversity(countryId);
 
     allUniversityList.value =
-        List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)));
+        await List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)));
 
-    // print(allUniversityList.toString());
+    print(allUniversityList.toString());
   }
 
   ///AddParticipants
@@ -230,7 +232,6 @@ class CreateNewMeetingController extends GetxController with StateMixin {
             .toList();
 
     // print(listOfParticipantData.value[0].toJson());
-    update();
   }
 
   //// participants
@@ -251,6 +252,74 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
     print(participantData.value.toJson());
   }
+
+  Rx<AllUserModel> selectedUniversity = AllUserModel().obs;
+  Rx<AllUserModel> selectedCountryForFetchRep = AllUserModel().obs;
+
+  getRepresentativesByUniversityINIT() async {
+    print(selectedCountry.value.id!);
+    print(selectedCountry.value.id!);
+
+    var res = await api.getRepresentativeByUniversity(
+        type: 'University',
+        collegecode: selectedUniversity.value.id!,
+        countrycode: selectedCountry.value.id!);
+
+    var res2 = json.decode(res);
+    listOfParticipantData.value =
+        List<AllUserModel>.from(res2.map((e) => AllUserModel.fromJson(e)))
+            .toList();
+
+    print(res);
+  }
+
+  getRepresentativesByUniversity() async {
+    print(selectedCountry.value.id!);
+    print(selectedCountry.value.id!);
+
+    var res = await api.getRepresentativeByUniversity(
+        type: 'University',
+        collegecode: selectedUniversity.value.id!,
+        countrycode: selectedCountry.value.id!);
+
+    var res2 = json.decode(res);
+    listOfParticipantData.value =
+        List<AllUserModel>.from(res2.map((e) => AllUserModel.fromJson(e)))
+            .toList();
+
+    print(res);
+  }
+
+  RxList<RepresentativeModel> listOfParticipants = <RepresentativeModel>[].obs;
+
+  List<Widget> allParticipants(CreateNewMeetingController controller) {
+    List<Widget> data = [];
+    for (var i = 0; i < controller.listOfParticipants.length; i++) {
+      data.add(Container(
+        margin: EdgeInsets.all(5),
+        width: double.infinity,
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(
+            color: ThemeConstants.lightVioletColor,
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(width: 1, color: ThemeConstants.VioletColor)),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(),
+              Text('Name: ${controller.listOfParticipants[i].personName}'),
+              Text(
+                  'Designation: ${controller.listOfParticipants[i].designation}'),
+              Text('Email: ${controller.listOfParticipants[i].email}'),
+              Text('Phone: ${controller.listOfParticipants[i].phone}'),
+            ]),
+      ));
+    }
+
+    return data;
+  }
+
 //
 ////
 /////
@@ -262,6 +331,8 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
   RxList<AllBranchModel> allBranchList = <AllBranchModel>[].obs;
   createNewMeeting() async {
+    meetingModel.value.meetingType = 'Internal Meeting';
+
     meetingModel.value.meetingAgenda = agendaPurposeOfMeeting.value;
 
     meetingModel.value.nameOfTheMeeting = meetingNameController.value.text;
@@ -307,6 +378,80 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
     // meetingModel.value.timeOfTheMeeting = meetingNameController.value.text;
     api.addMeeting(meetingModel.value);
+  }
+
+  createExternalNewMeeting() async {
+    meetingModel.value.meetingType = 'External Meeting';
+
+    meetingModel.value.meetingWith = meetingWith.value;
+
+    meetingModel.value.meetingAgenda = agendaPurposeOfMeeting.value;
+
+    meetingModel.value.nameOfTheMeeting = meetingNameController.value.text;
+
+    meetingModel.value.dateOfMeeting = dateController.value;
+
+    meetingModel.value.timeOfTheMeeting = timeController.value;
+
+    meetingModel.value.durationOfMeeting = proposedDuration.value.text;
+
+    meetingModel.value.meetingMode = MeetingType.value;
+
+    /// online
+    meetingModel.value.meetingModeType = modeOfMeeting.value;
+    print('modeOfMeeting.value');
+
+    meetingModel.value.meetingLink = meetingLink.value.text;
+
+    ///offline
+    meetingModel.value.locationOfTheMeeting = meetingLocation.value.toString();
+
+    // meetingModel.value.siecBranch =
+    // meetingModel.value.meetingType = MeetingType.value;
+
+    List cc = [
+      {"name": "Shreya IT", "id": 115},
+      {"name": "Kashish IT", "id": 142}
+    ];
+
+    // for (var i = 0; i < 5; i++) {}
+
+    // print(selectedUsersList);
+
+    meetingModel.value.siecParticipants = List<SiecParticipants>.from(
+        selectedUsersList.map((e) => SiecParticipants.fromJson(e.toJson())));
+
+    meetingModel.value.meetingCoordinator = List<SiecParticipants>.from(
+        selectedCoordinatorList
+            .map((e) => SiecParticipants.fromJson(e.toJson())));
+
+    // var res = await api.createMeeting(meetingModel.value);
+    // print(res);
+
+    // meetingModel.value.timeOfTheMeeting = meetingNameController.value.text;
+
+    var res = await api.addMeeting(meetingModel.value);
+
+    var resDecoded = json.decode(res);
+
+    AllMeetings dd = AllMeetings.fromJson(resDecoded);
+
+    List<ParticipantsModel> data = <ParticipantsModel>[].obs;
+
+    var ko = List<ParticipantsModel>.from(
+        listOfParticipants.map((element) => ParticipantsModel.fromJson({
+              "id": null,
+              "meeting_id": dd.id,
+              "participant_id": element.id,
+              "is_active": true,
+              "created_by": 136,
+              "updated_by": 136,
+              "created_at": null,
+              "updated_at": null
+            })));
+
+    var kd = await api.addParticipants(ko);
+    print(kd.toString());
   }
 
   getGroupData() async {

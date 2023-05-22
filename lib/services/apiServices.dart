@@ -6,6 +6,7 @@ import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
+import 'package:meeting_module2/models/participantsModel.dart';
 import 'package:meeting_module2/services/api.dart';
 import 'package:meeting_module2/services/base_services.dart';
 import 'package:meeting_module2/services/endpoints.dart';
@@ -166,7 +167,7 @@ class ApiServices extends BaseServices implements API {
     var data = json.encode(model);
 
     var res = await httpPostHeader(url, data);
-    print(res);
+    return res;
   }
 
   @override
@@ -337,6 +338,55 @@ class ApiServices extends BaseServices implements API {
     return res;
 
     // TODO: implement getRepresentativeAllData
+    // throw UnimplementedError();
+  }
+
+  @override
+  getRepresentativeByUniversity(
+      {required String type,
+      required int collegecode,
+      required int countrycode}) async {
+    var url =
+        '${Endpoints.baseUrl}${Endpoints.findRepresentativeForUniversity}';
+
+    var data = {
+      "representative_type": "${type}",
+      "country": countrycode,
+      "university": collegecode
+    };
+
+    var data2 = json.encode(data);
+
+    var res = await httpPostHeader(url, data2);
+
+    return res;
+
+    // TODO: implement getRepresentativeByUniversity
+    // throw UnimplementedError();
+  }
+
+  @override
+  addParticipants(List<ParticipantsModel> model) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.addParticipants}';
+
+    // var data = {
+    //   "id": null,
+    //   "meeting_id": model.meetingId,
+    //   "participant_id": model.participantId,
+    //   "is_active": true,
+    //   "created_by": 136,
+    //   "updated_by": 136,
+    //   "created_at": null,
+    //   "updated_at": null
+    // };
+
+    var data2 = json.encode(model);
+
+    var res = await httpPostHeader(url, data2);
+
+    return res;
+
+    // TODO: implement addParticipants
     // throw UnimplementedError();
   }
 }

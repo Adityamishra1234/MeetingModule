@@ -28,4 +28,9 @@ class Endpoints {
   static String findRepresentativeForDropDown = 'findRepresentativeForDropDown';
 
   static String findRepresentativeByID = 'findRepresentativeByID';
+
+  static String findRepresentativeForUniversity =
+      'findRepresentativeForUniversity';
+
+  static String addParticipants = 'addPartcipants';
 }

@@ -180,9 +180,10 @@ class _CustomizableDropdownAllUserState
     //   widget.initialSelectedList = selectedItemsList;
     //   setState(() {});
     // }
-    if (oldWidget.itemList != widget.itemList) {
-      singleSelectedItem = widget.itemList![0];
-    }
+    // if (oldWidget.itemList != widget.itemList) {
+    //   print('cd');
+    //   singleSelectedItem = widget.itemList![0];
+    // }
     print("didChangeDependencies  cccc");
     print(oldWidget.initialSelectedList == widget.initialSelectedList);
     if (widget.initialSelectedList != null) {
