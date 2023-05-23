@@ -7,7 +7,7 @@ import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/services/endpoints.dart';
 
-class DashBoardController extends GetxController {
+class DashBoardController extends GetxController with StateMixin {
   ApiServices api = ApiServices();
 
   RxString selectedFilter = 'All Meetings'.obs;
@@ -40,15 +40,17 @@ class DashBoardController extends GetxController {
   var helo = 0.obs;
 
   @override
-  void onInit() {
+  void onInit() async {
     // await Future.delayed(Duration(seconds: 5));
     // RxStatus.loading();5
     super.onInit();
     print('fff');
 
     helo.value = 2;
-    getsss();
+    await getsss();
     // getNotes('1');
+
+    change(null, status: RxStatus.success());
   }
 
   frfr(val) {
@@ -59,7 +61,6 @@ class DashBoardController extends GetxController {
   }
 
   getsss() async {
-    loading.value = true;
     // RxStatus.loading();
     // print('dddd');
     var res = await api.getAllMeetings();
@@ -206,7 +207,6 @@ class DashBoardController extends GetxController {
     // print('ddd');
 
     changeInFilter();
-    loading.value = false;
   }
 
   // upcomingMeetings;

@@ -257,8 +257,8 @@ class CreateNewMeetingController extends GetxController with StateMixin {
   Rx<AllUserModel> selectedCountryForFetchRep = AllUserModel().obs;
 
   getRepresentativesByUniversityINIT() async {
-    print(selectedCountry.value.id!);
-    print(selectedCountry.value.id!);
+    // print(selectedCountry.value.id!);
+    // print(selectedCountry.value.id!);
 
     var res = await api.getRepresentativeByUniversity(
         type: 'University',
