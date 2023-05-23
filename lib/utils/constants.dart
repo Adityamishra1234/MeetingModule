@@ -113,6 +113,14 @@ getEmailvaliation(String? value) {
   }
 }
 
+getEmptyValidation(String? value) {
+  print(value);
+  if (value == null || value == '') {
+    return '* Required';
+  } else
+    return null;
+}
+
 getPhoneNumbervalidation(String? value) {
   if (value != null) {
     if (value.length != 10) {
