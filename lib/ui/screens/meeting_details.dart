@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/presentation/constants/loading.dart';
 import 'package:meeting_module2/ui/controller/add_more_notes_controller.dart';
+import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/add_more_notes.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
@@ -17,11 +18,13 @@ class MeetingDetails extends StatelessWidget {
   // MeetingDetails();
   static const routeNamed = '/MeetingDetails';
   var controller = Get.put(AddMoreNotesController());
+  var controllerbase = Get.find<BaseController>();
+  var controllerDashboard = Get.find<DashBoardController>();
+  // AllMeetings meetingData = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
-    AllMeetings meetingData = Get.arguments;
-
+    AllMeetings meetingData = controllerDashboard.selectedMeetingdata.value;
     return Scaffold(
       body: controller.obx(
           (state) => SafeArea(
@@ -388,7 +391,9 @@ class MeetingDetails extends StatelessWidget {
                           const Spacer(),
                           InkWell(
                             onTap: () {
-                              Get.toNamed(ViewNotesDetails.routeNamed);
+                              Get.to(
+                                ViewNotesDetails.routeNamed,
+                              );
                             },
                             child: SizedBox(
                               width: 86,
@@ -421,7 +426,7 @@ class MeetingDetails extends StatelessWidget {
                             const EdgeInsets.only(left: 0, right: 10, top: 10),
                         child: CustomMultiDownSingleAllUser(
                           // model: ['d', 'd'],
-                          model: Get.find<DashBoardController>().listBro,
+                          model: Get.find<BaseController>().allSiecMembersList,
                           // callbackFunction: callback,
                           callbackFunctionMulti: (val) {
                             controller.accessibileUserSelected_meetingDetail

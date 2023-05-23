@@ -6,6 +6,7 @@ import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/presentation/constants/loading.dart';
 import 'package:meeting_module2/ui/controller/add_more_notes_controller.dart';
+import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
@@ -26,7 +27,7 @@ class AddMoreNotesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // int meetingID = Get.arguments;
+    int meetingID = Get.arguments;
 
     return Scaffold(
         body: controller.obx(
@@ -101,8 +102,9 @@ class AddMoreNotesView extends StatelessWidget {
                               height: 10,
                             ),
                             CustomMultiDownSingleAllUser(
-                  ////finx alll user model
-                                model: Get.find<DashBoardController>().listBro,
+                                ////finx alll user model
+                                model: Get.find<BaseController>()
+                                    .allSiecMembersList,
                                 initialSelectedValue: "Select Add notes for",
                                 enableMultiSelect: true,
                                 callbackFunctionMulti: (value) {

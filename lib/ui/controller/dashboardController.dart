@@ -48,7 +48,7 @@ class DashBoardController extends GetxController with StateMixin {
 
     helo.value = 2;
     await getsss();
-    // getNotes('1');
+    getNotes('1', null);
 
     change(null, status: RxStatus.success());
   }
@@ -108,10 +108,15 @@ class DashBoardController extends GetxController with StateMixin {
     // update();
   }
 
-  getNotes(String id) async {
+  Rx<AllMeetings> selectedMeetingdata = AllMeetings().obs;
+
+  getNotes(String id, int? index) async {
+    if (index != null) {
+      selectedMeetingdata.value = listToShow[index];
+    }
     var res = await api.findNotes(id);
 
-    print(res);
+    print('res');
 
     var data2 = await json.decode(res);
 

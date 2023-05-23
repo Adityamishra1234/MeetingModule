@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/services/endpoints.dart';
@@ -9,6 +10,8 @@ class BaseController extends GetxController {
   ApiServices api = ApiServices();
 
   RxList<AllUserModel> allSiecMembersList = <AllUserModel>[].obs;
+
+  Rx<AllMeetings> meetingData = AllMeetings().obs;
 
   @override
   void onInit() {

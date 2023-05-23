@@ -7,6 +7,7 @@ import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/presentation/constants/loading.dart';
 import 'package:meeting_module2/presentation/custom_widgets/custom_filter_selector.dart';
 import 'package:meeting_module2/services/apiServices.dart';
+import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
@@ -27,7 +28,8 @@ class DashBoard extends StatefulWidget {
 class _DashBoardState extends State<DashBoard> {
   int siecParticipantsLength = 0;
 
-  var controller = Get.put(DashBoardController());
+  var controller = Get.put(DashBoardController(), permanent: true);
+  var controllerBase = Get.put(BaseController(), permanent: true);
 
   String? selectedValue = 'All Meetings';
   bool showFilterList = true;
@@ -437,9 +439,8 @@ class _DashBoardState extends State<DashBoard> {
                         InkWell(
                           onTap: () {
                             controller.getNotes(
-                                '${controller.listToShow[indexs].id}');
-                            Get.to(MeetingDetails(),
-                                arguments: controller.listToShow[indexs]);
+                                '${controller.listToShow[indexs].id}', indexs);
+                            Get.to(MeetingDetails());
                             // Get.toNamed(MeetingDetails.routeNamed,
                             //     arguments: controller.listToShow[indexs]);
                           },

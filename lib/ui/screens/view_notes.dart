@@ -13,6 +13,9 @@ class ViewNotesDetails extends StatelessWidget {
   static const routeNamed = '/ViewNotesDetails';
   @override
   Widget build(BuildContext context) {
+    int meetingID = Get.arguments;
+    controller.getNotes(meetingID.toString(), null);
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
