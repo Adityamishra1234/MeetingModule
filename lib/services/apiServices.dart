@@ -96,34 +96,29 @@ class ApiServices extends BaseServices implements API {
     var url = '${Endpoints.baseUrl}${Endpoints.addNotes}';
     print(model);
 
-    // var json = await model.toJson();
-    // print(DateTime.now());
-    //  print(DateTime.now().isUtc);
-    //   print(DateTime.now());
     model.id = 1;
-    model.meetingId = 1;
-    model.noteType = 1;
+    model.meetingId = model.meetingId;
+    model.noteType = model.noteType;
     model.isActive = true;
     model.createdBy = 142;
     model.updatedBy = 142;
-    model.createdAt = "2023-05-09T09:04:55.000Z";
-    model.updatedAt = "2023-05-09T09:04:55.000Z";
+    // model.createdAt = "2023-05-09T09:04:55.000Z";
+    // model.updatedAt = "2023-05-09T09:04:55.000Z";
     model.isAdded = true;
 
     var data = json.encode(model);
 
     print(json);
     var res = await httpPostHeader(url, data);
-
-    print(res);
-    // TODO: implement addNotes
+    if (res != null) {
+      return FindNotesModel.fromJson(json.decode(res));
+    }
   }
 
   @override
   addMeeting(AllMeetings modelData) async {
     var url = '${Endpoints.baseUrl}${Endpoints.addMeeting}';
     // var data = json.encode(model);
-
     var modeldata = {
       "id": 12,
       "meeting_type": "${modelData.meetingType}",
@@ -388,5 +383,45 @@ class ApiServices extends BaseServices implements API {
 
     // TODO: implement addParticipants
     // throw UnimplementedError();
+  }
+
+  getEmailverification(String email) async {
+    var url =
+        '${Endpoints.baseUrl}${Endpoints.emailverification + "/${email}"}';
+    var res2 = await httpPostNullBody(url);
+    if (res2 != null) {
+      var res = jsonDecode(res2);
+      return res;
+    }
+    ;
+  }
+
+  getOTP(String email) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.otp + "/${email}"}';
+    var res2 = await httpPostNullBody(url);
+    if (res2 != null) {
+      var res = jsonDecode(res2);
+      return res;
+    }
+  }
+
+  otpMatch(String email, String otp) async {
+    var url =
+        '${Endpoints.baseUrl}${Endpoints.otpMatch + "/${email}" + "/${otp}"}';
+    var res2 = await httpPostNullBody(url);
+    if (res2 != null) {
+      var res = jsonDecode(res2);
+      return res;
+    }
+  }
+
+  password(String email, String password) async {
+    var url =
+        '${Endpoints.baseUrl}${Endpoints.passwordUpdate + "/${email}" + "/${password}"}';
+    var res2 = await httpPostNullBody(url);
+    if (res2 != null) {
+      var res = jsonDecode(res2);
+      return res;
+    }
   }
 }

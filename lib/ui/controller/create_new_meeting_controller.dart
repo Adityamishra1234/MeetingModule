@@ -47,9 +47,6 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
   Rx<TextEditingController> proposedDuration = TextEditingController().obs;
 
-  ///
-  ///
-  ///
   RxBool MeetingType = true.obs; //true online
 
   RxBool meetingLocation = true.obs; //
@@ -57,18 +54,12 @@ class CreateNewMeetingController extends GetxController with StateMixin {
   Rx<AllUserModel> selectMeetingBranch = AllUserModel().obs;
 
   RxString modeOfMeeting = ''.obs;
-
-  ///
-  ///
-  ///
-
   Rx<TextEditingController> specifyMeetingLocation =
       TextEditingController().obs;
-  //
 
   Rx<TextEditingController> meetingLink = TextEditingController().obs;
 
-  //
+  // Drop down list
   List<String> selectTargetAudienceType = <String>[
     'Select Target Audience Type',
     'Group Wise',
@@ -85,6 +76,19 @@ class CreateNewMeetingController extends GetxController with StateMixin {
     'Europe Team'
   ].obs;
 
+  List<String> list = <String>[
+    'All Meetings',
+    'University Meeting',
+    'Bank Meeting',
+    'Vendor Meeting',
+    'Internal Meeting'
+  ];
+
+  List<String> meetingWithList = <String>[
+    'University Meetings',
+    'Vendor Meeting',
+    'Bank Meeting',
+  ];
   // RxList branchList = [
   //   'IT ssss',
   //   'Australia Applications',
@@ -117,21 +121,9 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
   // RxString proposedDuration = ''.obs;
 
-  List<String> list = <String>[
-    'All Meetings',
-    'University Meeting',
-    'Bank Meeting',
-    'Vendor Meeting',
-    'Internal Meeting'
-  ];
-
   ///External Meeting
   ///
-  List<String> meetingWithList = <String>[
-    'University Meetings',
-    'Vendor Meeting',
-    'Bank Meeting',
-  ];
+
 //
 //
 //

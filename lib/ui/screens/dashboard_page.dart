@@ -18,7 +18,7 @@ import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/text_underline.dart';
 
 class DashBoard extends StatefulWidget {
-  static const routeNamed = '/';
+  static const routeNamed = '/DashBoard';
   const DashBoard({Key? key}) : super(key: key);
   @override
   State<DashBoard> createState() => _DashBoardState();

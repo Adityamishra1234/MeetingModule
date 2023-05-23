@@ -28,6 +28,14 @@ class Endpoints {
   static String findRepresentativeForDropDown = 'findRepresentativeForDropDown';
 
   static String findRepresentativeByID = 'findRepresentativeByID';
+  static String emailverification = 'Emailverification';
+  // /Otp/:email
+  static String otp = 'Otp';
+  // OtpMatch/developer4@siecindia.com/120863
+  static String otpMatch = 'OtpMatch';
+
+  // /passwordUpdate/:email/:password
+  static String passwordUpdate = 'passwordUpdate';
 
   static String findRepresentativeForUniversity =
       'findRepresentativeForUniversity';
