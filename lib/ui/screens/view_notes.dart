@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
+import 'package:meeting_module2/ui/screens/assign_to_view.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/assignTo.dart';
 import 'package:meeting_module2/widget/custom_tab_widget.dart';
@@ -88,7 +89,7 @@ class ViewNotesDetails extends StatelessWidget {
                               ),
                               InkWell(
                                 onTap: () {
-                                  Get.to(AssignTo());
+                                  Get.to(AssignToView());
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.only(top: 10),

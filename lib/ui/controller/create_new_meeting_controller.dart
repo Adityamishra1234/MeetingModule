@@ -16,6 +16,8 @@ import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsersCore.dart';
 
 class CreateNewMeetingController extends GetxController with StateMixin {
+  GlobalKey<FormState> key = GlobalKey<FormState>();
+
   @override
   void onInit() async {
     // TODO: implement onInit
@@ -339,7 +341,7 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
     meetingModel.value.durationOfMeeting = proposedDuration.value.text;
 
-    meetingModel.value.meetingMode = MeetingType.value;
+    meetingModel.value.meetingMode = MeetingType.value.toString();
 
     /// online
     meetingModel.value.meetingModeType = modeOfMeeting.value;
@@ -382,7 +384,13 @@ class CreateNewMeetingController extends GetxController with StateMixin {
   createExternalNewMeeting() async {
     meetingModel.value.meetingType = 'External Meeting';
 
-    meetingModel.value.meetingWith = meetingWith.value;
+    meetingModel.value.meetingWith = meetingWith.value == 'University Meetings'
+        ? 'university'
+        : meetingWith.value == 'Vendor Meeting'
+            ? 'vendor'
+            : meetingWith.value == 'Bank Meeting'
+                ? 'bank'
+                : 'univeristy';
 
     meetingModel.value.meetingAgenda = agendaPurposeOfMeeting.value;
 
@@ -394,7 +402,7 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
     meetingModel.value.durationOfMeeting = proposedDuration.value.text;
 
-    meetingModel.value.meetingMode = MeetingType.value;
+    meetingModel.value.meetingMode = MeetingType.value.toString();
 
     /// online
     meetingModel.value.meetingModeType = modeOfMeeting.value;
@@ -432,6 +440,8 @@ class CreateNewMeetingController extends GetxController with StateMixin {
     var res = await api.addMeeting(meetingModel.value);
 
     var resDecoded = json.decode(res);
+
+    print(res.toString());
 
     AllMeetings dd = AllMeetings.fromJson(resDecoded);
 

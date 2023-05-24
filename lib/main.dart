@@ -19,6 +19,7 @@ import 'package:meeting_module2/ui/screens/meeting_details.dart';
 import 'package:meeting_module2/ui/screens/nfvf.dart';
 import 'package:meeting_module2/ui/screens/participants_details.dart';
 import 'package:meeting_module2/ui/screens/reschedule_meeting.dart';
+import 'package:meeting_module2/ui/screens/signin_view.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
 import 'firebase_options.dart';
 import 'message.dart';
@@ -258,8 +259,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: DashBoard.routeNamed,
+        initialRoute: SignInView.route,
         getPages: [
+          GetPage(
+            name: SignInView.route,
+            page: () => SignInView(),
+          ),
           GetPage(
             name: LoginPage.routeNamed,
             page: () => LoginPage(),

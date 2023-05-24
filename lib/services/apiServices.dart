@@ -14,15 +14,19 @@ import 'package:tuple/tuple.dart';
 
 class ApiServices extends BaseServices implements API {
   @override
-  getAllMeetings() {
-    var url = '${Endpoints.baseUrl}${Endpoints.allMeetings}';
+  getAllMeetings(int id) {
+    var url = '${Endpoints.baseUrl}${Endpoints.allMeetings}/$id';
 
     var res = httpPostNullBody(url);
 
+    if (res != []) {
+      return res;
+    }
+
+    return false;
     // var resdata = jsonDecode(res);
 
     // print(res);
-    return res;
 
     // TODO: implement getAllMeetings
     // throw UnimplementedError();
@@ -389,11 +393,8 @@ class ApiServices extends BaseServices implements API {
     var url =
         '${Endpoints.baseUrl}${Endpoints.emailverification + "/${email}"}';
     var res2 = await httpPostNullBody(url);
-    if (res2 != null) {
-      var res = jsonDecode(res2);
-      return res;
-    }
-    ;
+    print(res2);
+    return res2;
   }
 
   getOTP(String email) async {
@@ -416,12 +417,35 @@ class ApiServices extends BaseServices implements API {
   }
 
   password(String email, String password) async {
-    var url =
-        '${Endpoints.baseUrl}${Endpoints.passwordUpdate + "/${email}" + "/${password}"}';
-    var res2 = await httpPostNullBody(url);
+    var url = '${Endpoints.baseUrl}${Endpoints.passwordUpdate}';
+    var data = {"email": "${email}", "password": '$password'};
+
+    var data2 = json.encode(data);
+
+    var res2 = await httpPostHeader(url, data2);
     if (res2 != null) {
       var res = jsonDecode(res2);
+      print(res);
       return res;
     }
+  }
+
+  @override
+  login({required String email, required String password}) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.login}';
+
+    var data = {
+      "email": "${email}",
+      "password": "$password",
+    };
+
+    var data2 = json.encode(data);
+
+    var res = await httpPostHeader(url, data2);
+
+    return res;
+
+    // TODO: implement login
+    // throw UnimplementedError();
   }
 }

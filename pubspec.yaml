@@ -48,6 +48,7 @@ dependencies:
   flutter_screenutil: ^5.7.0
   dropdown_button2: ^2.1.2
   tuple: ^2.0.1
+  shared_preferences: ^2.1.1
 
 dev_dependencies:
   flutter_test:

@@ -5,7 +5,7 @@ import 'package:meeting_module2/models/participantsModel.dart';
 import 'package:meeting_module2/ui/screens/participants_details.dart';
 
 abstract class API {
-  getAllMeetings();
+  getAllMeetings(int id);
 
   getDropdown(String endpoint);
 
@@ -38,4 +38,6 @@ abstract class API {
       required int countrycode});
 
   addParticipants(List<ParticipantsModel> model);
+
+  login({required String email, required String password});
 }

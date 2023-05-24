@@ -10,7 +10,7 @@ class AllMeetings {
   String? dateOfMeeting;
   String? timeOfTheMeeting;
   String? durationOfMeeting;
-  bool? meetingMode;
+  String? meetingMode;
   String? meetingModeType;
   String? meetingLink;
   String? locationOfTheMeeting;
@@ -42,7 +42,7 @@ class AllMeetings {
     this.dateOfMeeting = '2023-04-27',
     this.timeOfTheMeeting = '17:20',
     this.durationOfMeeting = '',
-    this.meetingMode = true,
+    this.meetingMode = '',
     this.meetingModeType = 'Zoom',
     this.meetingLink = 'test',
     this.locationOfTheMeeting = '',

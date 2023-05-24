@@ -1,11 +1,14 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
+import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/services/endpoints.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashBoardController extends GetxController with StateMixin {
   ApiServices api = ApiServices();
@@ -49,8 +52,6 @@ class DashBoardController extends GetxController with StateMixin {
     helo.value = 2;
     await getsss();
     getNotes('1', null);
-
-    change(null, status: RxStatus.success());
   }
 
   frfr(val) {
@@ -60,13 +61,44 @@ class DashBoardController extends GetxController with StateMixin {
     update();
   }
 
+  Rx<UserModel> user = UserModel().obs;
+
   getsss() async {
     // RxStatus.loading();
     // print('dddd');
-    var res = await api.getAllMeetings();
-    var data = await json.decode(res);
-    allMeetingslist =
-        await List<AllMeetings>.from(data.map((x) => AllMeetings.fromJson(x)));
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var id = await prefs.getInt('id');
+    print(id);
+    var res = await api.getAllMeetings(id!);
+
+    if (res != false) {
+      var data = await json.decode(res);
+
+      allMeetingslist = await List<AllMeetings>.from(
+          data.map((x) => AllMeetings.fromJson(x)));
+
+      RxList<AllMeetings> userID = <AllMeetings>[].obs;
+      showUpcomingList();
+    }
+
+    var email = await prefs.getString('email');
+    var password = await prefs.getString('password');
+
+    var login = await api.login(email: email!, password: password!);
+
+    var data = json.decode(login);
+
+    user.value = UserModel.fromJson(data);
+
+    change(null, status: RxStatus.success());
+
+//     allMeetingslist.forEach((e) {
+
+// userID.add(item);
+//       e.siecParticipants!.where((element) => element.id == userID);
+//       e.meetingCoordinator!.where((element) => element.id == userID);
+//     });
 
     // var res2 = await api.getDropdown(Endpoints.allUser);
 
@@ -104,7 +136,6 @@ class DashBoardController extends GetxController with StateMixin {
 
     // listToShow.value = upcomingMeetings;
 
-    showUpcomingList();
     // update();
   }
 
@@ -156,7 +187,8 @@ class DashBoardController extends GetxController with StateMixin {
       } else if (selectedFilter.value == "University Meeting") {
         listToShow.value = await allMeetingslist
             .where((p0) =>
-                p0.meetingWith == 'university' && p0.meetingEnded == false)
+                p0.meetingWith == 'University Meetings' &&
+                p0.meetingEnded == false)
             .toList();
       } else if (selectedFilter.value == "Vendor Meeting") {
         listToShow.value = await allMeetingslist
@@ -186,7 +218,8 @@ class DashBoardController extends GetxController with StateMixin {
       } else if (selectedFilter.value == "University Meeting") {
         listToShow.value = await allMeetingslist
             .where((p0) =>
-                p0.meetingWith == 'university' && p0.meetingEnded == true)
+                p0.meetingWith == 'University Meetings' &&
+                p0.meetingEnded == true)
             .toList();
       } else if (selectedFilter.value == "Vendor Meeting") {
         listToShow.value = await allMeetingslist

@@ -11,6 +11,7 @@ import 'package:meeting_module2/ui/controller/create_new_meeting_controller.dart
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/add_representative.dart';
 import 'package:meeting_module2/ui/screens/dashboard_page.dart';
+import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/custom_button.dart';
 import 'package:meeting_module2/widget/custom_date_picker/custom_time_picker_only.dart';
@@ -28,8 +29,6 @@ class CreateNewMeeting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(CreateNewMeetingController());
-
-    final _key = GlobalKey<FormState>();
 
     return Scaffold(
         body: controller.obx(
@@ -96,8 +95,7 @@ class CreateNewMeeting extends StatelessWidget {
                               ],
                             ),
                             // if (controller.externalMeeting.value)
-                            ...getListInternalmeeting(
-                                context, controller, _key),
+                            ...getListInternalmeeting(context, controller),
                             // if (controller.externalMeeting.value)
                             //   ...getExternalMeeting(context, controller)
                           ],
@@ -109,8 +107,8 @@ class CreateNewMeeting extends StatelessWidget {
             onLoading: getLoading(context)));
   }
 
-  List<Widget> getListInternalmeeting(BuildContext context,
-      CreateNewMeetingController controllers, GlobalKey<FormState> key) {
+  List<Widget> getListInternalmeeting(
+      BuildContext context, CreateNewMeetingController controllers) {
     var controller = Get.find<CreateNewMeetingController>();
 
     String? selectedValue = 'All Meetings';
@@ -125,7 +123,7 @@ class CreateNewMeeting extends StatelessWidget {
 
     return [
       Form(
-          key: key,
+          key: controller.key,
           child: Column(children: [
             if (controller.externalMeeting.value == true) ...[
               Padding(
@@ -330,18 +328,56 @@ class CreateNewMeeting extends StatelessWidget {
                     Align(
                       alignment: AlignmentDirectional.topStart,
                       child: Container(
-                        height: 45,
-                        width: (MediaQuery.of(context).size.width - 40) / 2,
-                        // decoration: BoxDecoration(
-                        //     color: ThemeConstants.lightgreycolor,
-                        //     borderRadius:
-                        //         const BorderRadius.all(Radius.circular(10.0))),
-                        child: CustomTextField(
-                          validator: Validator.notEmpty,
-                          hint: '',
-                          controller: controller.proposedDuration.value,
-                        ),
-                      ),
+                          height: 45,
+                          width: (MediaQuery.of(context).size.width - 40) / 2,
+                          // decoration: BoxDecoration(
+                          //     color: ThemeConstants.lightgreycolor,
+                          //     borderRadius:
+                          //         const BorderRadius.all(Radius.circular(10.0))),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                color: ThemeConstants.lightVioletColor,
+                                width:
+                                    (MediaQuery.of(context).size.width - 40) /
+                                        4.5,
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.all(0),
+                                    hintText: 'Hours',
+                                    filled: true,
+                                    fillColor: ThemeConstants.lightblueColor,
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Container(
+                                color: ThemeConstants.lightVioletColor,
+                                width:
+                                    (MediaQuery.of(context).size.width - 40) /
+                                        4.5,
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.all(0),
+                                    hintText: 'Minutes',
+                                    filled: true,
+                                    fillColor: ThemeConstants.lightblueColor,
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )),
                     ),
                   ],
                 ),
@@ -1184,14 +1220,17 @@ class CreateNewMeeting extends StatelessWidget {
 
             InkWell(
               onTap: () {
-                if (key.currentState!.validate()) {
+                if (controller.key.currentState!.validate()) {
                   print(controller.externalMeeting);
                   if (controller.externalMeeting == false) {
+                    print('ff');
                     controller.createNewMeeting();
                   } else {
                     controller.createExternalNewMeeting();
                   }
-                  key.currentState!.save();
+                  controller.key.currentState!.save();
+                } else {
+                  getToast('Please fill the Required Fields');
                 }
               },
               child: Container(

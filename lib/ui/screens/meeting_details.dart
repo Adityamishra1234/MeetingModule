@@ -391,9 +391,8 @@ class MeetingDetails extends StatelessWidget {
                           const Spacer(),
                           InkWell(
                             onTap: () {
-                              Get.to(
-                                ViewNotesDetails.routeNamed,
-                              );
+                              Get.to(ViewNotesDetails(),
+                                  arguments: meetingData.id);
                             },
                             child: SizedBox(
                               width: 86,

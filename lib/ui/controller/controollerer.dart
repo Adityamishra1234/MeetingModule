@@ -59,7 +59,7 @@ class Controdddddddd extends GetxController {
       loading.value = true;
       RxStatus.loading();
 
-      var res = await api.getAllMeetings();
+      var res = await api.getAllMeetings(2);
 
       var data = await json.decode(res);
       allMeetingslist = await List<AllMeetings>.from(

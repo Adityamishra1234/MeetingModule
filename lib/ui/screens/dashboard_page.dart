@@ -28,7 +28,7 @@ class DashBoard extends StatefulWidget {
 class _DashBoardState extends State<DashBoard> {
   int siecParticipantsLength = 0;
 
-  var controller = Get.put(DashBoardController(), permanent: true);
+  var controller = Get.put(DashBoardController());
   var controllerBase = Get.put(BaseController(), permanent: true);
 
   String? selectedValue = 'All Meetings';
@@ -110,7 +110,7 @@ class _DashBoardState extends State<DashBoard> {
                                     fontSize: 18,
                                   ),
                                   CustomAutoSizeTextMontserrat(
-                                    text: "Manasvi",
+                                    text: "${controller.user.value.name}",
                                     fontSize: 35,
                                   ),
                                 ],

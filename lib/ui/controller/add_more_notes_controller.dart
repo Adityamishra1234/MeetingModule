@@ -47,6 +47,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
   }
 
   saveAndNext(int metingID) async {
+    print(metingID);
     change(null, status: RxStatus.loading());
     String visibleTo = "";
     for (var element in accessibileUserSelected) {

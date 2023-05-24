@@ -3,11 +3,14 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
+import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/services/endpoints.dart';
 
 class BaseController extends GetxController {
   ApiServices api = ApiServices();
+
+  Rx<UserModel> user = UserModel().obs;
 
   RxList<AllUserModel> allSiecMembersList = <AllUserModel>[].obs;
 
@@ -20,6 +23,7 @@ class BaseController extends GetxController {
     super.onInit();
 
     getAllSiecMembersList();
+
     // getNotes('1');
   }
 

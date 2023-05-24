@@ -23,12 +23,14 @@ class LoginController extends GetxController with StateMixin {
   }
 
   emailVerification(String email) async {
-    var res = false;
-    // var res = await api.getEmailverification(email);
+    // var res = false;
+    var res = await api.getEmailverification(email);
+    print(res == true.toString());
     if (res != null) {
-      if (res == false) {
+      if (res == false.toString()) {
         verifyEmail = false;
         forOtp = 2;
+
         update();
         // var res2 = await api.getOTP(email);
         startTimer();
@@ -41,9 +43,11 @@ class LoginController extends GetxController with StateMixin {
             getToast("Some thing went wrong");
           }
         }
-      } else if (res == true) {
+      } else if (res == true.toString()) {
         print('object');
         getToast('Already Registered Please check forget password');
+      } else if (res == 'User not found') {
+        getToast('Please Contact HR');
       }
     }
 
@@ -59,7 +63,7 @@ class LoginController extends GetxController with StateMixin {
 
   RxInt timer = 10.obs;
   startTimer() async {
-    resendOTP = 1;
+    resendOTP = 2;
 
     for (var i = 0; i < 10; i++) {
       await Future.delayed(Duration(seconds: 1));
@@ -67,12 +71,10 @@ class LoginController extends GetxController with StateMixin {
       if (timer.value != 0) {
         timer.value = timer.value - 1;
         print(timer.value);
-      } else {
-        break;
       }
     }
 
-    resendOTP = 0;
+    resendOTP = 1;
     update();
 
     return null;
@@ -100,12 +102,13 @@ class LoginController extends GetxController with StateMixin {
 
   updatePassword(String email, String password) async {
     var res = await api.password(email, password);
+    print(res);
     if (res != null) {
       if (res == true) {
-        Get.toNamed(LoginPage.routeNamed);
+        // Get.offNamed(LoginPage.routeNamed);
       }
     }
 
-    Get.toNamed(DashBoard.routeNamed);
+    // Get.toNamed(DashBoard.routeNamed);
   }
 }

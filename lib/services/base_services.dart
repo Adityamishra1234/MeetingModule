@@ -162,10 +162,7 @@ class BaseServices {
     );
     switch (response.statusCode) {
       case 200:
-        return response.body.isNotEmpty &&
-                response.body != "" &&
-                response.body != "[]" &&
-                response.body != []
+        return response.body.isNotEmpty && response.body != ""
             ? response.body
             : throw EmptyDataException("440 :${response.body}");
       case 440:

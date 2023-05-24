@@ -43,46 +43,13 @@ class LoginPage extends StatelessWidget {
                         text: 'Register',
                       ),
                     ),
+
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: CustomTextField(
                           hint: "Enter your office email",
                           validator: Validator.email,
                           controller: texfield),
-                    ),
-                    if (controller.forOtp == 1 || controller.forOtp == 2)
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: CustomTextField(
-                            hint: "enter your OTP",
-                            validator: Validator.otp,
-                            controller: otpfield),
-                      ),
-
-                    Obx(
-                      () => GestureDetector(
-                        onTap: () {
-                          controller.startResend();
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 20),
-                          child: Container(
-                            width: double.infinity,
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Resend OTP ${controller.timer.value}",
-                              style: TextStyle(
-                                  fontWeight: controller.resendOTP == 0
-                                      ? FontWeight.w500
-                                      : FontWeight.bold,
-                                  color: controller.resendOTP == 0
-                                      ? ThemeConstants.GreenColor
-                                      : ThemeConstants.bluecolor),
-                            ),
-                          ),
-                        ),
-                      ),
                     ),
                     if (controller.verifyEmail == true)
                       InkWell(
@@ -108,6 +75,42 @@ class LoginPage extends StatelessWidget {
                           ),
                         ),
                       ),
+                    if (controller.forOtp == 1 || controller.forOtp == 2)
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: CustomTextField(
+                            hint: "enter your OTP",
+                            validator: Validator.otp,
+                            controller: otpfield),
+                      ),
+                    if (controller.resendOTP == 2 || controller.resendOTP == 1)
+                      Obx(
+                        () => GestureDetector(
+                          onTap: () {
+                            if (controller.resendOTP == 1)
+                              controller.startResend();
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 20),
+                            child: Container(
+                              width: double.infinity,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Resend OTP ${controller.timer.value == 0 ? '' : controller.timer.value}",
+                                style: TextStyle(
+                                    fontWeight: controller.resendOTP == 1
+                                        ? FontWeight.w500
+                                        : FontWeight.bold,
+                                    color: controller.resendOTP == 1
+                                        ? ThemeConstants.GreenColor
+                                        : ThemeConstants.bluecolor),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
                     if (controller.forOtp == 2)
                       InkWell(
                         onTap: () {
@@ -156,14 +159,12 @@ class LoginPage extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () async {
-                          if (confirmpassword.text != confirmpassword.text) {
+                          if (confirmpassword.text != password.text) {
                             return getToast('Password is not matching');
                           }
                           if (password.text == confirmpassword.text) {
                             controller.updatePassword(
                                 texfield.value.text, password.text);
-                          } else {
-                            getToast("Please check your password");
                           }
                         },
                         child: Container(
@@ -184,7 +185,7 @@ class LoginPage extends StatelessWidget {
                     ],
                     GestureDetector(
                       onTap: () {
-                        Get.to(SignInView());
+                        Get.offNamed(SignInView.route);
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
