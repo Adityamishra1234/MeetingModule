@@ -70,7 +70,10 @@ class DashBoardController extends GetxController with StateMixin {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var id = await prefs.getInt('id');
     print(id);
-    var res = await api.getAllMeetings(id!);
+
+    ///todo
+
+    var res = await api.getAllMeetings(2);
 
     if (res != false) {
       var data = await json.decode(res);

@@ -184,19 +184,31 @@ class _CustomizableDropdownAllUserState
     //   print('cd');
     //   singleSelectedItem = widget.itemList![0];
     // }
-    print("didChangeDependencies  cccc");
+
     print(oldWidget.initialSelectedList == widget.initialSelectedList);
     if (widget.initialSelectedList != null) {
       if (oldWidget.initialSelectedList != widget.initialSelectedList) {
         selectedItemsList.clear();
         widget.initialSelectedList!
             .forEach((element) => selectedItemsList.add(element));
-
+        print('ddddd');
         setState(() {});
       }
 
       // selectedItemsList.addAll(widget.initialSelectedList.map((e) => e) );
     }
+    if (widget.multiSelectEnable == false) {
+      if (widget.itemList != null) {
+        if (oldWidget.itemList != widget.itemList) {
+          print('object');
+          singleSelectedItem = widget.itemList![0];
+          setState(() {});
+        }
+
+        // selectedItemsList.addAll(widget.initialSelectedList.map((e) => e) );
+      }
+    }
+
     // filterSearchResults(editingController.text);
     print("didUpdateWidget");
     super.didUpdateWidget(oldWidget);

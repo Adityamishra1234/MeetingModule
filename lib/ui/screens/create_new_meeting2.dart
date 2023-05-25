@@ -25,7 +25,7 @@ import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_all
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dart';
 import 'package:meeting_module2/widget/text_underline.dart';
 
-class CreateNewMeeting extends StatelessWidget {
+class CreateNewMeeting2 extends StatelessWidget {
   static const routeNamed = '/CreateNewMeeting';
   @override
   Widget build(BuildContext context) {
@@ -34,73 +34,70 @@ class CreateNewMeeting extends StatelessWidget {
     return Scaffold(
         body: controller.obx(
             (state) => SafeArea(
-                  child: Obx(
-                    () => Container(
-                      padding: EdgeInsets.only(
-                        top: ScreenUtil().statusBarHeight,
-                        left: 10,
-                        right: 10,
-                      ),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15),
-                              child: Align(
-                                alignment: AlignmentDirectional.topStart,
-                                child: CustomAutoSizeTextMontserrat(
-                                  text: "Create \nNew Meeting",
-                                  fontSize: 35,
-                                  textColor: ThemeConstants.bluecolor,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: ScreenUtil().statusBarHeight,
+                      left: 10,
+                      right: 10,
+                    ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: Align(
+                              alignment: AlignmentDirectional.topStart,
+                              child: CustomAutoSizeTextMontserrat(
+                                text: "Create \nNew Messeting",
+                                fontSize: 35,
+                                textColor: ThemeConstants.bluecolor,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Row(
-                              children: [
-                                const SizedBox(
-                                  width: 20,
+                          ),
+                          Row(
+                            children: [
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 5),
+                                child: CustomTabWidget(
+                                  title0: "Internal Meetings",
+                                  title1: "External Meetings",
+                                  callback: (val) {
+                                    if (val == 1) {
+                                      controller.externalMeeting.value = true;
+                                      controller.update();
+                                    } else {
+                                      controller.externalMeeting.value = false;
+                                      controller.update();
+                                    }
+                                  },
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 0, vertical: 5),
-                                  child: CustomTabWidget(
-                                    title0: "Internal Meetings",
-                                    title1: "External Meetings",
-                                    callback: (val) {
-                                      if (val == 1) {
-                                        controller.externalMeeting.value = true;
-                                        controller.update();
-                                      } else {
-                                        controller.externalMeeting.value =
-                                            false;
-                                        controller.update();
-                                      }
-                                    },
-                                  ),
-                                ),
-                                // TextUnderLine(
-                                //   text1: "Internal",
-                                //   text: "Meetings",
-                                //   textColor: ThemeConstants.firstColor,
-                                //   underlinceColor: ThemeConstants.firstColor,
-                                // ),
-                                // const SizedBox(
-                                //   width: 20,
-                                // ),
-                                // TextUnderLine(
-                                //   text1: "External",
-                                //   text: " Meeting",
-                                //   underlinceColor: Colors.transparent,
-                                // ),
-                              ],
-                            ),
-                            // if (controller.externalMeeting.value)
-                            ...getListInternalmeeting(context, controller),
-                            // if (controller.externalMeeting.value)
-                            //   ...getExternalMeeting(context, controller)
-                          ],
-                        ),
+                              ),
+                              // TextUnderLine(
+                              //   text1: "Internal",
+                              //   text: "Meetings",
+                              //   textColor: ThemeConstants.firstColor,
+                              //   underlinceColor: ThemeConstants.firstColor,
+                              // ),
+                              // const SizedBox(
+                              //   width: 20,
+                              // ),
+                              // TextUnderLine(
+                              //   text1: "External",
+                              //   text: " Meeting",
+                              //   underlinceColor: Colors.transparent,
+                              // ),
+                            ],
+                          ),
+                          // if (controller.externalMeeting.value)
+                          ...getListInternalmeeting(context, controller),
+                          // if (controller.externalMeeting.value)
+                          //   ...getExternalMeeting(context, controller)
+                        ],
                       ),
                     ),
                   ),
@@ -173,7 +170,6 @@ class CreateNewMeeting extends StatelessWidget {
               enableMultiSelect: false,
               callbackFunctionSingle: (Value) {
                 controller.agendaPurposeOfMeeting.value = Value;
-                controller.update();
               },
             )
 
@@ -280,7 +276,7 @@ class CreateNewMeeting extends StatelessWidget {
                           width: (MediaQuery.of(context).size.width - 40) / 2,
                           child: CustomTimerWidget(callback: (val) {
                             controller.dateController.value = val;
-                            controller.update();
+
                             print(controller.dateController.value);
                           })),
                     ),
@@ -303,7 +299,7 @@ class CreateNewMeeting extends StatelessWidget {
                           child: CustomTimerWidget2(callback: (val) {
                             // print(val);
                             controller.timeController.value = val;
-                            controller.update();
+
                             print(controller.timeController.value);
                           }),
                         ),
@@ -506,6 +502,7 @@ class CreateNewMeeting extends StatelessWidget {
                     callbackFunctionSingle: (AllUserModel val) {
                       print('$val ddd');
                       controller.selectMeetingBranch.value = val;
+                      controller.update();
                     },
                   ),
                 ),
@@ -611,14 +608,13 @@ class CreateNewMeeting extends StatelessWidget {
                     model: controller.allCountriesList,
                     initialSelectedValue: '',
                     // inititalSelectedList: controller.preFilledUsers.value,
-                    // callbackFunctionSingle: (val) async {
-                    //   print(val);
-                    //   controller.selectedCountry.value = val;
+                    callbackFunctionSingle: (AllUserModel val) async {
+                      print(val);
+                      controller.selectedCountry.value = val;
 
-                    //   await controller.getUniversities(
-                    //       controller.selectedCountry.value.id!);
-                    //   controller.update();
-                    // },
+                      await controller.getUniversities(val.id!);
+                      controller.update();
+                    },
                     callbackFunctionMulti: (AllUserModel val) {
                       print(val);
                     },
@@ -2137,12 +2133,13 @@ class CreateNewMeeting extends StatelessWidget {
                             model: controller.allCountriesList,
                             initialSelectedValue: '',
                             // inititalSelectedList: controller.preFilledUsers.value,
-                            // callbackFunctionSingle: (val) async {
-                            //   controller.selectedCountry.value = val;
-
-                            //   await controller.getUniversities(
-                            //       controller.selectedCountry.value.id!);
-                            // },
+                            callbackFunctionSingle: (val) async {
+                              controller.selectedCountry.value = val;
+                              controller.update();
+                              await controller.getUniversities(
+                                  controller.selectedCountry.value.id!);
+                              controller.update();
+                            },
                             callbackFunctionMulti: (AllUserModel val) {
                               print(val);
                             },

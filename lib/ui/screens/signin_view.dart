@@ -4,6 +4,8 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:nice_loading_button/nice_loading_button.dart';
+
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/presentation/constants/loading.dart';
@@ -274,33 +276,71 @@ class SignInView extends StatelessWidget {
                     const SizedBox(
                       height: 5,
                     ),
-                    InkWell(
-                      onTap: () async {
-                        var res = await controller.logIn(
-                            emailController.value.text, password.value.text);
+                    // InkWell(
+                    //   onTap: () async {
+                    //     var res = await controller.logIn(
+                    //         emailController.value.text, password.value.text);
 
-                        if (res) {
-                          controllerBase.user.value = res;
-                        }
-                        // Get.to(
-                        //     () => CreatePasswrord(email: texfield.value.text));
-                        // controller.otpcheck(texfield.text, otpfield.text);
-                      },
-                      child: Container(
+                    //     if (res) {
+                    //       controllerBase.user.value = res;
+                    //     }
+                    //     // Get.to(
+                    //     //     () => CreatePasswrord(email: texfield.value.text));
+                    //     // controller.otpcheck(texfield.text, otpfield.text);
+                    //   },
+                    //   child:
+                    LoadingButton(
+                      height: 35,
+                      borderRadius: 8,
+                      animate: true,
+                      color: ThemeConstants.bluecolor,
+                      width: MediaQuery.of(context).size.width * 0.44,
+                      loader: Container(
+                        padding: const EdgeInsets.all(10),
+                        width: 40,
                         height: 40,
-                        width: MediaQuery.of(context).size.width - 20,
-                        decoration: BoxDecoration(
-                            color: ThemeConstants.bluecolor,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0))),
-                        child: Center(
-                          child: CustomAutoSizeTextMontserrat(
-                            text: "Submit",
-                            textColor: ThemeConstants.whitecolor,
-                          ),
+                        child: const CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
                         ),
                       ),
+                      child: CustomAutoSizeTextMontserrat(
+                        text: 'Download',
+                        textColor: ThemeConstants.whitecolor,
+                      ),
+                      onTap: (startLoading, stopLoading, buttonState) async {
+                        // print(widget.path);
+                        if (buttonState == ButtonState.idle) {
+                          startLoading();
+                          var res = await controller.logIn(
+                              emailController.value.text, password.value.text);
+
+                          if (res) {
+                            controllerBase.user.value = res;
+                          }
+                          // await download(widget.path);
+                          // await Future.delayed(const Duration(seconds: 5))
+                          stopLoading();
+                        }
+                      },
                     ),
+                    //
+                    //
+                    // Container(
+                    //   height: 40,
+                    //   width: MediaQuery.of(context).size.width - 20,
+                    //   decoration: BoxDecoration(
+                    //       color: ThemeConstants.bluecolor,
+                    //       borderRadius:
+                    //           BorderRadius.all(Radius.circular(20.0))),
+                    //   child: Center(
+                    //     child: CustomAutoSizeTextMontserrat(
+                    //       text: "Submit",
+                    //       textColor: ThemeConstants.whitecolor,
+                    //     ),
+                    //   ),
+                    // ),
+
                     const SizedBox(
                       height: 15,
                     ),

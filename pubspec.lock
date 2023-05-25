@@ -328,6 +328,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.0"
+  nice_loading_button:
+    dependency: "direct main"
+    description:
+      name: nice_loading_button
+      sha256: "7c498022a87e3a073015a7ba4fada322a5adb0f80eb3d17f7f1cf49d18443d6e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   path:
     dependency: transitive
     description:

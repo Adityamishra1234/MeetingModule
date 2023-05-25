@@ -47,6 +47,8 @@ class CreateNewMeetingController extends GetxController with StateMixin {
   RxString timeController =
       '${DateTime.now().hour}:${DateTime.now().minute}'.obs;
 
+  RxString proposedDurationController = '0 hours 0 minutes'.obs;
+
   Rx<TextEditingController> proposedDuration = TextEditingController().obs;
 
   RxBool MeetingType = true.obs; //true online
@@ -339,7 +341,7 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
     meetingModel.value.timeOfTheMeeting = timeController.value;
 
-    meetingModel.value.durationOfMeeting = proposedDuration.value.text;
+    meetingModel.value.durationOfMeeting = proposedDurationController.value;
 
     meetingModel.value.meetingMode = MeetingType.value.toString();
 
@@ -378,7 +380,37 @@ class CreateNewMeetingController extends GetxController with StateMixin {
     // print(res);
 
     // meetingModel.value.timeOfTheMeeting = meetingNameController.value.text;
-    api.addMeeting(meetingModel.value);
+    await api.addMeeting(meetingModel.value);
+
+    change(null, status: RxStatus.loading());
+
+    Get.delete<CreateNewMeetingController>();
+    Get.put(CreateNewMeetingController());
+    change(null, status: RxStatus.success());
+    Get.defaultDialog(
+        title: '',
+        titlePadding: EdgeInsets.all(0),
+        content: Container(
+          width: 200,
+          height: 200,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Meeting Added Successfully',
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Icon(
+                  Icons.check_circle_rounded,
+                  color: ThemeConstants.GreenColor,
+                  size: 60,
+                ),
+              ]),
+        ));
   }
 
   createExternalNewMeeting() async {
@@ -400,7 +432,7 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
     meetingModel.value.timeOfTheMeeting = timeController.value;
 
-    meetingModel.value.durationOfMeeting = proposedDuration.value.text;
+    meetingModel.value.durationOfMeeting = proposedDurationController.value;
 
     meetingModel.value.meetingMode = MeetingType.value.toString();
 
@@ -461,6 +493,36 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
     var kd = await api.addParticipants(ko);
     print(kd.toString());
+
+    change(null, status: RxStatus.loading());
+
+    Get.delete<CreateNewMeetingController>();
+    Get.put(CreateNewMeetingController());
+    change(null, status: RxStatus.success());
+    Get.defaultDialog(
+        title: '',
+        titlePadding: EdgeInsets.all(0),
+        content: Container(
+          width: 200,
+          height: 200,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Meeting Added Successfully',
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Icon(
+                  Icons.check_circle_rounded,
+                  color: ThemeConstants.GreenColor,
+                  size: 60,
+                ),
+              ]),
+        ));
   }
 
   getGroupData() async {
@@ -485,19 +547,19 @@ class CreateNewMeetingController extends GetxController with StateMixin {
     update();
   }
 
-  branchSelected(val) async {
+  branchSelected(AllUserModel val) async {
     print(val);
-    selectedBranch.value = val;
+    // selectedBranch.value = val;
     // var branchCode = allBranchList.value.map(
     //     (e) => e.branchName!.toLowerCase() == val.toString().toLowerCase(),
     //     print(e));
     // print(branchCode);
-    int code = 0;
-    var bb = allBranchList.forEach((e) {
-      if (e.branchName!.toLowerCase() == val.toString().toLowerCase()) {
-        code = e.id!;
-      }
-    });
+    int code = val.id!;
+    // var bb = allBranchList.forEach((e) {
+    //   if (e.branchName!.toLowerCase() == val.toString().toLowerCase()) {
+    //     code = e.id!;
+    //   }
+    // });
 
     var res = await api.getSpecificBranchUsers(code);
 
@@ -505,6 +567,7 @@ class CreateNewMeetingController extends GetxController with StateMixin {
         List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)));
     preFilledUsers.value = await data;
     selectedUsersList.value = preFilledUsers.value;
+    update();
   }
 
   showList(query) async {

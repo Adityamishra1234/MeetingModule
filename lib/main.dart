@@ -12,6 +12,7 @@ import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/add_more_notes.dart';
 import 'package:meeting_module2/ui/screens/add_representative.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting.dart';
+import 'package:meeting_module2/ui/screens/create_new_meeting2.dart';
 import 'package:meeting_module2/ui/screens/dashboard_page.dart';
 import 'package:meeting_module2/ui/screens/login_page.dart';
 import 'package:meeting_module2/ui/screens/loginview.dart';
@@ -290,8 +291,8 @@ class MyApp extends StatelessWidget {
           //   page: () => MeetingDetails(),
           // ),
           GetPage(
-            name: CreateNewMeeting.routeNamed,
-            page: () => CreateNewMeeting(),
+            name: CreateNewMeeting2.routeNamed,
+            page: () => CreateNewMeeting2(),
           ),
           GetPage(
             name: AddRepresentative.routeNamed,

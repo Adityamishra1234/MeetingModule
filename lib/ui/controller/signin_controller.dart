@@ -130,8 +130,10 @@ class SigninController extends GetxController with StateMixin {
 
     if (res.toString().toLowerCase() == 'User Not Found'.toLowerCase()) {
       getToast('Please contact your HR');
+      return false;
     } else if (res.toString().toLowerCase() == 'Wrong Password'.toLowerCase()) {
       getToast('Wrong Password');
+      return false;
     } else {
       var data = json.decode(res);
 
