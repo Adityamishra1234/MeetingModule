@@ -9,8 +9,10 @@ class CustomTextField extends StatelessWidget {
   TextInputType? keybord;
   bool? obscureText = false;
   bool readOrEdit = false;
+  Color? backgroundCOlour;
   CustomTextField({
     Key? key,
+    this.backgroundCOlour,
     required this.hint,
     required this.controller,
     this.obscureText,
@@ -30,12 +32,14 @@ class CustomTextField extends StatelessWidget {
         style: ThemeConstants.montserrattextstyle2,
         readOnly: readOrEdit,
         decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
           hintText: hint,
           filled: true,
-          fillColor: ThemeConstants.lightblueColor,
+          fillColor: backgroundCOlour ?? ThemeConstants.ultraLightgreyColor,
           border: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(15.0),
+            borderSide:
+                BorderSide(width: 1, color: ThemeConstants.lightgreycolor),
+            borderRadius: BorderRadius.circular(200),
           ),
         ),
         validator: (value) {

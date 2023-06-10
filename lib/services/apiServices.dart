@@ -10,20 +10,81 @@ import 'package:meeting_module2/models/participantsModel.dart';
 import 'package:meeting_module2/services/api.dart';
 import 'package:meeting_module2/services/base_services.dart';
 import 'package:meeting_module2/services/endpoints.dart';
+import 'package:meeting_module2/utils/constants.dart';
 import 'package:tuple/tuple.dart';
 
 class ApiServices extends BaseServices implements API {
-  @override
-  getAllMeetings(int id) {
-    var url = '${Endpoints.baseUrl}${Endpoints.allMeetings}/$id';
+/////Auth APIS
 
-    var res = httpPostNullBody(url);
+  getEmailverification(String email) async {
+    var url =
+        '${Endpoints.baseUrl}${Endpoints.emailverification + "/${email}"}';
+    var res2 = await httpPostNullBody(url);
 
-    if (res != []) {
+    if (res2 != null) {
+      return res2;
+    }
+  }
+
+  getOTP(String email) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.otp + "/${email}"}';
+    var res2 = await httpPostNullBody(url);
+    if (res2 != null) {
+      var res = jsonDecode(res2);
       return res;
     }
+  }
 
-    return false;
+  otpMatch(String email, String otp) async {
+    var url =
+        '${Endpoints.baseUrl}${Endpoints.otpMatch + "/${email}" + "/${otp}"}';
+    var res2 = await httpPostNullBody(url);
+    if (res2 != null) {
+      var res = jsonDecode(res2);
+      return res;
+    }
+  }
+
+  password(String email, String password) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.passwordUpdate}';
+    var data = {"email": "${email}", "password": '$password'};
+
+    var data2 = json.encode(data);
+
+    var res = await httpPostHeader(url, data2);
+    if (res != null) {
+      return res;
+    }
+  }
+
+  @override
+  login({required String email, required String password}) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.login}';
+
+    var data = {
+      "email": "${email}",
+      "password": "$password",
+    };
+
+    var data2 = json.encode(data);
+
+    var decoded = await httpPostHeader(url, data2);
+
+    if (decoded != null) {
+      return decoded['user'];
+    }
+  }
+
+  @override
+  getAllMeetings(int id) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.allMeetings}/$id';
+
+    var res = await httpPostNullBody(url);
+
+    if (res != []) {
+      return res['meetingModel'];
+    }
+
     // var resdata = jsonDecode(res);
 
     // print(res);
@@ -37,7 +98,7 @@ class ApiServices extends BaseServices implements API {
     var url = '${Endpoints.baseUrl}${endpoint}';
     var res = await httpPostNullBody(url);
     if (res != null) {
-      return res;
+      return res['userList'];
     }
     // throw UnimplementedError();
   }
@@ -50,7 +111,7 @@ class ApiServices extends BaseServices implements API {
 
     var res = await httpPost(url, json);
 
-    return res;
+    return res['model'];
     // TODO: implement findNotes
     // throw UnimplementedError();
   }
@@ -115,7 +176,7 @@ class ApiServices extends BaseServices implements API {
     print(json);
     var res = await httpPostHeader(url, data);
     if (res != null) {
-      return FindNotesModel.fromJson(json.decode(res));
+      return FindNotesModel.fromJson(res['model']);
     }
   }
 
@@ -166,7 +227,7 @@ class ApiServices extends BaseServices implements API {
     var data = json.encode(model);
 
     var res = await httpPostHeader(url, data);
-    return res;
+    return res['result'];
   }
 
   @override
@@ -187,9 +248,7 @@ class ApiServices extends BaseServices implements API {
 
     var res2 = await httpPostNullBody(url);
 
-    var res = jsonDecode(res2);
-
-    return res;
+    return res2['userList'];
 
     // TODO: implement selectedAudienceType
     // throw UnimplementedError();
@@ -201,9 +260,7 @@ class ApiServices extends BaseServices implements API {
 
     var res2 = await httpPostNullBody(url);
 
-    var res = jsonDecode(res2);
-
-    return res;
+    return res2['userListSend'];
     // TODO: implement allBranch
     // throw UnimplementedError();
   }
@@ -217,7 +274,7 @@ class ApiServices extends BaseServices implements API {
     var datas = json.encode(jsonData);
     var res2 = await httpPostHeader(url, datas);
 
-    var res = jsonDecode(res2);
+    var res = res2['userListSend'];
 
     return res;
 
@@ -235,9 +292,7 @@ class ApiServices extends BaseServices implements API {
     var datas = json.encode(jsonData);
     var res2 = await httpPostHeader(url, datas);
 
-    var res = jsonDecode(res2);
-
-    return res;
+    return res2['userListSend'];
 
     // TODO: implement getAllUniversity
   }
@@ -251,9 +306,7 @@ class ApiServices extends BaseServices implements API {
     // var datas = json.encode(jsonData);
     var res2 = await httpPostNullBody(url);
 
-    var res = jsonDecode(res2);
-
-    return res;
+    return res2['userListSend'];
     // TODO: implement getAllCountries
     // throw UnimplementedError();
   }
@@ -272,7 +325,7 @@ class ApiServices extends BaseServices implements API {
       "country": model.country,
       "university": model.university,
       "vendor_name": "${model.vendorName}",
-      "bank_name": "${model.vendorName}",
+      "bank_name": "${model.bankName}",
       "is_active": model.isActive,
       "created_by": model.createdBy,
       "updated_by": model.updatedBy,
@@ -318,7 +371,7 @@ class ApiServices extends BaseServices implements API {
 
     var res = await httpPostHeader(url, data2);
 
-    return res;
+    return res['userListSend'];
 
     // TODO: implement findRepresentativeForDropDown
     // throw UnimplementedError();
@@ -334,7 +387,7 @@ class ApiServices extends BaseServices implements API {
 
     var res = await httpPostHeader(url, data2);
 
-    return res;
+    return res['user'];
 
     // TODO: implement getRepresentativeAllData
     // throw UnimplementedError();
@@ -358,7 +411,7 @@ class ApiServices extends BaseServices implements API {
 
     var res = await httpPostHeader(url, data2);
 
-    return res;
+    return res['tempUser'];
 
     // TODO: implement getRepresentativeByUniversity
     // throw UnimplementedError();
@@ -389,63 +442,128 @@ class ApiServices extends BaseServices implements API {
     // throw UnimplementedError();
   }
 
-  getEmailverification(String email) async {
-    var url =
-        '${Endpoints.baseUrl}${Endpoints.emailverification + "/${email}"}';
-    var res2 = await httpPostNullBody(url);
-    print(res2);
-    return res2;
-  }
+  @override
+  resheduleMeeting(data) async {
+    // TODO: implement resheduleMeeting
+    var url = '${Endpoints.baseUrl}${Endpoints.resheduleMeeting}';
 
-  getOTP(String email) async {
-    var url = '${Endpoints.baseUrl}${Endpoints.otp + "/${email}"}';
-    var res2 = await httpPostNullBody(url);
-    if (res2 != null) {
-      var res = jsonDecode(res2);
-      return res;
+    var deta = json.encode(data);
+
+    var res = await httpPostHeader(url, deta);
+
+    if (res != null) {
+      return res['meetingModel'];
     }
-  }
 
-  otpMatch(String email, String otp) async {
-    var url =
-        '${Endpoints.baseUrl}${Endpoints.otpMatch + "/${email}" + "/${otp}"}';
-    var res2 = await httpPostNullBody(url);
-    if (res2 != null) {
-      var res = jsonDecode(res2);
-      return res;
-    }
-  }
-
-  password(String email, String password) async {
-    var url = '${Endpoints.baseUrl}${Endpoints.passwordUpdate}';
-    var data = {"email": "${email}", "password": '$password'};
-
-    var data2 = json.encode(data);
-
-    var res2 = await httpPostHeader(url, data2);
-    if (res2 != null) {
-      var res = jsonDecode(res2);
-      print(res);
-      return res;
-    }
+    // print(deta);
+    // throw UnimplementedError();
   }
 
   @override
-  login({required String email, required String password}) async {
-    var url = '${Endpoints.baseUrl}${Endpoints.login}';
+  meetingStartedOrEnded(int meetingId, int userId, int type, bool val) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.meetingStartedOrEnded}';
 
+    var deta = {"meetingId": meetingId, "startedBy": userId, "type": val};
+
+    var data = json.encode(deta);
+
+    if (type == 0) {
+      var res = await httpPostApplication(url, data);
+      print(res);
+    } else {
+      print(data);
+      var url2 = '${Endpoints.baseUrl}${Endpoints.meetingEnded}';
+
+      var res = await httpPostApplication(url2, data);
+      print(res);
+    }
+
+    // TODO: implement meetingStartedOrEnded
+    // throw UnimplementedError();
+  }
+
+  @override
+  findParticipantByMeetingId(int meetingId) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.findMeetingParticipants}';
+    var deta = {"meeting_id": meetingId};
+
+    var data = json.encode(deta);
+
+    var res = await httpPostHeader(url, data);
+
+    return res['model'];
+    // TODO: implement findParticipantByMeetingId
+    // throw UnimplementedError();
+  }
+
+  @override
+  assignTo(data) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.assignTo}';
+
+    var data2 = json.encode(data);
+
+    var res = await httpPostApplication(url, data2);
+
+    print(res);
+
+    // TODO: implement assignTo
+    // throw UnimplementedError();
+  }
+
+  @override
+  updateFCMToken(id, token) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.uodateFCMToken}';
+
+    var data = {"fcm_token_android": "$token", "id": '$id'};
+
+    var data2 = await json.encode(data);
+
+    var res = await httpPostApplication(url, data2);
+
+    print(res);
+
+    // TODO: implement updateFCMToken
+    // throw UnimplementedError();
+  }
+
+  @override
+  findNoteByUser(id) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.findNoteByUser}/$id';
+
+    // var data = {"fcm_token_android": "$token", "id": '$id'};
+
+    // var data2 = await json.encode(data);
+
+    var res = await httpPostNullBody(url);
+
+    return res['model'];
+    // TODO: implement findNoteByUser
+    // throw UnimplementedError();
+  }
+
+  @override
+  markAttendance(meetingId, userId, createdBY) async {
+    // TODO: implement markAttendance
+    var url = '${Endpoints.baseUrl}${Endpoints.userAttendance}';
     var data = {
-      "email": "${email}",
-      "password": "$password",
+      "id": 9,
+      "meeting_id": meetingId,
+      "user_id": userId,
+      "start_time": "2023-06-05T09:57:34.000Z",
+      "end_time": "2023-06-05T11:57:34.000Z",
+      "is_active": true,
+      "created_by": createdBY,
+      "updated_by": createdBY,
+      "created_at": "2023-06-05T09:57:34.000Z",
+      "updated_at": "2023-06-05T09:57:34.000Z"
     };
 
     var data2 = json.encode(data);
 
-    var res = await httpPostHeader(url, data2);
+    var res = await httpPost(url, data2);
 
-    return res;
+    print(res);
 
-    // TODO: implement login
     // throw UnimplementedError();
   }
 }

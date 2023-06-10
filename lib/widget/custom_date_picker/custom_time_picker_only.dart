@@ -101,18 +101,21 @@ class _CustomTimerWidget2State extends State<CustomTimerWidget2> {
         });
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2.5),
         width: double.infinity,
-        height: 50,
+        // height: 50,
         decoration: BoxDecoration(
             color: Colors.transparent,
-            border: Border.all(color: ThemeConstants.bluecolor, width: 3),
+            border: Border.all(color: ThemeConstants.lightgreycolor, width: 1),
             borderRadius: BorderRadius.circular(50)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('${dateToShow}', style: TextStyle(fontSize: 20)),
-            const Icon(Icons.access_time)
+            Text('${dateToShow}', style: TextStyle(fontSize: 14)),
+            const Icon(
+              Icons.access_time,
+              size: 20,
+            )
           ],
         ),
       ),

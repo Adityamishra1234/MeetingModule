@@ -1,7 +1,10 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/presentation/constants/loading.dart';
@@ -10,10 +13,13 @@ import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting.dart';
+import 'package:meeting_module2/ui/screens/dashboard_notes.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
 import 'dart:ui';
 
 import 'package:meeting_module2/utils/theme.dart';
+import 'package:meeting_module2/widget/custom_button.dart';
+import 'package:meeting_module2/widget/custom_dialogue.dart';
 import 'package:meeting_module2/widget/custom_tab_widget.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/text_underline.dart';
@@ -28,8 +34,8 @@ class DashBoard extends StatefulWidget {
 class _DashBoardState extends State<DashBoard> {
   int siecParticipantsLength = 0;
 
-  var controller = Get.put(DashBoardController());
-  var controllerBase = Get.put(BaseController(), permanent: true);
+  var controller = Get.put(DashBoardController(), permanent: true);
+  var controllerBase = Get.find<BaseController>();
 
   String? selectedValue = 'All Meetings';
   bool showFilterList = true;
@@ -117,6 +123,26 @@ class _DashBoardState extends State<DashBoard> {
                               ),
                             ),
                           ),
+                          Spacer(),
+                          InkWell(
+                            onTap: () {
+                              Get.to(DashboardNotesView());
+                            },
+                            child: Container(
+                              width: 50,
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(200),
+                                  border: Border.all(
+                                      width: 1.5, color: ThemeConstants.yellow),
+                                  color: ThemeConstants.lightYellow),
+                              height: 50,
+                              child: SvgPicture.asset('assets/images/note.svg'),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          )
                         ],
                       ),
                     ),
@@ -147,17 +173,19 @@ class _DashBoardState extends State<DashBoard> {
                                 title0: "Upcoming",
                                 title1: "Done",
                                 callback: (val) => {
-                                  controller.indexOfTab.value = val,
+                                  controller.indexOfTab = val,
                                   print(val == 1),
                                   if (val == 0)
                                     {
                                       print('dcdfrfvfvf'),
-                                      controller.showUpcomingList()
+                                      controller.showUpcomingList(),
+                                      controller.update()
                                     }
                                   else if (val == 1)
                                     {
                                       print('$val dcdcd'),
-                                      controller.showDoneList()
+                                      controller.showDoneList(),
+                                      controller.update()
                                     }
                                 },
                               ),
@@ -301,13 +329,7 @@ class _DashBoardState extends State<DashBoard> {
                   //
                   // }
 
-                  Expanded(child: Obx(() {
-                    if (controller.loading.value == true) {
-                      return getLoading(context);
-                    } else {
-                      return showFilter();
-                    }
-                  })),
+                  Expanded(child: showFilter()),
 
                   // Row(
                   //   children: [
@@ -546,16 +568,82 @@ class _DashBoardState extends State<DashBoard> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Spacer(),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: CustomAutoSizeTextMontserrat(
-                                    text: "Reschedule Meeting",
+                                InkWell(
+                                  onTap: () async {
+                                    showAnimatedDialog(
+                                        animationType: DialogTransitionType
+                                            .slideFromBottomFade,
+                                        curve: Curves.easeInOutQuart,
+                                        // barrierDismissible: false,
+                                        context: context,
+                                        builder: (ctx) =>
+                                            ResheduleMeetingDialogue(
+                                              controller: controller,
+                                              indexz: indexs,
+                                            ));
+                                    // rescheduleMeetingDialogue(
+                                    //     context: context,
+                                    //     id: controller.listToShow[indexs].id!,
+                                    //     timeCallback: (data2) {
+                                    //       AllMeetings data =
+                                    //           controller.listToShow[indexs];
+
+                                    //       data.timeOfTheMeeting = data2;
+                                    //       data.isReschedule = true;
+                                    //       print(data.toJson());
+                                    //       /
+                                    //     });
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: CustomAutoSizeTextMontserrat(
+                                      text: "Reschedule Meeting",
+                                    ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: CustomAutoSizeTextMontserrat(
-                                    text: "Delete Meeting",
+                                InkWell(
+                                  onTap: () async {
+                                    showAnimatedDialog(
+                                        animationType: DialogTransitionType
+                                            .slideFromBottomFade,
+                                        curve: Curves.easeInOutQuart,
+                                        // barrierDismissible: false,
+                                        context: context,
+                                        builder: (ctx) => AlertDialog(
+                                              content: Container(
+                                                width: 300,
+                                                height: 100,
+                                                child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      CustomAutoSizeTextMontserrat(
+                                                        text: 'Please Confirm',
+                                                        fontSize: 25,
+                                                      ),
+                                                      InkWell(
+                                                        onTap: () {},
+                                                        child: CustomButton(
+                                                          backgroundColor:
+                                                              ThemeConstants
+                                                                  .bluecolor,
+                                                          onPressed: () {},
+                                                          text: 'Delete',
+                                                        ),
+                                                      )
+                                                    ]),
+                                              ),
+                                            ));
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: CustomAutoSizeTextMontserrat(
+                                      text: "Delete Meeting",
+                                    ),
                                   ),
                                 ),
                                 const Spacer(),

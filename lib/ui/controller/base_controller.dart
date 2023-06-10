@@ -37,10 +37,8 @@ class BaseController extends GetxController {
 
     var res2 = await api.getDropdown(Endpoints.allUser);
 
-    var data2 = await json.decode(res2);
-
     var allUserList = await List<AllUserModel>.from(
-        data2.map((x) => AllUserModel.fromJson(x)));
+        res2.map((x) => AllUserModel.fromJson(x)));
 
     allSiecMembersList.value =
         List<AllUserModel>.from(allUserList.map((element) => element)).toList();

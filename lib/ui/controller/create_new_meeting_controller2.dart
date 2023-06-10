@@ -14,8 +14,9 @@ import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsersCore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class CreateNewMeetingController extends GetxController with StateMixin {
+class CreateNewMeetingController2 extends GetxController with StateMixin {
   GlobalKey<FormState> key = GlobalKey<FormState>();
 
   @override
@@ -26,10 +27,14 @@ class CreateNewMeetingController extends GetxController with StateMixin {
     await getBranchData();
     await getAllCountries();
     await getUniversities(13);
-    // inItGetRepresentative();
-    // await getRepresentativesByUniversity();
 
+    // inItGetRepresentative();
+    await getRepresentativesByUniversity();
+
+    await fetchParticipantData();
     // await getRepresentativeDropDownData();
+
+    update();
 
     change(null, status: RxStatus.success());
   }
@@ -53,11 +58,11 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
   RxBool MeetingType = true.obs; //true online
 
-  RxBool meetingLocation = true.obs; //
+  String meetingLocation = ''; //
 
   Rx<AllUserModel> selectMeetingBranch = AllUserModel().obs;
 
-  RxString modeOfMeeting = ''.obs;
+  RxString modeOfMeeting = 'Zoom'.obs;
   Rx<TextEditingController> specifyMeetingLocation =
       TextEditingController().obs;
 
@@ -107,19 +112,19 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
   RxString groupNames = ''.obs;
 
-  RxList<AllUserModel> selectedUsersList = <AllUserModel>[].obs;
+  List<AllUserModel> selectedUsersList = <AllUserModel>[];
 
   RxList<dynamic> selectedCoordinatorList = <dynamic>[].obs;
 
   RxList<SelectAudienceType> targetAudienceList = <SelectAudienceType>[].obs;
 
-  RxList<AllUserModel> preFilledUsers = <AllUserModel>[].obs;
+  List<AllUserModel> preFilledUsers = <AllUserModel>[];
 
-  RxList<AllUserModel> branchList = <AllUserModel>[].obs;
+  List<AllUserModel> branchList = <AllUserModel>[];
 
   // Rx<TextEditingController> dateController = TextEditingController().obs;
 
-  RxBool externalMeeting = false.obs;
+  bool externalMeeting = false;
   Rx<AllMeetings> meetingModel = AllMeetings().obs;
   ApiServices api = ApiServices();
 
@@ -137,14 +142,14 @@ class CreateNewMeetingController extends GetxController with StateMixin {
   ///
   ///
   RxString addRepresentaitveType = 'University'.obs;
-  Rx<AllUserModel> selectedCountry = AllUserModel().obs;
+  AllUserModel selectedCountry = AllUserModel();
   Rx<AllUserModel> selectedUniversityName = AllUserModel().obs;
 
-  RxList<AllUserModel> allCountriesList = <AllUserModel>[].obs;
+  List<AllUserModel> allCountriesList = <AllUserModel>[];
 
-  RxList<AllUserModel> allUniversityList = <AllUserModel>[
+  List<AllUserModel> allUniversityList = <AllUserModel>[
     AllUserModel.fromJson({'name': "true", "id": 5})
-  ].obs;
+  ];
 
   Rx<TextEditingController> nameOfTheVendor = TextEditingController().obs;
   Rx<TextEditingController> nameOfTheBank = TextEditingController().obs;
@@ -163,8 +168,16 @@ class CreateNewMeetingController extends GetxController with StateMixin {
     repModel.value.designation = designation.value.text;
     repModel.value.email = email.value.text;
     repModel.value.phone = int.parse(RePphoneNumber.value.text);
-    repModel.value.country = selectedCountry.value.id;
-    repModel.value.university = selectedUniversityName.value.id;
+
+    if (addRepresentaitveType.value == 'Vendor' ||
+        addRepresentaitveType.value == 'Bank') {
+      repModel.value.country = null;
+      repModel.value.university = null;
+    } else {
+      repModel.value.country = selectedCountry.id;
+      repModel.value.university = selectedUniversityName.value.id;
+    }
+
     print(selectedUniversityName.value.id);
     repModel.value.vendorName = nameOfTheVendor.value.text;
     repModel.value.bankName = nameOfTheBank.value.text;
@@ -174,23 +187,27 @@ class CreateNewMeetingController extends GetxController with StateMixin {
     repModel.value.createdBy = 136;
     repModel.value.updatedBy = 136;
     print(repModel.value.toJson());
-    await api.addRepresentative(repModel.value);
+    var res = await api.addRepresentative(repModel.value);
+
+    await fetchParticipantData();
+    return res;
   }
 
   getAllCountries() async {
     var res = await api.getAllCountries();
-    allCountriesList.value =
+    allCountriesList =
         List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)));
-
+    update();
     // print(allCountriesList.toString());
   }
 
   getUniversities(int countryId) async {
     var res = await api.getAllUniversity(countryId);
 
-    allUniversityList.value =
+    allUniversityList =
         await List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)));
 
+    update();
     print(allUniversityList.toString());
   }
 
@@ -211,7 +228,7 @@ class CreateNewMeetingController extends GetxController with StateMixin {
     // var res = await api.findRepresentative(meetingWith.value.split('').toString() );
   }
 
-  RxList<AllUserModel> listOfParticipantData = <AllUserModel>[].obs;
+  List<AllUserModel> listOfParticipantData = <AllUserModel>[];
   getRepresentativeDropDownData() async {
     print(meetingWith.value.substring(0, meetingWith.value.length - 8));
     var data = meetingWith.value.split(' ')[0];
@@ -221,10 +238,11 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
     var res = await api.findRepresentativeForDropDown(data);
 
-    var res2 = json.decode(res);
-    listOfParticipantData.value =
-        List<AllUserModel>.from(res2.map((e) => AllUserModel.fromJson(e)))
+    listOfParticipantData =
+        List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)))
             .toList();
+
+    update();
 
     // print(listOfParticipantData.value[0].toJson());
   }
@@ -237,18 +255,17 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
   fetchParticipantData() async {
     print(participantID.value.id);
-    var res = await api.getRepresentativeAllData(participantID.value.id!);
+    var res = await api.getRepresentativeAllData(
+        participantID.value.id == null ? 2 : participantID.value.id!);
 
-    var data = json.decode(res);
-
-    participantData.value = RepresentativeModel.fromJson(data);
+    participantData.value = RepresentativeModel.fromJson(res);
 
     update();
 
     print(participantData.value.toJson());
   }
 
-  Rx<AllUserModel> selectedUniversity = AllUserModel().obs;
+  AllUserModel selectedUniversity = AllUserModel();
   Rx<AllUserModel> selectedCountryForFetchRep = AllUserModel().obs;
 
   getRepresentativesByUniversityINIT() async {
@@ -257,11 +274,11 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
     var res = await api.getRepresentativeByUniversity(
         type: 'University',
-        collegecode: selectedUniversity.value.id!,
-        countrycode: selectedCountry.value.id!);
+        collegecode: selectedUniversity.id!,
+        countrycode: selectedCountry.id!);
 
     var res2 = json.decode(res);
-    listOfParticipantData.value =
+    listOfParticipantData =
         List<AllUserModel>.from(res2.map((e) => AllUserModel.fromJson(e)))
             .toList();
 
@@ -274,23 +291,30 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
     var res = await api.getRepresentativeByUniversity(
         type: 'University',
-        collegecode: selectedUniversity.value.id == null
-            ? 3263
-            : selectedUniversity.value.id!,
-        countrycode:
-            selectedCountry.value.id == null ? 13 : selectedCountry.value.id!);
+        collegecode:
+            selectedUniversity.id == null ? 3263 : selectedUniversity.id!,
+        countrycode: selectedCountry.id == null ? 13 : selectedCountry.id!);
 
-    var res2 = json.decode(res);
-    listOfParticipantData.value =
-        List<AllUserModel>.from(res2.map((e) => AllUserModel.fromJson(e)))
-            .toList();
+    if (res == null) {
+      var res4 = [
+        {'name': "No Representative! Please Add", "id": 0}
+      ];
 
-    print(res);
+      listOfParticipantData = await List<AllUserModel>.from(
+          res4.map((e) => AllUserModel.fromJson(e))).toList();
+    } else {
+      // var res2 = await json.decode(res);
+
+      listOfParticipantData = await List<AllUserModel>.from(
+          res.map((e) => AllUserModel.fromJson(e))).toList();
+      update();
+      print(res);
+    }
   }
 
   RxList<RepresentativeModel> listOfParticipants = <RepresentativeModel>[].obs;
 
-  List<Widget> allParticipants(CreateNewMeetingController controller) {
+  List<Widget> allParticipants(CreateNewMeetingController2 controller) {
     List<Widget> data = [];
     for (var i = 0; i < controller.listOfParticipants.length; i++) {
       data.add(Container(
@@ -301,17 +325,41 @@ class CreateNewMeetingController extends GetxController with StateMixin {
             color: ThemeConstants.lightVioletColor,
             borderRadius: BorderRadius.circular(5),
             border: Border.all(width: 1, color: ThemeConstants.VioletColor)),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(),
-              Text('Name: ${controller.listOfParticipants[i].personName}'),
-              Text(
-                  'Designation: ${controller.listOfParticipants[i].designation}'),
-              Text('Email: ${controller.listOfParticipants[i].email}'),
-              Text('Phone: ${controller.listOfParticipants[i].phone}'),
-            ]),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(),
+                  Text('Name: ${controller.listOfParticipants[i].personName}'),
+                  Text(
+                      'Designation: ${controller.listOfParticipants[i].designation}'),
+                  Text('Email: ${controller.listOfParticipants[i].email}'),
+                  Text('Phone: ${controller.listOfParticipants[i].phone}'),
+                ]),
+            InkWell(
+                onTap: () {
+                  controller.listOfParticipants.removeAt(i);
+                  update();
+                },
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    border:
+                        Border.all(width: 2, color: ThemeConstants.VioletColor),
+                  ),
+                  child: Icon(
+                    Icons.delete,
+                    color: ThemeConstants.red,
+                    size: 30,
+                  ),
+                ))
+          ],
+        ),
       ));
     }
 
@@ -343,7 +391,7 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
     meetingModel.value.durationOfMeeting = proposedDurationController.value;
 
-    meetingModel.value.meetingMode = MeetingType.value.toString();
+    meetingModel.value.meetingMode = MeetingType.value == true ? '1' : '0';
 
     /// online
     meetingModel.value.meetingModeType = modeOfMeeting.value;
@@ -352,10 +400,19 @@ class CreateNewMeetingController extends GetxController with StateMixin {
     meetingModel.value.meetingLink = meetingLink.value.text;
 
     ///offline
-    meetingModel.value.locationOfTheMeeting = meetingLocation.value.toString();
+    ///
+    ///
+    meetingModel.value.locationOfTheMeeting = meetingLocation;
+
+    meetingModel.value.specificLocationOfTheMeeting =
+        specifyMeetingLocation.value.text;
 
     meetingModel.value.siecBranch =
         selectMeetingBranch.value.id == null ? 0 : selectMeetingBranch.value.id;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var id = await prefs.getInt('id');
+    meetingModel.value.createdBy = id;
 
     // meetingModel.value.siecBranch =
     // meetingModel.value.meetingType = MeetingType.value;
@@ -384,8 +441,8 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
     change(null, status: RxStatus.loading());
 
-    Get.delete<CreateNewMeetingController>();
-    Get.put(CreateNewMeetingController());
+    Get.delete<CreateNewMeetingController2>();
+    Get.put(CreateNewMeetingController2());
     change(null, status: RxStatus.success());
     Get.defaultDialog(
         title: '',
@@ -434,7 +491,7 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
     meetingModel.value.durationOfMeeting = proposedDurationController.value;
 
-    meetingModel.value.meetingMode = MeetingType.value.toString();
+    meetingModel.value.meetingMode = MeetingType.value == true ? '1' : '0';
 
     /// online
     meetingModel.value.meetingModeType = modeOfMeeting.value;
@@ -443,7 +500,10 @@ class CreateNewMeetingController extends GetxController with StateMixin {
     meetingModel.value.meetingLink = meetingLink.value.text;
 
     ///offline
-    meetingModel.value.locationOfTheMeeting = meetingLocation.value.toString();
+    meetingModel.value.siecBranch = selectMeetingBranch.value.id;
+
+    meetingModel.value.specificLocationOfTheMeeting =
+        specifyMeetingLocation.value.text;
 
     // meetingModel.value.siecBranch =
     // meetingModel.value.meetingType = MeetingType.value;
@@ -464,10 +524,16 @@ class CreateNewMeetingController extends GetxController with StateMixin {
         selectedCoordinatorList
             .map((e) => SiecParticipants.fromJson(e.toJson())));
 
+    meetingModel.value.siecBranch =
+        selectMeetingBranch.value.id == null ? 0 : selectMeetingBranch.value.id;
     // var res = await api.createMeeting(meetingModel.value);
     // print(res);
 
     // meetingModel.value.timeOfTheMeeting = meetingNameController.value.text;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var id = await prefs.getInt('id');
+    meetingModel.value.createdBy = id;
 
     var res = await api.addMeeting(meetingModel.value);
 
@@ -496,8 +562,8 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
     change(null, status: RxStatus.loading());
 
-    Get.delete<CreateNewMeetingController>();
-    Get.put(CreateNewMeetingController());
+    Get.delete<CreateNewMeetingController2>();
+    Get.put(CreateNewMeetingController2());
     change(null, status: RxStatus.success());
     Get.defaultDialog(
         title: '',
@@ -540,7 +606,7 @@ class CreateNewMeetingController extends GetxController with StateMixin {
         List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)));
     print(data.toString());
 
-    branchList.value = data;
+    branchList = data;
 
     // allBranchList.value = data;
 
@@ -565,8 +631,8 @@ class CreateNewMeetingController extends GetxController with StateMixin {
 
     var data =
         List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)));
-    preFilledUsers.value = await data;
-    selectedUsersList.value = preFilledUsers.value;
+    preFilledUsers = await data;
+    selectedUsersList = preFilledUsers;
     update();
   }
 
@@ -579,11 +645,11 @@ class CreateNewMeetingController extends GetxController with StateMixin {
             element.teamName!.toLowerCase() == query.toString().toLowerCase())
         .toList();
 
-    preFilledUsers.value = await data[0].teamMembers!;
+    preFilledUsers = await data[0].teamMembers!;
     // await List<AllUserModel>.from(data.map((e) => e.teamMembers!));
 
-    selectedUsersList.value = preFilledUsers.value;
-    print(preFilledUsers.value.toString());
+    selectedUsersList = preFilledUsers;
+    print(preFilledUsers.toString());
 
     update();
 

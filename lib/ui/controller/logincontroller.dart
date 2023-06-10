@@ -1,9 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/ui/screens/createpassword.dart';
 import 'package:meeting_module2/ui/screens/dashboard_page.dart';
 import 'package:meeting_module2/ui/screens/login_page.dart';
 import 'package:meeting_module2/utils/constants.dart';
+import 'package:meeting_module2/utils/snackbarconstants.dart';
+import 'package:meeting_module2/utils/theme.dart';
 
 class LoginController extends GetxController with StateMixin {
   ApiServices api = ApiServices();
@@ -25,33 +28,18 @@ class LoginController extends GetxController with StateMixin {
   emailVerification(String email) async {
     // var res = false;
     var res = await api.getEmailverification(email);
-    print(res == true.toString());
+
     if (res != null) {
-      if (res == false.toString()) {
-        verifyEmail = false;
-        forOtp = 2;
+      verifyEmail = false;
+      forOtp = 2;
 
-        update();
-        // var res2 = await api.getOTP(email);
-        startTimer();
-        var res2 = true;
-        if (res2 != null) {
-          if (res2 == true) {
-            getToast("Please check otp on your office email address");
-            forOtp = 2;
-          } else {
-            getToast("Some thing went wrong");
-          }
-        }
-      } else if (res == true.toString()) {
-        print('object');
-        getToast('Already Registered Please check forget password');
-      } else if (res == 'User not found') {
-        getToast('Please Contact HR');
-      }
+      update();
+      // var res2 = await api.getOTP(email);
+      startTimer();
+      var res2 = true;
+
+      update();
     }
-
-    update();
   }
 
   startResend() async {
@@ -104,9 +92,18 @@ class LoginController extends GetxController with StateMixin {
     var res = await api.password(email, password);
     print(res);
     if (res != null) {
-      if (res == true) {
-        // Get.offNamed(LoginPage.routeNamed);
-      }
+      Get.defaultDialog(
+        title: 'Registeration Successfull',
+        content: Container(
+          child: Icon(
+            Icons.check,
+            color: ThemeConstants.GreenColor,
+            size: 30,
+          ),
+        ),
+      );
+
+      // Get.offNamed(LoginPage.routeNamed);
     }
 
     // Get.toNamed(DashBoard.routeNamed);

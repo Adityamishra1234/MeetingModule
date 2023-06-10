@@ -123,7 +123,7 @@ class _CustomTabWidgetState extends State<CustomTabWidget> {
                 height: 2.5,
                 top: 43,
                 left: indexOfTab == 0 ? 4 : firstTextlength * 10 + 34,
-                duration: const Duration(milliseconds: 500),
+                duration: const Duration(milliseconds: 1000),
                 curve: Curves.fastOutSlowIn,
                 child: GestureDetector(
                   child: Container(

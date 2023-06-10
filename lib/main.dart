@@ -8,6 +8,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/bindings/dashboardBindings.dart';
+import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/add_more_notes.dart';
 import 'package:meeting_module2/ui/screens/add_representative.dart';
@@ -22,6 +23,7 @@ import 'package:meeting_module2/ui/screens/participants_details.dart';
 import 'package:meeting_module2/ui/screens/reschedule_meeting.dart';
 import 'package:meeting_module2/ui/screens/signin_view.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 import 'message.dart';
 import 'package:http/http.dart' as http;
@@ -90,32 +92,32 @@ void showFlutterNotification(RemoteMessage message) {
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 Future<void> main() async {
-  // String? initialMessage;
-  // bool _resolved = false;
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  String? initialMessage;
+  bool _resolved = false;
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  // if (!kIsWeb) {
-  //   await setupFlutterNotifications();
-  // }
-  // FirebaseMessaging.instance.getInitialMessage().then((value) {
-  //   _resolved = true;
-  //   initialMessage = value?.data.toString();
-  // });
+  if (!kIsWeb) {
+    await setupFlutterNotifications();
+  }
+  FirebaseMessaging.instance.getInitialMessage().then((value) {
+    _resolved = true;
+    initialMessage = value?.data.toString();
+  });
 
-  // FirebaseMessaging.onMessage.listen(showFlutterNotification);
+  FirebaseMessaging.onMessage.listen(showFlutterNotification);
 
-  // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-  //   print('A new onMessageOpenedApp event was published!');
-  //   Navigator.pushNamed(
-  //     Get.context!,
-  //     '/message',
-  //     arguments: MessageArguments(message, true),
-  //   );
-  // });
-  // onActionSelected;
-  // // createtoken();
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    print('A new onMessageOpenedApp event was published!');
+    Navigator.pushNamed(
+      Get.context!,
+      '/message',
+      arguments: MessageArguments(message, true),
+    );
+  });
+  onActionSelected;
+  createtoken();
   runApp(MyApp());
 }
 
@@ -162,36 +164,37 @@ Future<void> onActionSelected(String value) async {
   }
 }
 
-// createtoken() async {
-//   var token = await FirebaseMessaging.instance.getToken(
-//       vapidKey:
-//           'BNKkaUWxyP_yC_lki1kYazgca0TNhuzt2drsOrL6WrgGbqnMnr8ZMLzg_rSPDm6HKphABS0KzjPfSqCXHXEd06Y');
+createtoken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  // var id = await prefs.getInt('id')!;
 
-//   if (token != null) {
-//     sendPushMessage(token);
-//   }
-// }
+  var token = await FirebaseMessaging.instance.getToken(
+      vapidKey:
+          'BNKkaUWxyP_yC_lki1kYazgca0TNhuzt2drsOrL6WrgGbqnMnr8ZMLzg_rSPDm6HKphABS0KzjPfSqCXHXEd06Y');
 
-// // FCM send Notification using Token
-// sendPushMessage(String token) async {
-//   if (token == null) {
-//     print('Unable to send FCM message, no token exists.');
-//     return;
-//   }
+  prefs.setString('token', '$token');
+}
 
-//   try {
-//     await http.post(
-//       Uri.parse('https://api.rnfirebase.io/messaging/send'),
-//       headers: <String, String>{
-//         'Content-Type': 'application/json; charset=UTF-8',
-//       },
-//       body: constructFCMPayload(token),
-//     );
-//     print('FCM request for device sent!');
-//   } catch (e) {
-//     print(e);
-//   }
-// }
+// FCM send Notification using Token
+sendPushMessage(String token) async {
+  if (token == null) {
+    print('Unable to send FCM message, no token exists.');
+    return;
+  }
+
+  try {
+    await http.post(
+      Uri.parse('https://api.rnfirebase.io/messaging/send'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: constructFCMPayload(token),
+    );
+    print('FCM request for device sent!');
+  } catch (e) {
+    print(e);
+  }
+}
 
 int _messageCount = 0;
 String constructFCMPayload(String? token) {
@@ -316,9 +319,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
-
-
 // class MessagingExampleApp extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
@@ -332,8 +332,6 @@ class MyApp extends StatelessWidget {
 //     );
 //   }
 // }
-
-
 
 // String constructFCMPayload(String? token) {
 //   _messageCount++;

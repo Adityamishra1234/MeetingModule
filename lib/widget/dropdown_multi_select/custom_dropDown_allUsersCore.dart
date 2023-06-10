@@ -202,6 +202,10 @@ class _CustomizableDropdownAllUserState
         if (oldWidget.itemList != widget.itemList) {
           print('object');
           singleSelectedItem = widget.itemList![0];
+          items = widget.itemList!;
+
+          // widget.onSingleSelectedItem!(singleSelectedItem);
+
           setState(() {});
         }
 
@@ -406,7 +410,7 @@ class _CustomizableDropdownAllUserState
                       padding: const EdgeInsets.all(2),
                       itemCount: items.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
+                        return InkWell(
                             onTap: () {
                               if (widget.multiSelectEnable == true) {
                                 if (selectedItemsList.contains(items[index])) {
@@ -522,7 +526,8 @@ class _CustomizableDropdownAllUserState
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-              height: 35,
+              height: 45,
+
               // constraints: ConstrainedBox(constraints: ),
               // height: 4,
 
@@ -532,29 +537,45 @@ class _CustomizableDropdownAllUserState
                   color: ThemeConstants.ultraLightgreyColor,
                   borderRadius: BorderRadius.circular(20)),
               child: Row(
+                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text('${selectedItemsList[i].name}'),
+                  Container(
+                    constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width * 0.6),
+                    child: Wrap(
+                      children: [
+                        Text(
+                          softWrap: true,
+                          '${selectedItemsList[i].name}',
+                        )
+                      ],
+                    ),
+                  ),
                   SizedBox(
                     width: 10,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      selectedItemsList.remove(selectedItemsList[i]);
-                      setState(() {});
-                      widget.onMultiSelectedItem!(selectedItemsList);
+                  Container(
+                    width: 20,
+                    height: 20,
+                    child: GestureDetector(
+                      onTap: () {
+                        selectedItemsList.remove(selectedItemsList[i]);
+                        setState(() {});
+                        widget.onMultiSelectedItem!(selectedItemsList);
 
-                      ;
-                      // print(
-                      //     selectedItemsList);
-                    },
-                    child: CircleAvatar(
-                        backgroundColor: ThemeConstants.bluelightgreycolor,
-                        child: Icon(
-                          Icons.close,
-                          size: 17,
-                        )),
+                        ;
+                        // print(
+                        //     selectedItemsList);
+                      },
+                      child: CircleAvatar(
+                          backgroundColor: ThemeConstants.bluelightgreycolor,
+                          child: Icon(
+                            Icons.close,
+                            size: 17,
+                          )),
+                    ),
                   )
                 ],
               )),

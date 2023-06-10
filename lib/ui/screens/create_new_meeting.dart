@@ -12,6 +12,7 @@ import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/add_representative.dart';
 import 'package:meeting_module2/ui/screens/dashboard_page.dart';
 import 'package:meeting_module2/utils/constants.dart';
+import 'package:meeting_module2/utils/snackbarconstants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/custom_button.dart';
 import 'package:meeting_module2/widget/custom_date_picker/custom_time_picker_only.dart';
@@ -161,7 +162,7 @@ class CreateNewMeeting extends StatelessWidget {
                     CustomAutoSizeTextMontserrat(
                   text: "Agenda/Purpose of the Meeting",
                   fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w300,
                 ),
               ),
             ),
@@ -1301,7 +1302,7 @@ class CreateNewMeeting extends StatelessWidget {
                   }
                   controller.key.currentState!.save();
                 } else {
-                  getToast('Please fill the Required Fields');
+                  getToast('${SnackBarConstants.requiredFields}');
                 }
               },
               child: Container(

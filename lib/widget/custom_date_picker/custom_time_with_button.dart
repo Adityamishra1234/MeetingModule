@@ -4,24 +4,23 @@ import 'package:meeting_module2/utils/theme.dart';
 
 typedef void StringCallback(String val);
 
-class CustomTimerWidget extends StatefulWidget {
+class CustomTimerWidget2withButton extends StatefulWidget {
   final StringCallback callback;
 
-  const CustomTimerWidget({Key? key, required this.callback}) : super(key: key);
+  const CustomTimerWidget2withButton({Key? key, required this.callback})
+      : super(key: key);
 
   @override
-  State<CustomTimerWidget> createState() => _CustomTimerWidgetState();
+  State<CustomTimerWidget2withButton> createState() =>
+      _CustomTimerWidget2withButtonState();
 }
 
-class _CustomTimerWidgetState extends State<CustomTimerWidget> {
-  String finaldate =
-      '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
-  String date =
-      '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
-  String previousDate =
-      '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
-  String dateToShow =
-      '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
+class _CustomTimerWidget2withButtonState
+    extends State<CustomTimerWidget2withButton> {
+  String finaldate = '${DateTime.now().hour}:${DateTime.now().minute}';
+  String date = '${DateTime.now().hour}:${DateTime.now().minute}';
+  String previousDate = '${DateTime.now().hour}:${DateTime.now().minute}';
+  String dateToShow = '${DateTime.now().hour}:${DateTime.now().minute}';
 
   // @override
   // void initState() {
@@ -59,7 +58,7 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
                               widget.callback(dateToShow);
                             });
                           },
-                          child: const Text('Previous'),
+                          child: const Text('Cancel'),
                         ),
                         GestureDetector(
                           onTap: () {
@@ -67,7 +66,7 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
                             setState(() {
                               previousDate = date;
                               date = dateToShow;
-                              widget.callback(dateToShow);
+                              widget.callback(date);
                             });
                           },
                           child: const Text('Done'),
@@ -76,19 +75,19 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
                     ),
                     Expanded(
                       child: CupertinoDatePicker(
+                        use24hFormat: true,
                         initialDateTime: DateTime.now(),
                         onDateTimeChanged: (DateTime newdate) {
                           setState(() {
-                            dateToShow =
-                                '${newdate.year}-${newdate.month}-${newdate.day}';
+                            dateToShow = '${newdate.hour}:${newdate.minute}';
                           });
-                          widget.callback(date);
+                          widget.callback(dateToShow);
                         },
-                        maximumDate: DateTime(2025, 12, 30),
-                        minimumYear: 2010,
-                        maximumYear: 2035,
+                        // maximumDate: DateTime(2025, 12, 30),
+                        // minimumYear: 2010,
+                        // maximumYear: 2035,
                         minuteInterval: 1,
-                        mode: CupertinoDatePickerMode.date,
+                        mode: CupertinoDatePickerMode.time,
                       ),
                     )
                   ],
@@ -104,21 +103,18 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
         });
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2.5),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
         width: double.infinity,
-        // height: 50,
+        height: 50,
         decoration: BoxDecoration(
             color: Colors.transparent,
-            border: Border.all(color: ThemeConstants.lightgreycolor, width: 1),
+            border: Border.all(color: ThemeConstants.bluecolor, width: 3),
             borderRadius: BorderRadius.circular(50)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('${dateToShow}', style: TextStyle(fontSize: 14)),
-            const Icon(
-              Icons.calendar_month,
-              size: 20,
-            )
+            Text('${dateToShow}', style: TextStyle(fontSize: 20)),
+            const Icon(Icons.access_time)
           ],
         ),
       ),

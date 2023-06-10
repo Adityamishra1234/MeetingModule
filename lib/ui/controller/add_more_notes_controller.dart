@@ -1,15 +1,27 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:meeting_module2/models/addRepresentative.dart';
+import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
+import 'package:meeting_module2/models/findParticipantByIdModel.dart';
 import 'package:meeting_module2/services/apiServices.dart';
+import 'package:meeting_module2/ui/controller/dashboardController.dart';
+import 'package:meeting_module2/utils/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddMoreNotesController extends GetxController with StateMixin {
   RxList<int> notesVisibleToList = <int>[5, 80, 77].obs;
 
+  bool addNotes = true;
   // Model
   ApiServices api = ApiServices();
   RxList<FindNotesModel> model = <FindNotesModel>[].obs;
+
+  final GlobalKey<FormState> globalKey = GlobalKey<FormState>();
 
 // Text fields
   Rx<TextEditingController> noteText = TextEditingController().obs;
@@ -26,8 +38,13 @@ class AddMoreNotesController extends GetxController with StateMixin {
       RxList<AllUserModel>();
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
+
+    // await meetingId();
+    // await checkUserIsCordinator();
+    // await getMeetingParticipantsList();
+
     change(null, status: RxStatus.success());
   }
 
@@ -49,9 +66,9 @@ class AddMoreNotesController extends GetxController with StateMixin {
   saveAndNext(int metingID) async {
     print(metingID);
     change(null, status: RxStatus.loading());
-    String visibleTo = "";
+    List<AllUserModel> visibleTo = [];
     for (var element in accessibileUserSelected) {
-      visibleTo = "$visibleTo${element.id},";
+      visibleTo = visibleTo;
     }
     FindNotesModel noteModel = FindNotesModel(
         meetingId: metingID,
@@ -78,9 +95,9 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
   saveNotes(int metingID) async {
     change(null, status: RxStatus.loading());
-    String visibleTo = "";
+    List<AllUserModel> visibleTo = [];
     for (var element in accessibileUserSelected_meetingDetail) {
-      visibleTo = "$visibleTo${element.id},";
+      visibleTo = visibleTo;
     }
     FindNotesModel noteModel = FindNotesModel(
         meetingId: metingID,
@@ -101,6 +118,148 @@ class AddMoreNotesController extends GetxController with StateMixin {
       accessibileUserSelected_meetingDetail.value = [];
       accessibileUserSelected_meetingDetail.refresh();
       change(null, status: RxStatus.success());
+    }
+  }
+
+  bool meetingStartedValue = false;
+  bool meetingEndedValue = false;
+  int id = 0;
+
+  meetingId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    id = await prefs.getInt('id')!;
+  }
+
+  meetingStarted(int meetingId, bool val) async {
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // var id = await prefs.getInt('id');
+    var controllerDashboard = Get.find<DashBoardController>();
+
+    AllMeetings meetingData = controllerDashboard.selectedMeetingdata.value;
+    var res = await api.meetingStartedOrEnded(meetingId, id!, 0, val);
+    meetingData.meetingStarted = val;
+
+    // await Get.find<DashBoardController>().getsss();
+    update();
+  }
+
+  meetingEnded(int meetingId, bool val) async {
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // var id = await prefs.getInt('id');
+    var controllerDashboard = Get.find<DashBoardController>();
+
+    AllMeetings meetingData = controllerDashboard.selectedMeetingdata.value;
+    var res = await api.meetingStartedOrEnded(meetingId, id!, 1, val);
+    meetingData.meetingEnded = val;
+    await controllerDashboard.changeInFilter();
+    // controllerDashboard.indexOfTab.value =
+    //     controllerDashboard.indexOfTab.value == 0 ? 1 : 0;
+    controllerDashboard.update();
+    update();
+  }
+
+  bool showTheStartEndOptions = false;
+
+  checkUserIsCordinator() {
+    print(id);
+    var data = Get.find<DashBoardController>()
+        .selectedMeetingdata
+        .value
+        .meetingCoordinator;
+
+    var started =
+        Get.find<DashBoardController>().selectedMeetingdata.value.createdBy;
+
+    data!.forEach((element) {
+      if (element.id == id || started == id) {
+        showTheStartEndOptions = true;
+      } else {
+        print('${element.id}dddddddd');
+        showTheStartEndOptions = false;
+      }
+    });
+  }
+
+  List<FindParticipantByMeetingIdModel> participantList = [];
+
+  List<Widget> participantDataList = [];
+
+  getMeetingParticipantsList() async {
+    var controllerDashboard = Get.find<DashBoardController>();
+
+    if (controllerDashboard.selectedMeetingdata.value.meetingType ==
+        'External Meeting') {
+      var res = await api.findParticipantByMeetingId(
+          controllerDashboard.selectedMeetingdata.value.id!);
+
+      participantList = await List<FindParticipantByMeetingIdModel>.from(
+          res.map((e) => FindParticipantByMeetingIdModel.fromJson(e)));
+
+      List<RepresentativeModel> dataList = [];
+      for (var i = 0; i < participantList.length; i++) {
+        var res = await api
+            .getRepresentativeAllData(participantList[i].participantId!);
+
+        var data = json.decode(res);
+
+        var deta = RepresentativeModel.fromJson(data);
+
+        dataList.add(deta);
+      }
+
+      for (var i = 0; i < dataList.length; i++) {
+        participantDataList.add(Container(
+          margin: EdgeInsets.all(5),
+          padding: EdgeInsets.all(5),
+          decoration: BoxDecoration(
+              color: ThemeConstants.lightVioletColor,
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(width: 1, color: ThemeConstants.VioletColor)),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 10,
+              ),
+              CircleAvatar(
+                radius: 12,
+                backgroundColor: Colors.white,
+                child: Icon(
+                  Icons.person,
+                  color: ThemeConstants.blackcolor,
+                  size: 15,
+                ),
+              ),
+              Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Name: ${dataList[i].personName}'),
+                    SizedBox(
+                      height: 2.5,
+                    ),
+                    Text('Designation: ${dataList[i].designation}'),
+                    SizedBox(
+                      height: 2.5,
+                    ),
+                    Text('Email: ${dataList[i].email}'),
+                    SizedBox(
+                      height: 2.5,
+                    ),
+                    Text('Phone: ${dataList[i].phone}'),
+                  ]),
+            ],
+          ),
+        ));
+      }
+      update();
+
+      // participantsList.forEach((element) {
+
+      // });
+      print(participantList);
     }
   }
 }

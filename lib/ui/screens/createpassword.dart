@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/ui/controller/createpasswordcontroller.dart';
 import 'package:meeting_module2/utils/constants.dart';
+import 'package:meeting_module2/utils/snackbarconstants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/customtextfield.dart';
@@ -44,7 +45,7 @@ class CreatePasswrord extends StatelessWidget {
               if (password.text == confirmpassword.text) {
                 controller.updatePassword(email!, password.text);
               } else {
-                getToast("Please check your password");
+                getToast("${SnackBarConstants.passwordNotMatching}");
               }
             },
             child: Container(

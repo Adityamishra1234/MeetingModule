@@ -375,7 +375,7 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
                       padding: const EdgeInsets.all(2),
                       itemCount: items.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
+                        return InkWell(
                             onTap: () {
                               if (widget.multiSelectEnable == true) {
                                 if (selectedItemsList.contains(items[index])) {
@@ -420,7 +420,7 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
                                 height: 40,
                                 width: MediaQuery.of(context).size.width,
                                 // color: Colors.red,
-                                color: widget.listColor,
+                                color: Colors.transparent,
                                 child: Padding(
                                     padding: const EdgeInsets.only(
                                         left: 10, right: 10),

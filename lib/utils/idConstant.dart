@@ -22,3 +22,28 @@ getNoteTypeId(String noteType) {
       return -1; // Return -1 if noteType is not recognized
   }
 }
+
+getNoteTypefromId(int noteType) {
+  switch (noteType) {
+    case 1:
+      return 'Meeting Notes';
+    case 2:
+      return 'Marketing Notes';
+    case 3:
+      return 'Observation';
+    case 4:
+      return 'Propose Changes';
+    case 5:
+      return 'Process';
+    case 6:
+      return 'Training Notes';
+    case 7:
+      return 'Requirements';
+    case 8:
+      return 'University Notes';
+    case 9:
+      return 'Offline Marketing Notes';
+    default:
+      return -1; // Return -1 if noteType is not recognized
+  }
+}

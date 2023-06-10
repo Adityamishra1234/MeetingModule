@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:meeting_module2/services/errors.dart';
 import 'package:meeting_module2/utils/check_user_connection.dart';
+import 'package:meeting_module2/utils/constants.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:studentpanel/utils/constants.dart';
 // import 'package:studentpanel/utils/endpoint.dart';
@@ -47,9 +48,15 @@ class BaseServices {
 
     switch (response.statusCode) {
       case 200:
-        return response.body.isNotEmpty
-            ? response.body
-            : throw EmptyDataException("440");
+        {
+          var res = json.decode(response.body);
+          if (res['success'] == true) {
+            return res;
+          } else {
+            getToast(res['message']);
+            return null;
+          }
+        }
       case 440:
         throw EmptyDataException("440");
       case 400:
@@ -78,9 +85,16 @@ class BaseServices {
 
     switch (response.statusCode) {
       case 200:
-        return response.body.isNotEmpty
-            ? response.body
-            : throw EmptyDataException("440");
+        {
+          var res = json.decode(response.body);
+          if (res['success'] == true) {
+            return res;
+          } else {
+            getToast(res['message']);
+            return null;
+          }
+        }
+
       case 440:
         throw EmptyDataException("440");
       case 400:
@@ -96,17 +110,45 @@ class BaseServices {
             'Something went to wrong : ${response.statusCode}');
     }
   }
+  //   httpPostHeader(String url, jsonData) async {
+  //   // String? token = await getToken();
+  //   await checkUserConnection();
+  //   // jsonData = jsonData.replaceAll('"null"', "");
+  //   var response = await http.post(
+  //     Uri.parse(url),
+  //     body: jsonData,
+  //     headers: {"Content-Type": "application/json"},
+  //   );
+
+  //   switch (response.statusCode) {
+  //     case 200:
+  //       return response.body.isNotEmpty
+  //           ? response.body
+  //           : throw EmptyDataException("440");
+  //     case 440:
+  //       throw EmptyDataException("440");
+  //     case 400:
+  //       throw BadRequestException(response.body.toString());
+  //     case 401:
+  //     case 403:
+  //       throw UnauthorisedException(response.body.toString());
+  //     case 502:
+  //       throw InternetError("Please try after sometime");
+  //     case 500:
+  //     default:
+  //       throw FetchDataException(
+  //           'Something went to wrong : ${response.statusCode}');
+  //   }
+  // }
 
   httpPostApplication(String url, jsonData) async {
     // String? token = await getToken();
     await checkUserConnection();
 
-    print('dd');
     // jsonData = jsonData.replaceAll('"null"', "");
     var response = await http.post(Uri.parse(url),
         headers: {"Content-Type": "application/json"}, body: jsonData);
 
-    print(response.body);
     switch (response.statusCode) {
       case 200:
         return response.body.isNotEmpty
@@ -150,6 +192,36 @@ class BaseServices {
     }
   }
 
+  // httpPostNullBody(String url, {bool login = false}) async {
+  //   // String? token = await getToken();
+  //   url = url.replaceAll('"null"', "");
+  //   if (login == false) {
+  //     await checkUserConnection();
+  //   }
+
+  //   var response = await http.post(
+  //     Uri.parse(url),
+  //   );
+  //   switch (response.statusCode) {
+  //     case 200:
+  //       return response.body.isNotEmpty && response.body != ""
+  //           ? response.body
+  //           : throw EmptyDataException("440 :${response.body}");
+  //     case 440:
+  //       throw EmptyDataException("440 :${response.body}");
+  //     case 400:
+  //       throw BadRequestException("${response.statusCode} :${response.body}");
+  //     case 401:
+  //     case 403:
+  //       throw UnauthorisedException("${response.statusCode} :${response.body}");
+  //     case 502:
+  //       throw InternetError("${response.statusCode} :${response.body}");
+  //     case 500:
+  //     default:
+  //       throw FetchDataException("${response.statusCode} :${response.body}");
+  //   }
+  // }
+
   httpPostNullBody(String url, {bool login = false}) async {
     // String? token = await getToken();
     url = url.replaceAll('"null"', "");
@@ -162,9 +234,15 @@ class BaseServices {
     );
     switch (response.statusCode) {
       case 200:
-        return response.body.isNotEmpty && response.body != ""
-            ? response.body
-            : throw EmptyDataException("440 :${response.body}");
+        {
+          var res = json.decode(response.body);
+          if (res['success'] == true) {
+            return res;
+          } else {
+            getToast(res['message']);
+            return null;
+          }
+        }
       case 440:
         throw EmptyDataException("440 :${response.body}");
       case 400:
@@ -224,6 +302,7 @@ class BaseServices {
         "Accept": "application/json",
         // 'Authorization': 'Bearer $token',
       });
+
       if (response.statusCode == 200) {
         return response.body;
       } else {

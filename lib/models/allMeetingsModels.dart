@@ -42,7 +42,7 @@ class AllMeetings {
     this.dateOfMeeting = '2023-04-27',
     this.timeOfTheMeeting = '17:20',
     this.durationOfMeeting = '',
-    this.meetingMode = '',
+    this.meetingMode = '1',
     this.meetingModeType = 'Zoom',
     this.meetingLink = 'test',
     this.locationOfTheMeeting = '',

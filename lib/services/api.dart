@@ -3,6 +3,7 @@ import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/models/participantsModel.dart';
 import 'package:meeting_module2/ui/screens/participants_details.dart';
+import 'package:meeting_module2/ui/screens/reschedule_meeting.dart';
 
 abstract class API {
   getAllMeetings(int id);
@@ -40,4 +41,18 @@ abstract class API {
   addParticipants(List<ParticipantsModel> model);
 
   login({required String email, required String password});
+
+  resheduleMeeting(data);
+
+  meetingStartedOrEnded(int meetingId, int userId, int type, bool val);
+
+  findParticipantByMeetingId(int meetingId);
+
+  assignTo(data);
+
+  updateFCMToken(id, token);
+
+  findNoteByUser(id);
+
+  markAttendance(meetingId, userId, createdBY);
 }

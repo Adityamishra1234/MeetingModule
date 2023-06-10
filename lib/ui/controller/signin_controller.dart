@@ -5,6 +5,7 @@ import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/ui/screens/dashboard_page.dart';
 import 'package:meeting_module2/utils/constants.dart';
+import 'package:meeting_module2/utils/snackbarconstants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SigninController extends GetxController with StateMixin {
@@ -26,34 +27,18 @@ class SigninController extends GetxController with StateMixin {
   emailVerification(String email) async {
     // var res = false;
     var res = await api.getEmailverification(email);
-    print(res == true.toString());
+
     if (res != null) {
-      if (res == false.toString()) {
-        getToast("Not registered Please register first");
-      } else if (res == true.toString()) {
-        verifyEmail = false;
-        forOtp.value = 2;
+      verifyEmail = false;
+      forOtp.value = 2;
 
-        update();
-        // var res2 = await api.getOTP(email);
-        startTimer();
-        var res2 = true;
-        if (res2 != null) {
-          if (res2 == true) {
-            getToast("Please check otp on your office email address");
-            forOtp.value = 2;
-          } else {
-            getToast("Some thing went wrong");
-          }
-        }
-        print('object');
-        getToast('Already Registered Please check forget password');
-      } else if (res == 'User not found') {
-        getToast('Please Contact HR');
-      }
+      update();
+      // var res2 = await api.getOTP(email);
+      startTimer();
+      var res2 = true;
+
+      update();
     }
-
-    update();
   }
 
   RxInt timer = 10.obs;
@@ -84,12 +69,13 @@ class SigninController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
+//todo
   checkUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var data = prefs.getInt('id');
     print(data);
     if (data != null) {
-      Get.to(DashBoard());
+      Get.off(DashBoard());
     }
   }
 
@@ -97,9 +83,13 @@ class SigninController extends GetxController with StateMixin {
     var res = await api.password(email, password);
     print(res);
     if (res != null) {
-      if (res == true) {
-        // Get.offNamed(LoginPage.routeNamed);
-      }
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      var data = await prefs.setString('email', email);
+      var data2 = await prefs.setString('password', password);
+
+      return true;
+      // Get.offNamed(LoginPage.routeNamed);
     }
 
     // Get.toNamed(DashBoard.routeNamed);
@@ -126,29 +116,39 @@ class SigninController extends GetxController with StateMixin {
   }
 
   logIn(String email, String password) async {
+    if (email.isEmpty) {
+      getToast('${SnackBarConstants.requiredFields}');
+      return false;
+    }
+
     var res = await api.login(email: email, password: password);
 
-    if (res.toString().toLowerCase() == 'User Not Found'.toLowerCase()) {
-      getToast('Please contact your HR');
-      return false;
-    } else if (res.toString().toLowerCase() == 'Wrong Password'.toLowerCase()) {
-      getToast('Wrong Password');
-      return false;
-    } else {
-      var data = json.decode(res);
+    if (res != null) {
+      // if (res.toString().toLowerCase() == 'User Not Found'.toLowerCase()) {
+      //   getToast('${SnackBarConstants.errorUserNotFound}');
+      //   return false;
+      // } else if (res.toString().toLowerCase() ==
+      //     'Wrong Password'.toLowerCase()) {
+      //   getToast('${SnackBarConstants.wrongPassword}');
+      //   return false;
+      // } else {
+      // var data = json.decode(res);
 
-      UserModel data2 = UserModel.fromJson(data);
+      print(res);
+      UserModel data2 = UserModel.fromJson(res);
 
-      print(data2);
+      // print(data2);
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString("email", email);
       await prefs.setInt('id', data2.id!);
       await prefs.setString('password', password);
 
-      Get.to(DashBoard());
-
       return data2;
+
+      // }
+    } else {
+      return false;
     }
   }
 }

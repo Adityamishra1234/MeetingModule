@@ -50,6 +50,10 @@ dependencies:
   tuple: ^2.0.1
   shared_preferences: ^2.1.1
   nice_loading_button: ^0.0.1
+  configurable_expansion_tile_null_safety: ^3.2.0
+  flutter_widget_from_html_core: ^0.10.1
+  flutter_animated_dialog: ^2.0.1
+  file_picker: ^5.3.1
 
 dev_dependencies:
   flutter_test:
@@ -189,6 +193,7 @@ flutter:
     - assets/page-1/images/business-p6c.png
     - assets/page-1/images/call-Cqv.png
     - assets/images/
+    - assets/images/Login-Image.png
   
   #
   # For details regarding fonts from package dependencies,

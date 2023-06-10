@@ -1,6 +1,4 @@
-import 'package:meeting_module2/models/allUserModel.dart';
-
-class FindNotesModel {
+class DashBoardNotes {
   int? id;
   int? meetingId;
   int? noteType;
@@ -10,10 +8,10 @@ class FindNotesModel {
   int? updatedBy;
   String? createdAt;
   String? updatedAt;
-  List<AllUserModel>? visibleTo;
+  String? visibleTo;
   bool? isAdded;
 
-  FindNotesModel(
+  DashBoardNotes(
       {this.id,
       this.meetingId,
       this.noteType,
@@ -26,7 +24,7 @@ class FindNotesModel {
       this.visibleTo,
       this.isAdded});
 
-  FindNotesModel.fromJson(Map<String, dynamic> json) {
+  DashBoardNotes.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     meetingId = json['meeting_id'];
     noteType = json['note_type'];
@@ -36,12 +34,7 @@ class FindNotesModel {
     updatedBy = json['updated_by'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    if (json['visible_to'] != null) {
-      visibleTo = <AllUserModel>[];
-      json['visible_to'].forEach((v) {
-        if (v != null) visibleTo!.add(new AllUserModel.fromJson(v));
-      });
-    }
+    visibleTo = json['visible_to'];
     isAdded = json['is_added'];
   }
 
@@ -56,29 +49,8 @@ class FindNotesModel {
     data['updated_by'] = this.updatedBy;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
-    if (this.visibleTo != null) {
-      data['visible_to'] = this.visibleTo!.map((v) => v.toJson()).toList();
-    }
+    data['visible_to'] = this.visibleTo;
     data['is_added'] = this.isAdded;
-    return data;
-  }
-}
-
-class VisibleTo {
-  String? name;
-  int? id;
-
-  VisibleTo({this.name, this.id});
-
-  VisibleTo.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    id = json['id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['id'] = this.id;
     return data;
   }
 }

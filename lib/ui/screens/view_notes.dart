@@ -4,8 +4,10 @@ import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/assign_to_view.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/assignTo.dart';
+import 'package:meeting_module2/widget/customExpansionTile.dart';
 import 'package:meeting_module2/widget/custom_tab_widget.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
+import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dart';
 import 'package:meeting_module2/widget/text_underline.dart';
 
 class ViewNotesDetails extends StatelessWidget {
@@ -56,69 +58,131 @@ class ViewNotesDetails extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
+              // CustomMultiDownSingle(
+              //     enableMultiSelect: false,
+              //     callbackFunctionSingle: (val) {
+              //       controller.meetingWith.value = val;
+
+              //       controller.getRepresentativeDropDownData();
+              //       // controller.inItGetRepresentative();
+              //     },
+              //     model: controller.meetingWithList,
+              //     initialSelectedValue: '${controllers.meetingWith}'),
+              // const SizedBox(
+              //   height: 10,
+              // ),
+
               Expanded(
-                child: ListView.separated(
-                    separatorBuilder: (context, index) => SizedBox(
-                          height: 20,
-                        ),
-                    itemCount: controller.notesList.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        width: MediaQuery.of(context).size.width - 30,
-                        decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(20.0)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            children: [
-                              Align(
-                                alignment: AlignmentDirectional.topStart,
-                                child: CustomAutoSizeTextMontserrat(
-                                    text:
-                                        "${controller.notesList[index].note}"),
-                              ),
-                              Align(
-                                alignment: AlignmentDirectional.topStart,
-                                child: CustomAutoSizeTextMontserrat(
-                                  text:
-                                      "${controller.notesList[index].createdBy}",
-                                  textColor: ThemeConstants.TextColor,
-                                  fontSize: 12,
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Get.to(AssignToView());
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 10),
-                                  child: Align(
-                                    alignment: AlignmentDirectional.topEnd,
-                                    child: Container(
-                                      height: 30,
-                                      width: 120,
-                                      decoration: BoxDecoration(
-                                          color: ThemeConstants.bluecolor,
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(30.0))),
-                                      child: Center(
-                                        child: CustomAutoSizeTextMontserrat(
-                                          text: "Assign to",
-                                          textColor: ThemeConstants.whitecolor,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
-              )
+                child: ListView(
+                  children: [
+                    ...controller.documentlist,
+                    // CustomExpansionPlanList(
+                    //   text: "Meeting Notes",
+                    //   titel: 'Meeting Notes',
+                    //   dataList: controller.meetingNotesList,
+                    // ),
+                    // CustomExpansionPlanList(
+                    //   text: "Meeting Notes",
+                    //   titel: 'Observation Notes',
+                    //   dataList: controller.observationNotesList,
+                    // ),
+                    // CustomExpansionPlanList(
+                    //   text: "Meeting Notes",
+                    //   titel: 'Propose Changes Notes',
+                    //   dataList: controller.processNotesList,
+                    // ),
+                    // CustomExpansionPlanList(
+                    //   text: "Meeting Notes",
+                    //   titel: 'Process Notes Notes',
+                    //   dataList: controller.processNotesList,
+                    // ),
+                    // CustomExpansionPlanList(
+                    //   text: "Meeting Notes",
+                    //   titel: 'Training Notes',
+                    //   dataList: controller.traningNotesList,
+                    // ),
+                    // CustomExpansionPlanList(
+                    //   text: "Meeting Notes",
+                    //   titel: 'Requirement Notes',
+                    //   dataList: controller.requirementsNotesList,
+                    // ),
+                    // CustomExpansionPlanList(
+                    //   text: "Meeting Notes",
+                    //   titel: 'University Notes',
+                    //   dataList: controller.universityNotesList,
+                    // ),
+                    // CustomExpansionPlanList(
+                    //   text: "Meeting Notes",
+                    //   titel: 'Offline Marketing Notes',
+                    //   dataList: controller.offlineMarketingNotesList,
+                    // ),
+                  ],
+                ),
+              ),
+
+              // Expanded(
+              //   child: ListView.separated(
+              //       separatorBuilder: (context, index) => SizedBox(
+              //             height: 20,
+              //           ),
+              //       itemCount: controller.notesList.length,
+              //       itemBuilder: (context, index) {
+              //         return Container(
+              //           width: MediaQuery.of(context).size.width - 30,
+              //           decoration: BoxDecoration(
+              //               border: Border.all(),
+              //               borderRadius: BorderRadius.circular(20.0)),
+              //           child: Padding(
+              //             padding: const EdgeInsets.all(12.0),
+              //             child: Column(
+              //               children: [
+              //                 Align(
+              //                   alignment: AlignmentDirectional.topStart,
+              //                   child: CustomAutoSizeTextMontserrat(
+              //                       text:
+              //                           "${controller.notesList[index].note}"),
+              //                 ),
+              //                 Align(
+              //                   alignment: AlignmentDirectional.topStart,
+              //                   child: CustomAutoSizeTextMontserrat(
+              //                     text:
+              //                         "${controller.notesList[index].createdBy}",
+              //                     textColor: ThemeConstants.TextColor,
+              //                     fontSize: 12,
+              //                   ),
+              //                 ),
+              //                 InkWell(
+              //                   onTap: () {
+              //                     Get.to(AssignToView());
+              //                   },
+              //                   child: Padding(
+              //                     padding: const EdgeInsets.only(top: 10),
+              //                     child: Align(
+              //                       alignment: AlignmentDirectional.topEnd,
+              //                       child: Container(
+              //                         height: 30,
+              //                         width: 120,
+              //                         decoration: BoxDecoration(
+              //                             color: ThemeConstants.bluecolor,
+              //                             borderRadius: const BorderRadius.all(
+              //                                 Radius.circular(30.0))),
+              //                         child: Center(
+              //                           child: CustomAutoSizeTextMontserrat(
+              //                             text: "Assign to",
+              //                             textColor: ThemeConstants.whitecolor,
+              //                             fontSize: 14,
+              //                           ),
+              //                         ),
+              //                       ),
+              //                     ),
+              //                   ),
+              //                 )
+              //               ],
+              //             ),
+              //           ),
+              //         );
+              //       }),
+              // )
             ],
           ),
         ),
