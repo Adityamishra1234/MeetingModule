@@ -54,7 +54,7 @@ class DashBoardController extends GetxController with StateMixin {
     // RxStatus.loading();5
     super.onInit();
     print('fff');
-    // await token();
+    await token();
     helo.value = 2;
     await getsss();
 
@@ -66,7 +66,7 @@ class DashBoardController extends GetxController with StateMixin {
     var id = await prefs.getInt('id');
     var token = await prefs.getString('token');
     var data = await ApiServices().updateFCMToken(id, token);
-    print(data);
+    print(token);
     if (token != null) {
       sendPushMessage(token);
     }
@@ -351,8 +351,7 @@ class DashBoardController extends GetxController with StateMixin {
       } else if (selectedFilter.value == "University Meeting") {
         listToShow = await allMeetingslist
             .where((p0) =>
-                p0.meetingWith == 'University Meetings' &&
-                p0.meetingEnded == false)
+                p0.meetingWith == 'university' && p0.meetingEnded == false)
             .toList();
       } else if (selectedFilter.value == "Vendor Meeting") {
         listToShow = await allMeetingslist
@@ -382,8 +381,7 @@ class DashBoardController extends GetxController with StateMixin {
       } else if (selectedFilter.value == "University Meeting") {
         listToShow = await allMeetingslist
             .where((p0) =>
-                p0.meetingWith == 'University Meetings' &&
-                p0.meetingEnded == true)
+                p0.meetingWith == 'university' && p0.meetingEnded == true)
             .toList();
       } else if (selectedFilter.value == "Vendor Meeting") {
         listToShow = await allMeetingslist

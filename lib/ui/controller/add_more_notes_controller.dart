@@ -41,9 +41,9 @@ class AddMoreNotesController extends GetxController with StateMixin {
   void onInit() async {
     super.onInit();
 
-    // await meetingId();
-    // await checkUserIsCordinator();
-    // await getMeetingParticipantsList();
+    await meetingId();
+    await checkUserIsCordinator();
+    await getMeetingParticipantsList();
 
     change(null, status: RxStatus.success());
   }
@@ -200,9 +200,9 @@ class AddMoreNotesController extends GetxController with StateMixin {
         var res = await api
             .getRepresentativeAllData(participantList[i].participantId!);
 
-        var data = json.decode(res);
+        // var data = await json.decode(res);
 
-        var deta = RepresentativeModel.fromJson(data);
+        var deta = await RepresentativeModel.fromJson(res);
 
         dataList.add(deta);
       }

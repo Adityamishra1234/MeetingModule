@@ -20,16 +20,41 @@ import 'package:meeting_module2/widget/customtextfield.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsers.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dart';
 
-class AddMoreNotesView extends StatelessWidget {
+class AddMoreNotesView extends StatefulWidget {
   static String routeName = '/addmorenotes';
   AddMoreNotesView({super.key});
-  // TextEditingController fff = TextEditingController();
 
+  @override
+  State<AddMoreNotesView> createState() => _AddMoreNotesViewState();
+}
+
+class _AddMoreNotesViewState extends State<AddMoreNotesView> {
+  // TextEditingController fff = TextEditingController();
   var controller = Get.put(AddMoreNotesController());
+  final argumentData = Get.arguments;
+  late int meetingID;
+  late int index;
+
+  @override
+  void initState() {
+    print(argumentData);
+    meetingID = argumentData[0];
+    print(argumentData[0]);
+    index = argumentData[1];
+    print(index);
+
+    if (index == 0) {
+      controller.addNotes = true;
+    } else {
+      controller.addNotes = false;
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    int meetingID = Get.arguments;
+    dynamic argumentData = Get.arguments;
 
     return Scaffold(
         body: controller.obx(
@@ -54,6 +79,7 @@ class AddMoreNotesView extends StatelessWidget {
                               height: 10,
                             ),
                             CustomTabWidget(
+                                defaultIndex: index,
                                 title0: 'Add Notes',
                                 title1: 'Add Files',
                                 callback: (e) {

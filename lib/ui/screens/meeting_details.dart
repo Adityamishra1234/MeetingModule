@@ -30,6 +30,13 @@ class _MeetingDetailsState extends State<MeetingDetails> {
 
   var controllerDashboard = Get.find<DashBoardController>();
 
+  // @override
+  // void initState() {
+  //   controller.getMeetingParticipantsList();
+  //   // TODO: implement initState
+  //   super.initState();
+  // }
+
   @override
   void dispose() {
     controller.dispose();
@@ -501,7 +508,8 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                         height: 8,
                       ),
 
-                      meetingData.meetingType == 'External Meeting'
+                      meetingData.meetingType == 'External Meeting' &&
+                              controller.participantDataList.length != 0
                           ? Padding(
                               padding: const EdgeInsets.only(left: 20),
                               child: Row(
@@ -529,7 +537,8 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                             )
                           : SizedBox.shrink(),
 
-                      meetingData.meetingType == 'External Meeting'
+                      meetingData.meetingType == 'External Meeting' &&
+                              controller.participantDataList.length != 0
                           ? Container(
                               width: double.infinity,
                               padding: EdgeInsets.only(
@@ -664,223 +673,224 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                       //   ),
                       // ),
 
-                      controller.showTheStartEndOptions
-                          ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10, vertical: 5),
-                                        child: CustomAutoSizeTextMontserrat(
-                                          text: "Meeting Started",
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      Radio(
-                                          value: true,
-                                          groupValue: true,
-                                          onChanged: (val) {})
-                                      // Switch(
-                                      //   value: meetingData.meetingStarted!,
-                                      //   onChanged: (val) {
-                                      //     controller.meetingStarted(
-                                      //         meetingData.id!, val);
-                                      //   },
-                                      // ),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10, vertical: 5),
-                                        child: CustomAutoSizeTextMontserrat(
-                                          text: "Meeting Ended",
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      Switch(
-                                          value: meetingData.meetingEnded!,
-                                          onChanged: (val) {
-                                            controller.meetingEnded(
-                                                meetingData.id!, val);
-                                          }),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            )
-                          : InkWell(
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (_) => AlertDialog(
-                                          content: Container(
-                                            child: Text('ddd'),
-                                          ),
-                                        ));
-                              },
-                              child: IgnorePointer(
-                                ignoring: true,
-                                child: Opacity(
-                                  opacity: 0.5,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      children: [
-                                        Column(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 10,
-                                                      vertical: 5),
-                                              child:
-                                                  CustomAutoSizeTextMontserrat(
-                                                text: "Meeting Started",
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w800,
-                                              ),
-                                            ),
-                                            Switch(
-                                              value:
-                                                  meetingData.meetingStarted!,
-                                              onChanged: (val) {
-                                                controller.meetingStarted(
-                                                    meetingData.id!, val);
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                        Column(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 10,
-                                                      vertical: 5),
-                                              child:
-                                                  CustomAutoSizeTextMontserrat(
-                                                text: "Meeting Ended",
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w800,
-                                              ),
-                                            ),
-                                            Switch(
-                                                value:
-                                                    meetingData.meetingEnded!,
-                                                onChanged: (val) {
-                                                  controller.meetingEnded(
-                                                      meetingData.id!, val);
-                                                }),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                      // controller.showTheStartEndOptions
+                      //     ? Padding(
+                      //         padding: const EdgeInsets.all(8.0),
+                      //         child: Row(
+                      //           children: [
+                      //             Column(
+                      //               children: [
+                      //                 Padding(
+                      //                   padding: const EdgeInsets.symmetric(
+                      //                       horizontal: 10, vertical: 5),
+                      //                   child: CustomAutoSizeTextMontserrat(
+                      //                     text: "Meeting Started",
+                      //                     fontSize: 14,
+                      //                     fontWeight: FontWeight.w500,
+                      //                   ),
+                      //                 ),
+                      //                 Radio(
+                      //                     value: true,
+                      //                     groupValue: true,
+                      //                     onChanged: (val) {})
+                      //                 // Switch(
+                      //                 //   value: meetingData.meetingStarted!,
+                      //                 //   onChanged: (val) {
+                      //                 //     controller.meetingStarted(
+                      //                 //         meetingData.id!, val);
+                      //                 //   },
+                      //                 // ),
+                      //               ],
+                      //             ),
+                      //             Column(
+                      //               children: [
+                      //                 Padding(
+                      //                   padding: const EdgeInsets.symmetric(
+                      //                       horizontal: 10, vertical: 5),
+                      //                   child: CustomAutoSizeTextMontserrat(
+                      //                     text: "Meeting Ended",
+                      //                     fontSize: 14,
+                      //                     fontWeight: FontWeight.w500,
+                      //                   ),
+                      //                 ),
+                      //                 Switch(
+                      //                     value: meetingData.meetingEnded!,
+                      //                     onChanged: (val) {
+                      //                       controller.meetingEnded(
+                      //                           meetingData.id!, val);
+                      //                     }),
+                      //               ],
+                      //             )
+                      //           ],
+                      //         ),
+                      //       )
+                      //     : InkWell(
+                      //         onTap: () {
+                      //           showDialog(
+                      //               context: context,
+                      //               builder: (_) => AlertDialog(
+                      //                     content: Container(
+                      //                       child: Text('ddd'),
+                      //                     ),
+                      //                   ));
+                      //         },
+                      //         child: IgnorePointer(
+                      //           ignoring: true,
+                      //           child: Opacity(
+                      //             opacity: 0.5,
+                      //             child: Padding(
+                      //               padding: const EdgeInsets.all(8.0),
+                      //               child: Row(
+                      //                 children: [
+                      //                   Column(
+                      //                     children: [
+                      //                       Padding(
+                      //                         padding:
+                      //                             const EdgeInsets.symmetric(
+                      //                                 horizontal: 10,
+                      //                                 vertical: 5),
+                      //                         child:
+                      //                             CustomAutoSizeTextMontserrat(
+                      //                           text: "Meeting Started",
+                      //                           fontSize: 16,
+                      //                           fontWeight: FontWeight.w800,
+                      //                         ),
+                      //                       ),
+                      //                       Switch(
+                      //                         value:
+                      //                             meetingData.meetingStarted!,
+                      //                         onChanged: (val) {
+                      //                           controller.meetingStarted(
+                      //                               meetingData.id!, val);
+                      //                         },
+                      //                       ),
+                      //                     ],
+                      //                   ),
+                      //                   Column(
+                      //                     children: [
+                      //                       Padding(
+                      //                         padding:
+                      //                             const EdgeInsets.symmetric(
+                      //                                 horizontal: 10,
+                      //                                 vertical: 5),
+                      //                         child:
+                      //                             CustomAutoSizeTextMontserrat(
+                      //                           text: "Meeting Ended",
+                      //                           fontSize: 16,
+                      //                           fontWeight: FontWeight.w800,
+                      //                         ),
+                      //                       ),
+                      //                       Switch(
+                      //                           value:
+                      //                               meetingData.meetingEnded!,
+                      //                           onChanged: (val) {
+                      //                             controller.meetingEnded(
+                      //                                 meetingData.id!, val);
+                      //                           }),
+                      //                     ],
+                      //                   )
+                      //                 ],
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ),
 
                       // CustomAutoText using for mandatory *
-                      Padding(
-                        padding: const EdgeInsets.only(left: 40, top: 15),
-                        child: CustomAutoSizeTextMontserrat(
-                          text: 'Add Meeting Notes ',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w800,
-                          textColor: ThemeConstants.bluecolor,
-                          mandatory: true,
-                        ),
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 40),
-                            child: CustomAutoSizeTextMontserrat(
-                              text: 'Notes accessibility to',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              textColor: ThemeConstants.TextColor,
-                            ),
-                          ),
-                          const Spacer(),
-                          InkWell(
-                            onTap: () {
-                              Get.to(ViewNotesDetails(),
-                                  arguments: meetingData.id);
-                            },
-                            child: SizedBox(
-                              width: 86,
-                              height: 24,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                      color: const Color(0xffff9900)),
-                                ),
-                                child: Center(
-                                  child: CustomAutoSizeTextMontserrat(
-                                    text: "View Notes",
-                                    fontSize: 12,
-                                    textColor: const Color(0xffff9900),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 25,
-                          ),
-                        ],
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(left: 20, top: 15),
+                      //   child: CustomAutoSizeTextMontserrat(
+                      //     text: 'Add Meeting Notes ',
+                      //     fontSize: 14,
+                      //     fontWeight: FontWeight.w600,
+                      //     textColor: ThemeConstants.bluecolor,
+                      //     mandatory: true,
+                      //   ),
+                      // ),
+                      // Row(
+                      //   crossAxisAlignment: CrossAxisAlignment.end,
+                      //   children: [
+                      //     Padding(
+                      //       padding: const EdgeInsets.only(left: 20),
+                      //       child: CustomAutoSizeTextMontserrat(
+                      //         text: 'Notes accessibility to',
+                      //         fontSize: 10,
+                      //         fontWeight: FontWeight.w600,
+                      //         textColor: ThemeConstants.TextColor,
+                      //       ),
+                      //     ),
+                      //     const Spacer(),
+                      //     // InkWell(
+                      //     //   onTap: () {
+                      //     //     Get.to(ViewNotesDetails(),
+                      //     //         arguments: meetingData.id);
+                      //     //   },
+                      //     //   child: SizedBox(
+                      //     //     width: 86,
+                      //     //     height: 24,
+                      //     //     child: Container(
+                      //     //       decoration: BoxDecoration(
+                      //     //         borderRadius: BorderRadius.circular(20),
+                      //     //         border: Border.all(
+                      //     //             color: const Color(0xffff9900)),
+                      //     //       ),
+                      //     //       child: Center(
+                      //     //         child: CustomAutoSizeTextMontserrat(
+                      //     //           text: "View Notes",
+                      //     //           fontSize: 12,
+                      //     //           textColor: const Color(0xffff9900),
+                      //     //         ),
+                      //     //       ),
+                      //     //     ),
+                      //     //   ),
+                      //     // ),
+                      //     const SizedBox(
+                      //       width: 25,
+                      //     ),
+                      //   ],
+                      // ),
 
                       // DropDown
 
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(left: 0, right: 10, top: 10),
-                        child: CustomMultiDownSingleAllUser(
-                          // model: ['d', 'd'],
-                          model: Get.find<BaseController>().allSiecMembersList,
-                          // callbackFunction: callback,
-                          callbackFunctionMulti: (val) {
-                            controller.accessibileUserSelected_meetingDetail
-                                .value = val;
+                      // Padding(
+                      //   padding:
+                      //       const EdgeInsets.only(left: 0, right: 10, top: 5),
+                      //   child: CustomMultiDownSingleAllUser(
+                      //     // model: ['d', 'd'],
+                      //     model: Get.find<BaseController>().allSiecMembersList,
+                      //     // callbackFunction: callback,
+                      //     callbackFunctionMulti: (val) {
+                      //       controller.accessibileUserSelected_meetingDetail
+                      //           .value = val;
 
-                            print(controller
-                                .accessibileUserSelected_meetingDetail);
-                            controller.update();
-                          },
-                          enableMultiSelect: true,
-                          // inititalSelectedList:
-                          //     controller.accessibileUserSelected_meetingDetail,
+                      //       print(controller
+                      //           .accessibileUserSelected_meetingDetail);
+                      //       controller.update();
+                      //     },
+                      //     enableMultiSelect: true,
+                      //     // inititalSelectedList:
+                      //     //     controller.accessibileUserSelected_meetingDetail,
 
-                          initialSelectedValue: '',
-                        ),
-                        // TextField(
-                        //   // controller: firstName,
-                        //   scrollPadding: EdgeInsets.symmetric(
-                        //       vertical: MediaQuery.of(context).viewInsets.bottom + 30),
-                        //   style: ThemeConstants.montserrattextstyle2,
-                        //   // readOnly: saveAndEdit,
-                        //   decoration: textFieldDecoration("Demo Text Field"),
-                        // ),
-                      ),
+                      //     initialSelectedValue: '',
+                      //   ),
+                      //   // TextField(
+                      //   //   // controller: firstName,
+                      //   //   scrollPadding: EdgeInsets.symmetric(
+                      //   //       vertical: MediaQuery.of(context).viewInsets.bottom + 30),
+                      //   //   style: ThemeConstants.montserrattextstyle2,
+                      //   //   // readOnly: saveAndEdit,
+                      //   //   decoration: textFieldDecoration("Demo Text Field"),
+                      //   // ),
+                      // ),
 
                       Container(
+                        alignment: Alignment.topCenter,
                         width: double.infinity,
                         height: 90,
                         padding: EdgeInsets.only(
-                            top: 5, left: 5, bottom: 5, right: 20),
-                        margin:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 12),
+                            top: 0, left: 5, bottom: 5, right: 0),
+                        margin: EdgeInsets.only(
+                            left: 10, right: 10, top: 0, bottom: 10),
                         decoration: BoxDecoration(
                           boxShadow: [
                             const BoxShadow(
@@ -894,18 +904,70 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                                width: 100,
-                                alignment: Alignment.center,
-                                child: Icon(Icons.add, size: 50)),
-                            Container(
-                                width: 100,
-                                alignment: Alignment.center,
-                                child: Icon(Icons.document_scanner, size: 50)),
-                            Container(
-                                width: 100,
-                                alignment: Alignment.center,
-                                child: Icon(Icons.document_scanner, size: 50)),
+                            InkWell(
+                              onTap: () {
+                                Get.toNamed(AddMoreNotesView.routeName,
+                                    arguments: [meetingData.id, 0]);
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      width: 100,
+                                      alignment: Alignment.center,
+                                      child: Icon(Icons.add, size: 30)),
+                                  CustomAutoSizeTextMontserrat(
+                                    text: 'Add Note',
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    textColor: ThemeConstants.TextColor,
+                                  )
+                                ],
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Get.to(ViewNotesDetails(),
+                                    arguments: meetingData.id);
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      width: 100,
+                                      alignment: Alignment.center,
+                                      child: Icon(Icons.document_scanner,
+                                          size: 30)),
+                                  CustomAutoSizeTextMontserrat(
+                                    text: 'View Note',
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    textColor: ThemeConstants.TextColor,
+                                  )
+                                ],
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Get.toNamed(AddMoreNotesView.routeName,
+                                    arguments: [meetingData.id, 1]);
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      width: 100,
+                                      alignment: Alignment.center,
+                                      child: Icon(Icons.upload, size: 30)),
+                                  CustomAutoSizeTextMontserrat(
+                                    text: 'Upload File',
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    textColor: ThemeConstants.TextColor,
+                                  )
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -916,42 +978,189 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            InkWell(
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (_) => AlertDialog(
-                                          content: Container(
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Icon(Icons.mark_email_read)
-                                              ],
-                                            ),
-                                          ),
-                                        ));
-                              },
-                              child: Container(
-                                  width: (MediaQuery.of(context).size.width -
-                                          100) /
-                                      3,
-                                  height: 90,
-                                  // padding: EdgeInsets.only(
-                                  //     top: 5, left: 5, bottom: 5, right: 20),
-                                  // margin: EdgeInsets.symmetric(
-                                  //     vertical: 15, horizontal: 12),
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      const BoxShadow(
-                                          blurRadius: 0.5,
-                                          spreadRadius: 0.1,
-                                          color: Color.fromARGB(40, 0, 0, 0))
-                                    ],
-                                    color: ThemeConstants.whitecolor,
-                                    borderRadius: BorderRadius.circular(13),
+                            controller.showTheStartEndOptions
+                                ? InkWell(
+                                    onTap: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (_) => AlertDialog(
+                                                content: Container(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Icon(
+                                                          Icons.mark_email_read)
+                                                    ],
+                                                  ),
+                                                ),
+                                              ));
+                                    },
+                                    child: Container(
+                                        width:
+                                            (MediaQuery.of(context).size.width -
+                                                    100) /
+                                                3,
+                                        height: 90,
+                                        // padding: EdgeInsets.only(
+                                        //     top: 5, left: 5, bottom: 5, right: 20),
+                                        // margin: EdgeInsets.symmetric(
+                                        //     vertical: 15, horizontal: 12),
+                                        decoration: BoxDecoration(
+                                          boxShadow: [
+                                            const BoxShadow(
+                                                blurRadius: 0.5,
+                                                spreadRadius: 0.1,
+                                                color:
+                                                    Color.fromARGB(40, 0, 0, 0))
+                                          ],
+                                          color: ThemeConstants.whitecolor,
+                                          borderRadius:
+                                              BorderRadius.circular(13),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.meeting_room, size: 30),
+                                            CustomAutoSizeTextMontserrat(
+                                              text: 'Meeting Started Ended',
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w500,
+                                              textColor:
+                                                  ThemeConstants.TextColor,
+                                            )
+                                          ],
+                                        )),
+                                  )
+                                : InkWell(
+                                    onTap: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (_) => AlertDialog(
+                                                content: Container(
+                                                  child: Text(
+                                                      'Only Co-ordinator or meeting creator can start and end the meeting'),
+                                                ),
+                                              ));
+                                    },
+                                    child: IgnorePointer(
+                                      ignoring: true,
+                                      child: Opacity(
+                                        opacity: 0.5,
+                                        child: InkWell(
+                                          onTap: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (_) => AlertDialog(
+                                                      content: Container(
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            Icon(Icons
+                                                                .mark_email_read)
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ));
+                                          },
+                                          child: Container(
+                                              width: (MediaQuery.of(context)
+                                                          .size
+                                                          .width -
+                                                      100) /
+                                                  3,
+                                              height: 90,
+                                              // padding: EdgeInsets.only(
+                                              //     top: 5, left: 5, bottom: 5, right: 20),
+                                              // margin: EdgeInsets.symmetric(
+                                              //     vertical: 15, horizontal: 12),
+                                              decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  const BoxShadow(
+                                                      blurRadius: 0.5,
+                                                      spreadRadius: 0.1,
+                                                      color: Color.fromARGB(
+                                                          40, 0, 0, 0))
+                                                ],
+                                                color:
+                                                    ThemeConstants.whitecolor,
+                                                borderRadius:
+                                                    BorderRadius.circular(13),
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(Icons.meeting_room,
+                                                      size: 30),
+                                                  CustomAutoSizeTextMontserrat(
+                                                    text:
+                                                        'Meeting Started Ended',
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.w500,
+                                                    textColor: ThemeConstants
+                                                        .TextColor,
+                                                  )
+                                                ],
+                                              )),
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                  child: Icon(Icons.add, size: 50)),
-                            ),
+                            // InkWell(
+                            //   onTap: () {
+                            //     showDialog(
+                            //         context: context,
+                            //         builder: (_) => AlertDialog(
+                            //               content: Container(
+                            //                 child: Column(
+                            //                   mainAxisSize: MainAxisSize.min,
+                            //                   children: [
+                            //                     Icon(Icons.mark_email_read)
+                            //                   ],
+                            //                 ),
+                            //               ),
+                            //             ));
+                            //   },
+                            //   child: Container(
+                            //       width: (MediaQuery.of(context).size.width -
+                            //               100) /
+                            //           3,
+                            //       height: 90,
+                            //       // padding: EdgeInsets.only(
+                            //       //     top: 5, left: 5, bottom: 5, right: 20),
+                            //       // margin: EdgeInsets.symmetric(
+                            //       //     vertical: 15, horizontal: 12),
+                            //       decoration: BoxDecoration(
+                            //         boxShadow: [
+                            //           const BoxShadow(
+                            //               blurRadius: 0.5,
+                            //               spreadRadius: 0.1,
+                            //               color: Color.fromARGB(40, 0, 0, 0))
+                            //         ],
+                            //         color: ThemeConstants.whitecolor,
+                            //         borderRadius: BorderRadius.circular(13),
+                            //       ),
+                            //       child: Column(
+                            //         children: [
+                            //           Icon(Icons.meeting_room, size: 50),
+                            //           CustomAutoSizeTextMontserrat(
+                            //             text: 'Meeting Started Ended',
+                            //             fontSize: 10,
+                            //             fontWeight: FontWeight.w500,
+                            //             textColor: ThemeConstants.TextColor,
+                            //           )
+                            //         ],
+                            //       )),
+                            // ),
                             Container(
                                 width:
                                     (MediaQuery.of(context).size.width - 100) /
@@ -972,7 +1181,18 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                   borderRadius: BorderRadius.circular(13),
                                 ),
                                 alignment: Alignment.center,
-                                child: Icon(Icons.document_scanner, size: 50)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.not_accessible, size: 30),
+                                    CustomAutoSizeTextMontserrat(
+                                      text: 'Reason of not attending',
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w500,
+                                      textColor: ThemeConstants.TextColor,
+                                    )
+                                  ],
+                                )),
                             Container(
                                 width:
                                     (MediaQuery.of(context).size.width - 100) /
@@ -993,101 +1213,116 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                   borderRadius: BorderRadius.circular(13),
                                 ),
                                 alignment: Alignment.center,
-                                child: Icon(Icons.document_scanner, size: 50)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.calendar_month_rounded,
+                                        size: 30),
+                                    CustomAutoSizeTextMontserrat(
+                                      text: 'Mark Attendance',
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w500,
+                                      textColor: ThemeConstants.TextColor,
+                                    )
+                                  ],
+                                )),
                           ],
                         ),
                       ),
 
+                      SizedBox(
+                        height: 40,
+                      )
                       //Text filed
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(top: 10, left: 10, right: 10),
-                        child: SizedBox(
-                          height: 185,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border:
-                                  Border.all(color: const Color(0xff1940b3)),
-                            ),
-                            child: SizedBox(
-                              height: 200,
-                              child: Form(
-                                key: controller.globalKey,
-                                child: TextField(
-                                  controller:
-                                      controller.noteText_meetingdetails.value,
-                                  decoration: const InputDecoration(
-                                      border: InputBorder.none,
-                                      contentPadding: EdgeInsets.all(10)),
-                                  keyboardType: TextInputType.multiline,
-                                  expands: true,
-                                  maxLines: null,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding:
+                      //       const EdgeInsets.only(top: 10, left: 10, right: 10),
+                      //   child: SizedBox(
+                      //     height: 185,
+                      //     child: Container(
+                      //       decoration: BoxDecoration(
+                      //         borderRadius: BorderRadius.circular(10),
+                      //         border:
+                      //             Border.all(color: const Color(0xff1940b3)),
+                      //       ),
+                      //       child: SizedBox(
+                      //         height: 200,
+                      //         child: Form(
+                      //           key: controller.globalKey,
+                      //           child: TextField(
+                      //             controller:
+                      //                 controller.noteText_meetingdetails.value,
+                      //             decoration: const InputDecoration(
+                      //                 border: InputBorder.none,
+                      //                 contentPadding: EdgeInsets.all(10)),
+                      //             keyboardType: TextInputType.multiline,
+                      //             expands: true,
+                      //             maxLines: null,
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
 
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 10,
-                        ),
-                        child: SizedBox(
-                          height: 40,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const Spacer(),
-                              Container(
-                                width: 152,
-                                height: double.infinity,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: const Color(0xffff9900)),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Center(
-                                    child: GestureDetector(
-                                  onTap: () {
-                                    Get.toNamed(AddMoreNotesView.routeName,
-                                        arguments: meetingData.id);
-                                  },
-                                  child: CustomAutoSizeTextMontserrat(
-                                    text: "Add more Notes",
-                                    textColor: ThemeConstants.firstColor,
-                                  ),
-                                )),
-                              ),
-                              const Spacer(),
-                              InkWell(
-                                onTap: () {
-                                  controller.saveNotes(meetingData.id!);
-                                },
-                                child: Container(
-                                  width: 152,
-                                  height: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff1940b3),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Center(
-                                    child: CustomAutoSizeTextMontserrat(
-                                      text: "Add",
-                                      textColor: ThemeConstants.whitecolor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const Spacer(),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(
+                      //     top: 10,
+                      //   ),
+                      //   child: SizedBox(
+                      //     height: 40,
+                      //     child: Row(
+                      //       crossAxisAlignment: CrossAxisAlignment.center,
+                      //       children: [
+                      //         const Spacer(),
+                      //         Container(
+                      //           width: 152,
+                      //           height: double.infinity,
+                      //           decoration: BoxDecoration(
+                      //             border: Border.all(
+                      //                 color: const Color(0xffff9900)),
+                      //             borderRadius: BorderRadius.circular(20),
+                      //           ),
+                      //           child: Center(
+                      //               child: GestureDetector(
+                      //             onTap: () {
+                      //               Get.toNamed(AddMoreNotesView.routeName,
+                      //                   arguments: meetingData.id);
+                      //             },
+                      //             child: CustomAutoSizeTextMontserrat(
+                      //               text: "Add more Notes",
+                      //               textColor: ThemeConstants.firstColor,
+                      //             ),
+                      //           )),
+                      //         ),
+                      //         const Spacer(),
+                      //         InkWell(
+                      //           onTap: () {
+                      //             controller.saveNotes(meetingData.id!);
+                      //           },
+                      //           child: Container(
+                      //             width: 152,
+                      //             height: double.infinity,
+                      //             decoration: BoxDecoration(
+                      //               color: const Color(0xff1940b3),
+                      //               borderRadius: BorderRadius.circular(20),
+                      //             ),
+                      //             child: Center(
+                      //               child: CustomAutoSizeTextMontserrat(
+                      //                 text: "Add",
+                      //                 textColor: ThemeConstants.whitecolor,
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         const Spacer(),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+                      // const SizedBox(
+                      //   height: 20,
+                      // ),
                     ],
                   ),
                 ),

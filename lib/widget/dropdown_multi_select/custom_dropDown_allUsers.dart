@@ -17,8 +17,10 @@ class CustomMultiDownSingleAllUser extends StatelessWidget {
   List<AllUserModel>? inititalSelectedList;
   Function? callbackFunctionSingle;
   Function? callbackFunctionMulti;
+  Widget? field;
   CustomMultiDownSingleAllUser(
       {Key? key,
+      this.field,
       required this.model,
       this.callbackFunctionSingle,
       this.callbackFunctionMulti,

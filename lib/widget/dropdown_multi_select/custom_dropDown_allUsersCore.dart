@@ -77,10 +77,12 @@ class CustomizableDropdownAllUser extends StatefulWidget {
   final bool multiSelectEnable;
 
   List<AllUserModel>? initialSelectedList;
+  Widget? field;
 
   /// Here we go the dropdown StateFull Widget
   CustomizableDropdownAllUser(
       {Key? key,
+      this.field,
       required this.initalValue,
       this.selectedItem,
       this.itemList,
@@ -354,6 +356,7 @@ class _CustomizableDropdownAllUserState
                     ],
                   ),
                 ),
+                widget.field == null ? SizedBox.shrink() : widget.field!,
                 //Expanded Dropdown list
                 expandedSection()
               ]),

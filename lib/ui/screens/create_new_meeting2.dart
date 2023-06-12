@@ -27,6 +27,7 @@ import 'package:meeting_module2/widget/customtextfield.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsers.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dart';
 import 'package:meeting_module2/widget/text_underline.dart';
+import 'package:meeting_module2/widget/view_particpant_dialog.dart';
 
 class CreateNewMeeting2 extends StatelessWidget {
   static const routeNamed = '/CreateNewMeeting';
@@ -476,7 +477,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 10),
+                          padding: const EdgeInsets.only(left: 10, top: 5),
                           child: Align(
                               alignment: AlignmentDirectional.topStart,
                               child: Container(
@@ -1028,7 +1029,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                 ),
               ],
               Padding(
-                padding: const EdgeInsets.only(left: 15, bottom: 8),
+                padding: const EdgeInsets.only(left: 15, bottom: 8, top: 8),
                 child: Align(
                   alignment: AlignmentDirectional.topStart,
                   child: CustomAutoSizeTextMontserrat(
@@ -1051,7 +1052,10 @@ class CreateNewMeeting2 extends StatelessWidget {
                   width: double.infinity,
                   height: 40,
                   child: CustomAutoSizeTextMontserrat(
-                      text: '${controller.participantData.value.designation}'),
+                    text: '${controller.participantData.value.designation}',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
 
@@ -1098,7 +1102,10 @@ class CreateNewMeeting2 extends StatelessWidget {
                   width: double.infinity,
                   height: 40,
                   child: CustomAutoSizeTextMontserrat(
-                      text: '${controller.participantData.value.email}'),
+                    text: '${controller.participantData.value.email}',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
 
@@ -1132,12 +1139,15 @@ class CreateNewMeeting2 extends StatelessWidget {
                   width: double.infinity,
                   height: 40,
                   child: CustomAutoSizeTextMontserrat(
-                      text: '${controller.participantData.value.phone}'),
+                    text: '${controller.participantData.value.phone}',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
 
               SizedBox(
-                height: 10,
+                height: 15,
               ),
               // CustomTextField(
               //   hint: '',
@@ -1148,27 +1158,79 @@ class CreateNewMeeting2 extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 15),
                 child: Align(
                   alignment: Alignment.topLeft,
-                  child: GestureDetector(
-                    onTap: () {
-                      controller.listOfParticipants
-                          .add(controllers.participantData.value);
-                      controller.update();
-                    },
-                    child: Container(
-                      height: 38,
-                      width: MediaQuery.of(context).size.width * 0.55,
-                      decoration: BoxDecoration(
-                          color: ThemeConstants.bluecolor,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(30.0))),
-                      child: Center(
-                        child: CustomAutoSizeTextMontserrat(
-                            text: "Add Participants",
-                            textColor: ThemeConstants.whitecolor,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (_) =>
+                                  DialogHora(controller: controller));
+                          // controller.listOfParticipants
+                          //     .add(controllers.participantData.value);
+                          controller.update();
+                        },
+                        child: Container(
+                          height: 38,
+                          width: MediaQuery.of(context).size.width * 0.35,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 1, color: ThemeConstants.orangeColor),
+                              color: Colors.transparent,
+                              borderRadius: const BorderRadius.all(
+                                  Radius.circular(30.0))),
+                          child: Center(
+                            child: CustomAutoSizeTextMontserrat(
+                                text: "View Participants",
+                                textColor: ThemeConstants.orangeColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
                       ),
-                    ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          controller.listOfParticipants
+                              .add(controllers.participantData.value);
+                          controller.update();
+                          showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                    content: Container(
+                                      child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                                'Participant Added Successfully'),
+                                            Icon(Icons.check_circle,
+                                                size: 30,
+                                                color:
+                                                    ThemeConstants.GreenColor)
+                                          ]),
+                                    ),
+                                  ));
+                        },
+                        child: Container(
+                          height: 38,
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          decoration: BoxDecoration(
+                              color: ThemeConstants.bluecolor,
+                              borderRadius: const BorderRadius.all(
+                                  Radius.circular(30.0))),
+                          child: Center(
+                            child: CustomAutoSizeTextMontserrat(
+                                text: "Add Participants",
+                                textColor: ThemeConstants.whitecolor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -1176,10 +1238,24 @@ class CreateNewMeeting2 extends StatelessWidget {
                 height: 10,
               ),
               //
-              Container(
-                child: Wrap(
-                    children: [...controller.allParticipants(controllers)]),
-              ),
+              // Container(
+              //   alignment: Alignment.center,
+              //   height: 200,
+              //   decoration: BoxDecoration(
+              //       color: ThemeConstants.whitecolor,
+              //       borderRadius: BorderRadius.circular(5),
+              //       border: Border.all(
+              //           width: 1, color: ThemeConstants.VioletColor)),
+              //   width: double.infinity,
+              //   child: ListView(
+              //     children: [
+              //       Wrap(
+              //           alignment: WrapAlignment.center,
+              //           spacing: 10,
+              //           children: [...controller.allParticipants(controllers)]),
+              //     ],
+              //   ),
+              // ),
               // CustomMultiDownSingle(
               //     enableMultiSelect: false,
               //     callbackFunctionSingle: (val) {
@@ -1221,7 +1297,7 @@ class CreateNewMeeting2 extends StatelessWidget {
               height: 10,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 15),
+              padding: const EdgeInsets.only(left: 15, bottom: 8),
               child: Align(
                 alignment: AlignmentDirectional.topStart,
                 child: CustomAutoSizeTextMontserrat(
@@ -1233,16 +1309,33 @@ class CreateNewMeeting2 extends StatelessWidget {
             ),
 
             CustomMultiDownSingle(
+                field: Container(
+                  height: 22,
+                  child: CustomTextField(
+                    forDropDown: false,
+                    backgroundCOlour: Colors.transparent,
+                    hint: '',
+                    controller: TextEditingController(),
+                    validator: controller.selectedTargetAudience.value == ''
+                        ? Validator.plzSelectOne
+                        : null,
+                  ),
+                ),
                 callbackFunctionSingle: (val) async {
                   print(val);
                   controller.selectedTargetAudience.value = val;
+
                   // controller.preFilledUsers.clear();
                   // if (val.toString().toLowerCase() == 'branch based') {
                   //   await controller.getBranchData();
                   //   controller.update();
                   // }
+                  controller.groupNames.value = '';
                   controller.preFilledUsers = [];
-
+                  if (controller.selectedTargetAudience.value ==
+                      'Branch Based') {
+                    controller.branchSelected(controller.branchList[0]);
+                  }
                   if (controller.selectedTargetAudience.value == 'All User') {
                     controller.preFilledUsers =
                         Get.find<BaseController>().allSiecMembersList;
@@ -1258,7 +1351,7 @@ class CreateNewMeeting2 extends StatelessWidget {
 
             if (controller.selectedTargetAudience.value == 'Group Wise') ...[
               Padding(
-                padding: const EdgeInsets.only(left: 15),
+                padding: const EdgeInsets.only(left: 15, bottom: 8),
                 child: Align(
                   alignment: AlignmentDirectional.topStart,
                   child: CustomAutoSizeTextMontserrat(
@@ -1269,6 +1362,18 @@ class CreateNewMeeting2 extends StatelessWidget {
                 ),
               ),
               CustomMultiDownSingle(
+                  field: Container(
+                    height: 22,
+                    child: CustomTextField(
+                      forDropDown: false,
+                      backgroundCOlour: Colors.transparent,
+                      hint: '',
+                      controller: TextEditingController(),
+                      validator: controller.groupNames.value == ''
+                          ? Validator.plzSelectOne
+                          : null,
+                    ),
+                  ),
                   callbackFunctionSingle: (val) async {
                     // print(val + "sdddd");
                     controller.groupNames.value = val;
@@ -1293,6 +1398,18 @@ class CreateNewMeeting2 extends StatelessWidget {
                 ),
               ),
               CustomMultiDownSingleAllUser(
+                field: Container(
+                  height: 22,
+                  child: CustomTextField(
+                    forDropDown: false,
+                    backgroundCOlour: Colors.transparent,
+                    hint: '',
+                    controller: TextEditingController(),
+                    validator: controller.groupNames.value == ''
+                        ? Validator.plzSelectOne
+                        : null,
+                  ),
+                ),
                 enableMultiSelect: false,
                 model: controller.branchList,
 
@@ -1315,11 +1432,9 @@ class CreateNewMeeting2 extends StatelessWidget {
               //     model: controller.branchList.value,
               //     initialSelectedValue: ''),
             ],
-            SizedBox(
-              height: 10,
-            ),
+
             Padding(
-              padding: const EdgeInsets.only(left: 15),
+              padding: const EdgeInsets.only(left: 15, bottom: 8),
               child: Align(
                 alignment: AlignmentDirectional.topStart,
                 child: CustomAutoSizeTextMontserrat(
@@ -1390,10 +1505,10 @@ class CreateNewMeeting2 extends StatelessWidget {
             // ),
 
             SizedBox(
-              height: 10,
+              height: 15,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 15),
+              padding: const EdgeInsets.only(left: 15, bottom: 8),
               child: Align(
                 alignment: AlignmentDirectional.topStart,
                 child: CustomAutoSizeTextMontserrat(

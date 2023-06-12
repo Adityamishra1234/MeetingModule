@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allBranchModel.dart';
@@ -12,7 +13,9 @@ import 'package:meeting_module2/models/participantsModel.dart';
 import 'package:meeting_module2/models/selectedAudienceTypeModel.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
+import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/theme.dart';
+import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsersCore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,7 +30,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     await getBranchData();
     await getAllCountries();
     await getUniversities(13);
-
+    await userID();
     // inItGetRepresentative();
     await getRepresentativesByUniversity();
 
@@ -39,6 +42,12 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
+  var idForAllUse = 0;
+
+  userID() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    idForAllUse = await prefs.getInt('id')!;
+  }
 //////Common in Both
 
   RxString agendaPurposeOfMeeting = 'All Meetings'.obs;
@@ -174,8 +183,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
       repModel.value.country = null;
       repModel.value.university = null;
     } else {
-      repModel.value.country = selectedCountry.id;
-      repModel.value.university = selectedUniversityName.value.id;
+      repModel.value.country = selectedCountry.id ?? 13;
+      repModel.value.university = selectedUniversityName.value.id ?? 3263;
     }
 
     print(selectedUniversityName.value.id);
@@ -184,8 +193,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     repModel.value.isActive = true;
 
     ///created by dO  later
-    repModel.value.createdBy = 136;
-    repModel.value.updatedBy = 136;
+    repModel.value.createdBy = idForAllUse;
+    repModel.value.updatedBy = idForAllUse;
     print(repModel.value.toJson());
     var res = await api.addRepresentative(repModel.value);
 
@@ -319,45 +328,99 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     for (var i = 0; i < controller.listOfParticipants.length; i++) {
       data.add(Container(
         margin: EdgeInsets.all(5),
-        width: double.infinity,
-        padding: EdgeInsets.all(5),
+        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         decoration: BoxDecoration(
-            color: ThemeConstants.lightVioletColor,
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(20),
             border: Border.all(width: 1, color: ThemeConstants.VioletColor)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
           children: [
             Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(),
-                  Text('Name: ${controller.listOfParticipants[i].personName}'),
-                  Text(
-                      'Designation: ${controller.listOfParticipants[i].designation}'),
-                  Text('Email: ${controller.listOfParticipants[i].email}'),
-                  Text('Phone: ${controller.listOfParticipants[i].phone}'),
+                  CustomAutoSizeTextMontserrat(
+                    text: '${controller.listOfParticipants[i].personName}',
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    textColor: Colors.black54,
+                  ),
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/Suitcase.svg',
+                        width: 12,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      CustomAutoSizeTextMontserrat(
+                        text: '${controller.listOfParticipants[i].designation}',
+                        fontSize: 8,
+                        fontWeight: FontWeight.w500,
+                        textColor: ThemeConstants.TextColor,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.email_outlined,
+                        size: 12,
+                        color: ThemeConstants.TextColor,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      CustomAutoSizeTextMontserrat(
+                        text: '${controller.listOfParticipants[i].email}',
+                        fontSize: 8,
+                        fontWeight: FontWeight.w500,
+                        textColor: ThemeConstants.TextColor,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.phone,
+                        size: 12,
+                        color: ThemeConstants.TextColor,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      CustomAutoSizeTextMontserrat(
+                        text: '${controller.listOfParticipants[i].phone}',
+                        fontSize: 8,
+                        fontWeight: FontWeight.w500,
+                        textColor: ThemeConstants.TextColor,
+                      ),
+                    ],
+                  ),
                 ]),
-            InkWell(
-                onTap: () {
-                  controller.listOfParticipants.removeAt(i);
-                  update();
-                },
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    border:
-                        Border.all(width: 2, color: ThemeConstants.VioletColor),
-                  ),
-                  child: Icon(
-                    Icons.delete,
-                    color: ThemeConstants.red,
-                    size: 30,
-                  ),
-                ))
+            Container(
+              height: 60,
+              alignment: Alignment.center,
+              child: InkWell(
+                  onTap: () {
+                    controller.listOfParticipants.removeAt(i);
+                    update();
+                  },
+                  child: Container(
+                    width: 35,
+                    height: 35,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: ThemeConstants.lightRed),
+                    child: Icon(
+                      Icons.delete,
+                      color: ThemeConstants.red,
+                      size: 25,
+                    ),
+                  )),
+            )
           ],
         ),
       ));
@@ -537,11 +600,11 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     var res = await api.addMeeting(meetingModel.value);
 
-    var resDecoded = json.decode(res);
+    // var resDecoded = json.decode(res);
 
     print(res.toString());
 
-    AllMeetings dd = AllMeetings.fromJson(resDecoded);
+    AllMeetings dd = AllMeetings.fromJson(res);
 
     List<ParticipantsModel> data = <ParticipantsModel>[].obs;
 

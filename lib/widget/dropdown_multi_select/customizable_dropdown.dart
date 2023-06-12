@@ -76,9 +76,12 @@ class CustomizableDropdown extends StatefulWidget {
 
   List? initialSelectedList;
 
+  Widget? field;
+
   /// Here we go the dropdown StateFull Widget
   CustomizableDropdown(
       {Key? key,
+      this.field,
       required this.initalValue,
       this.selectedItem,
       required this.itemList,
@@ -319,6 +322,8 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
                     ],
                   ),
                 ),
+
+                widget.field == null ? SizedBox.shrink() : widget.field!,
                 //Expanded Dropdown list
                 expandedSection()
               ]),

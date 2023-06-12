@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/customizable_dropdown.dart';
 
@@ -15,6 +16,7 @@ class CustomMultiDownSingle extends StatelessWidget {
   List? inititalSelectedList;
   Function? callbackFunctionSingle;
   Function? callbackFunctionMulti;
+  Widget? field;
   CustomMultiDownSingle(
       {Key? key,
       required this.model,
@@ -23,6 +25,7 @@ class CustomMultiDownSingle extends StatelessWidget {
       this.choosefieldtype,
       required this.initialSelectedValue,
       this.inititalSelectedList,
+      this.field,
       this.enableMultiSelect})
       : super(key: key);
 
@@ -53,6 +56,7 @@ class CustomMultiDownSingle extends StatelessWidget {
         : Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: CustomizableDropdown(
+              field: field,
               // colorDropDown: Colors.black,
               selectedItem: initialSelectedValue,
               maxHeight: 150,

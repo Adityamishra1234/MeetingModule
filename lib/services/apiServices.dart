@@ -435,7 +435,7 @@ class ApiServices extends BaseServices implements API {
     var data2 = json.encode(model);
 
     var res = await httpPostHeader(url, data2);
-
+    print(res);
     return res;
 
     // TODO: implement addParticipants
@@ -520,7 +520,7 @@ class ApiServices extends BaseServices implements API {
 
     var res = await httpPostApplication(url, data2);
 
-    print(res);
+    // print(res);
 
     // TODO: implement updateFCMToken
     // throw UnimplementedError();

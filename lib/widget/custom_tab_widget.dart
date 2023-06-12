@@ -9,9 +9,11 @@ class CustomTabWidget extends StatefulWidget {
   final String title0;
   final String title1;
   final Function callback;
+  final int? defaultIndex;
 
   const CustomTabWidget(
       {super.key,
+      this.defaultIndex,
       required this.title0,
       required this.title1,
       required this.callback});
@@ -22,14 +24,28 @@ class CustomTabWidget extends StatefulWidget {
 
 class _CustomTabWidgetState extends State<CustomTabWidget> {
   // List data = CustomTabList.tabData;
-  int indexOfTab = 0;
+  late int indexOfTab;
   int firstTextlength = 0;
   int secondTextlength = 0;
 
   @override
   void initState() {
-    firstTextlength = widget.title0.length;
-    secondTextlength = widget.title1.length;
+    indexOfTab = widget.defaultIndex ?? 0;
+    final Size txtSize = _textSize(
+      widget.title0,
+      TextStyle(
+          fontSize: 18,
+          color: indexOfTab != 0 ? Colors.black : Color(0xffff9900)),
+    );
+
+    final Size txtSize2 = _textSize(
+      widget.title1,
+      TextStyle(
+          fontSize: 18,
+          color: indexOfTab != 1 ? Colors.black : Color(0xffff9900)),
+    );
+    firstTextlength = txtSize.width.toInt();
+    secondTextlength = txtSize2.width.toInt();
     print(firstTextlength);
   }
 
@@ -118,12 +134,12 @@ class _CustomTabWidgetState extends State<CustomTabWidget> {
               ),
               AnimatedPositioned(
                 width: indexOfTab == 0
-                    ? firstTextlength / 2 * 10
-                    : secondTextlength / 2 * 10,
+                    ? firstTextlength / 2
+                    : secondTextlength / 2,
                 height: 2.5,
                 top: 43,
-                left: indexOfTab == 0 ? 4 : firstTextlength * 10 + 34,
-                duration: const Duration(milliseconds: 1000),
+                left: indexOfTab == 0 ? 4 : firstTextlength + 34,
+                duration: const Duration(milliseconds: 700),
                 curve: Curves.fastOutSlowIn,
                 child: GestureDetector(
                   child: Container(
@@ -137,5 +153,14 @@ class _CustomTabWidgetState extends State<CustomTabWidget> {
             ],
           ),
         ));
+  }
+
+  Size _textSize(String text, TextStyle style) {
+    final TextPainter textPainter = TextPainter(
+        text: TextSpan(text: text, style: style),
+        maxLines: 1,
+        textDirection: TextDirection.ltr)
+      ..layout(minWidth: 0, maxWidth: double.infinity);
+    return textPainter.size;
   }
 }

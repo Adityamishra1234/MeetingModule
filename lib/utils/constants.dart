@@ -95,6 +95,7 @@ getDailog(BuildContext context, String data) {
 }
 
 getEmailvaliation(String? value) {
+  print(value.runtimeType);
   const pattern = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
       r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
       r'\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*'
@@ -105,18 +106,32 @@ getEmailvaliation(String? value) {
   final regex = RegExp(pattern);
 
   if (value != null) {
-    return value!.isNotEmpty && !regex.hasMatch(value)
-        ? 'Enter a valid email address'
-        : null;
-  } else if (value == null) {
-    return "Please enter email address";
+    if (value.length < 1) {
+      return "Please enter email address";
+    } else {
+      return value!.isNotEmpty && !regex.hasMatch(value)
+          ? 'Enter a valid email address'
+          : null;
+    }
+  } else {
+    print(value.runtimeType);
   }
 }
 
 getEmptyValidation(String? value) {
   print(value);
-  if (value == null || value == '') {
+  if (value == null) {
     return '* Required';
+  } else if (value.length < 1) {
+    return '* Required';
+  } else
+    return null;
+}
+
+getEmptyDropDownValidation(String? value) {
+  print(value);
+  if (value == null || value == '') {
+    return '* Please Select one Field';
   } else
     return null;
 }

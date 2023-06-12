@@ -10,8 +10,10 @@ class CustomTextField extends StatelessWidget {
   bool? obscureText = false;
   bool readOrEdit = false;
   Color? backgroundCOlour;
+  bool? forDropDown;
   CustomTextField({
     Key? key,
+    this.forDropDown = true,
     this.backgroundCOlour,
     required this.hint,
     required this.controller,
@@ -36,10 +38,42 @@ class CustomTextField extends StatelessWidget {
           hintText: hint,
           filled: true,
           fillColor: backgroundCOlour ?? ThemeConstants.ultraLightgreyColor,
-          border: OutlineInputBorder(
-            borderSide:
-                BorderSide(width: 1, color: ThemeConstants.lightgreycolor),
-            borderRadius: BorderRadius.circular(200),
+          errorBorder: OutlineInputBorder(
+            borderRadius: forDropDown!
+                ? BorderRadius.circular(200)
+                : BorderRadius.circular(0),
+            borderSide: BorderSide(
+                color: forDropDown! ? Colors.red : Colors.transparent),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                width: forDropDown! ? 1 : 0,
+                color: forDropDown!
+                    ? ThemeConstants.lightgreycolor
+                    : Colors.transparent),
+            borderRadius: forDropDown!
+                ? BorderRadius.circular(200)
+                : BorderRadius.circular(0),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                width: forDropDown! ? 1 : 0,
+                color: forDropDown!
+                    ? ThemeConstants.lightgreycolor
+                    : Colors.transparent),
+            borderRadius: forDropDown!
+                ? BorderRadius.circular(200)
+                : BorderRadius.circular(0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                width: forDropDown! ? 1 : 0,
+                color: forDropDown!
+                    ? ThemeConstants.lightgreycolor
+                    : Colors.transparent),
+            borderRadius: forDropDown!
+                ? BorderRadius.circular(200)
+                : BorderRadius.circular(0),
           ),
         ),
         validator: (value) {
@@ -53,9 +87,11 @@ class CustomTextField extends StatelessWidget {
             return getEmptyValidation(value);
           } else if (Validator.otp == validator) {
             return getOtpvalidation(value);
+          } else if (Validator.plzSelectOne == validator) {
+            return getEmptyDropDownValidation(value);
           }
         });
   }
 }
 
-enum Validator { phone, email, password, notEmpty, otp }
+enum Validator { phone, email, password, notEmpty, otp, plzSelectOne }
