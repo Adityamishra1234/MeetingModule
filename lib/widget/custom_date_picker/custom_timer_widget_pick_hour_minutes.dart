@@ -6,8 +6,9 @@ typedef void StringCallback(String val);
 
 class CustomTimerWidgetForHourMinutes extends StatefulWidget {
   final Function callback;
-
-  const CustomTimerWidgetForHourMinutes({Key? key, required this.callback})
+  String? initialTime;
+  CustomTimerWidgetForHourMinutes(
+      {Key? key, this.initialTime, required this.callback})
       : super(key: key);
 
   @override
@@ -22,17 +23,31 @@ class _CustomTimerWidgetForHourMinutesState
   // String previousDate = '${DateTime.now().hour}:${DateTime.now().minute}';
   String dateToShow = '${DateTime.now().hour}:${DateTime.now().minute}';
 
+  late DateTime dateTime;
+  late int intialDuration;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    print(widget.initialTime);
+
+    if (widget.initialTime != null) {
+      int hours = int.parse(widget.initialTime!.split(' ')[0]);
+      int minutes = int.parse(widget.initialTime!.split(' ')[2]);
+      print('${hours}:${minutes}');
+      intialDuration = hours * 60 + minutes;
+      dateToShow = '${hours}:${minutes}';
+    } else {
+      intialDuration = 0;
+      dateToShow = '0:0';
+    }
+
     // finaldate =
     //     '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}';
     // date =
     //     '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}';
     // previousDate =
     //     '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}';
-    dateToShow = '0:0';
   }
 
   @override
@@ -78,6 +93,7 @@ class _CustomTimerWidgetForHourMinutesState
                     Expanded(
                       child: CupertinoTimerPicker(
                         mode: CupertinoTimerPickerMode.hm,
+                        initialTimerDuration: Duration(minutes: intialDuration),
                         // use24hFormat: true,
                         // initialDateTime: DateTime.now(),
                         onTimerDurationChanged: (Duration newdate) {

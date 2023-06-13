@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:meeting_module2/utils/theme.dart';
 
 typedef void StringCallback(String val);
 
 class CustomTimerWidget2 extends StatefulWidget {
   final StringCallback callback;
-
-  const CustomTimerWidget2({Key? key, required this.callback})
+  String? initialTime;
+  CustomTimerWidget2({Key? key, required this.callback, this.initialTime})
       : super(key: key);
 
   @override
@@ -18,8 +19,24 @@ class _CustomTimerWidget2State extends State<CustomTimerWidget2> {
   String finaldate = '${DateTime.now().hour}:${DateTime.now().minute}';
   String date = '${DateTime.now().hour}:${DateTime.now().minute}';
   String previousDate = '${DateTime.now().hour}:${DateTime.now().minute}';
-  String dateToShow = '${DateTime.now().hour}:${DateTime.now().minute}';
+  late String dateToShow;
+  late DateTime dateTime;
 
+  @override
+  void initState() {
+    if (widget.initialTime != null) {
+      String dateString = widget.initialTime!;
+      dateTime = Jiffy.parse(dateString, pattern: 'HH:mm').dateTime;
+      dateToShow = widget.initialTime ??
+          '${DateTime.now().hour}:${DateTime.now().minute}';
+    } else {
+      dateToShow = '${DateTime.now().hour}:${DateTime.now().minute}';
+    }
+
+    print(dateTime.hour);
+    // TODO: implement initState
+    super.initState();
+  }
   // @override
   // void initState() {
   //   // TODO: implement initState
@@ -74,7 +91,7 @@ class _CustomTimerWidget2State extends State<CustomTimerWidget2> {
                     Expanded(
                       child: CupertinoDatePicker(
                         use24hFormat: true,
-                        initialDateTime: DateTime.now(),
+                        initialDateTime: dateTime,
                         onDateTimeChanged: (DateTime newdate) {
                           setState(() {
                             dateToShow = '${newdate.hour}:${newdate.minute}';

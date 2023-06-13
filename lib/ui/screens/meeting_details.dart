@@ -8,8 +8,10 @@ import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/add_more_notes.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
 import 'package:meeting_module2/utils/theme.dart';
+import 'package:meeting_module2/widget/custom_button.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/customdropdownsingle.dart';
+import 'package:meeting_module2/widget/customtextfield.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsers.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dart';
 import 'package:meeting_module2/extensions/textLengthExtension.dart';
@@ -30,12 +32,27 @@ class _MeetingDetailsState extends State<MeetingDetails> {
 
   var controllerDashboard = Get.find<DashBoardController>();
 
+  TextEditingController reasonOfNotAttending = TextEditingController();
+  late bool meetingStarted;
+  late bool meetingEnded;
+  late AllMeetings meetingData;
+  int daata = 1;
   // @override
   // void initState() {
   //   controller.getMeetingParticipantsList();
   //   // TODO: implement initState
   //   super.initState();
   // }
+  @override
+  void initState() {
+    meetingData = controllerDashboard.selectedMeetingdata.value;
+
+    meetingStarted =
+        controllerDashboard.selectedMeetingdata.value.meetingStarted!;
+    meetingEnded = controllerDashboard.selectedMeetingdata.value.meetingEnded!;
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -48,7 +65,6 @@ class _MeetingDetailsState extends State<MeetingDetails> {
   // AllMeetings meetingData = Get.arguments;
   @override
   Widget build(BuildContext context) {
-    AllMeetings meetingData = controllerDashboard.selectedMeetingdata.value;
     return Scaffold(
       backgroundColor: ThemeConstants.lightVioletColor,
       body: controller.obx(
@@ -976,28 +992,72 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             controller.showTheStartEndOptions
                                 ? InkWell(
-                                    onTap: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (_) => AlertDialog(
-                                                content: Container(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      Icon(
-                                                          Icons.mark_email_read)
-                                                    ],
+                                    onTap: () async {
+                                      if (controller.meetingStartedValue ==
+                                              false &&
+                                          controller.meetingEndedValue ==
+                                              false) {
+                                        await controller.meetingStarted(
+                                            meetingData.id!, true);
+                                        print('ddd');
+                                        controller.meetingStartedValue = true;
+                                        controller.update();
+                                      } else if (controller
+                                                  .meetingStartedValue ==
+                                              true &&
+                                          controller.meetingEndedValue ==
+                                              false) {
+                                        print('ddddd');
+                                        await controller.meetingEnded(
+                                            meetingData.id!, true);
+
+                                        controller.meetingEndedValue = true;
+                                        controller.update();
+                                        setState(() {});
+                                      } else if (controller
+                                                  .meetingStartedValue ==
+                                              true &&
+                                          controller.meetingEndedValue ==
+                                              true) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) => AlertDialog(
+                                                  content: Container(
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Icon(Icons
+                                                            .mark_email_read)
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                              ));
+                                                ));
+                                      }
+                                      // showDialog(
+                                      //     context: context,
+                                      //     builder: (_) => AlertDialog(
+                                      //           content: Container(
+                                      //             child: Column(
+                                      //               mainAxisAlignment:
+                                      //                   MainAxisAlignment
+                                      //                       .center,
+                                      //               mainAxisSize:
+                                      //                   MainAxisSize.min,
+                                      //               children: [
+                                      //                 Icon(
+                                      //                     Icons.mark_email_read)
+                                      //               ],
+                                      //             ),
+                                      //           ),
+                                      //         ));
                                     },
                                     child: Container(
                                         width:
@@ -1021,20 +1081,75 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                           borderRadius:
                                               BorderRadius.circular(13),
                                         ),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.meeting_room, size: 30),
-                                            CustomAutoSizeTextMontserrat(
-                                              text: 'Meeting Started Ended',
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w500,
-                                              textColor:
-                                                  ThemeConstants.TextColor,
-                                            )
-                                          ],
-                                        )),
+                                        child: controller.meetingStartedValue ==
+                                                    false &&
+                                                controller.meetingEndedValue ==
+                                                    false
+                                            ? Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(Icons.meeting_room,
+                                                      size: 30),
+                                                  CustomAutoSizeTextMontserrat(
+                                                    text: 'Start Meeting',
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.w500,
+                                                    textColor: ThemeConstants
+                                                        .TextColor,
+                                                  )
+                                                ],
+                                              )
+                                            : controller.meetingStartedValue ==
+                                                        true &&
+                                                    controller
+                                                            .meetingEndedValue ==
+                                                        false
+                                                ? Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(Icons.meeting_room,
+                                                          size: 30),
+                                                      CustomAutoSizeTextMontserrat(
+                                                        text: 'End Meeting',
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        textColor:
+                                                            ThemeConstants
+                                                                .TextColor,
+                                                      )
+                                                    ],
+                                                  )
+                                                : controller.meetingStartedValue ==
+                                                            true &&
+                                                        controller
+                                                                .meetingEndedValue ==
+                                                            true
+                                                    ? Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Icon(
+                                                              Icons
+                                                                  .meeting_room,
+                                                              size: 30),
+                                                          CustomAutoSizeTextMontserrat(
+                                                            text:
+                                                                'Meeting Ended',
+                                                            fontSize: 10,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            textColor:
+                                                                ThemeConstants
+                                                                    .TextColor,
+                                                          )
+                                                        ],
+                                                      )
+                                                    : SizedBox.shrink()),
                                   )
                                 : InkWell(
                                     onTap: () {
@@ -1161,71 +1276,151 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                             //         ],
                             //       )),
                             // ),
-                            Container(
-                                width:
-                                    (MediaQuery.of(context).size.width - 100) /
-                                        3,
-                                height: 90,
-                                // padding: EdgeInsets.only(
-                                //     top: 5, left: 5, bottom: 5, right: 20),
-                                // margin: EdgeInsets.symmetric(
-                                //     vertical: 15, horizontal: 12),
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    const BoxShadow(
-                                        blurRadius: 0.5,
-                                        spreadRadius: 0.1,
-                                        color: Color.fromARGB(40, 0, 0, 0))
-                                  ],
-                                  color: ThemeConstants.whitecolor,
-                                  borderRadius: BorderRadius.circular(13),
-                                ),
-                                alignment: Alignment.center,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.not_accessible, size: 30),
-                                    CustomAutoSizeTextMontserrat(
-                                      text: 'Reason of not attending',
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w500,
-                                      textColor: ThemeConstants.TextColor,
-                                    )
-                                  ],
-                                )),
-                            Container(
-                                width:
-                                    (MediaQuery.of(context).size.width - 100) /
-                                        3,
-                                height: 90,
-                                // padding: EdgeInsets.only(
-                                //     top: 5, left: 5, bottom: 5, right: 20),
-                                // margin: EdgeInsets.symmetric(
-                                //     vertical: 15, horizontal: 12),
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    const BoxShadow(
-                                        blurRadius: 0.5,
-                                        spreadRadius: 0.1,
-                                        color: Color.fromARGB(40, 0, 0, 0))
-                                  ],
-                                  color: ThemeConstants.whitecolor,
-                                  borderRadius: BorderRadius.circular(13),
-                                ),
-                                alignment: Alignment.center,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.calendar_month_rounded,
-                                        size: 30),
-                                    CustomAutoSizeTextMontserrat(
-                                      text: 'Mark Attendance',
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w500,
-                                      textColor: ThemeConstants.TextColor,
-                                    )
-                                  ],
-                                )),
+                            // Container(
+                            //     width:
+                            //         (MediaQuery.of(context).size.width - 100) /
+                            //             3,
+                            //     height: 90,
+                            //     // padding: EdgeInsets.only(
+                            //     //     top: 5, left: 5, bottom: 5, right: 20),
+                            //     // margin: EdgeInsets.symmetric(
+                            //     //     vertical: 15, horizontal: 12),
+                            //     decoration: BoxDecoration(
+                            //       boxShadow: [
+                            //         const BoxShadow(
+                            //             blurRadius: 0.5,
+                            //             spreadRadius: 0.1,
+                            //             color: Color.fromARGB(40, 0, 0, 0))
+                            //       ],
+                            //       color: ThemeConstants.whitecolor,
+                            //       borderRadius: BorderRadius.circular(13),
+                            //     ),
+                            //     alignment: Alignment.center,
+                            //     child: Column(
+                            //       mainAxisAlignment: MainAxisAlignment.center,
+                            //       children: [
+                            //         Icon(Icons.not_accessible, size: 30),
+                            //         CustomAutoSizeTextMontserrat(
+                            //           text: 'Reason of not attending',
+                            //           fontSize: 9,
+                            //           fontWeight: FontWeight.w500,
+                            //           textColor: ThemeConstants.TextColor,
+                            //         )
+                            //       ],
+                            //     )),
+                            InkWell(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => StatefulBuilder(
+                                        builder: (context,
+                                                StateSetter setState) =>
+                                            AlertDialog(
+                                              content: Container(
+                                                  width: 350,
+                                                  height: 350,
+                                                  child: Column(
+                                                    children: [
+                                                      CustomAutoSizeTextMontserrat(
+                                                          text:
+                                                              "Mark Attendance"),
+                                                      Row(
+                                                        children: [
+                                                          Radio(
+                                                              value: 1,
+                                                              groupValue: daata,
+                                                              onChanged:
+                                                                  (val) async {
+                                                                setState(() {
+                                                                  daata = val!;
+                                                                });
+                                                              }),
+                                                          CustomAutoSizeTextMontserrat(
+                                                              text: "Present")
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          Radio(
+                                                              value: 2,
+                                                              groupValue: daata,
+                                                              onChanged: (val) {
+                                                                print(daata);
+                                                                print(val);
+                                                                setState(() {
+                                                                  daata = val!;
+                                                                });
+
+                                                                print(daata);
+                                                                ;
+                                                              }),
+                                                          CustomAutoSizeTextMontserrat(
+                                                              text: "Absent")
+                                                        ],
+                                                      ),
+                                                      if (daata == 2) ...[
+                                                        CustomAutoSizeTextMontserrat(
+                                                            text:
+                                                                'Please Specify reason of absent'),
+                                                        CustomTextField(
+                                                            hint: 'Enter',
+                                                            controller:
+                                                                reasonOfNotAttending)
+                                                      ],
+                                                      CustomButton(
+                                                          backgroundColor:
+                                                              ThemeConstants
+                                                                  .bluecolor,
+                                                          text: 'Submit',
+                                                          onPressed: () {
+                                                            if (daata == 1) {
+                                                              controller
+                                                                  .markAttendance(
+                                                                      meetingData
+                                                                          .id!);
+                                                            }
+                                                          })
+                                                    ],
+                                                  )),
+                                            )));
+                              },
+                              child: Container(
+                                  width: (MediaQuery.of(context).size.width -
+                                          100) /
+                                      3,
+                                  height: 90,
+                                  margin: EdgeInsets.only(left: 20),
+                                  // padding: EdgeInsets.only(
+                                  //     top: 5, left: 5, bottom: 5, right: 20),
+                                  // margin: EdgeInsets.symmetric(
+                                  //     vertical: 15, horizontal: 12),
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      const BoxShadow(
+                                          blurRadius: 0.5,
+                                          spreadRadius: 0.1,
+                                          color: Color.fromARGB(40, 0, 0, 0))
+                                    ],
+                                    color: ThemeConstants.whitecolor,
+                                    borderRadius: BorderRadius.circular(13),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.calendar_month_rounded,
+                                          size: 30),
+                                      CustomAutoSizeTextMontserrat(
+                                        text: 'Mark Attendance',
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w500,
+                                        textColor: ThemeConstants.TextColor,
+                                      )
+                                    ],
+                                  )),
+                            ),
                           ],
                         ),
                       ),

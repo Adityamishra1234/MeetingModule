@@ -570,6 +570,12 @@ class _DashBoardState extends State<DashBoard> {
                                 const Spacer(),
                                 InkWell(
                                   onTap: () async {
+                                    // if (controller.listToShow[indexs]
+                                    //             .meetingStarted ==
+                                    //         false &&
+                                    //     controller.listToShow[indexs]
+                                    //             .meetingEnded ==
+                                    //         false) {
                                     showAnimatedDialog(
                                         animationType: DialogTransitionType
                                             .slideFromBottomFade,
@@ -580,7 +586,28 @@ class _DashBoardState extends State<DashBoard> {
                                             ResheduleMeetingDialogue(
                                               controller: controller,
                                               indexz: indexs,
+                                              meetingData:
+                                                  controller.listToShow[indexs],
                                             ));
+                                    // } else {
+                                    // showAnimatedDialog(
+                                    //     animationType: DialogTransitionType
+                                    //         .slideFromBottomFade,
+                                    //     curve: Curves.easeInOutQuart,
+                                    //     // barrierDismissible: false,
+                                    //     context: context,
+                                    //     builder: (ctx) => AlertDialog(
+                                    //           content: Container(
+                                    //               width: 400,
+                                    //               height: 400,
+                                    //               child:
+                                    //                   CustomAutoSizeTextMontserrat(
+                                    //                 text:
+                                    //                     'Meeting already started',
+                                    //               )),
+                                    //         ));
+                                    // }
+
                                     // rescheduleMeetingDialogue(
                                     //     context: context,
                                     //     id: controller.listToShow[indexs].id!,

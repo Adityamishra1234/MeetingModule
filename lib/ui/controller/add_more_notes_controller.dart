@@ -37,6 +37,9 @@ class AddMoreNotesController extends GetxController with StateMixin {
   RxList<AllUserModel> accessibileUserSelected_meetingDetail =
       RxList<AllUserModel>();
 
+  late bool meetingStartedValue;
+  late bool meetingEndedValue;
+  int id = 0;
   @override
   void onInit() async {
     super.onInit();
@@ -44,7 +47,11 @@ class AddMoreNotesController extends GetxController with StateMixin {
     await meetingId();
     await checkUserIsCordinator();
     await getMeetingParticipantsList();
-
+    var controllerDashboard = Get.find<DashBoardController>();
+    meetingStartedValue =
+        controllerDashboard.selectedMeetingdata.value.meetingStarted!;
+    meetingEndedValue =
+        controllerDashboard.selectedMeetingdata.value.meetingEnded!;
     change(null, status: RxStatus.success());
   }
 
@@ -121,9 +128,9 @@ class AddMoreNotesController extends GetxController with StateMixin {
     }
   }
 
-  bool meetingStartedValue = false;
-  bool meetingEndedValue = false;
-  int id = 0;
+  // bool meetingStartedValue = false;
+  // bool meetingEndedValue = false;
+  // int id = 0;
 
   meetingId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -137,8 +144,9 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
     AllMeetings meetingData = controllerDashboard.selectedMeetingdata.value;
     var res = await api.meetingStartedOrEnded(meetingId, id!, 0, val);
-    meetingData.meetingStarted = val;
+    // meetingData.meetingStarted = val;
 
+    await controllerDashboard.getsss();
     // await Get.find<DashBoardController>().getsss();
     update();
   }
@@ -150,8 +158,8 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
     AllMeetings meetingData = controllerDashboard.selectedMeetingdata.value;
     var res = await api.meetingStartedOrEnded(meetingId, id!, 1, val);
-    meetingData.meetingEnded = val;
-    await controllerDashboard.changeInFilter();
+    // meetingData.meetingEnded = val;
+    await controllerDashboard.getsss();
     // controllerDashboard.indexOfTab.value =
     //     controllerDashboard.indexOfTab.value == 0 ? 1 : 0;
     controllerDashboard.update();
@@ -261,5 +269,9 @@ class AddMoreNotesController extends GetxController with StateMixin {
       // });
       print(participantList);
     }
+  }
+
+  markAttendance(meetingID) async {
+    var res = await api.markAttendance(meetingID, id, id);
   }
 }

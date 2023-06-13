@@ -54,6 +54,8 @@ dependencies:
   flutter_widget_from_html_core: ^0.10.1
   flutter_animated_dialog: ^2.0.1
   file_picker: ^5.3.1
+  jiffy: ^6.2.1
+  flutter_quill: ^7.2.0
 
 dev_dependencies:
   flutter_test:

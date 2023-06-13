@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:meeting_module2/utils/theme.dart';
 
 typedef void StringCallback(String val);
 
 class CustomTimerWidget extends StatefulWidget {
   final StringCallback callback;
+  String? initialTime;
 
-  const CustomTimerWidget({Key? key, required this.callback}) : super(key: key);
+  CustomTimerWidget({Key? key, required this.callback, this.initialTime})
+      : super(key: key);
 
   @override
   State<CustomTimerWidget> createState() => _CustomTimerWidgetState();
@@ -20,9 +23,26 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
       '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
   String previousDate =
       '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
-  String dateToShow =
-      '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
+  late String dateToShow;
 
+  late DateTime dateTime;
+  @override
+  void initState() {
+    if (widget.initialTime != null) {
+      String dateString = widget.initialTime!;
+      dateTime = Jiffy.parse(dateString).dateTime;
+      // String formattedDate = Jiffy(dateTime).format('MMM do yyyy');
+      // print(formattedDate); // Output: Jun 13th 2023
+      dateToShow = widget.initialTime ??
+          '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
+    } else {
+      dateToShow =
+          '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
+
+      // TODO: implement initState
+      super.initState();
+    }
+  }
   // @override
   // void initState() {
   //   // TODO: implement initState
@@ -76,16 +96,16 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
                     ),
                     Expanded(
                       child: CupertinoDatePicker(
-                        initialDateTime: DateTime.now(),
+                        initialDateTime: dateTime,
                         onDateTimeChanged: (DateTime newdate) {
                           setState(() {
                             dateToShow =
                                 '${newdate.year}-${newdate.month}-${newdate.day}';
                           });
-                          widget.callback(date);
+                          widget.callback(dateToShow);
                         },
                         maximumDate: DateTime(2025, 12, 30),
-                        minimumYear: 2010,
+                        minimumYear: 2004,
                         maximumYear: 2035,
                         minuteInterval: 1,
                         mode: CupertinoDatePickerMode.date,

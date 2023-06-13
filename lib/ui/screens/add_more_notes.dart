@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_quill/flutter_quill.dart' as quil;
 import 'package:get/get.dart';
 import 'package:meeting_module2/functions/uploadDoucment.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
@@ -31,6 +32,8 @@ class AddMoreNotesView extends StatefulWidget {
 class _AddMoreNotesViewState extends State<AddMoreNotesView> {
   // TextEditingController fff = TextEditingController();
   var controller = Get.put(AddMoreNotesController());
+
+  quil.QuillController _controller = quil.QuillController.basic();
   final argumentData = Get.arguments;
   late int meetingID;
   late int index;
@@ -161,6 +164,14 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                               const SizedBox(
                                 height: 10,
                               ),
+                              quil.QuillToolbar.basic(
+                                controller: _controller,
+                                showCodeBlock: false,
+                                showQuote: false,
+                                showLink: false,
+                                showListCheck: false,
+                                showIndent: false,
+                              ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 10),
                                 child: SizedBox(
@@ -173,15 +184,26 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                                     ),
                                     child: SizedBox(
                                       height: 200,
-                                      child: TextField(
-                                        controller: controller.noteText.value,
-                                        decoration: const InputDecoration(
-                                            border: InputBorder.none,
-                                            contentPadding: EdgeInsets.all(10)),
-                                        keyboardType: TextInputType.multiline,
+                                      child: quil.QuillEditor(
+                                        padding: EdgeInsets.all(5),
                                         expands: true,
-                                        maxLines: null,
+                                        controller: _controller,
+                                        readOnly: false,
+                                        scrollController: ScrollController(),
+                                        scrollable: true,
+                                        focusNode: FocusNode(),
+                                        autoFocus:
+                                            false, // true for view only mode
                                       ),
+                                      // TextField(
+                                      //   controller: controller.noteText.value,
+                                      //   decoration: const InputDecoration(
+                                      //       border: InputBorder.none,
+                                      //       contentPadding: EdgeInsets.all(10)),
+                                      //   keyboardType: TextInputType.multiline,
+                                      //   expands: true,
+                                      //   maxLines: null,
+                                      // ),
                                     ),
                                   ),
                                 ),

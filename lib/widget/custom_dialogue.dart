@@ -17,10 +17,14 @@ import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dar
 
 class ResheduleMeetingDialogue extends StatefulWidget {
   ResheduleMeetingDialogue(
-      {super.key, required this.controller, required this.indexz});
+      {super.key,
+      required this.controller,
+      required this.indexz,
+      required this.meetingData});
 
   DashBoardController controller;
   int indexz;
+  AllMeetings meetingData;
 
   @override
   State<ResheduleMeetingDialogue> createState() =>
@@ -28,13 +32,25 @@ class ResheduleMeetingDialogue extends StatefulWidget {
 }
 
 class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
-  String time = '';
-  String date = '';
+  late String time;
+  late String date;
   String proposedDuration = '';
-  bool meetingType = true;
+  String meetingType = '';
   String modeOfMeeting = 'Zoom';
   TextEditingController meetingLink = TextEditingController();
   TextEditingController reasonOfReshedule = TextEditingController();
+
+  GlobalKey<FormState> key = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    date = widget.meetingData.dateOfMeeting!;
+    time = widget.meetingData.timeOfTheMeeting!;
+    meetingLink.text = widget.meetingData.meetingLink!;
+
+    // TODO: implement initState
+    // super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,12 +130,12 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
               child: ListView(
                 padding: EdgeInsets.all(0),
                 children: [
-                  Padding(
-                      padding: EdgeInsets.all(5),
-                      child: CustomAutoSizeTextMontserrat(
-                        text: "**touch only the value you want to change",
-                        fontWeight: FontWeight.bold,
-                      )),
+                  // Padding(
+                  //     padding: EdgeInsets.all(5),
+                  //     child: CustomAutoSizeTextMontserrat(
+                  //       text: "**touch only the value you want to change",
+                  //       fontWeight: FontWeight.bold,
+                  //     )),
 
                   SizedBox(
                     height: 10,
@@ -131,10 +147,12 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                         text: "Date",
                         fontWeight: FontWeight.bold,
                       )),
-                  CustomTimerWidget(callback: (val) {
-                    date = val;
-                    setState(() {});
-                  }),
+                  CustomTimerWidget(
+                      initialTime: widget.meetingData.dateOfMeeting,
+                      callback: (val) {
+                        date = val;
+                        setState(() {});
+                      }),
 
                   SizedBox(
                     height: 10,
@@ -145,27 +163,29 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                         text: "Time",
                         fontWeight: FontWeight.bold,
                       )),
-                  CustomTimerWidget2(callback: (val) async {
-                    // var hours = int.parse(val) / 60;
-                    // var minutes = int.parse(val) % 60;
+                  CustomTimerWidget2(
+                      initialTime: widget.meetingData.timeOfTheMeeting,
+                      callback: (val) async {
+                        // var hours = int.parse(val) / 60;
+                        // var minutes = int.parse(val) % 60;
 
-                    print(val);
-                    setState(() {
-                      time = val;
-                    });
+                        print(val);
+                        setState(() {
+                          time = val;
+                        });
 
-                    // var data = val.toString();
+                        // var data = val.toString();
 
-                    // var time =
-                    //     '${data.substring(0, 2)} hours ${data.substring(3, 5)} minutes';
+                        // var time =
+                        //     '${data.substring(0, 2)} hours ${data.substring(3, 5)} minutes';
 
-                    // print(time);
+                        // print(time);
 
-                    // print(val);
+                        // print(val);
 
-                    // controller.update();
-                    // print(controller.proposedDurationController.value);
-                  }),
+                        // controller.update();
+                        // print(controller.proposedDurationController.value);
+                      }),
                   SizedBox(
                     height: 10,
                   ),
@@ -176,27 +196,28 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(5.0),
-                    child:
-                        CustomTimerWidgetForHourMinutes(callback: (val) async {
-                      // var hours = int.parse(val) / 60;
-                      // var minutes = int.parse(val) % 60;
+                    child: CustomTimerWidgetForHourMinutes(
+                        initialTime: widget.meetingData.durationOfMeeting,
+                        callback: (val) async {
+                          // var hours = int.parse(val) / 60;
+                          // var minutes = int.parse(val) % 60;
 
-                      print(val);
+                          print(val);
 
-                      var data = val.toString();
+                          var data = val.toString();
 
-                      var time =
-                          '${data.substring(0, 2)} hours ${data.substring(3, 5)} minutes';
+                          var time =
+                              '${data.substring(0, 2)} hours ${data.substring(3, 5)} minutes';
 
-                      print(time);
+                          print(time);
 
-                      print(val);
+                          print(val);
 
-                      proposedDuration = time;
-                      // widget.controller   proposedDurationController.value = time;
-                      // controller.update();
-                      // print(controller.proposedDurationController.value);
-                    }),
+                          proposedDuration = time;
+                          // widget.controller   proposedDurationController.value = time;
+                          // controller.update();
+                          // print(controller.proposedDurationController.value);
+                        }),
                   ),
                   SizedBox(
                     height: 10,
@@ -234,24 +255,28 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                               callbackFunctionSingle: (val) {
                                 print(val);
                                 if (val == 'Offline') {
-                                  meetingType = false;
+                                  meetingType = '2';
                                   // controller.MeetingType.value = false;
                                   // controller.update();
                                 } else {
-                                  meetingType = true;
+                                  meetingType = '1';
                                   // controller.MeetingType.value = true;
                                   // controller.update();
                                 }
                               },
                               enableMultiSelect: false,
                               model: ['Online', 'Offline'],
-                              initialSelectedValue: 'Online')),
+                              initialSelectedValue:
+                                  widget.meetingData.meetingMode == '1'
+                                      ? 'Online'
+                                      : 'Offline')),
                       Container(
                         width: (MediaQuery.of(context).size.width - 40) / 2.7,
                         child: CustomMultiDownSingle(
                           enableMultiSelect: false,
                           model: ['Zoom', 'Meet', 'Teams'],
-                          initialSelectedValue: 'Zoom',
+                          initialSelectedValue:
+                              widget.meetingData.meetingModeType,
                           callbackFunctionSingle: (val) {
                             modeOfMeeting = val;
                             // controller.modeOfMeeting.value = val;
@@ -299,65 +324,92 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                       ),
                     ),
                   ),
-                  Container(
-                    height: 45,
-                    width: MediaQuery.of(context).size.width - 40,
-                    child: CustomTextField(
-                      // validator: controller.MeetingType.value == true
-                      //     ? Validator.notEmpty
-                      //     : null,
-                      hint: '',
-                      controller: reasonOfReshedule,
-                    ),
-                  ),
+                  Form(
+                      key: key,
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 45,
+                            width: MediaQuery.of(context).size.width - 40,
+                            child: CustomTextField(
+                              validator: Validator.notEmpty,
 
-                  CustomButton(
-                      backgroundColor: ThemeConstants.bluecolor,
-                      text: 'Update',
-                      onPressed: () async {
+                              //  reasonOfReshedule == null
+                              //                       ? Validator.notEmpty
+                              //                       : null,
+                              hint: '',
+                              controller: reasonOfReshedule,
+                            ),
+                          ),
+                          CustomButton(
+                              backgroundColor: ThemeConstants.bluecolor,
+                              text: 'Update',
+                              onPressed: () async {
 //  AllMeetings data =
 //                         widget.controller.listToShow[widget.indexz];
 
-                        String link = meetingLink.value.text;
-                        var data = {
-                          "meetingId": widget
-                              .controller.listToShow[widget.indexz].id
-                              .toString(),
-                          "reasonOfReshedule": reasonOfReshedule.value.text,
-                          "rescheduleDate": date == ''
-                              ? widget.controller.listToShow[widget.indexz]
-                                  .dateOfMeeting
-                              : date,
-                          "rescheduleTime": time == ''
-                              ? widget.controller.listToShow[widget.indexz]
-                                  .timeOfTheMeeting
-                              : time,
-                          "rescheduleDuration": proposedDuration == ''
-                              ? widget.controller.listToShow[widget.indexz]
-                                  .durationOfMeeting
-                              : proposedDuration,
-                          "meetingType":
-                              modeOfMeeting == '' ? 'Zoom' : modeOfMeeting,
-                          "modeOfMeeting": meetingType ? '1' : '0',
-                          "meetingLink": link,
-                          "updatedBY": 44
-                        };
+                                if (key.currentState!.validate() == true) {
+                                  String link = meetingLink.value.text;
+                                  var data = {
+                                    "meetingId": widget
+                                        .controller.listToShow[widget.indexz].id
+                                        .toString(),
+                                    "reasonOfReshedule":
+                                        reasonOfReshedule.value.text,
+                                    "rescheduleDate": date == ''
+                                        ? widget
+                                            .controller
+                                            .listToShow[widget.indexz]
+                                            .dateOfMeeting
+                                        : date,
+                                    "rescheduleTime": time == ''
+                                        ? widget
+                                            .controller
+                                            .listToShow[widget.indexz]
+                                            .timeOfTheMeeting
+                                        : time,
+                                    "rescheduleDuration": proposedDuration == ''
+                                        ? widget
+                                            .controller
+                                            .listToShow[widget.indexz]
+                                            .durationOfMeeting
+                                        : proposedDuration,
+                                    "meetingType": modeOfMeeting == ''
+                                        ? widget
+                                            .controller
+                                            .listToShow[widget.indexz]
+                                            .meetingModeType
+                                        : modeOfMeeting,
+                                    "modeOfMeeting": meetingType == ''
+                                        ? widget
+                                            .controller
+                                            .listToShow[widget.indexz]
+                                            .meetingMode
+                                        : meetingType,
+                                    "meetingLink": link,
+                                    "updatedBY": 44
+                                  };
 
-                        // var data2 = json.encode(data);
+                                  print(data);
+                                  // var data2 = json.encode(data);
 
-                        // data.timeOfTheMeeting = time;
-                        // data.isReschedule = true;
-                        // data.dateOfMeeting = date;
-                        // data.durationOfMeeting = proposedDuration;
-                        // data.meetingType =
-                        //     meetingType == true ? 'Online' : 'Offline';
-                        // data.meetingMode = modeOfMeeting;
-                        // data.meetingLink = meetingLink.value.text;
-                        //todo
+                                  // data.timeOfTheMeeting = time;
+                                  // data.isReschedule = true;
+                                  // data.dateOfMeeting = date;
+                                  // data.durationOfMeeting = proposedDuration;
+                                  // data.meetingType =
+                                  //     meetingType == true ? 'Online' : 'Offline';
+                                  // data.meetingMode = modeOfMeeting;
+                                  // data.meetingLink = meetingLink.value.text;
+                                  //todo
 
-                        // print(data.toJson());
-                        widget.controller.resheduleMeeting(data);
-                      })
+                                  // print(data.toJson());
+                                  widget.controller.resheduleMeeting(data);
+                                }
+                              })
+                        ],
+                      ))
+
                   // InkWell(
                   //   onTap: () {
                   //     _launchURL();
