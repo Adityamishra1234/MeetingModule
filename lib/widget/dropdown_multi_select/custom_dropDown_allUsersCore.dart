@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/utils/theme.dart';
+import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/expand_section.dart';
 
 // import 'package:studentpanel/widgets/Custom%20Dropdown/expand_section.dart';
@@ -529,7 +530,7 @@ class _CustomizableDropdownAllUserState
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-              height: 45,
+              height: 35,
 
               // constraints: ConstrainedBox(constraints: ),
               // height: 4,
@@ -537,7 +538,13 @@ class _CustomizableDropdownAllUserState
               alignment: Alignment.center,
               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 7),
               decoration: BoxDecoration(
-                  color: ThemeConstants.ultraLightgreyColor,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Color.fromARGB(28, 0, 0, 0),
+                        blurRadius: 1,
+                        spreadRadius: 0.5)
+                  ],
+                  color: ThemeConstants.whitecolor,
                   borderRadius: BorderRadius.circular(20)),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -549,9 +556,10 @@ class _CustomizableDropdownAllUserState
                         maxWidth: MediaQuery.of(context).size.width * 0.6),
                     child: Wrap(
                       children: [
-                        Text(
-                          softWrap: true,
-                          '${selectedItemsList[i].name}',
+                        CustomAutoSizeTextMontserrat(
+                          text: '${selectedItemsList[i].name}',
+                          fontSize: 11,
+                          fontWeight: FontWeight.w400,
                         )
                       ],
                     ),
@@ -560,8 +568,8 @@ class _CustomizableDropdownAllUserState
                     width: 10,
                   ),
                   Container(
-                    width: 20,
-                    height: 20,
+                    width: 18,
+                    height: 18,
                     child: GestureDetector(
                       onTap: () {
                         selectedItemsList.remove(selectedItemsList[i]);
@@ -573,7 +581,7 @@ class _CustomizableDropdownAllUserState
                         //     selectedItemsList);
                       },
                       child: CircleAvatar(
-                          backgroundColor: ThemeConstants.bluelightgreycolor,
+                          backgroundColor: ThemeConstants.bluecolor,
                           child: Icon(
                             Icons.close,
                             size: 17,

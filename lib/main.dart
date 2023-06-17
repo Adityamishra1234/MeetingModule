@@ -116,8 +116,8 @@ Future<void> main() async {
       arguments: MessageArguments(message, true),
     );
   });
-  onActionSelected;
-  createtoken();
+  await onActionSelected;
+  await createtoken();
   runApp(MyApp());
 }
 
@@ -172,7 +172,7 @@ createtoken() async {
       vapidKey:
           'BNKkaUWxyP_yC_lki1kYazgca0TNhuzt2drsOrL6WrgGbqnMnr8ZMLzg_rSPDm6HKphABS0KzjPfSqCXHXEd06Y');
 
-  prefs.setString('token', '$token');
+  await prefs.setString('token', '$token');
 }
 
 // FCM send Notification using Token

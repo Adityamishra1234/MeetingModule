@@ -98,10 +98,11 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                       alignment: Alignment.centerLeft,
                       child: CustomAutoSizeTextMontserrat(
                         text: "Reschedule the Meeting",
-                        fontSize: 22,
-                        fontWeight: FontWeight.w800,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
                         textColor: ThemeConstants.bluecolor,
                       )),
+                  Spacer(),
                   GestureDetector(
                     onTap: () {
                       Get.back();
@@ -112,10 +113,10 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                       alignment: Alignment.centerRight,
                       child: CircleAvatar(
                         radius: 25,
-                        backgroundColor: ThemeConstants.ultraLightgreyColor,
+                        backgroundColor: ThemeConstants.bluecolor,
                         child: Icon(
                           Icons.close,
-                          color: ThemeConstants.bluecolor,
+                          color: ThemeConstants.whitecolor,
                           size: 20,
                         ),
                       ),
@@ -145,14 +146,18 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                       padding: EdgeInsets.all(5),
                       child: CustomAutoSizeTextMontserrat(
                         text: "Date",
-                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       )),
-                  CustomTimerWidget(
-                      initialTime: widget.meetingData.dateOfMeeting,
-                      callback: (val) {
-                        date = val;
-                        setState(() {});
-                      }),
+                  Container(
+                    height: 45,
+                    child: CustomTimerWidget(
+                        initialTime: widget.meetingData.dateOfMeeting,
+                        callback: (val) {
+                          date = val;
+                          setState(() {});
+                        }),
+                  ),
 
                   SizedBox(
                     height: 10,
@@ -161,41 +166,48 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                       padding: EdgeInsets.all(5),
                       child: CustomAutoSizeTextMontserrat(
                         text: "Time",
-                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       )),
-                  CustomTimerWidget2(
-                      initialTime: widget.meetingData.timeOfTheMeeting,
-                      callback: (val) async {
-                        // var hours = int.parse(val) / 60;
-                        // var minutes = int.parse(val) % 60;
+                  Container(
+                    height: 45,
+                    child: CustomTimerWidget2(
+                        initialTime: widget.meetingData.timeOfTheMeeting,
+                        callback: (val) async {
+                          // var hours = int.parse(val) / 60;
+                          // var minutes = int.parse(val) % 60;
 
-                        print(val);
-                        setState(() {
-                          time = val;
-                        });
+                          print(val);
+                          setState(() {
+                            time = val;
+                          });
 
-                        // var data = val.toString();
+                          // var data = val.toString();
 
-                        // var time =
-                        //     '${data.substring(0, 2)} hours ${data.substring(3, 5)} minutes';
+                          // var time =
+                          //     '${data.substring(0, 2)} hours ${data.substring(3, 5)} minutes';
 
-                        // print(time);
+                          // print(time);
 
-                        // print(val);
+                          // print(val);
 
-                        // controller.update();
-                        // print(controller.proposedDurationController.value);
-                      }),
+                          // controller.update();
+                          // print(controller.proposedDurationController.value);
+                        }),
+                  ),
                   SizedBox(
                     height: 10,
                   ),
                   CustomAutoSizeTextMontserrat(
                     text: "Proposed Duration",
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Container(
+                    height: 45,
                     child: CustomTimerWidgetForHourMinutes(
                         initialTime: widget.meetingData.durationOfMeeting,
                         callback: (val) async {
@@ -228,8 +240,8 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                     children: [
                       CustomAutoSizeTextMontserrat(
                         text: "Meeting Type",
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 15),
@@ -237,8 +249,8 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                           alignment: AlignmentDirectional.topStart,
                           child: CustomAutoSizeTextMontserrat(
                             text: "Mode of Meeting",
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
@@ -289,13 +301,13 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                     height: 10,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 15),
+                    padding: const EdgeInsets.only(left: 0, bottom: 8),
                     child: Align(
                       alignment: AlignmentDirectional.topStart,
                       child: CustomAutoSizeTextMontserrat(
                         text: "Meeting Link",
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
@@ -314,13 +326,13 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                     height: 10,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 15),
+                    padding: const EdgeInsets.only(left: 0, bottom: 8),
                     child: Align(
                       alignment: AlignmentDirectional.topStart,
                       child: CustomAutoSizeTextMontserrat(
                         text: "Reason of Reshedule",
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
@@ -329,7 +341,6 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                       child: Column(
                         children: [
                           Container(
-                            height: 45,
                             width: MediaQuery.of(context).size.width - 40,
                             child: CustomTextField(
                               validator: Validator.notEmpty,
@@ -406,7 +417,10 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                   // print(data.toJson());
                                   widget.controller.resheduleMeeting(data);
                                 }
-                              })
+                              }),
+                          SizedBox(
+                            height: 10,
+                          )
                         ],
                       ))
 

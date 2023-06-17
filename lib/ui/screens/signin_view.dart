@@ -29,9 +29,8 @@ class SignInView extends StatelessWidget {
   static const route = '/signin';
   SignInView({super.key});
 
-  var controller = Get.put(SigninController());
-
   var controllerBase = Get.put(BaseController(), permanent: true);
+  var controller = Get.put(SigninController());
 
   TextEditingController password = TextEditingController();
 

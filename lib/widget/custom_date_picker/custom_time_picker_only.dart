@@ -33,7 +33,6 @@ class _CustomTimerWidget2State extends State<CustomTimerWidget2> {
       dateToShow = '${DateTime.now().hour}:${DateTime.now().minute}';
     }
 
-    print(dateTime.hour);
     // TODO: implement initState
     super.initState();
   }

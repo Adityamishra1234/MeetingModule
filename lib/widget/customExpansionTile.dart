@@ -96,8 +96,7 @@ class _CustomExpansionPlanListState extends State<CustomExpansionPlanList> {
             children: [
               Align(
                 alignment: AlignmentDirectional.topStart,
-                child: CustomAutoSizeTextMontserrat(
-                    text: "${widget.dataList![i].note}"),
+                child: HtmlWidget("${widget.dataList![i].note}"),
               ),
               Align(
                 alignment: AlignmentDirectional.topStart,

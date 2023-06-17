@@ -1,8 +1,13 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quil;
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
+import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:meeting_module2/functions/uploadDoucment.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
@@ -32,14 +37,14 @@ class AddMoreNotesView extends StatefulWidget {
 class _AddMoreNotesViewState extends State<AddMoreNotesView> {
   // TextEditingController fff = TextEditingController();
   var controller = Get.put(AddMoreNotesController());
-
-  quil.QuillController _controller = quil.QuillController.basic();
+  // final HtmlEditorController _controller = HtmlEditorController();
   final argumentData = Get.arguments;
   late int meetingID;
   late int index;
 
   @override
   void initState() {
+    // controller.onInit();
     print(argumentData);
     meetingID = argumentData[0];
     print(argumentData[0]);
@@ -60,6 +65,7 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
     dynamic argumentData = Get.arguments;
 
     return Scaffold(
+        backgroundColor: Color.fromARGB(255, 247, 249, 255),
         body: controller.obx(
             (state) => SafeArea(
                   child: SingleChildScrollView(
@@ -96,16 +102,16 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
 
                             if (controller.addNotes == true) ...[
                               Padding(
-                                padding: const EdgeInsets.only(left: 15),
+                                padding: const EdgeInsets.only(top: 10),
                                 child: CustomAutoSizeTextMontserrat(
                                   text: "Add notes for:",
-                                  fontSize: 15,
-                                  textColor: ThemeConstants.blackcolor,
-                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                  textColor: ThemeConstants.TextColor,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                               const SizedBox(
-                                height: 10,
+                                height: 8,
                               ),
                               CustomMultiDownSingle(
                                 callbackFunctionSingle: (value) {
@@ -124,7 +130,8 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                                   "University Notes",
                                   "Offline Marketing Notes"
                                 ],
-                                initialSelectedValue: "Select Add notes for",
+                                initialSelectedValue:
+                                    "${controller.noteTypeSelected}",
                                 enableMultiSelect: false,
                               ),
                               // CustomTextField(
@@ -135,12 +142,12 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                                 height: 15,
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 15),
+                                padding: const EdgeInsets.only(),
                                 child: CustomAutoSizeTextMontserrat(
                                   text: "Notes accessibility to",
-                                  fontSize: 15,
-                                  textColor: ThemeConstants.blackcolor,
-                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                  textColor: ThemeConstants.TextColor,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                               const SizedBox(
@@ -164,62 +171,125 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              quil.QuillToolbar.basic(
-                                controller: _controller,
-                                showCodeBlock: false,
-                                showQuote: false,
-                                showLink: false,
-                                showListCheck: false,
-                                showIndent: false,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: SizedBox(
-                                  height: 185,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          color: const Color(0xff1940b3)),
+                              // HtmlEditor(
+                              //   controller: controller.noteText, //required
+                              //   htmlEditorOptions: const HtmlEditorOptions(
+                              //     shouldEnsureVisible: true,
+                              //     autoAdjustHeight: true,
+                              //     adjustHeightForKeyboard: false,
+                              //     hint: "Your text here...",
+                              //   ),
+                              //   htmlToolbarOptions: const HtmlToolbarOptions(
+                              //       toolbarType: ToolbarType.nativeGrid),
+
+                              //   otherOptions: OtherOptions(
+                              //     height: 400,
+                              //   ),
+                              // ),
+                              SizedBox(height: 5),
+                              Container(
+                                padding: EdgeInsets.all(10),
+                                width: double.infinity,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Color.fromARGB(28, 0, 0, 0),
+                                          blurRadius: 2,
+                                          spreadRadius: 0.2)
+                                    ],
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: ThemeConstants.whitecolor),
+                                child: Column(
+                                  children: [
+                                    quil.QuillToolbar.basic(
+                                      controller: controller.noteText,
+                                      showAlignmentButtons: true,
                                     ),
-                                    child: SizedBox(
-                                      height: 200,
+                                    SizedBox(height: 15),
+                                    Container(
+                                      constraints:
+                                          BoxConstraints(minHeight: 100),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          border: Border.all(
+                                              width: 1,
+                                              color: ThemeConstants.bluecolor)),
                                       child: quil.QuillEditor(
-                                        padding: EdgeInsets.all(5),
-                                        expands: true,
-                                        controller: _controller,
-                                        readOnly: false,
-                                        scrollController: ScrollController(),
-                                        scrollable: true,
+                                        autoFocus: false,
+                                        padding: EdgeInsets.all(10),
+                                        expands: false,
                                         focusNode: FocusNode(),
-                                        autoFocus:
+                                        scrollable: true,
+                                        scrollController: ScrollController(),
+                                        controller: controller.noteText,
+
+                                        readOnly:
                                             false, // true for view only mode
                                       ),
-                                      // TextField(
-                                      //   controller: controller.noteText.value,
-                                      //   decoration: const InputDecoration(
-                                      //       border: InputBorder.none,
-                                      //       contentPadding: EdgeInsets.all(10)),
-                                      //   keyboardType: TextInputType.multiline,
-                                      //   expands: true,
-                                      //   maxLines: null,
-                                      // ),
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ),
+
+                              // Padding(
+                              //   padding: const EdgeInsets.only(top: 10),
+                              //   child: SizedBox(
+                              //     height: 185,
+                              //     child: Container(
+                              //       decoration: BoxDecoration(
+                              //         borderRadius: BorderRadius.circular(10),
+                              //         border: Border.all(
+                              //             color: const Color(0xff1940b3)),
+                              //       ),
+                              //       child: SizedBox(
+                              //         height: 200,
+                              //         child: quil.QuillEditor(
+                              //           padding: EdgeInsets.all(5),
+                              //           expands: true,
+                              //           controller: controller.noteText,
+                              //           readOnly: false,
+                              //           scrollController: ScrollController(),
+                              //           scrollable: true,
+                              //           focusNode: FocusNode(),
+                              //           autoFocus:
+                              //               false, // true for view only mode
+                              //         ),
+                              //         // TextField(
+                              //         //   controller: controller.noteText.value,
+                              //         //   decoration: const InputDecoration(
+                              //         //       border: InputBorder.none,
+                              //         //       contentPadding: EdgeInsets.all(10)),
+                              //         //   keyboardType: TextInputType.multiline,
+                              //         //   expands: true,
+                              //         //   maxLines: null,
+                              //         // ),
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                               const SizedBox(
                                 height: 10,
                               ),
                               InkWell(
-                                onTap: () {
-                                  if (controller.noteTypeSelected.isEmpty) {
+                                onTap: () async {
+                                  var data =
+                                      await controller.noteText.getPlainText();
+                                  print(controller.noteText.document
+                                      .toDelta()
+                                      .toString());
+                                  if (controller.noteTypeSelected ==
+                                      "Select Add notes for") {
                                     getToast(SnackBarConstants.notestype!);
-                                  } else if (controller
-                                      .noteText.value.text.isEmpty) {
+                                  } else if (controller.noteText.document
+                                          .toDelta()
+                                          .toString() ==
+                                      "insert⟨ ⏎ ⟩") {
                                     getToast(SnackBarConstants.noteTextField!);
                                   } else {
-                                    controller.saveAndNext(meetingID);
+                                    controller.saveAndNext(
+                                        meetingID, controller.noteText);
                                   }
                                 },
                                 child: Container(
@@ -318,7 +388,6 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
         Padding(
           padding: const EdgeInsets.only(top: 10),
           child: SizedBox(
-            height: 185,
             child: Container(
               padding: const EdgeInsets.all(15),
               width: double.infinity,
@@ -330,8 +399,8 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomAutoSizeTextMontserrat(
-                      text: models[i].note,
+                    HtmlWidget(
+                      models[i].note!,
                     ),
                     InkWell(
                       onTap: () {},

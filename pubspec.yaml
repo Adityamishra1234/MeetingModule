@@ -55,7 +55,13 @@ dependencies:
   flutter_animated_dialog: ^2.0.1
   file_picker: ^5.3.1
   jiffy: ^6.2.1
-  flutter_quill: ^7.2.0
+  markdown: ^7.1.0
+  html_editor_enhanced: ^2.5.1
+  quill_markdown: ^0.1.0
+  html_unescape: ^2.0.0
+  vsc_quill_delta_to_html: ^1.0.3
+  flutter_quill: ^7.2.6
+  quill_json_to_html: ^1.0.1
 
 dev_dependencies:
   flutter_test:

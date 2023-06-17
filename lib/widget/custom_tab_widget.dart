@@ -52,107 +52,102 @@ class _CustomTabWidgetState extends State<CustomTabWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 50,
-        // color: Colors.amber,
+      height: 50,
+      child: Stack(
         alignment: Alignment.topLeft,
-        padding: EdgeInsets.only(top: 0),
-        child: Container(
-          child: Stack(
-            alignment: Alignment.topLeft,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ////Tab1
+              ////Tab1
 
-                  Container(
-                      child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              indexOfTab = 0;
-                              print(indexOfTab);
-                              widget.callback(indexOfTab);
-                            });
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            alignment: Alignment.center,
-                            decoration: const BoxDecoration(
-                              color: Colors.transparent,
-                            ),
-                            child: AnimatedContainer(
-                              duration: Duration(seconds: 2),
-                              child: Text(
-                                '${widget.title0}',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: indexOfTab != 0
-                                        ? Colors.black
-                                        : Color(0xffff9900)),
-                              ),
-                            ),
-                          ))),
+              Container(
+                  child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          indexOfTab = 0;
+                          print(indexOfTab);
+                          widget.callback(indexOfTab);
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                          color: Colors.transparent,
+                        ),
+                        child: AnimatedContainer(
+                          duration: Duration(seconds: 2),
+                          child: Text(
+                            '${widget.title0}',
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: indexOfTab != 0
+                                    ? Colors.black
+                                    : Color(0xffff9900)),
+                          ),
+                        ),
+                      ))),
 
-                  ///Middle Space
+              ///Middle Space
 
-                  const SizedBox(
-                    width: 20,
-                  ),
-
-                  ////Tab1
-                  Container(
-                      child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              indexOfTab = 1;
-                              widget.callback(indexOfTab);
-                              print(indexOfTab);
-                            });
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            alignment: Alignment.center,
-                            decoration: const BoxDecoration(
-                              color: Colors.transparent,
-                            ),
-                            child: AnimatedContainer(
-                              duration: Duration(seconds: 2),
-                              child: Text(
-                                '${widget.title1}',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: indexOfTab != 1
-                                        ? Colors.black
-                                        : Color(0xffff9900)),
-                              ),
-                            ),
-                          )))
-                ],
-
-                ////Animated below bar
+              const SizedBox(
+                width: 20,
               ),
-              AnimatedPositioned(
-                width: indexOfTab == 0
-                    ? firstTextlength / 2
-                    : secondTextlength / 2,
-                height: 2.5,
-                top: 43,
-                left: indexOfTab == 0 ? 4 : firstTextlength + 34,
-                duration: const Duration(milliseconds: 700),
-                curve: Curves.fastOutSlowIn,
-                child: GestureDetector(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: Color(0xffff9900),
-                    ),
-                  ),
+
+              ////Tab1
+              Container(
+                  child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          indexOfTab = 1;
+                          widget.callback(indexOfTab);
+                          print(indexOfTab);
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                          color: Colors.transparent,
+                        ),
+                        child: AnimatedContainer(
+                          duration: Duration(seconds: 2),
+                          child: Text(
+                            '${widget.title1}',
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: indexOfTab != 1
+                                    ? Colors.black
+                                    : Color(0xffff9900)),
+                          ),
+                        ),
+                      )))
+            ],
+
+            ////Animated below bar
+          ),
+          AnimatedPositioned(
+            width: indexOfTab == 0 ? firstTextlength / 2 : secondTextlength / 2,
+            height: 2.5,
+            top: 43,
+            left: indexOfTab == 0 ? 4 : firstTextlength + 34,
+            duration: const Duration(milliseconds: 700),
+            curve: Curves.fastOutSlowIn,
+            child: GestureDetector(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  color: Color(0xffff9900),
                 ),
               ),
-            ],
+            ),
           ),
-        ));
+        ],
+      ),
+    );
   }
 
   Size _textSize(String text, TextStyle style) {

@@ -55,4 +55,8 @@ abstract class API {
   findNoteByUser(id);
 
   markAttendance(meetingId, userId, createdBY);
+
+  reasonOfNotAttending(int meetningID, int createdBy, String reason);
+
+  reasonOfNotAttendingAll(int meetningID);
 }

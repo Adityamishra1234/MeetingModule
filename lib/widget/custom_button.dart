@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:meeting_module2/utils/theme.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({
+  CustomButton({
     Key? key,
     required this.text,
-    this.backgroundColor = Colors.red,
+    this.textColor,
+    this.backgroundColor = const Color.fromARGB(255, 10, 93, 161),
     required this.onPressed,
   }) : super(key: key);
 
   final String text;
+  Color? textColor;
   final Color backgroundColor;
   final Function() onPressed;
 
@@ -23,18 +26,19 @@ class CustomButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 0.5,
-                  spreadRadius: 0.5,
-                  offset: Offset.fromDirection(90))
+                  color: Color.fromARGB(0, 0, 0, 0),
+                  blurRadius: 0.1,
+                  spreadRadius: 0.2,
+                  offset: Offset.fromDirection(0))
             ]),
         margin: const EdgeInsets.all(8),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style:
-              const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+          style: TextStyle(
+              color: textColor == null ? Colors.white : textColor,
+              fontWeight: FontWeight.w400),
         ),
       ),
     );

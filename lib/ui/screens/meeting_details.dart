@@ -15,6 +15,7 @@ import 'package:meeting_module2/widget/customtextfield.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsers.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dart';
 import 'package:meeting_module2/extensions/textLengthExtension.dart';
+import 'package:meeting_module2/widget/popups/custom_error_popup.dart';
 // test
 
 class MeetingDetails extends StatefulWidget {
@@ -32,6 +33,8 @@ class _MeetingDetailsState extends State<MeetingDetails> {
 
   var controllerDashboard = Get.find<DashBoardController>();
 
+  GlobalKey<FormState> _keyForReasonOfNotAttending = GlobalKey<FormState>();
+
   TextEditingController reasonOfNotAttending = TextEditingController();
   late bool meetingStarted;
   late bool meetingEnded;
@@ -45,11 +48,10 @@ class _MeetingDetailsState extends State<MeetingDetails> {
   // }
   @override
   void initState() {
-    meetingData = controllerDashboard.selectedMeetingdata.value;
+    meetingData = controllerbase.selectedMeetingData;
 
-    meetingStarted =
-        controllerDashboard.selectedMeetingdata.value.meetingStarted!;
-    meetingEnded = controllerDashboard.selectedMeetingdata.value.meetingEnded!;
+    meetingStarted = meetingData.meetingStarted!;
+    meetingEnded = meetingData.meetingEnded!;
     // TODO: implement initState
     super.initState();
   }
@@ -116,6 +118,25 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                     CustomAutoSizeTextMontserrat(
                                       text: '(Ended)',
                                       textColor: Colors.red,
+                                    )
+                                  ],
+                                )
+                              : SizedBox.shrink(),
+                          !meetingData.meetingStarted! &&
+                                  !meetingData.meetingEnded!
+                              ? Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Radio(
+                                        activeColor: const Color.fromARGB(
+                                            255, 114, 114, 114),
+                                        value: true,
+                                        groupValue: true,
+                                        onChanged: (val) {}),
+                                    CustomAutoSizeTextMontserrat(
+                                      text: 'Not Started',
+                                      textColor: const Color.fromARGB(
+                                          255, 114, 114, 114),
                                     )
                                   ],
                                 )
@@ -1025,21 +1046,9 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                               true) {
                                         showDialog(
                                             context: context,
-                                            builder: (_) => AlertDialog(
-                                                  content: Container(
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        Icon(Icons
-                                                            .mark_email_read)
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ));
+                                            builder: (_) => showPoPUp(
+                                                'Meeting Already Ended',
+                                                Icon(Icons.error)));
                                       }
                                       // showDialog(
                                       //     context: context,
@@ -1092,6 +1101,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                   Icon(Icons.meeting_room,
                                                       size: 30),
                                                   CustomAutoSizeTextMontserrat(
+                                                    align: TextAlign.center,
                                                     text: 'Start Meeting',
                                                     fontSize: 10,
                                                     fontWeight: FontWeight.w500,
@@ -1113,6 +1123,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                       Icon(Icons.meeting_room,
                                                           size: 30),
                                                       CustomAutoSizeTextMontserrat(
+                                                        align: TextAlign.center,
                                                         text: 'End Meeting',
                                                         fontSize: 10,
                                                         fontWeight:
@@ -1138,6 +1149,8 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                                   .meeting_room,
                                                               size: 30),
                                                           CustomAutoSizeTextMontserrat(
+                                                            align: TextAlign
+                                                                .center,
                                                             text:
                                                                 'Meeting Ended',
                                                             fontSize: 10,
@@ -1155,12 +1168,13 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                     onTap: () {
                                       showDialog(
                                           context: context,
-                                          builder: (_) => AlertDialog(
-                                                content: Container(
-                                                  child: Text(
-                                                      'Only Co-ordinator or meeting creator can start and end the meeting'),
-                                                ),
-                                              ));
+                                          builder: (_) => showPoPUp(
+                                              'Only Co-ordinator or meeting creator can start and end the meeting',
+                                              Icon(
+                                                Icons.error,
+                                                size: 50,
+                                                color: ThemeConstants.bluecolor,
+                                              )));
                                     },
                                     child: IgnorePointer(
                                       ignoring: true,
@@ -1217,6 +1231,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                   Icon(Icons.meeting_room,
                                                       size: 30),
                                                   CustomAutoSizeTextMontserrat(
+                                                    align: TextAlign.center,
                                                     text:
                                                         'Meeting Started Ended',
                                                     fontSize: 10,
@@ -1318,54 +1333,105 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                             AlertDialog(
                                               content: Container(
                                                   width: 350,
-                                                  height: 350,
                                                   child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
                                                     children: [
                                                       CustomAutoSizeTextMontserrat(
                                                           text:
                                                               "Mark Attendance"),
-                                                      Row(
-                                                        children: [
-                                                          Radio(
-                                                              value: 1,
-                                                              groupValue: daata,
-                                                              onChanged:
-                                                                  (val) async {
-                                                                setState(() {
-                                                                  daata = val!;
-                                                                });
-                                                              }),
-                                                          CustomAutoSizeTextMontserrat(
-                                                              text: "Present")
-                                                        ],
+                                                      InkWell(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            daata = 1;
+                                                          });
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            Radio(
+                                                                value: 1,
+                                                                groupValue:
+                                                                    daata,
+                                                                onChanged:
+                                                                    (val) async {
+                                                                  setState(() {
+                                                                    daata =
+                                                                        val!;
+                                                                  });
+                                                                }),
+                                                            CustomAutoSizeTextMontserrat(
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                text: "Present")
+                                                          ],
+                                                        ),
                                                       ),
-                                                      Row(
-                                                        children: [
-                                                          Radio(
-                                                              value: 2,
-                                                              groupValue: daata,
-                                                              onChanged: (val) {
-                                                                print(daata);
-                                                                print(val);
-                                                                setState(() {
-                                                                  daata = val!;
-                                                                });
+                                                      InkWell(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            daata = 2;
+                                                          });
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            Radio(
+                                                                value: 2,
+                                                                groupValue:
+                                                                    daata,
+                                                                onChanged:
+                                                                    (val) {
+                                                                  print(daata);
+                                                                  print(val);
+                                                                  setState(() {
+                                                                    daata =
+                                                                        val!;
+                                                                  });
 
-                                                                print(daata);
-                                                                ;
-                                                              }),
-                                                          CustomAutoSizeTextMontserrat(
-                                                              text: "Absent")
-                                                        ],
+                                                                  print(daata);
+                                                                  ;
+                                                                }),
+                                                            CustomAutoSizeTextMontserrat(
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                text: "Absent")
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5,
                                                       ),
                                                       if (daata == 2) ...[
-                                                        CustomAutoSizeTextMontserrat(
-                                                            text:
-                                                                'Please Specify reason of absent'),
-                                                        CustomTextField(
-                                                            hint: 'Enter',
-                                                            controller:
-                                                                reasonOfNotAttending)
+                                                        Container(
+                                                          width:
+                                                              double.infinity,
+                                                          alignment:
+                                                              Alignment.topLeft,
+                                                          child: CustomAutoSizeTextMontserrat(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              text:
+                                                                  'Please Specify reason of absent'),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Form(
+                                                          key:
+                                                              _keyForReasonOfNotAttending,
+                                                          child: CustomTextField(
+                                                              validator:
+                                                                  Validator
+                                                                      .notEmpty,
+                                                              hint: 'Enter',
+                                                              controller:
+                                                                  reasonOfNotAttending),
+                                                        )
                                                       ],
                                                       CustomButton(
                                                           backgroundColor:
@@ -1378,6 +1444,17 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                                   .markAttendance(
                                                                       meetingData
                                                                           .id!);
+                                                            } else {
+                                                              if (_keyForReasonOfNotAttending
+                                                                  .currentState!
+                                                                  .validate()) {
+                                                                controller.reasonOfNotAttendance(
+                                                                    meetingData
+                                                                        .id!,
+                                                                    reasonOfNotAttending
+                                                                        .text);
+                                                                print('object');
+                                                              }
                                                             }
                                                           })
                                                     ],
@@ -1412,11 +1489,16 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                     children: [
                                       Icon(Icons.calendar_month_rounded,
                                           size: 30),
-                                      CustomAutoSizeTextMontserrat(
-                                        text: 'Mark Attendance',
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w500,
-                                        textColor: ThemeConstants.TextColor,
+                                      Container(
+                                        width: double.infinity,
+                                        alignment: Alignment.center,
+                                        child: CustomAutoSizeTextMontserrat(
+                                          text: 'Mark Attendance',
+                                          align: TextAlign.center,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w500,
+                                          textColor: ThemeConstants.TextColor,
+                                        ),
                                       )
                                     ],
                                   )),

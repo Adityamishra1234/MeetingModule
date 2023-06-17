@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -514,11 +515,19 @@ class ApiServices extends BaseServices implements API {
   updateFCMToken(id, token) async {
     var url = '${Endpoints.baseUrl}${Endpoints.uodateFCMToken}';
 
-    var data = {"fcm_token_android": "$token", "id": '$id'};
+    if (Platform.isAndroid) {
+      var data = {"fcm_token_android": "$token", "id": '$id'};
 
-    var data2 = await json.encode(data);
+      var data2 = await json.encode(data);
 
-    var res = await httpPostApplication(url, data2);
+      var res = await httpPostApplication(url, data2);
+    } else {
+      var data = {"fcm_token_ios": "$token", "id": '$id'};
+
+      var data2 = await json.encode(data);
+
+      var res = await httpPostApplication(url, data2);
+    }
 
     // print(res);
 
@@ -565,5 +574,50 @@ class ApiServices extends BaseServices implements API {
     print(res);
 
     // throw UnimplementedError();
+  }
+
+  @override
+  reasonOfNotAttending(int meetningID, int createdBy, String reason) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.reasonOfNotAttending}';
+    var data = {
+      "id": 121,
+      "meeting_id": 2,
+      "meeting_notes_id": 0,
+      "task_type": "Meeting Notes Task",
+      "deadline_date": "2023-04-27",
+      "task_owner_id": 136,
+      "is_active": true,
+      "closed_at": "2023-04-07T09:48:35.000Z",
+      "closed_by": 0,
+      "meeting_attented": false,
+      "reason_of_not_attended": "ddddswswdddd",
+      "created_by": 105,
+      "updated_by": 105,
+      "created_at": "2023-04-07T09:48:35.000Z",
+      "updated_at": "2023-04-07T09:48:35.000Z",
+      "notes": "sacdcdcdc88c8dcda"
+    };
+
+    var data2 = json.encode(data);
+
+    var res = await httpPostHeader(url, data2);
+
+    print(res);
+    // TODO: implement reasonOfNotAttending
+    // throw UnimplementedError();
+  }
+
+  @override
+  reasonOfNotAttendingAll(int meetningID) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.reasonOfNotAttendingAll}';
+    var data = {"meeting_id": meetningID};
+
+    var data2 = json.encode(data);
+
+    var res = await httpPostHeader(url, data2);
+
+    return res['model'];
+
+    print(res);
   }
 }

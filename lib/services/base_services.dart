@@ -88,6 +88,10 @@ class BaseServices {
         {
           var res = json.decode(response.body);
           if (res['success'] == true) {
+            if (res['message'] != null &&
+                res['message'] != 'All Country list Successfully') {
+              getToast(res['message']);
+            }
             return res;
           } else {
             getToast(res['message']);

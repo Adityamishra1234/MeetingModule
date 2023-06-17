@@ -65,19 +65,11 @@ class SigninController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     // TODO: implement onInit
     super.onInit();
-    await checkUser();
+
     change(null, status: RxStatus.success());
   }
 
 //todo
-  checkUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var data = prefs.getInt('id');
-    print(data);
-    if (data != null) {
-      Get.off(DashBoard());
-    }
-  }
 
   updatePassword(String email, String password) async {
     var res = await api.password(email, password);

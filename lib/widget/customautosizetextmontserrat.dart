@@ -9,12 +9,14 @@ class CustomAutoSizeTextMontserrat extends StatelessWidget {
   int? maxLines, fontSize;
   FontWeight? fontWeight;
   Color? textColor;
+  TextAlign? align;
 
   CustomAutoSizeTextMontserrat(
       {Key? key,
       required this.text,
       this.maxLines,
       this.mandatory,
+      this.align,
       this.fontSize,
       this.textColor,
       this.fontWeight,
@@ -29,7 +31,7 @@ class CustomAutoSizeTextMontserrat extends StatelessWidget {
         if (mandatory == true)
           const TextSpan(text: '*', style: TextStyle(color: Colors.red))
       ]),
-
+      textAlign: align,
       maxLines: maxLines ?? 100000,
 
       overflow: TextOverflow.ellipsis,
