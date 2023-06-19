@@ -288,6 +288,8 @@ class AddMoreNotesController extends GetxController with StateMixin {
       // change(null, status: RxStatus.success());
     }
 
+    await getNotesOfMeeting();
+
     update();
     change(null, status: RxStatus.success());
   }

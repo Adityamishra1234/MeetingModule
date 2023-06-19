@@ -41,6 +41,26 @@ class CustomProfileDialogue extends StatelessWidget {
                     CustomAutoSizeTextMontserrat(
                       text: title,
                     ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Container(
+                        width: 25,
+                        height: 25,
+                        alignment: Alignment.centerRight,
+                        child: CircleAvatar(
+                          radius: 25,
+                          backgroundColor: ThemeConstants.bluecolor,
+                          child: Icon(
+                            Icons.close,
+                            color: ThemeConstants.whitecolor,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+
                     // CustomAutoSizeTextMontserrat(
                     //   textColor: ThemeConstants.bluecolor,
                     //   text: 'Edit',
@@ -65,9 +85,14 @@ class CustomProfileDialogue extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      CustomAutoSizeTextMontserrat(
-                        textColor: ThemeConstants.bluecolor,
-                        text: 'Cancel',
+                      InkWell(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: CustomAutoSizeTextMontserrat(
+                          textColor: ThemeConstants.bluecolor,
+                          text: 'Cancel',
+                        ),
                       ),
                       InkWell(
                         onTap: () {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:meeting_module2/ui/controller/create_new_meeting_controller.dart';
 import 'package:meeting_module2/ui/controller/create_new_meeting_controller2.dart';
 import 'package:meeting_module2/utils/theme.dart';
@@ -22,17 +23,45 @@ class _DialogHoraState extends State<DialogHora> {
             width: 400,
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 0),
-                  child: Align(
-                    alignment: AlignmentDirectional.topStart,
-                    child: CustomAutoSizeTextMontserrat(
-                      text: "Participants Details",
-                      fontSize: 35,
-                      textColor: ThemeConstants.bluecolor,
-                      fontWeight: FontWeight.bold,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 250,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 0),
+                        child: Align(
+                          alignment: AlignmentDirectional.topStart,
+                          child: CustomAutoSizeTextMontserrat(
+                            text: "Participants Details",
+                            fontSize: 35,
+                            textColor: ThemeConstants.bluecolor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(top: 10),
+                        width: 25,
+                        height: 25,
+                        alignment: Alignment.centerRight,
+                        child: CircleAvatar(
+                          radius: 25,
+                          backgroundColor: ThemeConstants.bluecolor,
+                          child: Icon(
+                            Icons.close,
+                            color: ThemeConstants.whitecolor,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 Container(
                   height: 412,

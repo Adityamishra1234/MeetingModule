@@ -36,9 +36,11 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
       dateToShow = widget.initialTime ??
           '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
     } else {
+      print('object');
       dateToShow =
           '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
 
+      dateTime = DateTime.now();
       // TODO: implement initState
       super.initState();
     }

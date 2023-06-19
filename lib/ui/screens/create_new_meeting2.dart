@@ -141,6 +141,9 @@ class CreateNewMeeting2 extends StatelessWidget {
                     },
                     model: controller.meetingWithList,
                     initialSelectedValue: '${controllers.meetingWith}'),
+                SizedBox(
+                  height: 10,
+                )
               ],
 
               Align(
@@ -1136,7 +1139,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
                           onTap: () {

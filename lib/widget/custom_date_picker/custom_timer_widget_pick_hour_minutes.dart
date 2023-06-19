@@ -39,7 +39,7 @@ class _CustomTimerWidgetForHourMinutesState
       dateToShow = '${hours}:${minutes}';
     } else {
       intialDuration = 0;
-      dateToShow = '0:0';
+      dateToShow = '00:00';
     }
 
     // finaldate =

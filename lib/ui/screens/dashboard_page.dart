@@ -211,8 +211,9 @@ class _DashBoardState extends State<DashBoard> {
                       //   }).toList(),
                       // ),
                       SizedBox(
-                        width: 25,
+                        width: 30,
                       ),
+
                       Padding(
                         padding: const EdgeInsets.only(top: 8),
                         child: Obx(

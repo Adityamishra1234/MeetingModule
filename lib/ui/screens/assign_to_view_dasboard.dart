@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:meeting_module2/models/dashboardNotesModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/ui/controller/assignToController.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
@@ -15,8 +16,8 @@ import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/customtextfield.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsers.dart';
 
-class AssignToView extends StatelessWidget {
-  AssignToView({super.key});
+class AssignToView2 extends StatelessWidget {
+  AssignToView2({super.key});
 
   TextEditingController controller = TextEditingController();
 
@@ -24,7 +25,7 @@ class AssignToView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FindNotesModel argu = Get.arguments;
+    DashBoardNotes argu = Get.arguments;
 
     return Scaffold(
       body: SafeArea(
@@ -120,7 +121,7 @@ class AssignToView extends StatelessWidget {
                       backgroundColor: ThemeConstants.bluecolor,
                       text: "Add Task",
                       onPressed: () {
-                        getController.assign(argu, controller.text);
+                        getController.assign2(argu, controller.text);
                       },
                     ),
                   ),

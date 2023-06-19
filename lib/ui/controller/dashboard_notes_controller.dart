@@ -6,9 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:meeting_module2/models/assignto.dart';
 import 'package:meeting_module2/models/dashboardNotesModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/services/apiServices.dart';
+import 'package:meeting_module2/ui/screens/assign_to_view.dart';
+import 'package:meeting_module2/ui/screens/assign_to_view_dasboard.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customExpansionTile.dart';
@@ -41,7 +44,7 @@ class DashboardNotesController extends GetxController with StateMixin {
 
   List<Widget> beta = [];
 
-  var data = [];
+  List<DashBoardNotes> data = [];
   getNotesData() async {
     var res = await apiServices.findNoteByUser(id);
     List<dynamic> data2 = res;
@@ -120,11 +123,16 @@ class DashboardNotesController extends GetxController with StateMixin {
                             color: ThemeConstants.bluecolor,
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(30.0))),
-                        child: Center(
-                          child: CustomAutoSizeTextMontserrat(
-                            text: "Assign to",
-                            textColor: ThemeConstants.whitecolor,
-                            fontSize: 14,
+                        child: InkWell(
+                          onTap: () {
+                            Get.to(AssignToView2(), arguments: data[i]);
+                          },
+                          child: Center(
+                            child: CustomAutoSizeTextMontserrat(
+                              text: "Assign to",
+                              textColor: ThemeConstants.whitecolor,
+                              fontSize: 14,
+                            ),
                           ),
                         ),
                       ),

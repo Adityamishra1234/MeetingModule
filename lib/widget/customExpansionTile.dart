@@ -38,7 +38,8 @@ class _CustomExpansionPlanListState extends State<CustomExpansionPlanList> {
       width = MediaQuery.of(context).size.width - 240;
     }
     return Card(
-      elevation: 0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      elevation: 3,
       child: ConfigurableExpansionTile(
         header: Flexible(
           child: SizedBox(
@@ -89,7 +90,8 @@ class _CustomExpansionPlanListState extends State<CustomExpansionPlanList> {
         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
         width: MediaQuery.of(context).size.width - 30,
         decoration: BoxDecoration(
-            border: Border.all(), borderRadius: BorderRadius.circular(20.0)),
+            border: Border.all(width: 0.8),
+            borderRadius: BorderRadius.circular(10.0)),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
