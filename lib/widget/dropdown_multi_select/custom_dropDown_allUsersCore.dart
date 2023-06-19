@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
@@ -384,6 +383,7 @@ class _CustomizableDropdownAllUserState
                     onChanged: (value) {
                       filterSearchResults(value.toString());
                     },
+                    autofocus: false,
                     controller: editingController,
                     decoration: const InputDecoration(
                         labelText: "Search",
@@ -404,7 +404,7 @@ class _CustomizableDropdownAllUserState
                           width: 1, color: ThemeConstants.lightgreycolor)),
                   constraints: BoxConstraints(maxHeight: 150),
                   child: Scrollbar(
-                    isAlwaysShown: false,
+                    thumbVisibility: false,
                     thickness: 0,
                     controller: scrollControler,
                     child: ListView.builder(

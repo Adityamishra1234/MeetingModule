@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/services/apiServices.dart';
-import 'package:meeting_module2/ui/screens/createpassword.dart';
-import 'package:meeting_module2/ui/screens/dashboard_page.dart';
-import 'package:meeting_module2/ui/screens/login_page.dart';
-import 'package:meeting_module2/utils/constants.dart';
-import 'package:meeting_module2/utils/snackbarconstants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 
 class LoginController extends GetxController with StateMixin {
@@ -73,14 +68,12 @@ class LoginController extends GetxController with StateMixin {
     // var res = await api.otpMatch(email, otp);
     var res = true;
 
-    if (res != null) {
-      if (res == true) {
-        forOtp = 1;
-        otpSuccessful = 1;
-        createPassword = true;
+    if (res == true) {
+      forOtp = 1;
+      otpSuccessful = 1;
+      createPassword = true;
 
-        // Get.to(CreatePasswrord(email: email));
-      }
+      // Get.to(CreatePasswrord(email: email));
     }
 
     update();

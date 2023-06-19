@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allBranchModel.dart';
@@ -11,9 +9,7 @@ import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/participantsModel.dart';
 import 'package:meeting_module2/models/selectedAudienceTypeModel.dart';
 import 'package:meeting_module2/services/apiServices.dart';
-import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/utils/theme.dart';
-import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsersCore.dart';
 
 class CreateNewMeetingController extends GetxController with StateMixin {
   GlobalKey<FormState> key = GlobalKey<FormState>();

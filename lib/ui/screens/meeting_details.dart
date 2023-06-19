@@ -10,11 +10,7 @@ import 'package:meeting_module2/ui/screens/view_notes.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/custom_button.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
-import 'package:meeting_module2/widget/customdropdownsingle.dart';
 import 'package:meeting_module2/widget/customtextfield.dart';
-import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsers.dart';
-import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dart';
-import 'package:meeting_module2/extensions/textLengthExtension.dart';
 import 'package:meeting_module2/widget/popups/custom_error_popup.dart';
 // test
 
@@ -1337,9 +1333,29 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                     mainAxisSize:
                                                         MainAxisSize.min,
                                                     children: [
-                                                      CustomAutoSizeTextMontserrat(
-                                                          text:
-                                                              "Mark Attendance"),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          CustomAutoSizeTextMontserrat(
+                                                              textColor:
+                                                                  ThemeConstants
+                                                                      .bluecolor,
+                                                              text:
+                                                                  "Mark Attendance"),
+                                                          CircleAvatar(
+                                                            backgroundColor:
+                                                                ThemeConstants
+                                                                    .bluecolor,
+                                                            radius: 12,
+                                                            child: Icon(
+                                                              Icons.close,
+                                                              size: 20,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
                                                       InkWell(
                                                         onTap: () {
                                                           setState(() {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:meeting_module2/ui/controller/create_new_meeting_controller.dart';
 import 'package:meeting_module2/ui/controller/create_new_meeting_controller2.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';

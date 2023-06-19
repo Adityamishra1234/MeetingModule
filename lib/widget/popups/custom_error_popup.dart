@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
+import 'package:get/get.dart';
+import 'package:meeting_module2/utils/theme.dart';
 
 showPoPUp(String text, Icon icon) {
   return AlertDialog(
@@ -10,6 +11,23 @@ showPoPUp(String text, Icon icon) {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
+            Container(
+              alignment: Alignment.topRight,
+              width: double.infinity,
+              child: InkWell(
+                onTap: () {
+                  Get.back();
+                },
+                child: CircleAvatar(
+                  radius: 10,
+                  backgroundColor: ThemeConstants.bluecolor,
+                  child: Icon(
+                    Icons.close,
+                    size: 15,
+                  ),
+                ),
+              ),
+            ),
             Center(
               child: Text(
                 textAlign: TextAlign.center,

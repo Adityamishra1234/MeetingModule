@@ -370,7 +370,7 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
                           width: 1, color: ThemeConstants.lightgreycolor)),
                   constraints: BoxConstraints(maxHeight: 150),
                   child: Scrollbar(
-                    isAlwaysShown: false,
+                    thumbVisibility: false,
                     thickness: 0,
                     controller: scrollControler,
                     child: ListView.builder(

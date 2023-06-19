@@ -1,27 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:meeting_module2/ui/screens/dashboard_page.dart';
 import 'package:meeting_module2/utils/snackbarconstants.dart';
 import 'package:nice_loading_button/nice_loading_button.dart';
 
 import 'package:get/get.dart';
-import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/presentation/constants/loading.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
-import 'package:meeting_module2/ui/controller/logincontroller.dart';
 
 import 'package:meeting_module2/ui/controller/signin_controller.dart';
-import 'package:meeting_module2/ui/screens/createpassword.dart';
-import 'package:meeting_module2/ui/screens/loginUi.dart';
 import 'package:meeting_module2/ui/screens/login_page.dart';
 import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/theme.dart';
-import 'package:meeting_module2/widget/custom_button.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/customtextfield.dart';
 

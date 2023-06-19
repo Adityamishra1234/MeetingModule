@@ -1,6 +1,5 @@
 import 'package:cached_network_svg_image/cached_network_svg_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/utils/theme.dart';
@@ -109,7 +108,7 @@ getEmailvaliation(String? value) {
     if (value.length < 1) {
       return "Please enter email address";
     } else {
-      return value!.isNotEmpty && !regex.hasMatch(value)
+      return value.isNotEmpty && !regex.hasMatch(value)
           ? 'Enter a valid email address'
           : null;
     }

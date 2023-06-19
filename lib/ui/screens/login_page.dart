@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/presentation/constants/loading.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/logincontroller.dart';
-import 'package:meeting_module2/ui/screens/createpassword.dart';
 import 'package:meeting_module2/ui/screens/signin_view.dart';
 import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/snackbarconstants.dart';
 import 'package:meeting_module2/utils/theme.dart';
-import 'package:meeting_module2/widget/custom_button.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/customtextfield.dart';
 

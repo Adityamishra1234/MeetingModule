@@ -1,11 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:get/get.dart';
-import 'package:html_editor_enhanced/html_editor.dart';
-import 'package:markdown/markdown.dart' as md;
 import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
@@ -14,12 +9,9 @@ import 'package:meeting_module2/models/findParticipantByIdModel.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
-import 'package:meeting_module2/ui/screens/add_more_notes.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customExpansionTile.dart';
-import 'package:quill_json_to_html/json_to_html.dart';
-import 'package:quill_markdown/quill_markdown.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vsc_quill_delta_to_html/vsc_quill_delta_to_html.dart';
 
@@ -28,6 +20,8 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
   bool addNotes = true;
   // Model
+
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   ApiServices api = ApiServices();
   RxList<FindNotesModel> model = <FindNotesModel>[].obs;
 
@@ -389,7 +383,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     var controllerDashboard = Get.find<DashBoardController>();
 
     AllMeetings meetingData = controllerDashboard.selectedMeetingdata.value;
-    var res = await api.meetingStartedOrEnded(meetingId, id!, 0, val);
+    var res = await api.meetingStartedOrEnded(meetingId, id, 0, val);
     // meetingData.meetingStarted = val;
 
     await controllerDashboard.getMeetingData();
@@ -403,7 +397,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     var controllerDashboard = Get.find<DashBoardController>();
 
     AllMeetings meetingData = controllerDashboard.selectedMeetingdata.value;
-    var res = await api.meetingStartedOrEnded(meetingId, id!, 1, val);
+    var res = await api.meetingStartedOrEnded(meetingId, id, 1, val);
     // meetingData.meetingEnded = val;
     await controllerDashboard.getMeetingData();
     // controllerDashboard.indexOfTab.value =

@@ -1,32 +1,22 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/presentation/constants/loading.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
-import 'package:meeting_module2/ui/controller/create_new_meeting_controller.dart';
 import 'package:meeting_module2/ui/controller/create_new_meeting_controller2.dart';
-import 'package:meeting_module2/ui/controller/dashboardController.dart';
-import 'package:meeting_module2/ui/screens/add_representative.dart';
-import 'package:meeting_module2/ui/screens/dashboard_page.dart';
 import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/snackbarconstants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/addRepresentative_widget.dart';
-import 'package:meeting_module2/widget/custom_button.dart';
 import 'package:meeting_module2/widget/custom_date_picker/custom_time_picker_only.dart';
 import 'package:meeting_module2/widget/custom_date_picker/custom_timer_widget.dart';
 import 'package:meeting_module2/widget/custom_date_picker/custom_timer_widget_pick_hour_minutes.dart';
-import 'package:meeting_module2/widget/custom_dialog_box.dart';
 import 'package:meeting_module2/widget/custom_tab_widget.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/customtextfield.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsers.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dart';
-import 'package:meeting_module2/widget/text_underline.dart';
 import 'package:meeting_module2/widget/view_particpant_dialog.dart';
 
 class CreateNewMeeting2 extends StatelessWidget {
@@ -612,6 +602,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                   child: Align(
                     alignment: AlignmentDirectional.topStart,
                     child: CustomAutoSizeTextMontserrat(
+                      mandatory: true,
                       text: "Meeting Link",
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -1296,6 +1287,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                       forDropDown: false,
                       backgroundCOlour: Colors.transparent,
                       hint: '',
+                      readOrEdit: true,
                       controller: TextEditingController(),
                       validator: controller.selectedTargetAudience.value == ''
                           ? Validator.plzSelectOne
@@ -1421,6 +1413,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                   alignment: AlignmentDirectional.topStart,
                   child: CustomAutoSizeTextMontserrat(
                     text: "Select User",
+                    mandatory: true,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
@@ -1495,6 +1488,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                   alignment: AlignmentDirectional.topStart,
                   child: CustomAutoSizeTextMontserrat(
                     text: "Meeting Cordinator",
+                    mandatory: true,
                     textColor: ThemeConstants.bluecolor,
                     fontWeight: FontWeight.bold,
                   ),

@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/services/apiServices.dart';
-import 'package:meeting_module2/ui/screens/dashboard_page.dart';
 import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/snackbarconstants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -92,14 +89,12 @@ class SigninController extends GetxController with StateMixin {
     // var res = await api.otpMatch(email, otp);
     var res = true;
 
-    if (res != null) {
-      if (res == true) {
-        forOtp.value = 1;
-        otpSuccessful = 1;
-        createPassword = true;
+    if (res == true) {
+      forOtp.value = 1;
+      otpSuccessful = 1;
+      createPassword = true;
 
-        // Get.to(CreatePasswrord(email: email));
-      }
+      // Get.to(CreatePasswrord(email: email));
     }
 
     update();

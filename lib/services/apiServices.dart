@@ -1,18 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
 import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
-import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/models/participantsModel.dart';
 import 'package:meeting_module2/services/api.dart';
 import 'package:meeting_module2/services/base_services.dart';
 import 'package:meeting_module2/services/endpoints.dart';
-import 'package:meeting_module2/utils/constants.dart';
-import 'package:tuple/tuple.dart';
 
 class ApiServices extends BaseServices implements API {
 /////Auth APIS

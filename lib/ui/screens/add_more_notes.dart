@@ -1,20 +1,12 @@
-import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quil;
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
-import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:meeting_module2/functions/uploadDoucment.dart';
-import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/presentation/constants/loading.dart';
 import 'package:meeting_module2/ui/controller/add_more_notes_controller.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
-import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
 import 'package:meeting_module2/utils/snackbarconstants.dart';
@@ -22,7 +14,6 @@ import 'package:meeting_module2/utils/snackbarconstants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/custom_tab_widget.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
-import 'package:meeting_module2/widget/customtextfield.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsers.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dart';
 
@@ -35,35 +26,19 @@ class AddMoreNotesView extends StatefulWidget {
 }
 
 class _AddMoreNotesViewState extends State<AddMoreNotesView> {
-  // TextEditingController fff = TextEditingController();
-  var controller = Get.put(AddMoreNotesController());
-  // final HtmlEditorController _controller = HtmlEditorController();
-  final argumentData = Get.arguments;
-  late int meetingID;
-  late int index;
+  bool _isTextFieldFocused = false;
+  final _focusNode = FocusNode();
 
   @override
   void initState() {
-    // controller.onInit();
-    print(argumentData);
-    meetingID = argumentData[0];
-    print(argumentData[0]);
-    index = argumentData[1];
-    print(index);
-
-    if (index == 0) {
-      controller.addNotes = true;
-    } else {
-      controller.addNotes = false;
-    }
-
     super.initState();
   }
 
+  // TextEditingController fff = TextEditingController();
   @override
   Widget build(BuildContext context) {
     dynamic argumentData = Get.arguments;
-
+    var controller = Get.put(AddMoreNotesController());
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 247, 249, 255),
         body: controller.obx(
@@ -88,7 +63,7 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                               height: 10,
                             ),
                             CustomTabWidget(
-                                defaultIndex: index,
+                                defaultIndex: argumentData[1],
                                 title0: 'Add Notes',
                                 title1: 'Add Files',
                                 callback: (e) {
@@ -207,26 +182,32 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                                       showAlignmentButtons: true,
                                     ),
                                     SizedBox(height: 15),
-                                    Container(
-                                      constraints:
-                                          BoxConstraints(minHeight: 100),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          border: Border.all(
-                                              width: 1,
-                                              color: ThemeConstants.bluecolor)),
-                                      child: quil.QuillEditor(
-                                        autoFocus: false,
-                                        padding: EdgeInsets.all(10),
-                                        expands: false,
-                                        focusNode: FocusNode(),
-                                        scrollable: true,
-                                        scrollController: ScrollController(),
-                                        controller: controller.noteText,
+                                    GestureDetector(
+                                      onTap: () {
+                                        _focusNode.requestFocus();
+                                      },
+                                      child: Container(
+                                        constraints:
+                                            BoxConstraints(minHeight: 200),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border: Border.all(
+                                                width: 1,
+                                                color:
+                                                    ThemeConstants.bluecolor)),
+                                        child: quil.QuillEditor(
+                                          autoFocus: false,
+                                          padding: EdgeInsets.all(10),
+                                          expands: false,
+                                          focusNode: _focusNode,
+                                          scrollable: false,
+                                          scrollController: ScrollController(),
+                                          controller: controller.noteText,
 
-                                        readOnly:
-                                            false, // true for view only mode
+                                          readOnly:
+                                              false, // true for view only mode
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -289,7 +270,7 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                                     getToast(SnackBarConstants.noteTextField!);
                                   } else {
                                     controller.saveAndNext(
-                                        meetingID, controller.noteText);
+                                        argumentData[0], controller.noteText);
                                   }
                                 },
                                 child: Container(

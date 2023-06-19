@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/addRepresentative.dart';
@@ -13,10 +11,8 @@ import 'package:meeting_module2/models/participantsModel.dart';
 import 'package:meeting_module2/models/selectedAudienceTypeModel.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
-import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
-import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsersCore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateNewMeetingController2 extends GetxController with StateMixin {

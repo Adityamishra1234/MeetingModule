@@ -1,15 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/ui/controller/add_more_notes_controller.dart';
-import 'package:meeting_module2/ui/controller/dashboardController.dart';
-import 'package:meeting_module2/ui/screens/assign_to_view.dart';
-import 'package:meeting_module2/utils/theme.dart';
-import 'package:meeting_module2/widget/assignTo.dart';
-import 'package:meeting_module2/widget/customExpansionTile.dart';
 import 'package:meeting_module2/widget/custom_tab_widget.dart';
-import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
-import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dart';
-import 'package:meeting_module2/widget/text_underline.dart';
 
 class ViewNotesDetails extends StatelessWidget {
   var controller = Get.find<AddMoreNotesController>();

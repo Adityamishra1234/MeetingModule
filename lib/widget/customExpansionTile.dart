@@ -2,7 +2,6 @@ import 'package:configurable_expansion_tile_null_safety/configurable_expansion_t
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/ui/screens/assign_to_view.dart';
 import 'package:meeting_module2/utils/theme.dart';

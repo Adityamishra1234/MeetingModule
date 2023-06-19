@@ -8,7 +8,7 @@ class CustomTextField extends StatelessWidget {
   Validator? validator;
   TextInputType? keybord;
   bool? obscureText = false;
-  bool readOrEdit = false;
+  bool? readOrEdit = false;
   Color? backgroundCOlour;
   bool? forDropDown;
   CustomTextField({
@@ -18,6 +18,7 @@ class CustomTextField extends StatelessWidget {
     required this.hint,
     required this.controller,
     this.obscureText,
+    this.readOrEdit,
     this.validator,
     this.keybord,
   }) : super(key: key);
@@ -32,7 +33,7 @@ class CustomTextField extends StatelessWidget {
         scrollPadding: EdgeInsets.symmetric(
             vertical: MediaQuery.of(context).viewInsets.bottom + 30),
         style: ThemeConstants.montserrattextstyle2,
-        readOnly: readOrEdit,
+        readOnly: readOrEdit == null ? false : readOrEdit!,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
           hintText: hint,
@@ -90,6 +91,7 @@ class CustomTextField extends StatelessWidget {
           } else if (Validator.plzSelectOne == validator) {
             return getEmptyDropDownValidation(value);
           }
+          return null;
         });
   }
 }

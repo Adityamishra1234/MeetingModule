@@ -1,16 +1,11 @@
-import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:get/get.dart';
-import 'package:meeting_module2/main.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/services/apiServices.dart';
-import 'package:meeting_module2/services/endpoints.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
@@ -371,7 +366,6 @@ class DashBoardController extends GetxController with StateMixin {
       } else if (selectedFilter.value == "Internal Meeting") {
         listToShow = await allMeetingslist
             .where((p0) =>
-                p0.meetingWith == 's' &&
                 p0.meetingEnded == false &&
                 p0.meetingType == 'Internal Meeting')
             .toList();
@@ -401,9 +395,7 @@ class DashBoardController extends GetxController with StateMixin {
       } else if (selectedFilter.value == "Internal Meeting") {
         listToShow = await allMeetingslist
             .where((p0) =>
-                p0.meetingWith == 's' &&
-                p0.meetingEnded == true &&
-                p0.meetingType == 'Internal Meeting')
+                p0.meetingEnded == true && p0.meetingType == 'Internal Meeting')
             .toList();
       } else if (selectedFilter.value == "Bank Meeting") {
         listToShow = await allMeetingslist

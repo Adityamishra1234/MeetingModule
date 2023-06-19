@@ -49,7 +49,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '808372705014',
     projectId: 'meeting-module-4959e',
     authDomain: 'meeting-module-4959e.firebaseapp.com',
-    databaseURL: 'https://meeting-module-4959e-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://meeting-module-4959e-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'meeting-module-4959e.appspot.com',
     measurementId: 'G-5P587B10DF',
   );
@@ -59,7 +60,8 @@ class DefaultFirebaseOptions {
     appId: '1:808372705014:android:8c7376135d66f720c1bed7',
     messagingSenderId: '808372705014',
     projectId: 'meeting-module-4959e',
-    databaseURL: 'https://meeting-module-4959e-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://meeting-module-4959e-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'meeting-module-4959e.appspot.com',
   );
 
@@ -68,9 +70,11 @@ class DefaultFirebaseOptions {
     appId: '1:808372705014:ios:69c9ac8b79b876d8c1bed7',
     messagingSenderId: '808372705014',
     projectId: 'meeting-module-4959e',
-    databaseURL: 'https://meeting-module-4959e-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://meeting-module-4959e-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'meeting-module-4959e.appspot.com',
-    iosClientId: '808372705014-mrgne7j6bqpfrbruoumlf7bn79jevhmq.apps.googleusercontent.com',
+    iosClientId:
+        '808372705014-mrgne7j6bqpfrbruoumlf7bn79jevhmq.apps.googleusercontent.com',
     iosBundleId: 'com.downtownengineers.meetingModule2',
   );
 
@@ -79,9 +83,11 @@ class DefaultFirebaseOptions {
     appId: '1:808372705014:ios:69c9ac8b79b876d8c1bed7',
     messagingSenderId: '808372705014',
     projectId: 'meeting-module-4959e',
-    databaseURL: 'https://meeting-module-4959e-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://meeting-module-4959e-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'meeting-module-4959e.appspot.com',
-    iosClientId: '808372705014-mrgne7j6bqpfrbruoumlf7bn79jevhmq.apps.googleusercontent.com',
+    iosClientId:
+        '808372705014-mrgne7j6bqpfrbruoumlf7bn79jevhmq.apps.googleusercontent.com',
     iosBundleId: 'com.downtownengineers.meetingModule2',
   );
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 // import 'package:untitled3/custom_widget/custom_tab/custom_tab_list.dart';
 // import 'package:untitled3/custom_widget/custom_timer/custom_timer_widget.dart';
 
@@ -78,16 +77,13 @@ class _CustomTabWidgetState extends State<CustomTabWidget> {
                         decoration: const BoxDecoration(
                           color: Colors.transparent,
                         ),
-                        child: AnimatedContainer(
-                          duration: Duration(seconds: 2),
-                          child: Text(
-                            '${widget.title0}',
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: indexOfTab != 0
-                                    ? Colors.black
-                                    : Color(0xffff9900)),
-                          ),
+                        child: Text(
+                          '${widget.title0}',
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: indexOfTab != 0
+                                  ? Colors.black
+                                  : Color(0xffff9900)),
                         ),
                       ))),
 
@@ -113,16 +109,13 @@ class _CustomTabWidgetState extends State<CustomTabWidget> {
                         decoration: const BoxDecoration(
                           color: Colors.transparent,
                         ),
-                        child: AnimatedContainer(
-                          duration: Duration(seconds: 2),
-                          child: Text(
-                            '${widget.title1}',
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: indexOfTab != 1
-                                    ? Colors.black
-                                    : Color(0xffff9900)),
-                          ),
+                        child: Text(
+                          '${widget.title1}',
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: indexOfTab != 1
+                                  ? Colors.black
+                                  : Color(0xffff9900)),
                         ),
                       )))
             ],
@@ -134,7 +127,7 @@ class _CustomTabWidgetState extends State<CustomTabWidget> {
             height: 2.5,
             top: 43,
             left: indexOfTab == 0 ? 4 : firstTextlength + 34,
-            duration: const Duration(milliseconds: 700),
+            duration: const Duration(milliseconds: 500),
             curve: Curves.fastOutSlowIn,
             child: GestureDetector(
               child: Container(
