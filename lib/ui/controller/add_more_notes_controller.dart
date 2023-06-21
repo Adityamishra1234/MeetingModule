@@ -6,12 +6,14 @@ import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/models/findParticipantByIdModel.dart';
+import 'package:meeting_module2/models/reasonOfAttendingAll.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customExpansionTile.dart';
+import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vsc_quill_delta_to_html/vsc_quill_delta_to_html.dart';
 
@@ -20,6 +22,8 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
   bool addNotes = true;
   // Model
+
+  int viewNotesSection = 0;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   ApiServices api = ApiServices();
@@ -59,19 +63,81 @@ class AddMoreNotesController extends GetxController with StateMixin {
     await getNotesOfMeeting();
     await checkUserIsCordinator();
     await getMeetingParticipantsList();
-    // await getReasonOfNotAttedingsAll(id);
+    await getReasonOfNotAttedingsAll(baseController.selectedMeetingData.id!);
 
     meetingStartedValue = baseController.selectedMeetingData.meetingStarted!;
     meetingEndedValue = baseController.selectedMeetingData.meetingEnded!;
     change(null, status: RxStatus.success());
   }
 
-  // getReasonOfNotAttedingsAll(int MeetingId) async {
-  //   var res = api.reasonOfNotAttendingAll(MeetingId);
-  // }
+  List<Widget> reasonofNotAtteding = [];
+  getReasonOfNotAttedingsAll(int MeetingId) async {
+    var res = await api.reasonOfNotAttendingAll(MeetingId);
+    print(res);
+    var data = List<ReasonOfNotAttendingModel>.from(
+        res.map((e) => ReasonOfNotAttendingModel.fromJson(e))).toList();
+
+    reasonofNotAtteding = [];
+    for (var i = 0; i < data.length; i++) {
+      reasonofNotAtteding.add(Container(
+        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+        decoration: BoxDecoration(
+            border: Border.all(width: 0.8),
+            borderRadius: BorderRadius.circular(10.0)),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            children: [
+              Align(
+                alignment: AlignmentDirectional.topStart,
+                child: Text("${data[i].reasonOfNotAttended}"),
+              ),
+              // Align(
+              //   alignment: AlignmentDirectional.topStart,
+              //   child: CustomAutoSizeTextMontserrat(
+              //     text: "${widget.dataList![i].createdBy}",
+              //     textColor: ThemeConstants.TextColor,
+              //     fontSize: 12,
+              //   ),
+              // ),
+              // InkWell(
+              //   onTap: () {
+              //     // Get.to(AssignToView(), arguments: widget.dataList![i]);
+              //   },
+              //   child: Padding(
+              //     padding: const EdgeInsets.only(top: 10),
+              //     child: Align(
+              //       alignment: AlignmentDirectional.topEnd,
+              //       child: Container(
+              //         height: 30,
+              //         width: 120,
+              //         decoration: BoxDecoration(
+              //             color: ThemeConstants.bluecolor,
+              //             borderRadius:
+              //                 const BorderRadius.all(Radius.circular(30.0))),
+              //         child: Center(
+              //           child: CustomAutoSizeTextMontserrat(
+              //             text: "Assign to",
+              //             textColor: ThemeConstants.whitecolor,
+              //             fontSize: 14,
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // )
+            ],
+          ),
+        ),
+      ));
+    }
+  }
 
   List<FindNotesModel> notesList = <FindNotesModel>[];
   List<Widget> documentlist = [];
+
+  reasonOfNoteAttedning() {}
+
   getNotesOfMeeting() async {
     // getNotes(String id, int? index) async {
     // if (index != null) {

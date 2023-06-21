@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
@@ -8,6 +10,7 @@ import 'package:meeting_module2/models/participantsModel.dart';
 import 'package:meeting_module2/services/api.dart';
 import 'package:meeting_module2/services/base_services.dart';
 import 'package:meeting_module2/services/endpoints.dart';
+import 'package:meeting_module2/utils/theme.dart';
 
 class ApiServices extends BaseServices implements API {
 /////Auth APIS
@@ -93,6 +96,7 @@ class ApiServices extends BaseServices implements API {
   getDropdown(String endpoint) async {
     var url = '${Endpoints.baseUrl}${endpoint}';
     var res = await httpPostNullBody(url);
+    print(res);
     if (res != null) {
       return res['userList'];
     }
@@ -498,9 +502,23 @@ class ApiServices extends BaseServices implements API {
 
     var data2 = json.encode(data);
 
-    var res = await httpPostApplication(url, data2);
+    var res = await httpPostHeader(url, data2);
 
     print(res);
+
+    // if (res == 'assignTo Sucessfully') {
+    //   Get.defaultDialog(
+    //       content: Container(
+    //     child: Column(children: [
+    //       Text('Assigned Successfully'),
+    //       Icon(
+    //         Icons.check,
+    //         color: ThemeConstants.GreenColor,
+    //         size: 25,
+    //       )
+    //     ]),
+    //   ));
+    // }
 
     // TODO: implement assignTo
     // throw UnimplementedError();
@@ -610,7 +628,7 @@ class ApiServices extends BaseServices implements API {
     var data2 = json.encode(data);
 
     var res = await httpPostHeader(url, data2);
-
+    print(res);
     return res['model'];
 
     print(res);

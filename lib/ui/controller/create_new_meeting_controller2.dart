@@ -499,7 +499,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     await api.addMeeting(meetingModel.value);
 
     change(null, status: RxStatus.loading());
-    Get.find<DashBoardController>().getMeetingData();
+
     Get.delete<CreateNewMeetingController2>();
     Get.put(CreateNewMeetingController2());
     change(null, status: RxStatus.success());

@@ -10,7 +10,8 @@ class ViewNotesDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+        body: controller.obx(
+      (state) => SafeArea(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 5),
           child: Column(
@@ -22,7 +23,10 @@ class ViewNotesDetails extends StatelessWidget {
                     child: CustomTabWidget(
                       title0: "All notes",
                       title1: "Reason of attending",
-                      callback: (val) => val,
+                      callback: (val) {
+                        controller.viewNotesSection = val;
+                        controller.update();
+                      },
                     ),
                   ),
                   // TextUnderLine(
@@ -61,7 +65,11 @@ class ViewNotesDetails extends StatelessWidget {
               Expanded(
                 child: ListView(
                   children: [
-                    ...controller.documentlist,
+                    if (controller.viewNotesSection == 0) ...[
+                      ...controller.documentlist,
+                    ] else ...[
+                      ...controller.reasonofNotAtteding
+                    ]
                     // CustomExpansionPlanList(
                     //   text: "Meeting Notes",
                     //   titel: 'Meeting Notes',
@@ -173,6 +181,6 @@ class ViewNotesDetails extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ));
   }
 }

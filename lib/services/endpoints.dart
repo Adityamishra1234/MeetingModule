@@ -1,11 +1,11 @@
 class Endpoints {
-  // static String baseUrl = 'http://192.168.107.88:3001/api/';
+  static String baseUrl = 'http://192.168.107.88:3001/api/';
 //jp
   // static String baseUrl = 'http://192.168.104.20:3001/api/';
 
   // static String baseUrl = 'http://10.0.2.2:3001/api/';
-
-  static String baseUrl = 'http://164.52.208.95:3001/api/';
+//
+  // static String baseUrl = 'http://164.52.208.95:3001/api/';
 
   static String allMeetings = 'getMeetingListByUser';
 

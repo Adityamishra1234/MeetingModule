@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/dashboardNotesModel.dart';
@@ -5,10 +6,19 @@ import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AssignToController extends GetxController {
-  ApiServices api = ApiServices();
+class AssignToController extends GetxController with StateMixin {
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
 
-  String deadLine = '';
+    change(null, status: RxStatus.success());
+  }
+
+  ApiServices api = ApiServices();
+  GlobalKey<FormState> key = GlobalKey<FormState>();
+
+  String deadLine = DateTime.now().toString().substring(0, 10);
 
   AllUserModel taskOwner = AllUserModel();
 
@@ -23,7 +33,7 @@ class AssignToController extends GetxController {
       "meeting_id": argu.meetingId,
       "meeting_notes_id": argu.id,
       "task_type": task,
-      "deadline_date": deadLine ?? DateTime.now().day,
+      "deadline_date": deadLine,
       "task_owner_id": taskOwner.id,
       "is_active": true,
       "closed_at": "2023-04-07T09:48:35.000Z",
@@ -43,7 +53,7 @@ class AssignToController extends GetxController {
   assign2(DashBoardNotes argu, task) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    var id = prefs.getInt('id');
+    var id = await prefs.getInt('id');
 
     print(id);
     var data = {

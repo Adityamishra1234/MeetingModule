@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_splash_screen/flutter_splash_screen.dart';
 import 'package:get/get.dart';
+import 'package:meeting_module2/bindings/dashboardBindings.dart';
 import 'package:meeting_module2/ui/screens/add_more_notes.dart';
 import 'package:meeting_module2/ui/screens/add_representative.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting2.dart';
@@ -19,6 +22,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 import 'message.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -87,6 +91,7 @@ Future<void> main() async {
   String? initialMessage;
   bool _resolved = false;
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -110,6 +115,11 @@ Future<void> main() async {
   });
   await onActionSelected;
   await createtoken();
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((value) => runApp(MyApp()));
   runApp(MyApp());
 }
 
@@ -248,12 +258,24 @@ String constructFCMPayload(String? token) {
 //   }
 // }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+        smartManagement: SmartManagement.onlyBuilder,
         debugShowCheckedModeBanner: false,
         initialRoute: SignInView.route,
         getPages: [
@@ -266,9 +288,9 @@ class MyApp extends StatelessWidget {
             page: () => LoginPage(),
           ),
           GetPage(
-            name: DashBoard.routeNamed,
-            page: () => DashBoard(),
-          ),
+              name: DashBoard.routeNamed,
+              page: () => DashBoard(),
+              binding: DashboardBinding()),
           // GetPage(
           //   name: LoginPage.routeNamed,
           //   page: () => LoginPage(),

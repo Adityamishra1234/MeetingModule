@@ -7,7 +7,7 @@ import 'package:meeting_module2/widget/dropdown_multi_select/customizable_dropdo
 
 class CustomMultiDownSingle extends StatelessWidget {
   bool? choosefieldtype;
-  List model;
+  List<String> model;
   bool? enableMultiSelect;
   String? initialSelectedValue;
   List? inititalSelectedList;

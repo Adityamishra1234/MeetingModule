@@ -3,7 +3,9 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meeting_module2/models/dashboardNotesModel.dart';
+import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/services/apiServices.dart';
+import 'package:meeting_module2/ui/screens/assign_to_view.dart';
 import 'package:meeting_module2/ui/screens/assign_to_view_dasboard.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
 import 'package:meeting_module2/utils/theme.dart';
@@ -36,13 +38,13 @@ class DashboardNotesController extends GetxController with StateMixin {
 
   List<Widget> beta = [];
 
-  List<DashBoardNotes> data = [];
+  List<FindNotesModel> data = [];
   getNotesData() async {
     var res = await apiServices.findNoteByUser(id);
     List<dynamic> data2 = res;
 
-    data = await List<DashBoardNotes>.from(
-        data2.map((e) => DashBoardNotes.fromJson(e)));
+    data = await List<FindNotesModel>.from(
+        data2.map((e) => FindNotesModel.fromJson(e)));
 
     print(data);
 

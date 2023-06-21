@@ -1,3 +1,4 @@
+import 'package:flutter_splash_screen/flutter_splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/main.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
@@ -13,7 +14,7 @@ class BaseController extends GetxController {
 
   Rx<UserModel> user = UserModel().obs;
 
-  RxList<AllUserModel> allSiecMembersList = <AllUserModel>[].obs;
+  List<AllUserModel> allSiecMembersList = <AllUserModel>[];
 
   Rx<AllMeetings> meetingData = AllMeetings().obs;
 
@@ -26,11 +27,22 @@ class BaseController extends GetxController {
     // RxStatus.loading();5
     super.onInit();
     await getId();
+    await checkUser();
     await getAllSiecMembersList();
 
-    await checkUser();
-
     // getNotes('1');
+  }
+
+  Future<void> hideScreen() async {
+    if (GetPlatform.isIOS) {
+      await Future.delayed(const Duration(milliseconds: 1000), () {
+        FlutterSplashScreen.hide();
+      });
+    } else {
+      await Future.delayed(const Duration(milliseconds: 1000), () {
+        FlutterSplashScreen.hide();
+      });
+    }
   }
 
   AllMeetings selectedMeetingData = AllMeetings();
@@ -69,14 +81,16 @@ class BaseController extends GetxController {
     var allUserList = await List<AllUserModel>.from(
         res2.map((x) => AllUserModel.fromJson(x)));
 
-    allSiecMembersList.value =
+    allSiecMembersList =
         List<AllUserModel>.from(allUserList.map((element) => element)).toList();
   }
 
   checkUser() async {
     print(id);
     if (id != 0) {
-      Get.off(DashBoard());
+      Get.offNamed(DashBoard.routeNamed);
     }
+    await Future.delayed(Duration(seconds: 1));
+    hideScreen();
   }
 }

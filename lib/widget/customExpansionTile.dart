@@ -4,6 +4,7 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/ui/screens/assign_to_view.dart';
+import 'package:meeting_module2/ui/screens/assign_to_view_dasboard.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 
@@ -109,7 +110,7 @@ class _CustomExpansionPlanListState extends State<CustomExpansionPlanList> {
               ),
               InkWell(
                 onTap: () {
-                  Get.to(AssignToView(), arguments: widget.dataList![i]);
+                  Get.to(AssignToView2(), arguments: widget.dataList![i]);
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10),

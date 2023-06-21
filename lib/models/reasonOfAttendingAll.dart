@@ -14,7 +14,7 @@ class ReasonOfNotAttendingModel {
   int? updatedBy;
   String? createdAt;
   String? updatedAt;
-  Null notes;
+  String? notes;
 
   ReasonOfNotAttendingModel(
       {this.id,

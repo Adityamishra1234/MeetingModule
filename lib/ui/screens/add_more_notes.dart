@@ -372,6 +372,7 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
             child: Container(
               padding: const EdgeInsets.all(15),
               width: double.infinity,
+              constraints: BoxConstraints(minHeight: 150),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: const Color(0xff1940b3)),
@@ -383,26 +384,26 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                     HtmlWidget(
                       models[i].note!,
                     ),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        width: double.infinity,
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                          width: 120,
-                          // color: ThemeConstants.bluecolor,
-                          decoration: BoxDecoration(
-                              color: ThemeConstants.bluecolor,
-                              borderRadius: BorderRadius.circular(500)),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 12),
-                          child: Text(
-                            'Assign to',
-                            style: TextStyle(color: ThemeConstants.whitecolor),
-                          ),
-                        ),
-                      ),
-                    ),
+                    // InkWell(
+                    //   onTap: () {},
+                    //   child: Container(
+                    //     width: double.infinity,
+                    //     alignment: Alignment.centerRight,
+                    //     child: Container(
+                    //       width: 120,
+                    //       // color: ThemeConstants.bluecolor,
+                    //       decoration: BoxDecoration(
+                    //           color: ThemeConstants.bluecolor,
+                    //           borderRadius: BorderRadius.circular(500)),
+                    //       padding: const EdgeInsets.symmetric(
+                    //           horizontal: 20, vertical: 12),
+                    //       child: Text(
+                    //         'Assign to',
+                    //         style: TextStyle(color: ThemeConstants.whitecolor),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ]),
             ),
           ),

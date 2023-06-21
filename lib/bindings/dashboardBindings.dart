@@ -6,6 +6,6 @@ class DashboardBinding implements Bindings {
   void dependencies() {
     // Get.put(ApplicationDetail());
 
-    Get.lazyPut<DashBoardController>(() => DashBoardController());
+    Get.put(DashBoardController());
   }
 }

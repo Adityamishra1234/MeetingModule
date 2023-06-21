@@ -27,7 +27,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
 
   var controllerbase = Get.find<BaseController>();
 
-  var controllerDashboard = Get.find<DashBoardController>();
+  // var controllerDashboard = Get.find<DashBoardController>();
 
   GlobalKey<FormState> _keyForReasonOfNotAttending = GlobalKey<FormState>();
 
@@ -1344,14 +1344,19 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                                       .bluecolor,
                                                               text:
                                                                   "Mark Attendance"),
-                                                          CircleAvatar(
-                                                            backgroundColor:
-                                                                ThemeConstants
-                                                                    .bluecolor,
-                                                            radius: 12,
-                                                            child: Icon(
-                                                              Icons.close,
-                                                              size: 20,
+                                                          InkWell(
+                                                            onTap: () {
+                                                              Get.back();
+                                                            },
+                                                            child: CircleAvatar(
+                                                              backgroundColor:
+                                                                  ThemeConstants
+                                                                      .bluecolor,
+                                                              radius: 12,
+                                                              child: Icon(
+                                                                Icons.close,
+                                                                size: 20,
+                                                              ),
                                                             ),
                                                           )
                                                         ],

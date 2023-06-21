@@ -46,7 +46,7 @@ class CustomizableDropdown extends StatefulWidget {
   final Widget? placeholder;
 
   /// must set the dropdown item list
-  final List<dynamic> itemList;
+  final List<String> itemList;
 
   /// receive the selected item call back function
   /// The list of items the user can select
@@ -433,7 +433,7 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(widget.itemList.elementAt(index),
+                                        Text(items.elementAt(index),
                                             textAlign: TextAlign.start,
                                             style: widget.titleStyle),
                                         if (widget.multiSelectEnable ==
@@ -477,11 +477,15 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
       ));
   //Function
   void filterSearchResults(String query) {
+    print(widget.itemList);
+    print(query);
     setState(() {
       items = widget.itemList
           .where((item) => item.toLowerCase().contains(query.toLowerCase()))
           .toList();
     });
+
+    print(items);
   }
 
   List<Widget> data() {

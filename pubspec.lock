@@ -390,6 +390,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.8.4"
+  flutter_splash_screen:
+    dependency: "direct main"
+    description:
+      name: flutter_splash_screen
+      sha256: "6560a82805e284cdfb11f38894c882ca0e11465551373000d930aa43d0b6842b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0+6"
   flutter_svg:
     dependency: "direct main"
     description:

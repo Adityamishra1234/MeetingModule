@@ -34,12 +34,13 @@ class _DashboardNotesViewState extends State<DashboardNotesView> {
                     height: MediaQuery.of(context).size.height,
                     child: Column(
                       children: [
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15),
-                              child: Align(
-                                alignment: AlignmentDirectional.topStart,
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Wrap(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(right: 10, bottom: 5),
                                 child: CustomAutoSizeTextMontserrat(
                                   text: "View Notes",
                                   fontSize: 35,
@@ -47,60 +48,60 @@ class _DashboardNotesViewState extends State<DashboardNotesView> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ),
-                            Spacer(),
-                            DropdownButton2(
-                              underline: Container(),
-                              buttonStyleData: ButtonStyleData(
-                                  elevation: 0,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(
-                                          width: 1,
-                                          color: ThemeConstants.blackcolor))),
-                              dropdownStyleData:
-                                  DropdownStyleData(elevation: 1),
-                              hint: Text(
-                                '${controller.selectedDropDown}',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Theme.of(context).hintColor,
+                              DropdownButton2(
+                                underline: Container(),
+                                buttonStyleData: ButtonStyleData(
+                                    elevation: 0,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                        color: Colors.transparent,
+                                        borderRadius: BorderRadius.circular(20),
+                                        border: Border.all(
+                                            width: 1,
+                                            color: ThemeConstants.blackcolor))),
+                                dropdownStyleData:
+                                    DropdownStyleData(elevation: 1),
+                                hint: Text(
+                                  '${controller.selectedDropDown}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Theme.of(context).hintColor,
+                                  ),
                                 ),
-                              ),
 
-                              items: controller.notesType
-                                  .map((item) => DropdownMenuItem<String>(
-                                        value: item,
-                                        child: Text(
-                                          item,
-                                          style: const TextStyle(
-                                            fontSize: 14,
+                                items: controller.notesType
+                                    .map((item) => DropdownMenuItem<String>(
+                                          value: item,
+                                          child: Text(
+                                            item,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                            ),
                                           ),
-                                        ),
-                                      ))
-                                  .toList(),
-                              // value: controller.selectedDropDown == null
-                              //     ?
-                              //     : controller.selectedFilter.value,
-                              onChanged: (value) {
-                                // controller.frfr(value);
+                                        ))
+                                    .toList(),
+                                // value: controller.selectedDropDown == null
+                                //     ?
+                                //     : controller.selectedFilter.value,
+                                onChanged: (value) {
+                                  // controller.frfr(value);
 
-                                controller.selectedDropDown = value.toString();
+                                  controller.selectedDropDown =
+                                      value.toString();
 
-                                controller.showThisNotesList();
+                                  controller.showThisNotesList();
 
-                                controller.update();
+                                  controller.update();
 
-                                // controller.showSpecificMeeting(value);
-                              },
-                              // buttonHeight: 40,
-                              // buttonWidth: 140,
-                              // itemHeight: 40,
-                              // itemWidth: 140,
-                            ),
-                          ],
+                                  // controller.showSpecificMeeting(value);
+                                },
+                                // buttonHeight: 40,
+                                // buttonWidth: 140,
+                                // itemHeight: 40,
+                                // itemWidth: 140,
+                              ),
+                            ],
+                          ),
                         ),
                         SizedBox(
                           height: 20,

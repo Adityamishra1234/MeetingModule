@@ -62,6 +62,15 @@ class DashBoardController extends GetxController with StateMixin {
     // getNotes('1', null);
   }
 
+  @override
+  void onReady() async {
+    change(null, status: RxStatus.loading());
+    super.onReady();
+    await getMeetingData();
+    print('onReady');
+    change(null, status: RxStatus.success());
+  }
+
   // token() async {
   //   SharedPreferences prefs = await SharedPreferences.getInstance();
   //   var id = await prefs.getInt('id');
@@ -533,14 +542,22 @@ class DashBoardController extends GetxController with StateMixin {
                     children: [
                       Row(
                         children: [
-                          SizedBox(
-                            // width: 300,
-                            child: CustomAutoSizeTextMontserrat(
-                              text: "${listToShow[i].meetingAgenda}",
-                              fontWeight: FontWeight.w700,
-                            ),
+                          Wrap(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 2),
+                                child: SizedBox(
+                                  // width: 300,
+                                  child: CustomAutoSizeTextMontserrat(
+                                    text: "${listToShow[i].meetingAgenda}",
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               listToShow[i].meetingStarted! &&
                                       !listToShow[i].meetingEnded!
@@ -697,7 +714,7 @@ class DashBoardController extends GetxController with StateMixin {
                           CustomButton(
                               backgroundColor:
                                   Color.fromARGB(255, 255, 225, 150),
-                              text: 'Reshedule',
+                              text: 'Reschedule',
                               textColor: ThemeConstants.blackcolor,
                               onPressed: () async {
                                 late bool showTheStartEndOptions;

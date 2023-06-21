@@ -52,6 +52,7 @@ class CustomMultiDownSingleAllUser extends StatelessWidget {
             ),
           )
         : CustomizableDropdownAllUser(
+            field: field,
             // colorDropDown: Colors.black,
             selectedItem: initialSelectedValue,
             maxHeight: 150,

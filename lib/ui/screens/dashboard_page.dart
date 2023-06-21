@@ -6,6 +6,7 @@ import 'package:meeting_module2/presentation/constants/loading.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting.dart';
+import 'package:meeting_module2/ui/screens/create_new_meeting2.dart';
 import 'package:meeting_module2/ui/screens/dashboard_notes.dart';
 
 import 'package:meeting_module2/utils/theme.dart';
@@ -22,9 +23,9 @@ class DashBoard extends StatefulWidget {
 class _DashBoardState extends State<DashBoard> {
   int siecParticipantsLength = 0;
 
-  var controller = Get.put(DashBoardController());
+  // var controller = Get.put(DashBoardController());
   var controllerBase = Get.find<BaseController>();
-
+  var controller = Get.find<DashBoardController>();
   String? selectedValue = 'All Meetings';
   bool showFilterList = true;
   List<String> list = <String>[
@@ -38,9 +39,17 @@ class _DashBoardState extends State<DashBoard> {
   @override
   void initState() {
     controllerBase.token2();
+    // controller.getMeetingData();
 
     // TODO: implement initState
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // controller.dispose();
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -376,7 +385,8 @@ class _DashBoardState extends State<DashBoard> {
         backgroundColor: ThemeConstants.bluecolor,
         onPressed: () {
           // ApiServices().addMeeting();
-          Get.toNamed(CreateNewMeeting.routeNamed);
+          // Get.toNamed(CreateNewMeeting.routeNamed);
+          Get.to(() => CreateNewMeeting2());
 
           // Get.to(
           //   () => MeetingDetails(),
