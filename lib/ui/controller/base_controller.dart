@@ -7,6 +7,7 @@ import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/services/endpoints.dart';
 import 'package:meeting_module2/ui/screens/dashboard_page.dart';
+import 'package:meeting_module2/ui/screens/signin_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BaseController extends GetxController {
@@ -59,11 +60,19 @@ class BaseController extends GetxController {
       id = prefs.getInt('id')!;
     }
 
+    print('$id dddvfvfvd');
+
     if (await prefs.getString('token') == null) {
       print('dd');
     } else {
       token = await prefs.getString('token')!;
     }
+  }
+
+  logOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    Get.offAllNamed(SignInView.route);
   }
 
   token2() async {

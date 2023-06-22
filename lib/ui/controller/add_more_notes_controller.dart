@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:get/get.dart';
+import 'package:meeting_module2/extensions/siecMemberNamefromId.dart';
 import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
@@ -19,7 +20,7 @@ import 'package:vsc_quill_delta_to_html/vsc_quill_delta_to_html.dart';
 
 class AddMoreNotesController extends GetxController with StateMixin {
   RxList<int> notesVisibleToList = <int>[5, 80, 77].obs;
-
+  bool showLoading = false;
   bool addNotes = true;
   // Model
 
@@ -58,7 +59,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     super.onInit();
 
     id = baseController.id;
-
+    print('$id fffff');
     // await meetingId();
     await getNotesOfMeeting();
     await checkUserIsCordinator();
@@ -74,12 +75,32 @@ class AddMoreNotesController extends GetxController with StateMixin {
   getReasonOfNotAttedingsAll(int MeetingId) async {
     var res = await api.reasonOfNotAttendingAll(MeetingId);
     print(res);
+
     var data = List<ReasonOfNotAttendingModel>.from(
         res.map((e) => ReasonOfNotAttendingModel.fromJson(e))).toList();
 
     reasonofNotAtteding = [];
+
+    String nameFromid(id) {
+      var data = Get.find<BaseController>().allSiecMembersList;
+      var name = '';
+
+      AllUserModel hu = data.where((element) => element.id == id).first;
+      name = hu.name!;
+      // data.where((element) {
+      //   print(element);
+      //   if (element.id == id) {
+      //     name = element.name!;
+      //   }
+      // });
+
+      return name;
+    }
+
     for (var i = 0; i < data.length; i++) {
+      var name = await nameFromid(data[i].createdBy);
       reasonofNotAtteding.add(Container(
+        constraints: BoxConstraints(minHeight: 100),
         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
         decoration: BoxDecoration(
             border: Border.all(width: 0.8),
@@ -90,16 +111,21 @@ class AddMoreNotesController extends GetxController with StateMixin {
             children: [
               Align(
                 alignment: AlignmentDirectional.topStart,
-                child: Text("${data[i].reasonOfNotAttended}"),
+                child: CustomAutoSizeTextMontserrat(
+                  text: "${data[i].reasonOfNotAttended}",
+                  fontSize: 14,
+                  textColor: ThemeConstants.bluecolor,
+                ),
               ),
-              // Align(
-              //   alignment: AlignmentDirectional.topStart,
-              //   child: CustomAutoSizeTextMontserrat(
-              //     text: "${widget.dataList![i].createdBy}",
-              //     textColor: ThemeConstants.TextColor,
-              //     fontSize: 12,
-              //   ),
-              // ),
+              Align(
+                alignment: AlignmentDirectional.topStart,
+                child: CustomAutoSizeTextMontserrat(
+                  text: "${name}",
+                  textColor: ThemeConstants.TextColor,
+                  fontSize: 14,
+                ),
+              ),
+
               // InkWell(
               //   onTap: () {
               //     // Get.to(AssignToView(), arguments: widget.dataList![i]);

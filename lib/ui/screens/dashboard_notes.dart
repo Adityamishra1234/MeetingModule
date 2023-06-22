@@ -37,6 +37,7 @@ class _DashboardNotesViewState extends State<DashboardNotesView> {
                         Container(
                           width: MediaQuery.of(context).size.width,
                           child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
                               Padding(
                                 padding:

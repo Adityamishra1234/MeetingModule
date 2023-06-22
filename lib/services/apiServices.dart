@@ -594,7 +594,7 @@ class ApiServices extends BaseServices implements API {
     var url = '${Endpoints.baseUrl}${Endpoints.reasonOfNotAttending}';
     var data = {
       "id": 121,
-      "meeting_id": 2,
+      "meeting_id": meetningID,
       "meeting_notes_id": 0,
       "task_type": "Meeting Notes Task",
       "deadline_date": "2023-04-27",
@@ -603,9 +603,9 @@ class ApiServices extends BaseServices implements API {
       "closed_at": "2023-04-07T09:48:35.000Z",
       "closed_by": 0,
       "meeting_attented": false,
-      "reason_of_not_attended": "ddddswswdddd",
-      "created_by": 105,
-      "updated_by": 105,
+      "reason_of_not_attended": "$reason",
+      "created_by": createdBy,
+      "updated_by": createdBy,
       "created_at": "2023-04-07T09:48:35.000Z",
       "updated_at": "2023-04-07T09:48:35.000Z",
       "notes": "sacdcdcdc88c8dcda"

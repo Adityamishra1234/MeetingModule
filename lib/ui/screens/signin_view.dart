@@ -14,11 +14,24 @@ import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/customtextfield.dart';
 
-class SignInView extends StatelessWidget {
+class SignInView extends StatefulWidget {
   static const route = '/signin';
   SignInView({super.key});
 
+  @override
+  State<SignInView> createState() => _SignInViewState();
+}
+
+class _SignInViewState extends State<SignInView> {
+  @override
+  void dispose() {
+    controller.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   var controllerBase = Get.put(BaseController(), permanent: true);
+
   var controller = Get.put(SigninController());
 
   TextEditingController password = TextEditingController();
@@ -592,7 +605,7 @@ class SignInView extends StatelessWidget {
 
                                 if (res != false) {
                                   controllerBase.user.value = res;
-                                  Get.off(DashBoard());
+                                  Get.offAllNamed(DashBoard.routeNamed);
                                 }
                                 // await download(widget.path);
                                 // await Future.delayed(const Duration(seconds: 5))

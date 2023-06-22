@@ -11,6 +11,7 @@ import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/custom_button.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/customtextfield.dart';
+import 'package:meeting_module2/widget/popups/custom_error_non_changeable.dart';
 import 'package:meeting_module2/widget/popups/custom_error_popup.dart';
 // test
 
@@ -36,6 +37,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
   late bool meetingEnded;
   late AllMeetings meetingData;
   int daata = 1;
+
   // @override
   // void initState() {
   //   controller.getMeetingParticipantsList();
@@ -54,8 +56,6 @@ class _MeetingDetailsState extends State<MeetingDetails> {
 
   @override
   void dispose() {
-    controller.dispose();
-
     // TODO: implement dispose
     super.dispose();
   }
@@ -1018,10 +1018,24 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                               false &&
                                           controller.meetingEndedValue ==
                                               false) {
+                                        print('ddddd');
+
+                                        controller.showLoading = true;
+                                        controller.update();
+                                        //  Future.delayed(
+                                        //         Duration(seconds: 5));
+
                                         await controller.meetingStarted(
                                             meetingData.id!, true);
-                                        print('ddd');
                                         controller.meetingStartedValue = true;
+                                        controller.showLoading = false;
+                                        controller.update();
+                                        // showDialog(
+                                        //     context: context,
+                                        //     builder: (_) => CustomErrorPopup(
+                                        //         text: 'sss',
+                                        //         showLoading: false));
+
                                         controller.update();
                                       } else if (controller
                                                   .meetingStartedValue ==
@@ -1029,10 +1043,21 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                           controller.meetingEndedValue ==
                                               false) {
                                         print('ddddd');
+                                        // showLoading = true;
+                                        // setState(() {});
+                                        controller.showLoading = true;
+                                        // Future.delayed(Duration(seconds: 5));
+                                        controller.update();
                                         await controller.meetingEnded(
                                             meetingData.id!, true);
-
+                                        // controller.showLoading = false;
                                         controller.meetingEndedValue = true;
+                                        controller.showLoading = false;
+                                        // showDialog(
+                                        //     context: context,
+                                        //     builder: (_) => CustomErrorPopup(
+                                        //         text: 'sss',
+                                        //         showLoading: false));
                                         controller.update();
                                         setState(() {});
                                       } else if (controller
@@ -1094,16 +1119,24 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
-                                                  Icon(Icons.meeting_room,
-                                                      size: 30),
-                                                  CustomAutoSizeTextMontserrat(
-                                                    align: TextAlign.center,
-                                                    text: 'Start Meeting',
-                                                    fontSize: 10,
-                                                    fontWeight: FontWeight.w500,
-                                                    textColor: ThemeConstants
-                                                        .TextColor,
-                                                  )
+                                                  if (controller.showLoading ==
+                                                      false) ...[
+                                                    Icon(Icons.meeting_room,
+                                                        size: 30),
+                                                    CustomAutoSizeTextMontserrat(
+                                                      align: TextAlign.center,
+                                                      text: 'Start Meeting',
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      textColor: ThemeConstants
+                                                          .TextColor,
+                                                    )
+                                                  ] else if (controller
+                                                          .showLoading ==
+                                                      true) ...[
+                                                    CircularProgressIndicator()
+                                                  ]
                                                 ],
                                               )
                                             : controller.meetingStartedValue ==
@@ -1116,18 +1149,25 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                         MainAxisAlignment
                                                             .center,
                                                     children: [
-                                                      Icon(Icons.meeting_room,
-                                                          size: 30),
-                                                      CustomAutoSizeTextMontserrat(
-                                                        align: TextAlign.center,
-                                                        text: 'End Meeting',
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        textColor:
-                                                            ThemeConstants
-                                                                .TextColor,
-                                                      )
+                                                      if (controller
+                                                              .showLoading ==
+                                                          false) ...[
+                                                        Icon(Icons.meeting_room,
+                                                            size: 30),
+                                                        CustomAutoSizeTextMontserrat(
+                                                          align:
+                                                              TextAlign.center,
+                                                          text: 'End Meeting',
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          textColor:
+                                                              ThemeConstants
+                                                                  .TextColor,
+                                                        )
+                                                      ] else ...[
+                                                        CircularProgressIndicator()
+                                                      ]
                                                     ],
                                                   )
                                                 : controller.meetingStartedValue ==

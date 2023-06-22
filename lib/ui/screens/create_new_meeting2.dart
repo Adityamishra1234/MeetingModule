@@ -6,7 +6,6 @@ import 'package:meeting_module2/presentation/constants/loading.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/create_new_meeting_controller2.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
-import 'package:meeting_module2/ui/controller/dashboard_notes_controller.dart';
 import 'package:meeting_module2/ui/screens/dashboard_page.dart';
 import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/snackbarconstants.dart';
@@ -30,58 +29,67 @@ class CreateNewMeeting2 extends StatelessWidget {
 
     return Scaffold(
         body: controller.obx(
-            (state) => SafeArea(
-                  child: Container(
-                    padding: EdgeInsets.only(
-                        top: ScreenUtil().statusBarHeight, left: 10, right: 10),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: AlignmentDirectional.topStart,
-                            child: CustomAutoSizeTextMontserrat(
-                              text: "Create \nNew Meeting",
-                              fontSize: 35,
-                              textColor: ThemeConstants.bluecolor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              CustomTabWidget(
-                                title0: "Internal Meeting",
-                                title1: "External Meeting",
-                                callback: (val) {
-                                  if (val == 1) {
-                                    controller.externalMeeting = true;
-                                    controller.update();
-                                  } else {
-                                    controller.externalMeeting = false;
-                                    controller.update();
-                                  }
-                                },
+            (state) => WillPopScope(
+                  onWillPop: () async {
+                    Get.offAllNamed(DashBoard.routeNamed);
+
+                    return Future.value(true);
+                  },
+                  child: SafeArea(
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          top: ScreenUtil().statusBarHeight,
+                          left: 10,
+                          right: 10),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional.topStart,
+                              child: CustomAutoSizeTextMontserrat(
+                                text: "Create \nNew Meeting",
+                                fontSize: 35,
+                                textColor: ThemeConstants.bluecolor,
+                                fontWeight: FontWeight.bold,
                               ),
-                              // TextUnderLine(
-                              //   text1: "Internal",
-                              //   text: "Meetings",
-                              //   textColor: ThemeConstants.firstColor,
-                              //   underlinceColor: ThemeConstants.firstColor,
-                              // ),
-                              // const SizedBox(
-                              //   width: 20,
-                              // ),
-                              // TextUnderLine(
-                              //   text1: "External",
-                              //   text: " Meeting",
-                              //   underlinceColor: Colors.transparent,
-                              // ),
-                            ],
-                          ),
-                          // if (controller.externalMeeting.value)
-                          ...getListInternalmeeting(context, controller),
-                          // if (controller.externalMeeting.value)
-                          //   ...getExternalMeeting(context, controller)
-                        ],
+                            ),
+                            Row(
+                              children: [
+                                CustomTabWidget(
+                                  title0: "Internal Meeting",
+                                  title1: "External Meeting",
+                                  callback: (val) {
+                                    if (val == 1) {
+                                      controller.externalMeeting = true;
+                                      controller.update();
+                                    } else {
+                                      controller.externalMeeting = false;
+                                      controller.update();
+                                    }
+                                  },
+                                ),
+                                // TextUnderLine(
+                                //   text1: "Internal",
+                                //   text: "Meetings",
+                                //   textColor: ThemeConstants.firstColor,
+                                //   underlinceColor: ThemeConstants.firstColor,
+                                // ),
+                                // const SizedBox(
+                                //   width: 20,
+                                // ),
+                                // TextUnderLine(
+                                //   text1: "External",
+                                //   text: " Meeting",
+                                //   underlinceColor: Colors.transparent,
+                                // ),
+                              ],
+                            ),
+                            // if (controller.externalMeeting.value)
+                            ...getListInternalmeeting(context, controller),
+                            // if (controller.externalMeeting.value)
+                            //   ...getExternalMeeting(context, controller)
+                          ],
+                        ),
                       ),
                     ),
                   ),

@@ -62,14 +62,14 @@ class DashBoardController extends GetxController with StateMixin {
     // getNotes('1', null);
   }
 
-  @override
-  void onReady() async {
-    change(null, status: RxStatus.loading());
-    super.onReady();
-    await getMeetingData();
-    print('onReady');
-    change(null, status: RxStatus.success());
-  }
+  // @override
+  // void onReady() async {
+  //   change(null, status: RxStatus.loading());
+  //   super.onReady();
+  //   await getMeetingData();
+  //   print('onReady');
+  //   change(null, status: RxStatus.success());
+  // }
 
   // token() async {
   //   SharedPreferences prefs = await SharedPreferences.getInstance();

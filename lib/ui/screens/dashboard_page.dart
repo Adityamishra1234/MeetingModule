@@ -39,6 +39,7 @@ class _DashBoardState extends State<DashBoard> {
   @override
   void initState() {
     controllerBase.token2();
+    controllerBase.getId();
     // controller.getMeetingData();
 
     // TODO: implement initState
@@ -133,20 +134,40 @@ class _DashBoardState extends State<DashBoard> {
                             Get.to(DashboardNotesView());
                           },
                           child: Container(
-                            width: 50,
+                            width: 45,
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(200),
                                 border: Border.all(
                                     width: 1.5, color: ThemeConstants.yellow),
                                 color: ThemeConstants.lightYellow),
-                            height: 50,
+                            height: 45,
                             child: SvgPicture.asset('assets/images/note.svg'),
                           ),
                         ),
                         SizedBox(
                           width: 20,
-                        )
+                        ),
+                        InkWell(
+                          onTap: () {
+                            controllerBase.logOut();
+                          },
+                          child: Container(
+                            width: 45,
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(200),
+                                border: Border.all(
+                                    width: 1.5,
+                                    color: ThemeConstants.bluecolor),
+                                color: ThemeConstants.lightblueColor),
+                            height: 45,
+                            child: Icon(Icons.logout),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
                       ],
                     ),
                   ),
