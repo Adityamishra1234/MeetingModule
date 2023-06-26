@@ -10,7 +10,7 @@ class SnackBarConstants {
       "Already Registered Please check forget password";
 
   static String? wrongPassword =
-      "Already Registered Please check forget password";
+      "Already Registered Please check forgot password";
 
   static String? errorUserNotFound = "Please Contact HR";
 

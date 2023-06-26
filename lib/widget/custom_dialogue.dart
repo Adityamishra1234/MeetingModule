@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
@@ -10,6 +11,8 @@ import 'package:meeting_module2/widget/custom_date_picker/custom_timer_widget_pi
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/customtextfield.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dart';
+import 'package:meeting_module2/widget/popups/custom_error_non_changeable.dart';
+import 'package:meeting_module2/widget/popups/custom_error_popup.dart';
 
 class ResheduleMeetingDialogue extends StatefulWidget {
   ResheduleMeetingDialogue(
@@ -256,6 +259,8 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                     height: 5,
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                           width: (MediaQuery.of(context).size.width - 40) / 2.5,
@@ -411,7 +416,18 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                   //todo
 
                                   // print(data.toJson());
-                                  widget.controller.resheduleMeeting(data);
+                                  await widget.controller
+                                      .resheduleMeeting(data);
+                                  showAnimatedDialog(
+                                      context: context,
+                                      animationType: DialogTransitionType
+                                          .slideFromBottomFade,
+                                      curve: Curves.easeInOutQuart,
+                                      // barrierDismissible: false,
+
+                                      builder: (_) => showPoPUp(
+                                          'Resehdule Meeting',
+                                          Icon(Icons.check)));
                                 }
                               }),
                           SizedBox(

@@ -569,7 +569,7 @@ class _SignInViewState extends State<SignInView> {
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 5, horizontal: 30),
                                 child: Text(
-                                  "Forget password",
+                                  "Forg\ot password",
                                   style: TextStyle(
                                       color: ThemeConstants.whitecolor),
                                 ),

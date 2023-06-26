@@ -486,23 +486,10 @@ class DashBoardController extends GetxController with StateMixin {
   bool hitResheduleAPI = false;
 
   resheduleMeeting(data) async {
-//     {
-//     "meetingId": 3,
-//     "reasonOfReshedule": "test",
-//     "rescheduleDate": "12/10/2004",
-//     "rescheduleTime": "20:20",
-//     "rescheduleDuration": "20 hours 20 minutes",
-//     "meetingType": "zoom",
-//     "modeOfMeeting": "0" ,
-//     "meetingLink": "test",
-//     "updatedBY": 44
-
-// }
-
     var res = await api.resheduleMeeting(data);
     Get.back();
     //todo
-    Get.defaultDialog();
+
     getMeetingData();
   }
 
@@ -517,7 +504,7 @@ class DashBoardController extends GetxController with StateMixin {
           Get.to(MeetingDetails());
         },
         child: Padding(
-          padding: const EdgeInsets.only(right: 10, top: 10, bottom: 2),
+          padding: const EdgeInsets.only(top: 10, bottom: 2),
           child: Container(
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(

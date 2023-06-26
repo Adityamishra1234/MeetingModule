@@ -9,23 +9,36 @@ class CustomTabWidget extends StatefulWidget {
   final String title1;
   final Function callback;
   final int? defaultIndex;
+  final Function? changeOfIndexFromParent;
 
-  const CustomTabWidget(
+  CustomTabWidget(
       {super.key,
+      this.changeOfIndexFromParent,
       this.defaultIndex,
       required this.title0,
       required this.title1,
       required this.callback});
 
+  static GlobalKey<CustomTabWidgetState> globalKey = GlobalKey();
+
   @override
-  State<CustomTabWidget> createState() => _CustomTabWidgetState();
+  State<CustomTabWidget> createState() => CustomTabWidgetState();
 }
 
-class _CustomTabWidgetState extends State<CustomTabWidget> {
+class CustomTabWidgetState extends State<CustomTabWidget> {
   // List data = CustomTabList.tabData;
   late int indexOfTab;
   int firstTextlength = 0;
   int secondTextlength = 0;
+
+  changeOfIndexFromParent(val) {
+    if (val == 0) {
+      indexOfTab = 1;
+    } else {
+      indexOfTab = 0;
+    }
+    setState(() {});
+  }
 
   @override
   void initState() {

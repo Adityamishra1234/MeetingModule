@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -18,6 +21,7 @@ import 'package:meeting_module2/widget/custom_dialogue.dart';
 import 'package:meeting_module2/widget/custom_tab_widget.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/popups/custom_error_popup.dart';
+import 'package:local_auth/local_auth.dart';
 
 class DashBoard extends StatefulWidget {
   static const routeNamed = '/DashBoard';
@@ -27,7 +31,16 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> {
+  final LocalAuthentication auth = LocalAuthentication();
+  _SupportState _supportState = _SupportState.unknown;
+  bool? _canCheckBiometrics;
+  List<BiometricType>? _availableBiometrics;
+  String _authorized = 'Not Authorized';
+  bool _isAuthenticating = false;
+
   int siecParticipantsLength = 0;
+
+  GlobalKey<CustomTabWidgetState> _childKey = CustomTabWidget.globalKey;
 
   // var controller = Get.put(DashBoardController());
   var controllerBase = Get.find<BaseController>();
@@ -46,6 +59,8 @@ class _DashBoardState extends State<DashBoard> {
   void initState() {
     controllerBase.token2();
     controllerBase.getId();
+
+    _authenticate();
     // controller.getMeetingData();
 
     // TODO: implement initState
@@ -58,6 +73,8 @@ class _DashBoardState extends State<DashBoard> {
     // TODO: implement dispose
     super.dispose();
   }
+
+//
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +96,7 @@ class _DashBoardState extends State<DashBoard> {
       body: controller.obx(
         (state) => SafeArea(
           child: Container(
-            padding: const EdgeInsets.only(top: 5, left: 10),
+            padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               color: Color(0xffffffff),
@@ -93,10 +110,11 @@ class _DashBoardState extends State<DashBoard> {
                     height: 80,
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SizedBox(
-                            width: 70,
-                            height: 70,
+                            width: 60,
+                            height: 60,
                             child: Stack(
                               alignment: Alignment.center,
                               children: [
@@ -106,39 +124,43 @@ class _DashBoardState extends State<DashBoard> {
                                 ),
                                 CircleAvatar(
                                   backgroundColor: ThemeConstants.whitecolor,
-                                  radius: 32,
+                                  radius: 28,
                                 ),
                                 CircleAvatar(
                                   backgroundColor:
                                       ThemeConstants.ultraLightgreyColor,
-                                  radius: 30,
+                                  radius: 25,
+                                  child: Icon(
+                                    Icons.person,
+                                    size: 35,
+                                    color: ThemeConstants.bluecolor,
+                                  ),
                                 ),
                               ],
                             )),
                         Padding(
-                          padding: const EdgeInsets.only(left: 10),
+                          padding: const EdgeInsets.only(left: 20),
                           child: Container(
                             height: 70,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 CustomAutoSizeTextMontserrat(
                                   text: "Hello,",
-                                  fontSize: 18,
+                                  fontSize: 20,
                                 ),
                                 CustomAutoSizeTextMontserrat(
                                   text: "${controller.user.value.name}",
-                                  fontSize: 35,
+                                  fontSize: 30,
                                 ),
                               ],
                             ),
                           ),
                         ),
                         SizedBox(
-                          width: 10,
+                          width: 20,
                         ),
-                        Spacer(),
                         Container(
                           width: 100,
                           child: Row(
@@ -191,18 +213,19 @@ class _DashBoardState extends State<DashBoard> {
                   ),
                   CustomAutoSizeTextMontserrat(
                     text: "Your Meetings",
-                    fontSize: 44,
+                    fontSize: 35,
                     textColor: ThemeConstants.bluecolor,
                     fontWeight: FontWeight.bold,
                   ),
                   const SizedBox(
-                    height: 0,
+                    height: 5,
                   ),
                   Wrap(
                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
                         child: CustomTabWidget(
+                          key: _childKey,
                           title0: "Upcoming",
                           title1: "Done",
                           callback: (val) => {
@@ -339,9 +362,33 @@ class _DashBoardState extends State<DashBoard> {
                   // }
 
                   Expanded(
-                    child: ListView(children: [
-                      ...controller.singleMeetingDetails(context)
-                    ]),
+                    child: GestureDetector(
+                      onHorizontalDragEnd: (details) {
+                        print(controller.indexOfTab);
+                        print(details);
+                        if (controller.indexOfTab == 0) {
+                          controller.showUpcomingList();
+                          controller.update();
+                          controller.indexOfTab = 1;
+                          _childKey.currentState?.changeOfIndexFromParent(1);
+                        } else if (controller.indexOfTab == 1) {
+                          controller.showDoneList();
+                          controller.update();
+                          controller.indexOfTab = 0;
+                          _childKey.currentState?.changeOfIndexFromParent(0);
+                        }
+                        // if (controller.indexOfTab == 0) {
+                        //   controller.indexOfTab == 1;
+                        // } else {
+                        //   controller.indexOfTab == 0;
+                        // }
+                        // print(controller.indexOfTab);
+                        // controller.update();
+                      },
+                      child: ListView(children: [
+                        ...controller.singleMeetingDetails(context)
+                      ]),
+                    ),
                   ),
 
                   SizedBox(
@@ -933,6 +980,43 @@ class _DashBoardState extends State<DashBoard> {
   //         return singleMeetingDetails(context, index);
   //       });
   // }
+
+  Future<void> _authenticate() async {
+    bool authenticated = false;
+    try {
+      setState(() {
+        _isAuthenticating = true;
+        _authorized = 'Authenticating';
+      });
+      authenticated = await auth.authenticate(
+        localizedReason: 'Let OS determine authentication method',
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+        ),
+      );
+      setState(() {
+        _isAuthenticating = false;
+      });
+    } on PlatformException catch (e) {
+      print(e);
+      setState(() {
+        _isAuthenticating = false;
+        _authorized = 'Error - ${e.message}';
+      });
+      return;
+    }
+    if (!mounted) {
+      return;
+    }
+
+    setState(() => _authorized = authenticated ? 'Authorized' : exit(0));
+  }
+}
+
+enum _SupportState {
+  unknown,
+  supported,
+  unsupported,
 }
 
 class DashboardMeetings extends StatelessWidget {

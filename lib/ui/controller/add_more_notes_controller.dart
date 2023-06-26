@@ -197,7 +197,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     notesList = await data;
 
     if (notesList.length == 0) {
-      documentlist.add(CustomNoDataWidget(text: 'No Notes Availabe'));
+      documentlist.add(CustomNoDataWidget(text: 'No Notes Available'));
       return false;
     }
 
