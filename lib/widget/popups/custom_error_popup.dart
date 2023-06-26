@@ -8,7 +8,7 @@ showPoPUp(String text, Icon icon) {
         constraints: BoxConstraints(minHeight: 100),
         width: 350,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
@@ -27,6 +27,9 @@ showPoPUp(String text, Icon icon) {
                   ),
                 ),
               ),
+            ),
+            SizedBox(
+              height: 5,
             ),
             Center(
               child: Text(

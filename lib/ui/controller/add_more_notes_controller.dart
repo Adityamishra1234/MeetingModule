@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:meeting_module2/extensions/siecMemberNamefromId.dart';
 import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
@@ -14,6 +16,7 @@ import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customExpansionTile.dart';
+import 'package:meeting_module2/widget/custom_no_data_widget.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vsc_quill_delta_to_html/vsc_quill_delta_to_html.dart';
@@ -97,6 +100,13 @@ class AddMoreNotesController extends GetxController with StateMixin {
       return name;
     }
 
+    if (data.length == 0) {
+      reasonofNotAtteding.add(
+          CustomNoDataWidget(text: 'No Reason of Not attending Available'));
+
+      return false;
+    }
+
     for (var i = 0; i < data.length; i++) {
       var name = await nameFromid(data[i].createdBy);
       reasonofNotAtteding.add(Container(
@@ -161,7 +171,8 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
   List<FindNotesModel> notesList = <FindNotesModel>[];
   List<Widget> documentlist = [];
-
+  List notesTypeToShowInDropDown = [];
+  String selectedDropDown = '';
   reasonOfNoteAttedning() {}
 
   getNotesOfMeeting() async {
@@ -182,10 +193,13 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
     var data =
         List<FindNotesModel>.from(res.map((x) => FindNotesModel.fromJson(x)));
+
     notesList = await data;
 
-/////
-    ///
+    if (notesList.length == 0) {
+      documentlist.add(CustomNoDataWidget(text: 'No Notes Availabe'));
+      return false;
+    }
 
     List notesType = [];
     List notesTypeString = [];
@@ -210,34 +224,42 @@ class AddMoreNotesController extends GetxController with StateMixin {
       notesTypeString.add(res);
     }
 
+    notesTypeToShowInDropDown.addAll(notesTypeString);
+    // print(notesTypeToShowInDropDown);
+
     List<Map<String, List<FindNotesModel>>> list = [];
     for (var i = 0; i < notesType.length; i++) {
       list.add({notesTypeString[i]: []});
     }
 
-    for (var i = 0; i < notesList.length; i++) {
-      for (var j = 0; j < notesTypeString.length; j++) {
-        if (list[j].entries.first.key ==
-            getNoteTypefromId(notesList[i].noteType!)) {
-          list[j].entries.first.value.add(notesList[i]);
-        }
-      }
-
-      // if(  notesList[i].noteType )
-      // list.add({[]: })
+    if (notesTypeString.length > 0) {
+      selectedDropDown = notesTypeString[0];
     }
+    showThisNote();
 
-    List<Widget> beta = [];
-    for (var i = 0; i < list.length; i++) {
-      beta.add(CustomExpansionPlanList(
-        titel: list[i].keys.first,
-        dataList: list[i].values.first,
-      ));
-      // documentlist.addAll(list[i].entries.first.value);
-    }
-    documentlist = [];
-    documentlist = beta;
-    print(documentlist.length);
+    // for (var i = 0; i < notesList.length; i++) {
+    //   for (var j = 0; j < notesTypeString.length; j++) {
+    //     if (list[j].entries.first.key ==
+    //         getNoteTypefromId(notesList[i].noteType!)) {
+    //       list[j].entries.first.value.add(notesList[i]);
+    //     }
+    //   }
+
+    //   // if(  notesList[i].noteType )
+    //   // list.add({[]: })
+    // }
+
+    // List<Widget> beta = [];
+    // for (var i = 0; i < list.length; i++) {
+    //   beta.add(CustomExpansionPlanList(
+    //     titel: list[i].keys.first,
+    //     dataList: list[i].values.first,
+    //   ));
+    //   // documentlist.addAll(list[i].entries.first.value);
+    // }
+    // documentlist = [];
+    // documentlist = beta;
+    // print(documentlist.length);
 
     update();
 
@@ -315,6 +337,74 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
     // offlineMarketingNotesList =
     //     await notesList.value.where((e) => e.noteType == 8).toList();
+  }
+
+  showThisNote() {
+    List<Widget> beta = [];
+    for (var i = 0; i < notesList.length; i++) {
+      if (selectedDropDown == getNoteTypefromId(notesList[i].noteType!)) {
+        beta.add(Container(
+          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+          // width: MediaQuery.of(context).size.width - 30,
+          decoration: BoxDecoration(
+              border: Border.all(), borderRadius: BorderRadius.circular(20.0)),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              children: [
+                Align(
+                  alignment: AlignmentDirectional.topStart,
+                  child: HtmlWidget(
+                    "${notesList[i].note}",
+                    textStyle: GoogleFonts.montserrat(
+                      fontWeight: FontWeight.w500,
+                      color: ThemeConstants.TextColor,
+                      fontSize: 14.0,
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: AlignmentDirectional.topStart,
+                  child: CustomAutoSizeTextMontserrat(
+                    text: "${notesList[i].createdAt}",
+                    textColor: ThemeConstants.TextColor,
+                    fontSize: 12,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    // Get.to(AssignToView(), arguments: widget.dataList![i]);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Align(
+                      alignment: AlignmentDirectional.topEnd,
+                      child: Container(
+                        height: 30,
+                        width: 120,
+                        decoration: BoxDecoration(
+                            color: ThemeConstants.bluecolor,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(30.0))),
+                        child: Center(
+                          child: CustomAutoSizeTextMontserrat(
+                            text: "Assign to",
+                            textColor: ThemeConstants.whitecolor,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ));
+      }
+    }
+    documentlist = [];
+    documentlist = beta;
   }
 
   addNote(int meetingID) async {
@@ -472,13 +562,13 @@ class AddMoreNotesController extends GetxController with StateMixin {
   meetingStarted(int meetingId, bool val) async {
     // SharedPreferences prefs = await SharedPreferences.getInstance();
     // var id = await prefs.getInt('id');
-    var controllerDashboard = Get.find<DashBoardController>();
+    // var controllerDashboard = Get.find<DashBoardController>();
 
-    AllMeetings meetingData = controllerDashboard.selectedMeetingdata.value;
+    AllMeetings meetingData = baseController.selectedMeetingData;
     var res = await api.meetingStartedOrEnded(meetingId, id, 0, val);
     // meetingData.meetingStarted = val;
 
-    await controllerDashboard.getMeetingData();
+    // await controllerDashboard.getMeetingData();
     // await Get.find<DashBoardController>().getsss();
     update();
   }
@@ -486,12 +576,11 @@ class AddMoreNotesController extends GetxController with StateMixin {
   meetingEnded(int meetingId, bool val) async {
     // SharedPreferences prefs = await SharedPreferences.getInstance();
     // var id = await prefs.getInt('id');
-    var controllerDashboard = Get.find<DashBoardController>();
 
-    AllMeetings meetingData = controllerDashboard.selectedMeetingdata.value;
+    var controllerDashboard = Get.find<DashBoardController>();
     var res = await api.meetingStartedOrEnded(meetingId, id, 1, val);
     // meetingData.meetingEnded = val;
-    await controllerDashboard.getMeetingData();
+
     // controllerDashboard.indexOfTab.value =
     //     controllerDashboard.indexOfTab.value == 0 ? 1 : 0;
     controllerDashboard.update();

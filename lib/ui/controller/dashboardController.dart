@@ -54,6 +54,7 @@ class DashBoardController extends GetxController with StateMixin {
     // await Future.delayed(Duration(seconds: 5));
     // RxStatus.loading();5
     super.onInit();
+
     // print('fff');
     // await token();
     // helo.value = 2;

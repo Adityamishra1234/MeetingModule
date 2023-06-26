@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meeting_module2/ui/screens/dashboard_page.dart';
 import 'package:meeting_module2/utils/snackbarconstants.dart';
+import 'package:meeting_module2/widget/backgroundLogin.dart';
 import 'package:nice_loading_button/nice_loading_button.dart';
 
 import 'package:get/get.dart';
@@ -62,44 +63,55 @@ class _SignInViewState extends State<SignInView> {
                               topRight: Radius.circular(180),
                             )),
                       )),
-                  SingleChildScrollView(
+                  BackgroundAuthView(),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                    height: MediaQuery.of(context).size.height,
+
+                    alignment: Alignment.bottomCenter,
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     child: Container(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(215, 5, 38, 129),
+                          borderRadius: BorderRadius.circular(20)),
                       child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         // crossAxisAlignment: CrossAxisAlignment.center,
-                        // mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          SizedBox(
-                              height: 150,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  CustomAutoSizeTextMontserrat(
-                                    text: 'Welcome!',
-                                    fontSize: 30,
-                                  ),
-                                  CustomAutoSizeTextMontserrat(
-                                    text: "Lets's Sign you in",
-                                    fontSize: 20,
-                                  )
-                                ],
-                              )),
-                          SizedBox(
-                            height: 0,
-                          ),
-                          SizedBox(
-                              width: 350,
-                              height: 350,
-                              child:
-                                  Image.asset('assets/images/Login-Image.png')),
+                          // SizedBox(
+                          //     height: 150,
+                          //     child: Column(
+                          //       mainAxisAlignment: MainAxisAlignment.end,
+                          //       children: [
+                          //         CustomAutoSizeTextMontserrat(
+                          //           text: 'Welcome!',
+                          //           fontSize: 30,
+                          //         ),
+                          //         CustomAutoSizeTextMontserrat(
+                          //           text: "Lets's Sign you in",
+                          //           fontSize: 20,
+                          //         )
+                          //       ],
+                          //     )),
+                          // SizedBox(
+                          //   height: 0,
+                          // ),
+                          // SizedBox(
+                          //     width: 350,
+                          //     height: 350,
+                          //     child:
+                          //         Image.asset('assets/images/Login-Image.png')),
                           Padding(
-                            padding: const EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.symmetric(vertical: 20),
                             child: CustomAutoSizeTextMontserrat(
                               text: 'Sign In',
+                              textColor: ThemeConstants.whitecolor,
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
                             child: CustomTextField(
                                 hint: "Enter your office email",
                                 validator: Validator.email,
@@ -107,7 +119,8 @@ class _SignInViewState extends State<SignInView> {
                                 controller: emailController),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
                             child: CustomTextField(
                                 hint: "Enter your password",
                                 backgroundCOlour: ThemeConstants.whitecolor,
@@ -175,11 +188,12 @@ class _SignInViewState extends State<SignInView> {
                                                         width: 40,
                                                         height: 40,
                                                         child:
-                                                            const CircularProgressIndicator(
+                                                            CircularProgressIndicator(
                                                           valueColor:
                                                               AlwaysStoppedAnimation<
                                                                       Color>(
-                                                                  Colors.white),
+                                                                  ThemeConstants
+                                                                      .bluecolor),
                                                         ),
                                                       ),
                                                       child:
@@ -325,11 +339,12 @@ class _SignInViewState extends State<SignInView> {
                                                         width: 40,
                                                         height: 40,
                                                         child:
-                                                            const CircularProgressIndicator(
+                                                            CircularProgressIndicator(
                                                           valueColor:
                                                               AlwaysStoppedAnimation<
                                                                       Color>(
-                                                                  Colors.white),
+                                                                  ThemeConstants
+                                                                      .bluecolor),
                                                         ),
                                                       ),
                                                       child:
@@ -446,11 +461,12 @@ class _SignInViewState extends State<SignInView> {
                                                       width: 40,
                                                       height: 40,
                                                       child:
-                                                          const CircularProgressIndicator(
+                                                          CircularProgressIndicator(
                                                         valueColor:
                                                             AlwaysStoppedAnimation<
                                                                     Color>(
-                                                                Colors.white),
+                                                                ThemeConstants
+                                                                    .bluecolor),
                                                       ),
                                                     ),
                                                     child:
@@ -550,17 +566,18 @@ class _SignInViewState extends State<SignInView> {
                               alignment: Alignment.centerRight,
                               width: double.infinity,
                               child: Padding(
-                                padding: const EdgeInsets.all(10.0),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 30),
                                 child: Text(
                                   "Forget password",
                                   style: TextStyle(
-                                      color: ThemeConstants.bluecolor),
+                                      color: ThemeConstants.whitecolor),
                                 ),
                               ),
                             ),
                           ),
                           const SizedBox(
-                            height: 5,
+                            height: 15,
                           ),
                           // InkWell(
                           //   onTap: () async {
@@ -579,20 +596,20 @@ class _SignInViewState extends State<SignInView> {
                             height: 35,
                             borderRadius: 8,
                             animate: true,
-                            color: ThemeConstants.bluecolor,
+                            color: ThemeConstants.lightVioletColor,
                             width: MediaQuery.of(context).size.width * 0.44,
                             loader: Container(
                               padding: const EdgeInsets.all(10),
                               width: 40,
                               height: 40,
-                              child: const CircularProgressIndicator(
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    ThemeConstants.bluecolor),
                               ),
                             ),
                             child: CustomAutoSizeTextMontserrat(
                               text: 'Sign in',
-                              textColor: ThemeConstants.whitecolor,
+                              textColor: ThemeConstants.blackcolor,
                             ),
                             onTap:
                                 (startLoading, stopLoading, buttonState) async {
@@ -631,7 +648,7 @@ class _SignInViewState extends State<SignInView> {
                           // ),
 
                           const SizedBox(
-                            height: 15,
+                            height: 5,
                           ),
                           GestureDetector(
                             onTap: () {
@@ -646,10 +663,13 @@ class _SignInViewState extends State<SignInView> {
                                 child: Text(
                                   "Not registered? Click here",
                                   style: TextStyle(
-                                      color: ThemeConstants.bluecolor),
+                                      color: ThemeConstants.lightVioletColor),
                                 ),
                               ),
                             ),
+                          ),
+                          const SizedBox(
+                            height: 15,
                           ),
                         ],
                       ),

@@ -9,6 +9,7 @@ import 'package:meeting_module2/ui/screens/assign_to_view.dart';
 import 'package:meeting_module2/ui/screens/assign_to_view_dasboard.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
 import 'package:meeting_module2/utils/theme.dart';
+import 'package:meeting_module2/widget/custom_no_data_widget.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -47,6 +48,11 @@ class DashboardNotesController extends GetxController with StateMixin {
         data2.map((e) => FindNotesModel.fromJson(e)));
 
     print(data);
+
+    if (data.length == 0) {
+      toshow.add(CustomNoDataWidget(text: 'No Notes Available'));
+      return;
+    }
 
     for (var i = 0; i < data.length; i++) {
       String note2 = await getNoteTypefromId(data[i].noteType!);

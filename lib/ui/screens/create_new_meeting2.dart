@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/presentation/constants/loading.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
@@ -1349,6 +1350,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                     field: Container(
                       height: 22,
                       child: CustomTextField(
+                        readOrEdit: true,
                         forDropDown: false,
                         backgroundCOlour: Colors.transparent,
                         hint: '',

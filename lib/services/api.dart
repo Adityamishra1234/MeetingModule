@@ -40,7 +40,15 @@ abstract class API {
 
   login({required String email, required String password});
 
+  getOTP(String email);
+
   resheduleMeeting(data);
+
+  getEmailverification(String email);
+
+  otpMatch(String email, String otp);
+
+  password(String email, String password);
 
   meetingStartedOrEnded(int meetingId, int userId, int type, bool val);
 

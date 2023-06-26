@@ -6,6 +6,7 @@ import 'package:meeting_module2/ui/controller/add_more_notes_controller.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/add_more_notes.dart';
+import 'package:meeting_module2/ui/screens/dashboard_page.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/custom_button.dart';
@@ -67,6 +68,12 @@ class _MeetingDetailsState extends State<MeetingDetails> {
       backgroundColor: ThemeConstants.lightVioletColor,
       body: controller.obx(
           (state) => SafeArea(
+                  child: WillPopScope(
+                onWillPop: () async {
+                  Get.offAllNamed(DashBoard.routeNamed);
+
+                  return Future.value(true);
+                },
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1664,7 +1671,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                     ],
                   ),
                 ),
-              ),
+              )),
           onLoading: getLoading(context)),
     );
   }

@@ -275,6 +275,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+        smartManagement: SmartManagement.keepFactory,
         debugShowCheckedModeBanner: false,
         initialRoute: SignInView.route,
         getPages: [

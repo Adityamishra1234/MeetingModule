@@ -27,18 +27,22 @@ class AddMoreNotesView extends StatefulWidget {
 
 class _AddMoreNotesViewState extends State<AddMoreNotesView> {
   bool _isTextFieldFocused = false;
+  dynamic argumentData = Get.arguments;
   final _focusNode = FocusNode();
-
+  var controller = Get.put(AddMoreNotesController());
   @override
   void initState() {
     super.initState();
+    if (argumentData[1] == 0) {
+      controller.addNotes = true;
+    } else {
+      controller.addNotes = false;
+    }
   }
 
   // TextEditingController fff = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    dynamic argumentData = Get.arguments;
-    var controller = Get.put(AddMoreNotesController());
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 247, 249, 255),
         body: controller.obx(
@@ -63,17 +67,18 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                               height: 10,
                             ),
                             CustomTabWidget(
-                                defaultIndex: argumentData[1],
-                                title0: 'Add Notes',
-                                title1: 'Add Files',
-                                callback: (e) {
-                                  if (e == 0) {
-                                    controller.addNotes = true;
-                                  } else {
-                                    controller.addNotes = false;
-                                  }
-                                  controller.update();
-                                }),
+                              defaultIndex: argumentData[1],
+                              title0: 'Add Notes',
+                              title1: 'Add Files',
+                              callback: (e) {
+                                if (e == 0) {
+                                  controller.addNotes = true;
+                                } else {
+                                  controller.addNotes = false;
+                                }
+                                controller.update();
+                              },
+                            ),
 
                             if (controller.addNotes == true) ...[
                               Padding(

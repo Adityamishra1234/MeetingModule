@@ -14,7 +14,7 @@ import 'package:meeting_module2/utils/theme.dart';
 
 class ApiServices extends BaseServices implements API {
 /////Auth APIS
-
+  @override
   getEmailverification(String email) async {
     var url =
         '${Endpoints.baseUrl}${Endpoints.emailverification + "/${email}"}';
@@ -25,6 +25,7 @@ class ApiServices extends BaseServices implements API {
     }
   }
 
+  @override
   getOTP(String email) async {
     var url = '${Endpoints.baseUrl}${Endpoints.otp + "/${email}"}';
     var res2 = await httpPostNullBody(url);
@@ -34,6 +35,7 @@ class ApiServices extends BaseServices implements API {
     }
   }
 
+  @override
   otpMatch(String email, String otp) async {
     var url =
         '${Endpoints.baseUrl}${Endpoints.otpMatch + "/${email}" + "/${otp}"}';
@@ -44,6 +46,7 @@ class ApiServices extends BaseServices implements API {
     }
   }
 
+  @override
   password(String email, String password) async {
     var url = '${Endpoints.baseUrl}${Endpoints.passwordUpdate}';
     var data = {"email": "${email}", "password": '$password'};

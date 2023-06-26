@@ -30,6 +30,7 @@ class _CustomTabWidgetState extends State<CustomTabWidget> {
   @override
   void initState() {
     indexOfTab = widget.defaultIndex ?? 0;
+    // widget.callback(widget.defaultIndex);
     final Size txtSize = _textSize(
       widget.title0,
       TextStyle(
@@ -45,6 +46,7 @@ class _CustomTabWidgetState extends State<CustomTabWidget> {
     );
     firstTextlength = txtSize.width.toInt();
     secondTextlength = txtSize2.width.toInt();
+
     print(firstTextlength);
   }
 
