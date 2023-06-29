@@ -360,7 +360,9 @@ class _DashBoardState extends State<DashBoard> {
                   //       );
                   //
                   // }
-
+                  SizedBox(
+                    height: 15,
+                  ),
                   Expanded(
                     child: GestureDetector(
                       onHorizontalDragEnd: (details) {

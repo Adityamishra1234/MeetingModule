@@ -504,7 +504,7 @@ class DashBoardController extends GetxController with StateMixin {
           Get.to(MeetingDetails());
         },
         child: Padding(
-          padding: const EdgeInsets.only(top: 10, bottom: 2),
+          padding: const EdgeInsets.only(bottom: 12),
           child: Container(
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(

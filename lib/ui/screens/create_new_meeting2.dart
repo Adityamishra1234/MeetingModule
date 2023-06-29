@@ -84,6 +84,10 @@ class CreateNewMeeting2 extends StatelessWidget {
                               // ),
                             ],
                           ),
+                          SizedBox(
+                            height: 10,
+                          ),
+
                           // if (controller.externalMeeting.value)
                           Expanded(
                               child: ListView(
@@ -997,20 +1001,19 @@ class CreateNewMeeting2 extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 0),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 9, horizontal: 0),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: ThemeConstants.bluecolor, width: 1),
-                          color: ThemeConstants.lightVioletColor,
-                          borderRadius: BorderRadius.circular(500)),
-                      width: double.infinity,
-                      height: 40,
-                      child: CustomAutoSizeTextMontserrat(
-                          text:
-                              '${controller.participantData.value.personName}'),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 9, horizontal: 10),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: ThemeConstants.bluecolor, width: 1),
+                        color: ThemeConstants.lightVioletColor,
+                        borderRadius: BorderRadius.circular(500)),
+                    width: double.infinity,
+                    height: 40,
+                    child: CustomAutoSizeTextMontserrat(
+                      text: '${controller.participantData.value.personName}',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   SizedBox(

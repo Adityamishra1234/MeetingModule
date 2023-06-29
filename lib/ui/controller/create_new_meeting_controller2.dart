@@ -530,6 +530,15 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
   }
 
   createExternalNewMeeting() async {
+    if (listOfParticipants.length < 1) {
+      Get.defaultDialog(
+          content: Container(
+        child: Text('Please add atleast one participant'),
+      ));
+
+      return true;
+    }
+
     meetingModel.value.meetingType = 'External Meeting';
 
     meetingModel.value.meetingWith = meetingWith.value == 'University Meetings'
