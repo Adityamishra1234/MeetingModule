@@ -1515,6 +1515,18 @@ class CreateNewMeeting2 extends StatelessWidget {
               ),
 
               CustomMultiDownSingleAllUser(
+                  field: Container(
+                    height: 22,
+                    child: CustomTextField(
+                      forDropDown: false,
+                      backgroundCOlour: Colors.transparent,
+                      hint: '',
+                      controller: TextEditingController(),
+                      validator: controller.selectedCoordinatorList.length == 0
+                          ? Validator.plzSelectOne
+                          : null,
+                    ),
+                  ),
                   model: Get.find<BaseController>().allSiecMembersList,
                   initialSelectedValue: '',
 

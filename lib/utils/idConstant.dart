@@ -18,6 +18,8 @@ getNoteTypeId(String noteType) {
       return 8;
     case 'Offline Marketing Notes':
       return 9;
+    case 'Confidential Notes':
+      return 10;
     default:
       return -1; // Return -1 if noteType is not recognized
   }
@@ -43,6 +45,8 @@ getNoteTypefromId(int noteType) {
       return 'University Notes';
     case 9:
       return 'Offline Marketing Notes';
+    case 10:
+      return 'Confidential Notes';
     default:
       return -1; // Return -1 if noteType is not recognized
   }

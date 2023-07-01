@@ -69,4 +69,10 @@ class Endpoints {
   static String reasonOfNotAttendingAll = 'reasonOfNotAttending';
 
   static String reasonOfNotAttending = 'reasonOfNotAttendingUpdate';
+
+  static String findUniversityCountryByMeetingId =
+      'findUniversityCountryByMeetingId';
+  static String encrypt = 'encryptionAPI2';
+
+  static String decrypt = 'decryptionAPI2';
 }

@@ -51,6 +51,8 @@ class AddMoreNotesController extends GetxController with StateMixin {
   RxList<AllUserModel> accessibileUserSelected_meetingDetail =
       RxList<AllUserModel>();
 
+  Rx<TextEditingController> passwordController = TextEditingController().obs;
+
   late bool meetingStartedValue;
   late bool meetingEndedValue;
 
@@ -68,11 +70,31 @@ class AddMoreNotesController extends GetxController with StateMixin {
     await checkUserIsCordinator();
     await getMeetingParticipantsList();
     await getReasonOfNotAttedingsAll(baseController.selectedMeetingData.id!);
-
+    getMeetingCountryAndUniversity();
     meetingStartedValue = baseController.selectedMeetingData.meetingStarted!;
     meetingEndedValue = baseController.selectedMeetingData.meetingEnded!;
     change(null, status: RxStatus.success());
   }
+
+  int meetingUniversityID = 0;
+  var meetingCountryID = 0;
+
+  getMeetingCountryAndUniversity() async {
+    if (baseController.selectedMeetingData.meetingWith == 'university') {
+      var res = await api.findUniversityCountryByMeetingId(
+          baseController.selectedMeetingData.id);
+
+      meetingCountryID = res['country'];
+      meetingUniversityID = res['university'];
+
+      print('${res} dddddd  ddd');
+    }
+  }
+
+  // showPublishButton() {
+
+  //   if( MEE  )
+  // }
 
   List<Widget> reasonofNotAtteding = [];
   getReasonOfNotAttedingsAll(int MeetingId) async {
@@ -339,6 +361,21 @@ class AddMoreNotesController extends GetxController with StateMixin {
     //     await notesList.value.where((e) => e.noteType == 8).toList();
   }
 
+  bool showPublish(FindNotesModel note) {
+    if (getNoteTypefromId(note.noteType!) == 'Training Note') {
+      return true;
+
+      // switch (id) {
+      //   case :
+
+      //     break;
+      //   default:
+      // }
+    } else {
+      return false;
+    }
+  }
+
   showThisNote() {
     List<Widget> beta = [];
     for (var i = 0; i < notesList.length; i++) {
@@ -371,6 +408,35 @@ class AddMoreNotesController extends GetxController with StateMixin {
                     fontSize: 12,
                   ),
                 ),
+                Visibility(
+                  visible: showPublish(notesList[i]),
+                  child: InkWell(
+                    onTap: () {
+                      // Get.to(AssignToView(), arguments: widget.dataList![i]);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Align(
+                        alignment: AlignmentDirectional.topEnd,
+                        child: Container(
+                          height: 30,
+                          width: 120,
+                          decoration: BoxDecoration(
+                              color: ThemeConstants.GreenColor,
+                              borderRadius: const BorderRadius.all(
+                                  Radius.circular(30.0))),
+                          child: Center(
+                            child: CustomAutoSizeTextMontserrat(
+                              text: "Publish",
+                              textColor: ThemeConstants.whitecolor,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
                 InkWell(
                   onTap: () {
                     // Get.to(AssignToView(), arguments: widget.dataList![i]);
@@ -396,7 +462,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -420,6 +486,19 @@ class AddMoreNotesController extends GetxController with StateMixin {
     // //     "ddd", notesVisibleToList.value);
 
     // var res = await api.addNotes(model.value);
+  }
+
+  var encryptedNote = '';
+  encryptNote(password) async {
+    var data = await noteText.document.toDelta();
+    print(data);
+
+    // var html = '';
+
+    var hello = await quillDeltaToHtml(data);
+    var res = await api.encryptNote(hello, password);
+    encryptedNote = res;
+    update();
   }
 
   saveAndNext(int metingID, quill.QuillController contro) async {

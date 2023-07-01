@@ -65,4 +65,8 @@ abstract class API {
   reasonOfNotAttending(int meetningID, int createdBy, String reason);
 
   reasonOfNotAttendingAll(int meetningID);
+
+  findUniversityCountryByMeetingId(meetningID);
+
+  encryptNote(note, password);
 }

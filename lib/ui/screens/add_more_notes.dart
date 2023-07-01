@@ -14,6 +14,7 @@ import 'package:meeting_module2/utils/snackbarconstants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/custom_tab_widget.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
+import 'package:meeting_module2/widget/customtextfield.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsers.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dart';
 
@@ -98,6 +99,9 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                                   controller.noteTypeSelectedID.value =
                                       getNoteTypeId(value);
                                   controller.noteTypeSelected.value = value;
+
+                                  controller.update();
+                                  print(getNoteTypeId(value));
                                 },
                                 model: const [
                                   "Meeting Notes",
@@ -108,12 +112,14 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                                   "Training Notes",
                                   "Requirements",
                                   "University Notes",
-                                  "Offline Marketing Notes"
+                                  "Offline Marketing Notes",
+                                  "Confidential Notes"
                                 ],
                                 initialSelectedValue:
                                     "${controller.noteTypeSelected}",
                                 enableMultiSelect: false,
                               ),
+
                               // CustomTextField(
                               //   hint: "",
                               //   controller: fff,
@@ -258,6 +264,124 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                               const SizedBox(
                                 height: 10,
                               ),
+
+                              if (controller.noteTypeSelectedID.value ==
+                                  10) ...[
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  child: CustomTextField(
+                                      backgroundCOlour:
+                                          ThemeConstants.whitecolor,
+                                      hint: 'Note Password',
+                                      controller:
+                                          controller.passwordController.value),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                InkWell(
+                                  onTap: () async {
+                                    var data = await controller.noteText
+                                        .getPlainText();
+                                    print(controller.noteText.document
+                                        .toDelta()
+                                        .toString());
+                                    if (controller.noteTypeSelected ==
+                                        "Select Add notes for") {
+                                      getToast(SnackBarConstants.notestype!);
+                                    } else if (controller.noteText.document
+                                            .toDelta()
+                                            .toString() ==
+                                        "insert⟨ ⏎ ⟩") {
+                                      getToast(
+                                          SnackBarConstants.noteTextField!);
+                                    } else {
+                                      controller.encryptNote(controller
+                                          .passwordController.value.text);
+                                      // controller.saveAndNext(
+                                      //     argumentData[0], controller.noteText);
+                                    }
+                                  },
+                                  child: Container(
+                                    // color: ThemeConstants.bluecolor,
+                                    decoration: BoxDecoration(
+                                        color: ThemeConstants.bluecolor,
+                                        borderRadius:
+                                            BorderRadius.circular(500)),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 12),
+                                    child: Text(
+                                      'Encrypt Note',
+                                      style: TextStyle(
+                                          color: ThemeConstants.whitecolor),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 15),
+                                  child: CustomAutoSizeTextMontserrat(
+                                    text: "Encrypted Note",
+                                    fontSize: 30,
+                                    textColor: ThemeConstants.bluecolor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: SizedBox(
+                                    child: Container(
+                                      padding: const EdgeInsets.all(15),
+                                      width: double.infinity,
+                                      constraints:
+                                          BoxConstraints(minHeight: 150),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                            color: const Color(0xff1940b3)),
+                                      ),
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              '${controller.encryptedNote}',
+                                            ),
+                                            // InkWell(
+                                            //   onTap: () {},
+                                            //   child: Container(
+                                            //     width: double.infinity,
+                                            //     alignment: Alignment.centerRight,
+                                            //     child: Container(
+                                            //       width: 120,
+                                            //       // color: ThemeConstants.bluecolor,
+                                            //       decoration: BoxDecoration(
+                                            //           color: ThemeConstants.bluecolor,
+                                            //           borderRadius: BorderRadius.circular(500)),
+                                            //       padding: const EdgeInsets.symmetric(
+                                            //           horizontal: 20, vertical: 12),
+                                            //       child: Text(
+                                            //         'Assign to',
+                                            //         style: TextStyle(color: ThemeConstants.whitecolor),
+                                            //       ),
+                                            //     ),
+                                            //   ),
+                                            // ),
+                                          ]),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                              SizedBox(
+                                height: 10,
+                              ),
+                              // if (controller.noteTypeSelectedID.value != 10)
                               InkWell(
                                 onTap: () async {
                                   var data =

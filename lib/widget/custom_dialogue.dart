@@ -426,8 +426,12 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                       // barrierDismissible: false,
 
                                       builder: (_) => showPoPUp(
-                                          'Resehdule Meeting',
-                                          Icon(Icons.check)));
+                                          'Reschedule Meeting',
+                                          Icon(
+                                            Icons.check_box_rounded,
+                                            size: 45,
+                                            color: ThemeConstants.GreenColor,
+                                          )));
                                 }
                               }),
                           SizedBox(

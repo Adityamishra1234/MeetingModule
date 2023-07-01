@@ -636,4 +636,40 @@ class ApiServices extends BaseServices implements API {
 
     print(res);
   }
+
+  @override
+  findUniversityCountryByMeetingId(meetningID) async {
+    try {
+      var url =
+          '${Endpoints.baseUrl}${Endpoints.findUniversityCountryByMeetingId}';
+      var data = {"meeting_id": meetningID};
+
+      var data2 = json.encode(data);
+
+      var res = await httpPostHeader(url, data2);
+      print(res);
+      return res['model'];
+    } catch (e) {
+      throw UnimplementedError();
+    }
+    // TODO: implement findUniversityCountryByMeetingId
+  }
+
+  @override
+  encryptNote(note, password) async {
+    // TODO: implement encryptNote
+    try {
+      var url = '${Endpoints.baseUrl}${Endpoints.encrypt}';
+      var data = {"password": password, "text": note};
+
+      var data2 = json.encode(data);
+
+      var res = await httpPostHeader(url, data2);
+      print(res);
+      print(res['temp']['encryptedText']);
+      return res['temp']['encryptedText'];
+    } catch (e) {
+      throw UnimplementedError();
+    }
+  }
 }
