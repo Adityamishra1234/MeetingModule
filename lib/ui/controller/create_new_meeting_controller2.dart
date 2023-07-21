@@ -30,7 +30,9 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     // inItGetRepresentative();
     await getRepresentativesByUniversity();
 
+//TODO error handling
     await fetchParticipantData();
+
     // await getRepresentativeDropDownData();
 
     update();
@@ -167,6 +169,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
   Rx<TextEditingController> RePphoneNumber = TextEditingController().obs;
 
   Rx<RepresentativeModel> repModel = RepresentativeModel().obs;
+
   addANewRepresentative() async {
     repModel.value.representativeType = addRepresentaitveType.value;
     repModel.value.personName = nameOfThePerson.value.text;
@@ -260,8 +263,9 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
   fetchParticipantData() async {
     print(participantID.value.id);
-    var res = await api.getRepresentativeAllData(
-        participantID.value.id == null ? 2 : participantID.value.id!);
+    var res = await api.getRepresentativeAllData(participantID.value.id == null
+        ? listOfParticipantData[0].id!
+        : participantID.value.id!);
 
     participantData.value = RepresentativeModel.fromJson(res);
 

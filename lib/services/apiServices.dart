@@ -389,7 +389,6 @@ class ApiServices extends BaseServices implements API {
     var data2 = json.encode(data);
 
     var res = await httpPostHeader(url, data2);
-
     return res['user'];
 
     // TODO: implement getRepresentativeAllData
@@ -487,14 +486,20 @@ class ApiServices extends BaseServices implements API {
 
   @override
   findParticipantByMeetingId(int meetingId) async {
-    var url = '${Endpoints.baseUrl}${Endpoints.findMeetingParticipants}';
-    var deta = {"meeting_id": meetingId};
+    try {
+      var url = '${Endpoints.baseUrl}${Endpoints.findMeetingParticipants}';
+      var deta = {"meeting_id": meetingId};
 
-    var data = json.encode(deta);
+      var data = json.encode(deta);
 
-    var res = await httpPostHeader(url, data);
+      var res = await httpPostHeader(url, data);
+      print("a;sjdlekdweed +5757");
 
-    return res['model'];
+      return res['model'];
+    } catch (e) {
+      print("a;sjdlekdweed");
+    }
+
     // TODO: implement findParticipantByMeetingId
     // throw UnimplementedError();
   }
