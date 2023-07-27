@@ -260,8 +260,9 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
   fetchParticipantData() async {
     print(participantID.value.id);
-    var res = await api.getRepresentativeAllData(
-        participantID.value.id == null ? 2 : participantID.value.id!);
+    var res = await api.getRepresentativeAllData(participantID.value.id == null
+        ? listOfParticipantData[0].id!
+        : participantID.value.id!);
 
     participantData.value = RepresentativeModel.fromJson(res);
 

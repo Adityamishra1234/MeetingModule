@@ -672,4 +672,23 @@ class ApiServices extends BaseServices implements API {
       throw UnimplementedError();
     }
   }
+
+  @override
+  decryptNote(note, password) async {
+    try {
+      var url = '${Endpoints.baseUrl}${Endpoints.decrypt}';
+      var data = {"password": password, "text": note};
+
+      var data2 = json.encode(data);
+
+      var res = await httpPostHeader(url, data2);
+      print(res);
+      print(res['temp']);
+      return res['temp'];
+    } catch (e) {
+      throw UnimplementedError();
+    }
+    // TODO: implement decryptNote
+    // throw UnimplementedError();
+  }
 }

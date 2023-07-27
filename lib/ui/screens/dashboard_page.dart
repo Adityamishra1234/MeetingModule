@@ -148,24 +148,22 @@ class _DashBoardState extends State<DashBoard> {
                               children: [
                                 CustomAutoSizeTextMontserrat(
                                   text: "Hello,",
-                                  fontSize: 20,
+                                  fontSize: 18,
                                 ),
                                 CustomAutoSizeTextMontserrat(
                                   text: "${controller.user.value.name}",
-                                  fontSize: 30,
+                                  fontSize: 24,
                                 ),
                               ],
                             ),
                           ),
                         ),
-                        SizedBox(
-                          width: 20,
-                        ),
+                        Spacer(),
                         Container(
-                          width: 100,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          child: Wrap(
+                            spacing: 5,
+                            // mainAxisSize: MainAxisSize.max,
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               InkWell(
                                 onTap: () {

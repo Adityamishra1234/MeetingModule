@@ -69,4 +69,6 @@ abstract class API {
   findUniversityCountryByMeetingId(meetningID);
 
   encryptNote(note, password);
+
+  decryptNote(note, password);
 }

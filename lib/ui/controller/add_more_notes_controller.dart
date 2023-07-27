@@ -198,12 +198,17 @@ class AddMoreNotesController extends GetxController with StateMixin {
   reasonOfNoteAttedning() {}
 
   getNotesOfMeeting() async {
+    documentlist = [];
+    notesList = [];
+    selectedDropDown = '';
+    notesTypeToShowInDropDown = [];
     // getNotes(String id, int? index) async {
     // if (index != null) {
     //   selectedMeetingdata.value = listToShow[index];
     // }
 
     var selectedMeetingData = baseController.selectedMeetingData;
+
     var res = await api.findNotes(selectedMeetingData.id.toString());
 
     print('res');
@@ -501,7 +506,8 @@ class AddMoreNotesController extends GetxController with StateMixin {
     update();
   }
 
-  saveAndNext(int metingID, quill.QuillController contro) async {
+  saveAndNext(
+      int metingID, quill.QuillController contro, bool encrypted) async {
     print(metingID);
     change(null, status: RxStatus.loading());
     List<AllUserModel> visibleTo = [];
@@ -527,6 +533,10 @@ class AddMoreNotesController extends GetxController with StateMixin {
         isAdded: true,
         createdBy: 101,
         updatedBy: 101);
+
+    if (encrypted == true) {
+      noteModel.note = encryptedNote;
+    }
 
     var res = await api.addNotes(noteModel);
     if (res != null) {

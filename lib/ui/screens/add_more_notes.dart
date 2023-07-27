@@ -398,8 +398,14 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                                       "insert⟨ ⏎ ⟩") {
                                     getToast(SnackBarConstants.noteTextField!);
                                   } else {
-                                    controller.saveAndNext(
-                                        argumentData[0], controller.noteText);
+                                    if (controller.noteTypeSelected ==
+                                        'Confidential Notes') {
+                                      controller.saveAndNext(argumentData[0],
+                                          controller.noteText, true);
+                                    } else {
+                                      controller.saveAndNext(argumentData[0],
+                                          controller.noteText, false);
+                                    }
                                   }
                                 },
                                 child: Container(
