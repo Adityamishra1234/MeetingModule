@@ -101,6 +101,7 @@ class BaseServices {
 
       case 440:
         throw EmptyDataException("440");
+
       case 400:
         throw BadRequestException(response.body.toString());
       case 401:
@@ -114,6 +115,7 @@ class BaseServices {
             'Something went to wrong : ${response.statusCode}');
     }
   }
+
   //   httpPostHeader(String url, jsonData) async {
   //   // String? token = await getToken();
   //   await checkUserConnection();
