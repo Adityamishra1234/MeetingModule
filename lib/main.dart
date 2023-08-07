@@ -9,9 +9,11 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_splash_screen/flutter_splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/bindings/dashboardBindings.dart';
+import 'package:meeting_module2/models/dashboardNotesModel.dart';
 import 'package:meeting_module2/ui/screens/add_more_notes.dart';
 import 'package:meeting_module2/ui/screens/add_representative.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting2.dart';
+import 'package:meeting_module2/ui/screens/dashboard_notes.dart';
 import 'package:meeting_module2/ui/screens/dashboard_page.dart';
 import 'package:meeting_module2/ui/screens/login_page.dart';
 import 'package:meeting_module2/ui/screens/participants_details.dart';
@@ -275,7 +277,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        smartManagement: SmartManagement.keepFactory,
+        // smartManagement: SmartManagement.keepFactory,
         debugShowCheckedModeBanner: false,
         initialRoute: SignInView.route,
         getPages: [
@@ -291,6 +293,11 @@ class _MyAppState extends State<MyApp> {
               name: DashBoard.routeNamed,
               page: () => DashBoard(),
               binding: DashboardBinding()),
+          GetPage(
+            name: DashboardNotesView.routenamed,
+            page: () => DashboardNotesView(),
+          ),
+
           // GetPage(
           //   name: LoginPage.routeNamed,
           //   page: () => LoginPage(),

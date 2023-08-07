@@ -7,6 +7,7 @@ import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 
 class DashboardNotesView extends StatefulWidget {
+  static const routenamed = '/dashboardNotes';
   DashboardNotesView({super.key});
 
   @override

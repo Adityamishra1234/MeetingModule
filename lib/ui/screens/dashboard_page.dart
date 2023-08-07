@@ -167,7 +167,7 @@ class _DashBoardState extends State<DashBoard> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  Get.to(DashboardNotesView());
+                                  Get.toNamed(DashboardNotesView.routenamed);
                                 },
                                 child: Container(
                                   width: 45,

@@ -80,7 +80,7 @@ class AllMeetings {
     dateOfMeeting = json['date_of_meeting'];
     timeOfTheMeeting = json['time_of_the_meeting'];
     durationOfMeeting = json['duration_of_meeting'];
-    meetingMode = json['meeting_mode'];
+    meetingMode = json['meeting_mode'].toString();
     meetingModeType = json['meeting_mode_type'];
     meetingLink = json['meeting_link'];
     locationOfTheMeeting = json['location_of_the_meeting'];

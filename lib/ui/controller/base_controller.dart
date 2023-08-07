@@ -97,7 +97,7 @@ class BaseController extends GetxController {
   checkUser() async {
     print(id);
     if (id != 0) {
-      Get.offNamed(DashBoard.routeNamed);
+      Get.toNamed(DashBoard.routeNamed);
     }
     await Future.delayed(Duration(seconds: 1));
     hideScreen();

@@ -1398,7 +1398,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                       backgroundCOlour: Colors.transparent,
                       hint: '',
                       controller: TextEditingController(),
-                      validator: controller.groupNames.value == ''
+                      validator: controller.selectedBranch.value == ''
                           ? Validator.plzSelectOne
                           : null,
                     ),

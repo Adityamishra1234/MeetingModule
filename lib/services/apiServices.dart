@@ -114,7 +114,10 @@ class ApiServices extends BaseServices implements API {
 
     var res = await httpPost(url, json);
 
-    return res['model'];
+    if (res != null) {
+      return res['model'];
+    }
+
     // TODO: implement findNotes
     // throw UnimplementedError();
   }
@@ -230,7 +233,10 @@ class ApiServices extends BaseServices implements API {
     var data = json.encode(model);
 
     var res = await httpPostHeader(url, data);
-    return res['result'];
+
+    if (res != null) {
+      return res['result'];
+    }
   }
 
   @override
@@ -251,7 +257,9 @@ class ApiServices extends BaseServices implements API {
 
     var res2 = await httpPostNullBody(url);
 
-    return res2['userList'];
+    if (res2 != null) {
+      return res2['userList'];
+    }
 
     // TODO: implement selectedAudienceType
     // throw UnimplementedError();
@@ -263,7 +271,9 @@ class ApiServices extends BaseServices implements API {
 
     var res2 = await httpPostNullBody(url);
 
-    return res2['userListSend'];
+    if (res2 != null) {
+      return res2['userListSend'];
+    }
     // TODO: implement allBranch
     // throw UnimplementedError();
   }
@@ -279,7 +289,9 @@ class ApiServices extends BaseServices implements API {
 
     var res = res2['userListSend'];
 
-    return res;
+    if (res != null) {
+      return res;
+    }
 
     // TODO: implement getSpecificBranchUsers
     //
@@ -295,7 +307,9 @@ class ApiServices extends BaseServices implements API {
     var datas = json.encode(jsonData);
     var res2 = await httpPostHeader(url, datas);
 
-    return res2['userListSend'];
+    if (res2 != null) {
+      return res2['userListSend'];
+    }
 
     // TODO: implement getAllUniversity
   }
@@ -309,7 +323,10 @@ class ApiServices extends BaseServices implements API {
     // var datas = json.encode(jsonData);
     var res2 = await httpPostNullBody(url);
 
-    return res2['userListSend'];
+    if (res2 != null) {
+      return res2['userListSend'];
+    }
+
     // TODO: implement getAllCountries
     // throw UnimplementedError();
   }
@@ -341,6 +358,10 @@ class ApiServices extends BaseServices implements API {
 
     var res = await httpPostHeader(url, data);
 
+    if (res != null) {
+      return res;
+    }
+
     print(res);
 
     // TODO: implement addRepresentative
@@ -356,6 +377,10 @@ class ApiServices extends BaseServices implements API {
     var data2 = json.encode(data);
 
     var res = await httpPostHeader(url, data2);
+
+    if (res != null) {
+      return res;
+    }
 
     print(res);
 
@@ -374,7 +399,9 @@ class ApiServices extends BaseServices implements API {
 
     var res = await httpPostHeader(url, data2);
 
-    return res['userListSend'];
+    if (res != null) {
+      return res['userListSend'];
+    }
 
     // TODO: implement findRepresentativeForDropDown
     // throw UnimplementedError();
@@ -389,7 +416,10 @@ class ApiServices extends BaseServices implements API {
     var data2 = json.encode(data);
 
     var res = await httpPostHeader(url, data2);
-    return res['user'];
+
+    if (res != null) {
+      return res['user'];
+    }
 
     // TODO: implement getRepresentativeAllData
     // throw UnimplementedError();
@@ -413,7 +443,9 @@ class ApiServices extends BaseServices implements API {
 
     var res = await httpPostHeader(url, data2);
 
-    return res['tempUser'];
+    if (res != null) {
+      return res['tempUser'];
+    }
 
     // TODO: implement getRepresentativeByUniversity
     // throw UnimplementedError();
@@ -438,6 +470,7 @@ class ApiServices extends BaseServices implements API {
 
     var res = await httpPostHeader(url, data2);
     print(res);
+
     return res;
 
     // TODO: implement addParticipants
@@ -495,7 +528,9 @@ class ApiServices extends BaseServices implements API {
       var res = await httpPostHeader(url, data);
       print("a;sjdlekdweed +5757");
 
-      return res['model'];
+      if (res != null) {
+        return res['model'];
+      }
     } catch (e) {
       print("a;sjdlekdweed");
     }
@@ -566,7 +601,10 @@ class ApiServices extends BaseServices implements API {
 
     var res = await httpPostNullBody(url);
 
-    return res['model'];
+    if (res != null) {
+      return res['model'];
+    }
+
     // TODO: implement findNoteByUser
     // throw UnimplementedError();
   }
@@ -637,7 +675,10 @@ class ApiServices extends BaseServices implements API {
 
     var res = await httpPostHeader(url, data2);
     print(res);
-    return res['model'];
+
+    if (res != null) {
+      return res['model'];
+    }
 
     print(res);
   }
@@ -653,7 +694,10 @@ class ApiServices extends BaseServices implements API {
 
       var res = await httpPostHeader(url, data2);
       print(res);
-      return res['model'];
+
+      if (res != null) {
+        return res['model'];
+      }
     } catch (e) {
       throw UnimplementedError();
     }
@@ -670,9 +714,12 @@ class ApiServices extends BaseServices implements API {
       var data2 = json.encode(data);
 
       var res = await httpPostHeader(url, data2);
+
+      if (res != null) {
+        return res['temp']['encryptedText'];
+      }
       print(res);
       print(res['temp']['encryptedText']);
-      return res['temp']['encryptedText'];
     } catch (e) {
       throw UnimplementedError();
     }
@@ -689,7 +736,10 @@ class ApiServices extends BaseServices implements API {
       var res = await httpPostHeader(url, data2);
       print(res);
       print(res['temp']);
-      return res['temp'];
+
+      if (res != null) {
+        return res['temp'];
+      }
     } catch (e) {
       throw UnimplementedError();
     }
