@@ -301,7 +301,7 @@ class _MyAppState extends State<MyApp> {
           // GetPage(
           //   name: LoginPage.routeNamed,
           //   page: () => LoginPage(),
-          // ),
+          // ),pi
           GetPage(
             name: ViewNotesDetails.routeNamed,
             page: () => ViewNotesDetails(),

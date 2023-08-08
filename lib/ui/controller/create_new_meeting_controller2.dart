@@ -274,6 +274,20 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     print(participantData.value.toJson());
   }
 
+  makeParticipantDataClear() {
+    participantData.value.bankName = null;
+    participantData.value.country = null;
+    participantData.value.createdAt = null;
+    participantData.value.createdBy = null;
+    participantData.value.designation = 'Select one representative';
+    participantData.value.email = 'Select one representative';
+    participantData.value.id = 0;
+    participantData.value.isActive = null;
+    participantData.value.personName = 'Select one representative';
+    participantData.value.phone = 0;
+    update();
+  }
+
   AllUserModel selectedUniversity = AllUserModel();
   Rx<AllUserModel> selectedCountryForFetchRep = AllUserModel().obs;
 
@@ -311,6 +325,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
       listOfParticipantData = await List<AllUserModel>.from(
           res4.map((e) => AllUserModel.fromJson(e))).toList();
+
+      makeParticipantDataClear();
 
       update();
     } else {
@@ -718,15 +734,19 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
         .where((element) =>
             element.teamName!.toLowerCase() == query.toString().toLowerCase())
         .toList();
+    if (data.length != 0) {
+      preFilledUsers = await data[0].teamMembers!;
+      // await List<AllUserModel>.from(data.map((e) => e.teamMembers!));
 
-    preFilledUsers = await data[0].teamMembers!;
-    // await List<AllUserModel>.from(data.map((e) => e.teamMembers!));
+      selectedUsersList = preFilledUsers;
+      print(preFilledUsers.toString());
 
-    selectedUsersList = preFilledUsers;
-    print(preFilledUsers.toString());
-
-    update();
-
+      update();
+    } else {
+      preFilledUsers = [];
+      selectedUsersList = [];
+      update();
+    }
     // change(preFilledUsers, status: RxStatus.success());
 
     // print(Get.find<DashBoardController>().listBro);
