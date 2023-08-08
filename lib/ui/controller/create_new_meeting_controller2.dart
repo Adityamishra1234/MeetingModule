@@ -304,13 +304,15 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
             selectedUniversity.id == null ? 3263 : selectedUniversity.id!,
         countrycode: selectedCountry.id == null ? 13 : selectedCountry.id!);
 
-    if (res == null) {
+    if (res.length == 0) {
       var res4 = [
         {'name': "No Representative! Please Add", "id": 0}
       ];
 
       listOfParticipantData = await List<AllUserModel>.from(
           res4.map((e) => AllUserModel.fromJson(e))).toList();
+
+      update();
     } else {
       // var res2 = await json.decode(res);
 
