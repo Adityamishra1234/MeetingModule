@@ -6,28 +6,30 @@ class BackgroundAuthView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: 50,
-        ),
-        CustomAutoSizeTextMontserrat(
-          text: 'Welcome!',
-          fontSize: 30,
-        ),
-        CustomAutoSizeTextMontserrat(
-          text: "Lets's Sign you in",
-          fontSize: 20,
-        ),
-        SizedBox(
-          height: 0,
-        ),
-        SizedBox(
-            width: 350,
-            height: 350,
-            child: Image.asset('assets/images/Login-Image.png')),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 50,
+          ),
+          CustomAutoSizeTextMontserrat(
+            text: 'Welcome!',
+            fontSize: 30,
+          ),
+          CustomAutoSizeTextMontserrat(
+            text: "Lets's Sign you in",
+            fontSize: 20,
+          ),
+          SizedBox(
+            height: 0,
+          ),
+          SizedBox(
+              width: 350,
+              height: 350,
+              child: Image.asset('assets/images/Login-Image.png')),
+        ],
+      ),
     );
   }
 }

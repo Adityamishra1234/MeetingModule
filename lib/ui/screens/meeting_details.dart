@@ -72,7 +72,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                 onWillPop: () async {
                   Get.offAllNamed(DashBoard.routeNamed);
 
-                  return Future.value(true);
+                  return true;
                 },
                 child: SingleChildScrollView(
                   child: Column(

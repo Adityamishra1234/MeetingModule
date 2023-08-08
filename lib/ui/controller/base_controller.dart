@@ -73,6 +73,7 @@ class BaseController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
     Get.offAllNamed(SignInView.route);
+    // Get.offAllNamed(SignInView.route);
   }
 
   token2() async {
@@ -97,9 +98,12 @@ class BaseController extends GetxController {
   checkUser() async {
     print(id);
     if (id != 0) {
+      await Future.delayed(Duration(seconds: 1));
+      hideScreen();
       Get.toNamed(DashBoard.routeNamed);
+    } else {
+      await Future.delayed(Duration(seconds: 1));
+      hideScreen();
     }
-    await Future.delayed(Duration(seconds: 1));
-    hideScreen();
   }
 }

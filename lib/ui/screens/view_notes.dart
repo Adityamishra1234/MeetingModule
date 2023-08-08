@@ -12,9 +12,9 @@ class ViewNotesDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () {
+      onWillPop: () async {
         controller.viewNotesSection = 0;
-        return Future.value(true);
+        return true;
       },
       child: Scaffold(
           body: controller.obx(

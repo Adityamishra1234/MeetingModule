@@ -470,8 +470,9 @@ class ApiServices extends BaseServices implements API {
 
     var res = await httpPostHeader(url, data2);
     print(res);
-
-    return res;
+    if (res != null) {
+      return res;
+    }
 
     // TODO: implement addParticipants
     // throw UnimplementedError();

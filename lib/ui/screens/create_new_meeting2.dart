@@ -34,7 +34,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                   onWillPop: () async {
                     Get.offAllNamed(DashBoard.routeNamed);
 
-                    return Future.value(true);
+                    return true;
                   },
                   child: SafeArea(
                     child: Container(
