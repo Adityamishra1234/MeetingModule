@@ -7,8 +7,9 @@ typedef void StringCallback(String val);
 class CustomTimerWidgetForHourMinutes extends StatefulWidget {
   final Function callback;
   String? initialTime;
+  bool? isBlank;
   CustomTimerWidgetForHourMinutes(
-      {Key? key, this.initialTime, required this.callback})
+      {Key? key, this.isBlank, this.initialTime, required this.callback})
       : super(key: key);
 
   @override

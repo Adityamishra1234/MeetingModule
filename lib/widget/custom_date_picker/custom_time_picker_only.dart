@@ -8,7 +8,14 @@ typedef void StringCallback(String val);
 class CustomTimerWidget2 extends StatefulWidget {
   final StringCallback callback;
   String? initialTime;
-  CustomTimerWidget2({Key? key, required this.callback, this.initialTime})
+  bool? isBlank;
+  Widget? field;
+  CustomTimerWidget2(
+      {Key? key,
+      this.field,
+      this.isBlank,
+      required this.callback,
+      this.initialTime})
       : super(key: key);
 
   @override
@@ -30,7 +37,9 @@ class _CustomTimerWidget2State extends State<CustomTimerWidget2> {
       dateToShow = widget.initialTime ??
           '${DateTime.now().hour}:${DateTime.now().minute}';
     } else {
-      dateToShow = '${DateTime.now().hour}:${DateTime.now().minute}';
+      dateToShow = widget.isBlank == true
+          ? ''
+          : '${DateTime.now().hour}:${DateTime.now().minute}';
       dateTime = DateTime.now();
     }
 
@@ -117,24 +126,30 @@ class _CustomTimerWidget2State extends State<CustomTimerWidget2> {
           });
         });
       },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2.5),
-        width: double.infinity,
-        // height: 50,
-        decoration: BoxDecoration(
-            color: Colors.transparent,
-            border: Border.all(color: ThemeConstants.lightgreycolor, width: 1),
-            borderRadius: BorderRadius.circular(50)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('${dateToShow}', style: TextStyle(fontSize: 14)),
-            const Icon(
-              Icons.access_time,
-              size: 20,
-            )
-          ],
-        ),
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2.5),
+            width: double.infinity,
+            height: 40,
+            decoration: BoxDecoration(
+                color: Colors.transparent,
+                border:
+                    Border.all(color: ThemeConstants.lightgreycolor, width: 1),
+                borderRadius: BorderRadius.circular(50)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('${dateToShow}', style: TextStyle(fontSize: 14)),
+                const Icon(
+                  Icons.access_time,
+                  size: 20,
+                )
+              ],
+            ),
+          ),
+          widget.field == null ? SizedBox.shrink() : widget.field!,
+        ],
       ),
     );
   }

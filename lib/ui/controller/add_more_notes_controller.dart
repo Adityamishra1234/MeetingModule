@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
@@ -7,12 +10,15 @@ import 'package:meeting_module2/extensions/siecMemberNamefromId.dart';
 import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
+import 'package:meeting_module2/models/commonUploadDocument.dart';
+import 'package:meeting_module2/models/commonUploadStatus.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/models/findParticipantByIdModel.dart';
 import 'package:meeting_module2/models/reasonOfAttendingAll.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
+import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customExpansionTile.dart';
@@ -71,6 +77,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     await getMeetingParticipantsList();
     await getReasonOfNotAttedingsAll(baseController.selectedMeetingData.id!);
     getMeetingCountryAndUniversity();
+    await showPublishButtonOrNot();
     meetingStartedValue = baseController.selectedMeetingData.meetingStarted!;
     meetingEndedValue = baseController.selectedMeetingData.meetingEnded!;
     change(null, status: RxStatus.success());
@@ -87,14 +94,14 @@ class AddMoreNotesController extends GetxController with StateMixin {
       meetingCountryID = res['country'];
       meetingUniversityID = res['university'];
 
-      print('${res} dddddd  ddd');
+      // print('${res} dddddd  ddd');
     }
   }
 
-  // showPublishButton() {
-
-  //   if( MEE  )
-  // }
+  showPublishButton() async {
+    var res = await api.showPublishButtonOrNot(
+        meetingId: baseController.selectedMeetingData.id!, userId: id);
+  }
 
   List<Widget> reasonofNotAtteding = [];
   getReasonOfNotAttedingsAll(int MeetingId) async {
@@ -232,13 +239,18 @@ class AddMoreNotesController extends GetxController with StateMixin {
     List notesTypeString = [];
 
     for (var i = 0; i < notesList.length; i++) {
-      notesType.add(notesList[i].noteType);
+      if (notesList[i].image_note == null) {
+        notesType.add(notesList[i].noteType);
+      }
     }
 
     notesType = notesType.toSet().toList();
 
     for (var i = 0; i < notesType.length; i++) {
-      var res = getNoteTypefromId(notesType[i]);
+      if (notesList[i].image_note == null) {
+        var res = getNoteTypefromId(notesType[i]);
+        notesTypeString.add(res);
+      }
 
       // var data1 = res.toString().split(' ')[0];
       // var data2 = res.toString().split(' ')[1] == null
@@ -247,8 +259,6 @@ class AddMoreNotesController extends GetxController with StateMixin {
       // print(data1 + data2);
 
       // print(temp);
-
-      notesTypeString.add(res);
     }
 
     notesTypeToShowInDropDown.addAll(notesTypeString);
@@ -256,7 +266,9 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
     List<Map<String, List<FindNotesModel>>> list = [];
     for (var i = 0; i < notesType.length; i++) {
-      list.add({notesTypeString[i]: []});
+      if (notesList[i].image_note == null) {
+        list.add({notesTypeString[i]: []});
+      }
     }
 
     if (notesTypeString.length > 0) {
@@ -414,7 +426,9 @@ class AddMoreNotesController extends GetxController with StateMixin {
                   ),
                 ),
                 Visibility(
-                  visible: showPublish(notesList[i]),
+                  visible: showPublish(notesList[i]) == true &&
+                      showPublish(notesList[i]) == true,
+                  // visible:   true,
                   child: InkWell(
                     onTap: () {
                       // Get.to(AssignToView(), arguments: widget.dataList![i]);
@@ -531,8 +545,8 @@ class AddMoreNotesController extends GetxController with StateMixin {
         note: hello,
         isActive: true,
         isAdded: true,
-        createdBy: 101,
-        updatedBy: 101);
+        createdBy: baseController.id,
+        updatedBy: baseController.id);
 
     if (encrypted == true) {
       noteModel.note = encryptedNote;
@@ -711,11 +725,14 @@ class AddMoreNotesController extends GetxController with StateMixin {
         var res = await api
             .getRepresentativeAllData(participantList[i].participantId!);
 
+        print(res);
         // var data = await json.decode(res);
 
-        var deta = await RepresentativeModel.fromJson(res);
+        if (res != null) {
+          var deta = await RepresentativeModel.fromJson(res);
 
-        dataList.add(deta);
+          dataList.add(deta);
+        }
       }
 
       for (var i = 0; i < dataList.length; i++) {
@@ -780,5 +797,133 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
   reasonOfNotAttendance(meetingID, String text) async {
     var res = await api.reasonOfNotAttending(meetingID, id, text);
+  }
+
+  bool showPublishButtonOrNotBool = false;
+  showPublishButtonOrNot() async {
+    var res = await api.showPublishButtonOrNot(
+        meetingId: baseController.selectedMeetingData.id!, userId: id);
+  }
+
+  List<CommonUploadDocument> documentModel = [];
+
+  uploadDocument(
+      //   String id, {
+      //   String orgname = "",
+      // }
+      ) async {
+    try {
+      String uploadFilename = "";
+      PlatformFile? csvFile2;
+      final results = await FilePicker.platform.pickFiles(
+        allowMultiple: false,
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'jpeg', 'png', 'tiff', 'pdf', 'doc', 'docx'],
+      );
+      if (results != null) {
+        csvFile2 = results.files.first;
+        uploadFilename = results.files.first.name;
+      }
+      if (csvFile2 != null) {
+        if (csvFile2.path != null) {
+          final f = File(csvFile2.path!);
+          int sizeInBytes = f.lengthSync();
+          double sizeInMb = sizeInBytes / (1024 * 1024);
+          if (sizeInMb > 5) {
+            getToast('Maximuam upload size');
+          } else {
+            // var res = await api.uploadDocumentCommon(
+            //   ,
+            //     uploadFilename,
+            //     Get.find<BaseController>().model1.id.toString(),
+            //     id,
+            //     orgname: orgname,
+            //     is_event: is_event);
+
+            var res = await api.uploadDocumentCommon(
+                meeting_id: baseController.selectedMeetingData.id,
+                user_id: id,
+                file: csvFile2.path,
+                uploadFilename: uploadFilename);
+            if (res != null) {
+              await saveImageNote(
+                  baseController.selectedMeetingData.id!, res['view']);
+              // CommonUploadStatus model = CommonUploadStatus();
+              // model = res;
+              // if (model.status == "sucesss") {
+              //   documentModel.add(model.dataModal!);
+              // }
+              // getDocumentType();
+              // getOrganizationName();
+            }
+            // if (is_event == 1) {
+            //   Get.offAndToNamed(DashBoard.routeNamed);
+            // }
+            update();
+          }
+        }
+      }
+    } catch (e) {
+      await getToast('Please give Storage Permission');
+      // await ApiServices(). (
+      //   Get.find<BaseController>().model1.id.toString(),
+      //   e.toString(),
+      //   "1111",
+      //   StackTrace.current.toString(),
+      // );
+    }
+  }
+
+  saveImageNote(int metingID, String imageId) async {
+    print(metingID);
+    change(null, status: RxStatus.loading());
+    List<AllUserModel> visibleTo = [];
+
+    // var data = await noteText.getText();
+
+    // var data = await contro.document.toDelta();
+    // print(data);
+
+    // var html = '';
+
+    // var hello = awasit quillDeltaToHtml(data);
+    // print(hello);
+    for (var element in accessibileUserSelected) {
+      visibleTo.add(element);
+    }
+    FindNotesModel noteModel = FindNotesModel(
+        meetingId: metingID,
+        noteType: noteTypeSelectedID.value,
+        visibleTo: visibleTo,
+        note: '',
+        isActive: true,
+        isAdded: true,
+        image_note: imageId,
+        createdBy: baseController.id,
+        updatedBy: baseController.id);
+
+    // if (encrypted == true) {
+    //   noteModel.note = encryptedNote;
+    // }
+
+    var res = await api.addNotes(noteModel);
+    if (res != null) {
+      model.value.add(noteModel);
+      model;
+      model.refresh();
+      noteTypeSelected = "Select Add notes for".obs;
+
+      noteText.clear();
+
+      noteTypeSelectedID = 0.obs;
+      accessibileUserSelected = RxList<AllUserModel>();
+
+      // change(null, status: RxStatus.success());
+    }
+
+    await getNotesOfMeeting();
+
+    update();
+    change(null, status: RxStatus.success());
   }
 }

@@ -1252,13 +1252,14 @@ class DashboardMeetings extends StatelessWidget {
                                       curve: Curves.easeInOutQuart,
                                       // barrierDismissible: false,
                                       context: context,
-                                      builder: (ctx) =>
-                                          ResheduleMeetingDialogue(
-                                            controller:
-                                                Get.find<DashBoardController>(),
-                                            indexz: i,
-                                            meetingData: data,
-                                          ));
+                                      builder: (ctx) => StatefulBuilder(
+                                          builder: (context, setState) =>
+                                              ResheduleMeetingDialogue(
+                                                controller: Get.find<
+                                                    DashBoardController>(),
+                                                indexz: i,
+                                                meetingData: data,
+                                              )));
                                 } else {
                                   showAnimatedDialog(
                                       animationType: DialogTransitionType

@@ -1,5 +1,7 @@
 import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
+import 'package:meeting_module2/models/commonUploadDocument.dart';
+import 'package:meeting_module2/models/commonUploadStatus.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/models/participantsModel.dart';
 
@@ -71,4 +73,15 @@ abstract class API {
   encryptNote(note, password);
 
   decryptNote(note, password);
+
+  showPublishButtonOrNot({required int meetingId, required int userId});
+
+  uploadMeetingModuleDocument({required int meetingId, required int userId});
+
+  uploadDocumentCommon({
+    required meeting_id,
+    required user_id,
+    required file,
+    required uploadFilename,
+  });
 }

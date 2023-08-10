@@ -47,6 +47,11 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
     time = widget.meetingData.timeOfTheMeeting!;
     meetingLink.text = widget.meetingData.meetingLink!;
 
+    meetingType = widget.meetingData.meetingMode!;
+
+    if (widget.meetingData.meetingType! == '1')
+      modeOfMeeting = widget.meetingData.meetingModeType!;
+
     // TODO: implement initState
     // super.initState();
   }
@@ -242,17 +247,18 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15),
-                        child: Align(
-                          alignment: AlignmentDirectional.topStart,
-                          child: CustomAutoSizeTextMontserrat(
-                            text: "Mode of Meeting",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                      if (meetingType == '1')
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Align(
+                            alignment: AlignmentDirectional.topStart,
+                            child: CustomAutoSizeTextMontserrat(
+                              text: "Mode of Meeting",
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                   SizedBox(
@@ -271,8 +277,10 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                   meetingType = '2';
                                   // controller.MeetingType.value = false;
                                   // controller.update();
+                                  setState(() {});
                                 } else {
                                   meetingType = '1';
+                                  setState(() {});
                                   // controller.MeetingType.value = true;
                                   // controller.update();
                                 }
@@ -283,46 +291,49 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                   widget.meetingData.meetingMode == '1'
                                       ? 'Online'
                                       : 'Offline')),
-                      Container(
-                        width: (MediaQuery.of(context).size.width - 40) / 2.7,
-                        child: CustomMultiDownSingle(
-                          enableMultiSelect: false,
-                          model: ['Zoom', 'Meet', 'Teams'],
-                          initialSelectedValue:
-                              widget.meetingData.meetingModeType,
-                          callbackFunctionSingle: (val) {
-                            modeOfMeeting = val;
-                            // controller.modeOfMeeting.value = val;
-                          },
+                      if (meetingType == '1')
+                        Container(
+                          width: (MediaQuery.of(context).size.width - 40) / 2.7,
+                          child: CustomMultiDownSingle(
+                            enableMultiSelect: false,
+                            model: ['Zoom', 'Meet', 'Teams'],
+                            initialSelectedValue:
+                                widget.meetingData.meetingModeType,
+                            callbackFunctionSingle: (val) {
+                              modeOfMeeting = val;
+                              // controller.modeOfMeeting.value = val;
+                            },
+                          ),
                         ),
-                      ),
                     ],
                   ),
                   SizedBox(
                     height: 10,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 0, bottom: 8),
-                    child: Align(
-                      alignment: AlignmentDirectional.topStart,
-                      child: CustomAutoSizeTextMontserrat(
-                        text: "Meeting Link",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                  if (meetingType == '1')
+                    Padding(
+                      padding: const EdgeInsets.only(left: 0, bottom: 8),
+                      child: Align(
+                        alignment: AlignmentDirectional.topStart,
+                        child: CustomAutoSizeTextMontserrat(
+                          text: "Meeting Link",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    height: 45,
-                    width: MediaQuery.of(context).size.width - 40,
-                    child: CustomTextField(
-                      // validator: controller.MeetingType.value == true
-                      //     ? Validator.notEmpty
-                      //     : null,
-                      hint: '',
-                      controller: meetingLink,
+                  if (meetingType == '1')
+                    Container(
+                      height: 45,
+                      width: MediaQuery.of(context).size.width - 40,
+                      child: CustomTextField(
+                        // validator: controller.MeetingType.value == true
+                        //     ? Validator.notEmpty
+                        //     : null,
+                        hint: '',
+                        controller: meetingLink,
+                      ),
                     ),
-                  ),
                   SizedBox(
                     height: 10,
                   ),

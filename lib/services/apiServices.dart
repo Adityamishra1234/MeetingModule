@@ -1,15 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
+import 'package:meeting_module2/models/commonUploadDocument.dart';
+import 'package:meeting_module2/models/commonUploadStatus.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/models/participantsModel.dart';
 import 'package:meeting_module2/services/api.dart';
 import 'package:meeting_module2/services/base_services.dart';
 import 'package:meeting_module2/services/endpoints.dart';
+import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 
 class ApiServices extends BaseServices implements API {
@@ -30,8 +33,8 @@ class ApiServices extends BaseServices implements API {
     var url = '${Endpoints.baseUrl}${Endpoints.otp + "/${email}"}';
     var res2 = await httpPostNullBody(url);
     if (res2 != null) {
-      var res = jsonDecode(res2);
-      return res;
+      // var res = jsonDecode(res2);
+      return res2;
     }
   }
 
@@ -41,8 +44,7 @@ class ApiServices extends BaseServices implements API {
         '${Endpoints.baseUrl}${Endpoints.otpMatch + "/${email}" + "/${otp}"}';
     var res2 = await httpPostNullBody(url);
     if (res2 != null) {
-      var res = jsonDecode(res2);
-      return res;
+      return res2;
     }
   }
 
@@ -167,15 +169,15 @@ class ApiServices extends BaseServices implements API {
     var url = '${Endpoints.baseUrl}${Endpoints.addNotes}';
     print(model);
 
-    model.id = 1;
-    model.meetingId = model.meetingId;
-    model.noteType = model.noteType;
-    model.isActive = true;
-    model.createdBy = 142;
-    model.updatedBy = 142;
+    // model.id = 1;
+    // model.meetingId = model.meetingId;
+    // model.noteType = model.noteType;
+    // model.isActive = true;
+    // model.createdBy = 142;
+    // model.updatedBy = 142;
     // model.createdAt = "2023-05-09T09:04:55.000Z";
     // model.updatedAt = "2023-05-09T09:04:55.000Z";
-    model.isAdded = true;
+    // model.isAdded = true;
 
     var data = json.encode(model);
 
@@ -706,6 +708,26 @@ class ApiServices extends BaseServices implements API {
   }
 
   @override
+  showPublishButtonOrNot({required int meetingId, required int userId}) async {
+    try {
+      var url = '${Endpoints.baseUrl}${Endpoints.checkShowPublishButton}';
+      var data = {"meeting_id": meetingId, "userId": userId};
+
+      var data2 = json.encode(data);
+
+      var res = await httpPostHeader(url, data2);
+      print(res);
+
+      if (res != null) {
+        return res['model'];
+      }
+    } catch (e) {
+      throw UnimplementedError();
+    }
+    // TODO: implement findUniversityCountryByMeetingId
+  }
+
+  @override
   encryptNote(note, password) async {
     // TODO: implement encryptNote
     try {
@@ -746,5 +768,67 @@ class ApiServices extends BaseServices implements API {
     }
     // TODO: implement decryptNote
     // throw UnimplementedError();
+  }
+
+  @override
+  uploadMeetingModuleDocument(
+      {required int meetingId, required int userId}) async {
+    try {
+      var url = '${Endpoints.baseUrl}${Endpoints.uploadMeetingDocument}';
+      var data = {"password": password, "text": 'note'};
+
+      var data2 = json.encode(data);
+
+      var res = await httpPostHeader(url, data2);
+      print(res);
+      print(res['temp']);
+
+      if (res != null) {
+        return res['temp'];
+      }
+    } catch (e) {}
+
+    // TODO: implement uploadMeetingModuleDocument
+    throw UnimplementedError();
+  }
+
+  @override
+  uploadDocumentCommon({
+    required meeting_id,
+    required user_id,
+    required file,
+    required uploadFilename,
+    // String enqId,
+    // String id,
+  }) async {
+    try {
+      var url = Uri.parse(
+          "https://api.sieceducation.in/api/${Endpoints.uploadMeetingDocument}?user_id=$user_id&meeting_id=$meeting_id");
+      var request = http.MultipartRequest("POST", url);
+
+      request.files.add(await http.MultipartFile.fromPath('doc', file,
+          filename: uploadFilename));
+      var res = await request.send();
+      var responsed = await http.Response.fromStream(res);
+
+      if (responsed.statusCode == 200) {
+        var jsondata = json.decode(responsed.body);
+        // CommonUploadStatus status = CommonUploadStatus.fromJson(jsondata);
+
+        // if (is_event == 1) {
+        //   getToast(
+        //       "Your are now eligible for Platinum Pass. Visit the View Express Pass Section.");
+        // } else {
+        // getToast(SnackBarConstants.documentUpload!);
+        getToast('Uplaod document');
+        return jsondata;
+        // }
+
+        // return status;
+      }
+    } catch (e) {
+      getToast('Upload Document error');
+    }
+    return null;
   }
 }

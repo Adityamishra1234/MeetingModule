@@ -450,7 +450,9 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                                       height: 200,
                                       child: InkWell(
                                         onTap: () {
-                                          uploadDocument('2', 1);
+                                          ///todo
+                                          controller.uploadDocument();
+                                          // uploadDocument('2', 1);
                                         },
                                         child: Container(
                                           padding: EdgeInsets.all(60),

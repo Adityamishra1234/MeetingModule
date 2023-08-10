@@ -7,9 +7,18 @@ typedef void StringCallback(String val);
 
 class CustomTimerWidget extends StatefulWidget {
   final StringCallback callback;
+  DateTime? startingDate;
   String? initialTime;
+  bool? isBlank;
+  Widget? field;
 
-  CustomTimerWidget({Key? key, required this.callback, this.initialTime})
+  CustomTimerWidget(
+      {Key? key,
+      this.field,
+      this.isBlank,
+      required this.callback,
+      this.initialTime,
+      this.startingDate})
       : super(key: key);
 
   @override
@@ -26,24 +35,33 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
   late String dateToShow;
 
   late DateTime dateTime;
+
+  late DateTime minimumDate;
   @override
   void initState() {
-    if (widget.initialTime != null) {
+    if (widget.initialTime != null &&
+        widget.initialTime != '' &&
+        widget.initialTime != "0000-00-00" &&
+        widget.initialTime != 'null') {
       String dateString = widget.initialTime!;
       dateTime = Jiffy.parse(dateString).dateTime;
+
       // String formattedDate = Jiffy(dateTime).format('MMM do yyyy');
       // print(formattedDate); // Output: Jun 13th 2023
       dateToShow = widget.initialTime ??
           '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
     } else {
       print('object');
-      dateToShow =
-          '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
+      dateToShow = widget.isBlank == true
+          ? ''
+          : '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
 
       dateTime = DateTime.now();
       // TODO: implement initState
       super.initState();
     }
+
+    minimumDate = widget.startingDate ?? Jiffy.parse('1990/09/23').dateTime;
   }
   // @override
   // void initState() {
@@ -98,6 +116,7 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
                     ),
                     Expanded(
                       child: CupertinoDatePicker(
+                        minimumDate: minimumDate,
                         initialDateTime: dateTime,
                         onDateTimeChanged: (DateTime newdate) {
                           setState(() {
@@ -106,9 +125,9 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
                           });
                           widget.callback(dateToShow);
                         },
-                        maximumDate: DateTime(2025, 12, 30),
-                        minimumYear: 2004,
-                        maximumYear: 2035,
+                        maximumDate: DateTime(2040, 12, 30),
+                        // minimumYear: 1,
+                        // maximumYear: 2035,
                         minuteInterval: 1,
                         mode: CupertinoDatePickerMode.date,
                       ),
@@ -125,24 +144,29 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
           });
         });
       },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2.5),
-        width: double.infinity,
-        // height: 50,
-        decoration: BoxDecoration(
-            color: Colors.transparent,
-            border: Border.all(color: ThemeConstants.lightgreycolor, width: 1),
-            borderRadius: BorderRadius.circular(50)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('${dateToShow}', style: TextStyle(fontSize: 14)),
-            const Icon(
-              Icons.calendar_month,
-              size: 20,
-            )
-          ],
-        ),
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2.5),
+            width: double.infinity,
+            height: 40,
+            decoration: BoxDecoration(
+                color: ThemeConstants.lightblueColor,
+                // border: Border.all(color: ThemeConstants.lightgreycolor, width: 1),
+                borderRadius: BorderRadius.circular(10)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('${dateToShow}', style: TextStyle(fontSize: 14)),
+                const Icon(
+                  Icons.calendar_month,
+                  size: 20,
+                )
+              ],
+            ),
+          ),
+          widget.field == null ? SizedBox.shrink() : widget.field!,
+        ],
       ),
     );
   }

@@ -52,12 +52,16 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
   Rx<TextEditingController> meetingNameController = TextEditingController().obs;
 
-  RxString dateController =
-      '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}'
-          .obs;
+  // RxString dateController =
+  //     '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}'
+  //         .obs;
 
-  RxString timeController =
-      '${DateTime.now().hour}:${DateTime.now().minute}'.obs;
+  RxString dateController = ''.obs;
+
+  RxString timeController = ''.obs;
+
+  // RxString timeController =
+  //     '${DateTime.now().hour}:${DateTime.now().minute}'.obs;
 
   RxString proposedDurationController = '0 hours 0 minutes'.obs;
 
@@ -279,12 +283,12 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     participantData.value.country = null;
     participantData.value.createdAt = null;
     participantData.value.createdBy = null;
-    participantData.value.designation = 'Select one representative';
-    participantData.value.email = 'Select one representative';
+    participantData.value.designation = '';
+    participantData.value.email = '';
     participantData.value.id = 0;
     participantData.value.isActive = null;
-    participantData.value.personName = 'Select one representative';
-    participantData.value.phone = 0;
+    participantData.value.personName = '';
+    participantData.value.phone = null;
     update();
   }
 
@@ -320,7 +324,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     if (res.length == 0) {
       var res4 = [
-        {'name': "No Representative! Please Add", "id": 0}
+        {'name': "No Representative! Available Please Add", "id": 0}
       ];
 
       listOfParticipantData = await List<AllUserModel>.from(
@@ -472,7 +476,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     meetingModel.value.durationOfMeeting = proposedDurationController.value;
 
-    meetingModel.value.meetingMode = MeetingType.value == true ? '1' : '0';
+    meetingModel.value.meetingMode = MeetingType.value == true ? '1' : '2';
 
     /// online
     meetingModel.value.meetingModeType = modeOfMeeting.value;

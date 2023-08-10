@@ -72,7 +72,12 @@ class Endpoints {
 
   static String findUniversityCountryByMeetingId =
       'findUniversityCountryByMeetingId';
+
+  static String checkShowPublishButton = 'checkShowPublishButton';
+
   static String encrypt = 'encryptionAPI2';
 
   static String decrypt = 'decryptionAPI2';
+
+  static String uploadMeetingDocument = 'meeting-attachment';
 }

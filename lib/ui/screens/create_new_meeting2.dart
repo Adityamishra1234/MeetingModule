@@ -296,13 +296,29 @@ class CreateNewMeeting2 extends StatelessWidget {
                       Align(
                         alignment: AlignmentDirectional.topStart,
                         child: Container(
-                            height: 45,
+                            height: 65,
                             width: (MediaQuery.of(context).size.width - 60) / 2,
-                            child: CustomTimerWidget(callback: (val) {
-                              controller.dateController.value = val;
+                            child: CustomTimerWidget(
+                                field: Container(
+                                  height: 22,
+                                  child: CustomTextField(
+                                    forDropDown: false,
+                                    backgroundCOlour: Colors.transparent,
+                                    hint: '',
+                                    readOrEdit: true,
+                                    controller: TextEditingController(),
+                                    validator:
+                                        controller.dateController.value == ''
+                                            ? Validator.plzSelectOne
+                                            : null,
+                                  ),
+                                ),
+                                isBlank: true,
+                                callback: (val) {
+                                  controller.dateController.value = val;
 
-                              print(controller.dateController.value);
-                            })),
+                                  print(controller.dateController.value);
+                                })),
                       ),
                     ],
                   ),
@@ -325,14 +341,31 @@ class CreateNewMeeting2 extends StatelessWidget {
                         child: Align(
                           alignment: AlignmentDirectional.topStart,
                           child: Container(
-                            height: 45,
+                            height: 65,
                             width: (MediaQuery.of(context).size.width - 60) / 2,
-                            child: CustomTimerWidget2(callback: (val) {
-                              // print(val);
-                              controller.timeController.value = val;
+                            child: CustomTimerWidget2(
+                              field: Container(
+                                height: 22,
+                                child: CustomTextField(
+                                  forDropDown: false,
+                                  backgroundCOlour: Colors.transparent,
+                                  hint: '',
+                                  readOrEdit: true,
+                                  controller: TextEditingController(),
+                                  validator:
+                                      controller.timeController.value == ''
+                                          ? Validator.plzSelectOne
+                                          : null,
+                                ),
+                              ),
+                              callback: (val) {
+                                // print(val);
+                                controller.timeController.value = val;
 
-                              print(controller.timeController.value);
-                            }),
+                                print(controller.timeController.value);
+                              },
+                              isBlank: true,
+                            ),
                           ),
                         ),
                       ),
@@ -695,6 +728,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                         controller.selectedUniversity =
                             controller.allUniversityList[0];
                         await controller.getRepresentativesByUniversity();
+                        await controller.fetchParticipantData();
                       },
                       callbackFunctionMulti: (AllUserModel val) {
                         print(val);
@@ -738,6 +772,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                       callbackFunctionSingle: (val) async {
                         controller.selectedUniversity = val;
                         await controller.getRepresentativesByUniversity();
+
                         controller.update();
                         print(val);
                       },
@@ -754,7 +789,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                     child: Align(
                       alignment: AlignmentDirectional.topStart,
                       child: CustomAutoSizeTextMontserrat(
-                        text: "Name of the Person",
+                        text: "Choose Representative",
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
@@ -1128,7 +1163,9 @@ class CreateNewMeeting2 extends StatelessWidget {
                     width: double.infinity,
                     height: 40,
                     child: CustomAutoSizeTextMontserrat(
-                      text: '${controller.participantData.value.phone}',
+                      text: controller.participantData.value.phone == null
+                          ? ''
+                          : '${controller.participantData.value.phone}',
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
@@ -1184,25 +1221,44 @@ class CreateNewMeeting2 extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
-                            controller.listOfParticipants
-                                .add(controllers.participantData.value);
-                            controller.update();
-                            showDialog(
-                                context: context,
-                                builder: (_) => AlertDialog(
-                                      content: Container(
-                                        child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Text(
-                                                  'Participant Added Successfully'),
-                                              Icon(Icons.check_circle,
-                                                  size: 30,
-                                                  color:
-                                                      ThemeConstants.GreenColor)
-                                            ]),
-                                      ),
-                                    ));
+                            if (controller.listOfParticipants
+                                .contains(controllers.participantData.value)) {
+                              showDialog(
+                                  context: context,
+                                  builder: (_) => AlertDialog(
+                                        content: Container(
+                                            child: Text('Already added')),
+                                      ));
+                            } else if (controllers.participantData.value.id ==
+                                0) {
+                              showDialog(
+                                  context: context,
+                                  builder: (_) => AlertDialog(
+                                        content: Container(
+                                            child: Text(
+                                                'Please add a representative')),
+                                      ));
+                            } else {
+                              controller.listOfParticipants
+                                  .add(controllers.participantData.value);
+                              controller.update();
+                              showDialog(
+                                  context: context,
+                                  builder: (_) => AlertDialog(
+                                        content: Container(
+                                          child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                    'Participant Added Successfully'),
+                                                Icon(Icons.check_circle,
+                                                    size: 30,
+                                                    color: ThemeConstants
+                                                        .GreenColor)
+                                              ]),
+                                        ),
+                                      ));
+                            }
                           },
                           child: Container(
                             height: 38,

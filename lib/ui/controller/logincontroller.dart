@@ -24,17 +24,20 @@ class LoginController extends GetxController with StateMixin {
     // var res = false;
     var res = await api.getEmailverification(email);
 
-    if (res != null) {
-      verifyEmail = false;
-      forOtp = 2;
+    if (res['success'] == true) {
+      var res2 = await api.getOTP(email);
 
-      update();
-      // var res2 = await api.getOTP(email);
-      startTimer();
-      var res2 = true;
+      if (res2['success'] == true) {
+        // if (true) {
+        verifyEmail = false;
+        forOtp = 2;
 
-      update();
+        startTimer();
+        // var res2 = true;
+      }
     }
+
+    update();
   }
 
   startResend() async {
@@ -65,15 +68,17 @@ class LoginController extends GetxController with StateMixin {
 
   otpcheck(String email, String otp) async {
     change(null, status: RxStatus.loading());
-    // var res = await api.otpMatch(email, otp);
-    var res = true;
+    var res = await api.otpMatch(email, otp);
+    // var res = true;
 
-    if (res == true) {
-      forOtp = 1;
-      otpSuccessful = 1;
-      createPassword = true;
+    if (res != null) {
+      if (res['success'] == true) {
+        forOtp = 1;
+        otpSuccessful = 1;
+        createPassword = true;
 
-      // Get.to(CreatePasswrord(email: email));
+        // Get.to(CreatePasswrord(email: email));
+      }
     }
 
     update();

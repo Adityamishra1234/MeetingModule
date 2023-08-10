@@ -12,9 +12,11 @@ class FindNotesModel {
   String? updatedAt;
   List<AllUserModel>? visibleTo;
   bool? isAdded;
+  String? image_note;
 
   FindNotesModel(
       {this.id,
+      this.image_note,
       this.meetingId,
       this.noteType,
       this.note,
@@ -43,6 +45,7 @@ class FindNotesModel {
       });
     }
     isAdded = json['is_added'];
+    image_note = json['image_note'];
   }
 
   Map<String, dynamic> toJson() {
@@ -60,6 +63,8 @@ class FindNotesModel {
       data['visible_to'] = this.visibleTo!.map((v) => v.toJson()).toList();
     }
     data['is_added'] = this.isAdded;
+    data['image_note'] = this.image_note;
+
     return data;
   }
 }
