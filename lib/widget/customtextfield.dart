@@ -83,7 +83,7 @@ class CustomTextField extends StatelessWidget {
           } else if (Validator.email == validator) {
             return getEmailvaliation(value);
           } else if (Validator.password == validator) {
-            print("password");
+            return getPasswordValidator(value);
           } else if (Validator.notEmpty == validator) {
             return getEmptyValidation(value);
           } else if (Validator.otp == validator) {

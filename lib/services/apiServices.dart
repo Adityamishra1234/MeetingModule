@@ -831,4 +831,39 @@ class ApiServices extends BaseServices implements API {
     }
     return null;
   }
+
+  @override
+  forgetpassword(String email) async {
+    try {
+      var url = '${Endpoints.baseUrl}${Endpoints.forgetPassword + "/" + email}';
+
+      var res = await httpPostNullBody(url);
+
+      if (res != null) {
+        getToast(res["message"]);
+        return true;
+      }
+    } catch (e) {
+      throw UnimplementedError();
+    }
+    // TODO: implement findUniversityCountryByMeetingId
+  }
+
+  @override
+  updatePasswordForget(String email, String otp, String password) async {
+    try {
+      var url =
+          '${Endpoints.baseUrl}${Endpoints.passwordUpdateForgetCase + "/" + email + "/" + otp + "/" + password}';
+
+      var res = await httpPostNullBody(url);
+
+      if (res != null) {
+        getToast(res["message"]);
+        return true;
+      }
+    } catch (e) {
+      throw UnimplementedError();
+    }
+    // TODO: implement findUniversityCountryByMeetingId
+  }
 }

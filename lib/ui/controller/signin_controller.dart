@@ -1,8 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/snackbarconstants.dart';
+import 'package:meeting_module2/utils/theme.dart';
+import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
+import 'package:meeting_module2/widget/customtextfield.dart';
+import 'package:nice_loading_button/nice_loading_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SigninController extends GetxController with StateMixin {
@@ -13,6 +18,10 @@ class SigninController extends GetxController with StateMixin {
   RxInt resendOTP = 0.obs;
   int otpSuccessful = 0;
   bool createPassword = false;
+  bool passwordForget = false;
+
+  var otpController = TextEditingController();
+  var passwordController = TextEditingController();
 
   startResend() async {
     // var res2 = await api.getOTP(email);
@@ -137,5 +146,103 @@ class SigninController extends GetxController with StateMixin {
     } else {
       return false;
     }
+  }
+
+  forgetPaasword(String email, BuildContext context) async {
+    var res = await api.forgetpassword(email);
+    if (res != null) {
+      Get.back();
+      getDailogForForget(context, email);
+    }
+  }
+
+  updatePasswordForget(String email, String password, String otp) async {
+    var res = await api.updatePasswordForget(email, otp, password);
+    if (res != null) {
+      Get.back();
+    }
+  }
+
+  getDailogForForget(BuildContext context, String email) {
+    var emailController = TextEditingController();
+    emailController.text = email;
+    return showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        content: Container(
+          width: MediaQuery.of(context).size.width * 0.7,
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: CustomAutoSizeTextMontserrat(
+                text: 'Reset password',
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: CustomTextField(
+                  backgroundCOlour: ThemeConstants.whitecolor,
+                  hint: "Enter your office email",
+                  validator: Validator.email,
+                  readOrEdit: true,
+                  controller: emailController),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: CustomTextField(
+                  backgroundCOlour: ThemeConstants.whitecolor,
+                  hint: "Enter your OTP",
+                  validator: Validator.otp,
+                  controller: otpController),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: CustomTextField(
+                  backgroundCOlour: ThemeConstants.whitecolor,
+                  hint: "Enter your password",
+                  validator: Validator.password,
+                  controller: passwordController),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 2),
+              child: LoadingButton(
+                height: 35,
+                borderRadius: 8,
+                animate: true,
+                color: ThemeConstants.bluecolor,
+                width: MediaQuery.of(context).size.width * 0.44,
+                loader: Container(
+                  padding: const EdgeInsets.all(10),
+                  width: 40,
+                  height: 40,
+                  child: CircularProgressIndicator(
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(ThemeConstants.bluecolor),
+                  ),
+                ),
+                child: CustomAutoSizeTextMontserrat(
+                  text: 'Update Password',
+                  textColor: ThemeConstants.whitecolor,
+                ),
+                onTap: (startLoading, stopLoading, buttonState) async {
+                  // print(widget.path);
+
+                  startLoading();
+                  if (passwordController.text.isNotEmpty &&
+                      otpController.text.isNotEmpty) {
+                    await updatePasswordForget(
+                        email, passwordController.text, otpController.text);
+                  } else {
+                    getToast("Kindly check your fields");
+                  }
+
+                  stopLoading();
+                },
+              ),
+            ),
+          ]),
+        ),
+      ),
+    );
   }
 }

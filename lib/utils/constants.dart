@@ -146,6 +146,17 @@ getPhoneNumbervalidation(String? value) {
   }
 }
 
+getPasswordValidator(String? value) {
+  if (value != null) {
+    if (value.length != 6) {
+      return 'Kindly enter your password minimum 6 \nlength characters';
+    } else
+      return null;
+  } else {
+    return "Kindly enter your password minimum 6 \nlength characters";
+  }
+}
+
 getOtpvalidation(String? value) {
   if (value != null) {
     if (value.length != 6) {
