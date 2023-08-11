@@ -832,4 +832,52 @@ class ApiServices extends BaseServices implements API {
     }
     return null;
   }
+
+  @override
+  publishNote({required university_id, required notes, required userId}) async {
+    try {
+      var url = '${Endpoints.baseUrl}${Endpoints.publishNote}';
+      var data = {
+        "id": null,
+        "university_id": university_id,
+        "notes": '$notes',
+        "is_active": true,
+        "created_by": userId,
+        "updated_by": userId,
+        "created_at": "2023-08-06",
+        "updated_at": "2023-08-06"
+      };
+
+      var data2 = json.encode(data);
+
+      var res = await httpPostHeader(url, data2);
+
+      return res['model'];
+    } catch (e) {
+      getToast('Upload Document error');
+    }
+  }
+
+  @override
+  findUniversityIdFromMeeting({required meeting_id}) async {
+    try {
+      var url = '${Endpoints.baseUrl}${Endpoints.universityIdByMeetingId}';
+      var data = {"meeting_id": meeting_id};
+
+      var data2 = json.encode(data);
+
+      var res = await httpPostHeader(url, data2);
+      // print(res);
+      print(res['model']);
+
+      if (res != null) {
+        return res['model'];
+      }
+    } catch (e) {}
+
+    // TODO: implement uploadMeetingModuleDocument
+    throw UnimplementedError();
+    // TODO: implement findUniversityIdFromMeeting
+    // s
+  }
 }

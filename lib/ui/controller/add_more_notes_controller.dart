@@ -404,7 +404,9 @@ class AddMoreNotesController extends GetxController with StateMixin {
   }
 
   Future<bool> showPublish(FindNotesModel note) async {
-    if (getNoteTypefromId(note.noteType!) == 'Training Note') {
+    var noteType = getNoteTypefromId(note.noteType!);
+    if (noteType == 'Training Notes' &&
+        baseController.selectedMeetingData.meetingType == 'External Meeting') {
       var res = await showPublishButton();
       if (res == true) {
         return true;
@@ -462,6 +464,8 @@ class AddMoreNotesController extends GetxController with StateMixin {
                   // visible:   true,
                   child: InkWell(
                     onTap: () {
+                      publishNote(notesList[i]);
+                      // Get.to( )
                       // Get.to(AssignToView(), arguments: widget.dataList![i]);
                     },
                     child: Padding(
@@ -979,5 +983,13 @@ class AddMoreNotesController extends GetxController with StateMixin {
         url: url,
       ));
     }
+  }
+
+  publishNote(FindNotesModel notes) async {
+    var universityID = await api.findUniversityIdFromMeeting(
+        meeting_id: baseController.selectedMeetingData.id);
+
+    var res = await api.publishNote(
+        university_id: universityID, notes: notes.note, userId: id);
   }
 }

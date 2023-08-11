@@ -75,9 +75,13 @@ class Endpoints {
 
   static String checkShowPublishButton = 'checkShowPublishButton';
 
+  static String publishNote = 'notesPublish';
+
   static String encrypt = 'encryptionAPI2';
 
   static String decrypt = 'decryptionAPI2';
 
   static String uploadMeetingDocument = 'meeting-attachment';
+
+  static String universityIdByMeetingId = 'univeristyByMeetingID';
 }
