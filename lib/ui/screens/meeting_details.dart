@@ -7,6 +7,7 @@ import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/add_more_notes.dart';
 import 'package:meeting_module2/ui/screens/dashboard_page.dart';
+import 'package:meeting_module2/ui/screens/view_docs.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/custom_button.dart';
@@ -1405,7 +1406,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                                 size: 20,
                                                               ),
                                                             ),
-                                                          )
+                                                          ),
                                                         ],
                                                       ),
                                                       InkWell(
@@ -1571,6 +1572,53 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                     ],
                                   )),
                             ),
+
+                            InkWell(
+                              onTap: () {
+                                Get.to(ViewDocs());
+                              },
+                              child: Container(
+                                  width: (MediaQuery.of(context).size.width -
+                                          100) /
+                                      3,
+                                  height: 90,
+                                  margin: EdgeInsets.only(left: 20),
+                                  // padding: EdgeInsets.only(
+                                  //     top: 5, left: 5, bottom: 5, right: 20),
+                                  // margin: EdgeInsets.symmetric(
+                                  //     vertical: 15, horizontal: 12),
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      const BoxShadow(
+                                          blurRadius: 0.5,
+                                          spreadRadius: 0.1,
+                                          color: Color.fromARGB(40, 0, 0, 0))
+                                    ],
+                                    color: ThemeConstants.whitecolor,
+                                    borderRadius: BorderRadius.circular(13),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.calendar_month_rounded,
+                                          size: 30),
+                                      Container(
+                                        width: double.infinity,
+                                        alignment: Alignment.center,
+                                        child: CustomAutoSizeTextMontserrat(
+                                          text: 'View Docs',
+                                          align: TextAlign.center,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w500,
+                                          textColor: ThemeConstants.TextColor,
+                                        ),
+                                      )
+                                    ],
+                                  )),
+                            )
                           ],
                         ),
                       ),

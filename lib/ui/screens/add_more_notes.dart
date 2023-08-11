@@ -350,9 +350,7 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              '${controller.encryptedNote}',
-                                            ),
+                                            Text('${controller.encryptedNote}'),
                                             // InkWell(
                                             //   onTap: () {},
                                             //   child: Container(
