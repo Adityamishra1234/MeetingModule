@@ -156,6 +156,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                   Container(
                     height: 45,
                     child: CustomTimerWidget(
+                        startingDate: DateTime.now(),
                         initialTime: widget.meetingData.dateOfMeeting,
                         callback: (val) {
                           date = val;

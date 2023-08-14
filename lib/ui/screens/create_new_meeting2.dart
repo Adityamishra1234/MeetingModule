@@ -313,6 +313,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                                             : null,
                                   ),
                                 ),
+                                startingDate: DateTime.now(),
                                 isBlank: true,
                                 callback: (val) {
                                   controller.dateController.value = val;

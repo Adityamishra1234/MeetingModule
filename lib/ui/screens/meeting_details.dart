@@ -1032,7 +1032,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             controller.showTheStartEndOptions
                                 ? InkWell(
