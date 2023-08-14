@@ -151,7 +151,7 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
             width: double.infinity,
             height: 40,
             decoration: BoxDecoration(
-                color: ThemeConstants.whitecolor,
+                color: Colors.transparent,
                 border:
                     Border.all(color: ThemeConstants.lightgreycolor, width: 1),
                 borderRadius: BorderRadius.circular(40)),

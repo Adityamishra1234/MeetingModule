@@ -119,7 +119,8 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
   showPublishButton() async {
     var res = await api.showPublishButtonOrNot(
-        meetingId: baseController.selectedMeetingData.id!, userId: 5);
+        meetingId: baseController.selectedMeetingData.id!,
+        userId: baseController.id);
     return res;
   }
 

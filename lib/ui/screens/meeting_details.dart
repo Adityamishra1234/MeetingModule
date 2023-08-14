@@ -947,8 +947,23 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                           children: [
                             InkWell(
                               onTap: () {
-                                Get.toNamed(AddMoreNotesView.routeName,
-                                    arguments: [meetingData.id, 0]);
+                                if (controller.meetingStartedValue == true) {
+                                  Get.toNamed(AddMoreNotesView.routeName,
+                                      arguments: [meetingData.id, 0]);
+                                } else {
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) => AlertDialog(
+                                              content: Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.8,
+                                            child: CustomAutoSizeTextMontserrat(
+                                                text:
+                                                    'Meeting not started yet'),
+                                          )));
+                                }
                               },
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
