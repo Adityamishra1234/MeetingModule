@@ -73,9 +73,10 @@ class DashboardNotesController extends GetxController with StateMixin {
     for (var i = 0; i < notesType.length; i++) {
       // String note2 = await getNoteTypefromId(data[i].noteType!);
       // notesType.add(note2);
-
-      if (data[i].image_note == null) {
-        viewNotes.add({notesType[i]: []});
+      if (data.length > 0) {
+        if (data[i].image_note == null) {
+          viewNotes.add({notesType[i]: []});
+        }
       }
     }
 
