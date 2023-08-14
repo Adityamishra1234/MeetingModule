@@ -73,7 +73,25 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                               title1: 'Add Files',
                               callback: (e) {
                                 if (e == 0) {
-                                  controller.addNotes = true;
+                                  if (Get.find<BaseController>()
+                                          .selectedMeetingData
+                                          .meetingStarted ==
+                                      true) {
+                                    controller.addNotes = true;
+                                  } else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (_) => AlertDialog(
+                                                content: Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.8,
+                                              child: CustomAutoSizeTextMontserrat(
+                                                  text:
+                                                      'Meeting not started yet'),
+                                            )));
+                                  }
                                 } else {
                                   controller.addNotes = false;
                                 }

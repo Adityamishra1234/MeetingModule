@@ -151,9 +151,10 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
             width: double.infinity,
             height: 40,
             decoration: BoxDecoration(
-                color: ThemeConstants.lightblueColor,
-                // border: Border.all(color: ThemeConstants.lightgreycolor, width: 1),
-                borderRadius: BorderRadius.circular(10)),
+                color: Colors.transparent,
+                border:
+                    Border.all(color: ThemeConstants.lightgreycolor, width: 1),
+                borderRadius: BorderRadius.circular(40)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

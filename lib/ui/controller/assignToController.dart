@@ -50,10 +50,10 @@ class AssignToController extends GetxController with StateMixin {
 
     var res = await api.assignTo(data);
     if (res == true) {
-      Get.defaultDialog(
-          content: Container(
-        child: CustomAutoSizeTextMontserrat(text: 'Task Assigned Successfully'),
-      ));
+      // Get.defaultDialog(
+      //     content: Container(
+      //   child: CustomAutoSizeTextMontserrat(text: 'Task Assigned Successfully'),
+      // ));
     }
   }
 
