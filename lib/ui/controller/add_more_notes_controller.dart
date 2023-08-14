@@ -18,7 +18,10 @@ import 'package:meeting_module2/models/reasonOfAttendingAll.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
+import 'package:meeting_module2/ui/screens/assign_to_view.dart';
 import 'package:meeting_module2/utils/constants.dart';
+import 'package:meeting_module2/utils/custom_doc_viewer.dart';
+import 'package:meeting_module2/utils/custom_image_viewer.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customExpansionTile.dart';
@@ -76,8 +79,8 @@ class AddMoreNotesController extends GetxController with StateMixin {
     await checkUserIsCordinator();
     await getMeetingParticipantsList();
     await getReasonOfNotAttedingsAll(baseController.selectedMeetingData.id!);
-    getMeetingCountryAndUniversity();
-    await showPublishButtonOrNot();
+    // getMeetingCountryAndUniversity();
+    // await showPublishButtonOrNot();
     meetingStartedValue = baseController.selectedMeetingData.meetingStarted!;
     meetingEndedValue = baseController.selectedMeetingData.meetingEnded!;
     change(null, status: RxStatus.success());
@@ -86,21 +89,38 @@ class AddMoreNotesController extends GetxController with StateMixin {
   int meetingUniversityID = 0;
   var meetingCountryID = 0;
 
-  getMeetingCountryAndUniversity() async {
-    if (baseController.selectedMeetingData.meetingWith == 'university') {
-      var res = await api.findUniversityCountryByMeetingId(
-          baseController.selectedMeetingData.id);
+  // getMeetingCountryAndUniversity() async {
+  //   if (baseController.selectedMeetingData.meetingWith == 'university') {
+  //     var res = await api.findUniversityCountryByMeetingId(
+  //         baseController.selectedMeetingData.id);
 
-      meetingCountryID = res['country'];
-      meetingUniversityID = res['university'];
+  //     meetingCountryID = res['country'];
+  //     meetingUniversityID = res['university'];
 
-      // print('${res} dddddd  ddd');
-    }
+  //     // print('${res} dddddd  ddd');
+  //   }
+  // }
+
+  String nameFromid(id) {
+    var data = Get.find<BaseController>().allSiecMembersList;
+    var name = '';
+
+    AllUserModel hu = data.where((element) => element.id == id).first;
+    name = hu.name!;
+    // data.where((element) {
+    //   print(element);
+    //   if (element.id == id) {
+    //     name = element.name!;
+    //   }
+    // });
+
+    return name;
   }
 
   showPublishButton() async {
     var res = await api.showPublishButtonOrNot(
-        meetingId: baseController.selectedMeetingData.id!, userId: id);
+        meetingId: baseController.selectedMeetingData.id!, userId: 5);
+    return res;
   }
 
   List<Widget> reasonofNotAtteding = [];
@@ -202,6 +222,9 @@ class AddMoreNotesController extends GetxController with StateMixin {
   List<Widget> documentlist = [];
   List notesTypeToShowInDropDown = [];
   String selectedDropDown = '';
+
+  List<FindNotesModel> imageNotesList = <FindNotesModel>[];
+
   reasonOfNoteAttedning() {}
 
   getNotesOfMeeting() async {
@@ -241,6 +264,8 @@ class AddMoreNotesController extends GetxController with StateMixin {
     for (var i = 0; i < notesList.length; i++) {
       if (notesList[i].image_note == null) {
         notesType.add(notesList[i].noteType);
+      } else {
+        imageNotesList.add(notesList[i]);
       }
     }
 
@@ -378,9 +403,16 @@ class AddMoreNotesController extends GetxController with StateMixin {
     //     await notesList.value.where((e) => e.noteType == 8).toList();
   }
 
-  bool showPublish(FindNotesModel note) {
-    if (getNoteTypefromId(note.noteType!) == 'Training Note') {
-      return true;
+  Future<bool> showPublish(FindNotesModel note) async {
+    var noteType = getNoteTypefromId(note.noteType!);
+    if (noteType == 'Training Notes' &&
+        baseController.selectedMeetingData.meetingType == 'External Meeting') {
+      var res = await showPublishButton();
+      if (res == true) {
+        return true;
+      } else {
+        return false;
+      }
 
       // switch (id) {
       //   case :
@@ -393,9 +425,11 @@ class AddMoreNotesController extends GetxController with StateMixin {
     }
   }
 
-  showThisNote() {
+  showThisNote() async {
+    print('daaa');
     List<Widget> beta = [];
     for (var i = 0; i < notesList.length; i++) {
+      bool showPublishorNot = await showPublish(notesList[i]);
       if (selectedDropDown == getNoteTypefromId(notesList[i].noteType!)) {
         beta.add(Container(
           margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
@@ -426,11 +460,12 @@ class AddMoreNotesController extends GetxController with StateMixin {
                   ),
                 ),
                 Visibility(
-                  visible: showPublish(notesList[i]) == true &&
-                      showPublish(notesList[i]) == true,
+                  visible: showPublishorNot,
                   // visible:   true,
                   child: InkWell(
                     onTap: () {
+                      publishNote(notesList[i]);
+                      // Get.to( )
                       // Get.to(AssignToView(), arguments: widget.dataList![i]);
                     },
                     child: Padding(
@@ -458,7 +493,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
                 ),
                 InkWell(
                   onTap: () {
-                    // Get.to(AssignToView(), arguments: widget.dataList![i]);
+                    Get.to(AssignToView(), arguments: notesList![i]);
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(top: 10),
@@ -925,5 +960,36 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
     update();
     change(null, status: RxStatus.success());
+  }
+
+  getViewDocument(String url) {
+    print(url);
+    String extension = url.split('.').last;
+    print(extension);
+    if (extension == "pdf") {
+      return Get.to(CustomDocumentViewer(
+        url: url,
+      ));
+    } else if (extension == "doc") {
+      Get.to(CustomDocumentViewer(
+        url: url,
+      ));
+    } else if (extension == "docx") {
+      Get.to(CustomDocumentViewer(
+        url: url,
+      ));
+    } else {
+      Get.to(CustomImageViewer(
+        url: url,
+      ));
+    }
+  }
+
+  publishNote(FindNotesModel notes) async {
+    var universityID = await api.findUniversityIdFromMeeting(
+        meeting_id: baseController.selectedMeetingData.id);
+
+    var res = await api.publishNote(
+        university_id: universityID, notes: notes.note, userId: id);
   }
 }

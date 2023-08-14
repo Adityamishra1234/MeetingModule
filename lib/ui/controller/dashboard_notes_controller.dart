@@ -59,8 +59,13 @@ class DashboardNotesController extends GetxController with StateMixin {
 
     for (var i = 0; i < data.length; i++) {
       print(data[i].noteType);
-      String note2 = await getNoteTypefromId(data[i].noteType!);
-      notesType.add(note2);
+
+      if (data[i].image_note == null) {
+        String note2 = await getNoteTypefromId(data[i].noteType!);
+        notesType.add(note2);
+      } else {
+        data.remove(data[i]);
+      }
     }
 
     notesType = notesType.toSet().toList();
@@ -68,7 +73,10 @@ class DashboardNotesController extends GetxController with StateMixin {
     for (var i = 0; i < notesType.length; i++) {
       // String note2 = await getNoteTypefromId(data[i].noteType!);
       // notesType.add(note2);
-      viewNotes.add({notesType[i]: []});
+
+      if (data[i].image_note == null) {
+        viewNotes.add({notesType[i]: []});
+      }
     }
 
     print(notesType);

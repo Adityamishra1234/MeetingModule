@@ -84,4 +84,12 @@ abstract class API {
     required file,
     required uploadFilename,
   });
+
+  findUniversityIdFromMeeting({required meeting_id});
+
+  publishNote({
+    required university_id,
+    required notes,
+    required userId,
+  });
 }
