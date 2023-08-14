@@ -1350,6 +1350,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                     text: "Select target Audience Type",
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
+                    mandatory: true,
                   ),
                 ),
               ),
