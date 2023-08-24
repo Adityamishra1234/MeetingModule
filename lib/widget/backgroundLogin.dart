@@ -18,7 +18,7 @@ class BackgroundAuthView extends StatelessWidget {
             fontSize: 30,
           ),
           CustomAutoSizeTextMontserrat(
-            text: "Lets's Sign you in",
+            text: "Let's Sign you in 001",
             fontSize: 20,
           ),
           SizedBox(

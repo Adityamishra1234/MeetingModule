@@ -90,10 +90,20 @@ class CustomTextField extends StatelessWidget {
             return getOtpvalidation(value);
           } else if (Validator.plzSelectOne == validator) {
             return getEmptyDropDownValidation(value);
+          } else if (Validator.passwordWithSpecial == validator) {
+            return getPasswordWithSpecialCharacterValidator(value);
           }
           return null;
         });
   }
 }
 
-enum Validator { phone, email, password, notEmpty, otp, plzSelectOne }
+enum Validator {
+  phone,
+  email,
+  password,
+  passwordWithSpecial,
+  notEmpty,
+  otp,
+  plzSelectOne
+}

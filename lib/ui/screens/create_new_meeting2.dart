@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cached_network_svg_image/cached_network_svg_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -12,6 +14,7 @@ import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/snackbarconstants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/addRepresentative_widget.dart';
+import 'package:meeting_module2/widget/custom_button.dart';
 import 'package:meeting_module2/widget/custom_date_picker/custom_time_picker_only.dart';
 import 'package:meeting_module2/widget/custom_date_picker/custom_timer_widget.dart';
 import 'package:meeting_module2/widget/custom_date_picker/custom_timer_widget_pick_hour_minutes.dart';
@@ -44,15 +47,19 @@ class CreateNewMeeting2 extends StatelessWidget {
                           right: 10),
                       child: Column(
                         children: [
+                          SizedBox(
+                            height: 10,
+                          ),
                           Align(
                             alignment: AlignmentDirectional.topStart,
                             child: CustomAutoSizeTextMontserrat(
-                              text: "Create \nNew Meeting",
-                              fontSize: 35,
+                              text: "Create New Meeting",
+                              fontSize: 24,
                               textColor: ThemeConstants.bluecolor,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+
                           Row(
                             children: [
                               CustomTabWidget(
@@ -155,83 +162,163 @@ class CreateNewMeeting2 extends StatelessWidget {
                 )
               ],
 
-              Align(
-                alignment: AlignmentDirectional.topStart,
-                child:
-                    // CustomTextField(
-                    //   hint: 'Creat',
-                    //   controller: controller.meetingNameController.value,
-                    // ),
-                    CustomAutoSizeTextMontserrat(
-                  text: "Agenda/Purpose of the Meeting",
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
+              Row(
+                children: [
+                  Align(
+                    alignment: AlignmentDirectional.topStart,
+                    child:
+                        // CustomTextField(
+                        //   hint: 'Creat',
+                        //   controller: controller.meetingNameController.value,
+                        // ),
+                        CustomAutoSizeTextMontserrat(
+                      text: "Agenda/Purpose of the Meeting",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  CircleAvatar(
+                    radius: 15,
+                    backgroundColor: ThemeConstants.bluecolor,
+                    child: IconButton(
+                      iconSize: 15,
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                                  contentPadding: EdgeInsets.all(20),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  content: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        CustomAutoSizeTextMontserrat(
+                                            text: 'Add new Agenda'),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Container(
+                                          // height: 45,
+
+                                          child: CustomTextField(
+                                              validator: Validator.notEmpty,
+                                              hint: '',
+                                              controller: controller
+                                                  .addNewAgendaController
+                                                  .value),
+                                        ),
+                                        CustomButton(
+                                            backgroundColor:
+                                                ThemeConstants.bluecolor,
+                                            text: 'Add',
+                                            onPressed: () {
+                                              if (controller
+                                                      .addNewAgendaController
+                                                      .value
+                                                      .text ==
+                                                  '') {
+                                                getToast('Please Fill');
+                                              } else {
+                                                controller.addNewAgenda(
+                                                    agenda: controller
+                                                        .addNewAgendaController
+                                                        .value
+                                                        .text,
+                                                    userId: Get.find<
+                                                            BaseController>()
+                                                        .id);
+                                              }
+                                            })
+                                      ],
+                                    ),
+                                  ),
+                                ));
+                      },
+                      icon: Icon(
+                        Icons.add,
+                        color: ThemeConstants.whitecolor,
+                      ),
+                    ),
+                  ),
+                ],
               ),
               SizedBox(
                 height: 8,
               ),
-              Container(
-                  child: CustomMultiDownSingle(
-                model: list,
-                initialSelectedValue: list[0],
-                enableMultiSelect: false,
-                callbackFunctionSingle: (Value) {
-                  controller.agendaPurposeOfMeeting.value = Value;
-                },
-              )
+              if (controller.agendaList.length == 0) ...[
+                Container(),
+              ] else ...[
+                Container(
+                    child: CustomMultiDownSingle(
+                  model: controller.agendaList,
+                  initialSelectedValue: controller.agendaList[0],
+                  enableMultiSelect: false,
+                  callbackFunctionSingle: (Value) {
+                    controller.agendaPurposeOfMeeting.value = Value;
+                  },
+                )
 
-                  // DropdownButton2(
-                  //   underline: Container(),
-                  //   buttonStyleData: ButtonStyleData(
-                  //       elevation: 0,
-                  //       height: 40,
-                  //       width: MediaQuery.of(context).size.width,
-                  //       decoration: BoxDecoration(
-                  //           color: Colors.transparent,
-                  //           borderRadius: BorderRadius.circular(20),
-                  //           border:
-                  //               Border.all(width: 1, color: ThemeConstants.blackcolor))),
-                  //   dropdownStyleData: DropdownStyleData(elevation: 1),
-                  //   hint: Text(
-                  //     '${controller.agendaPurposeOfMeeting.value}',
-                  //     style: TextStyle(
-                  //       fontSize: 14,
-                  //       color: Theme.of(context).hintColor,
-                  //     ),
-                  //   ),
+                    // DropdownButton2(
+                    //   underline: Container(),
+                    //   buttonStyleData: ButtonStyleData(
+                    //       elevation: 0,
+                    //       height: 40,
+                    //       width: MediaQuery.of(context).size.width,
+                    //       decoration: BoxDecoration(
+                    //           color: Colors.transparent,
+                    //           borderRadius: BorderRadius.circular(20),
+                    //           border:
+                    //               Border.all(width: 1, color: ThemeConstants.blackcolor))),
+                    //   dropdownStyleData: DropdownStyleData(elevation: 1),
+                    //   hint: Text(
+                    //     '${controller.agendaPurposeOfMeeting.value}',
+                    //     style: TextStyle(
+                    //       fontSize: 14,
+                    //       color: Theme.of(context).hintColor,
+                    //     ),
+                    //   ),
 
-                  //   items: list
-                  //       .map((item) => DropdownMenuItem<String>(
-                  //             value: item,
-                  //             child: Text(
-                  //               item,
-                  //               style: const TextStyle(
-                  //                 fontSize: 14,
-                  //               ),
-                  //             ),
-                  //           ))
-                  //       .toList(),
-                  //   value: controller.agendaPurposeOfMeeting.value == null
-                  //       ? selectedValue
-                  //       : controller.agendaPurposeOfMeeting.value,
-                  //   onChanged: (value) {
-                  //     // controller.frfr(value);
+                    //   items: list
+                    //       .map((item) => DropdownMenuItem<String>(
+                    //             value: item,
+                    //             child: Text(
+                    //               item,
+                    //               style: const TextStyle(
+                    //                 fontSize: 14,
+                    //               ),
+                    //             ),
+                    //           ))
+                    //       .toList(),
+                    //   value: controller.agendaPurposeOfMeeting.value == null
+                    //       ? selectedValue
+                    //       : controller.agendaPurposeOfMeeting.value,
+                    //   onChanged: (value) {
+                    //     // controller.frfr(value);
 
-                  //     controller.agendaPurposeOfMeeting.value = value.toString();
+                    //     controller.agendaPurposeOfMeeting.value = value.toString();
 
-                  //     // controller.changeInFilter();
+                    //     // controller.changeInFilter();
 
-                  //     controller.update();
+                    //     controller.update();
 
-                  //     // controller.showSpecificMeeting(value);
-                  //   },
-                  //   // buttonHeight: 40,
-                  //   // buttonWidth: 140,
-                  //   // itemHeight: 40,
-                  //   // itemWidth: 140,
-                  // ),
-                  ),
+                    //     // controller.showSpecificMeeting(value);
+                    //   },
+                    //   // buttonHeight: 40,
+                    //   // buttonWidth: 140,
+                    //   // itemHeight: 40,
+                    //   // itemWidth: 140,
+                    // ),
+                    ),
+              ],
 
               SizedBox(
                 height: 10,
@@ -293,36 +380,42 @@ class CreateNewMeeting2 extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      Align(
-                        alignment: AlignmentDirectional.topStart,
-                        child: Container(
-                            height: 65,
-                            width: (MediaQuery.of(context).size.width - 60) / 2,
-                            child: CustomTimerWidget(
-                                field: Container(
-                                  height: 22,
-                                  child: CustomTextField(
-                                    forDropDown: false,
-                                    backgroundCOlour: Colors.transparent,
-                                    hint: '',
-                                    readOrEdit: true,
-                                    controller: TextEditingController(),
-                                    validator:
-                                        controller.dateController.value == ''
-                                            ? Validator.plzSelectOne
-                                            : null,
-                                  ),
+                      Container(
+                          height: 65,
+                          width: MediaQuery.of(context).size.width - 25,
+                          child: CustomTimerWidget(
+                              field: Container(
+                                height: 25,
+                                child: CustomTextField(
+                                  forDropDown: false,
+                                  backgroundCOlour: Colors.transparent,
+                                  hint: '',
+                                  readOrEdit: true,
+                                  controller: TextEditingController(),
+                                  validator:
+                                      controller.dateController.value == ''
+                                          ? Validator.plzSelectOne
+                                          : null,
                                 ),
-                                startingDate: DateTime.now(),
-                                isBlank: true,
-                                callback: (val) {
-                                  controller.dateController.value = val;
+                              ),
+                              startingDate: DateTime.now(),
+                              isBlank: true,
+                              callback: (val) {
+                                controller.dateController.value = val;
 
-                                  print(controller.dateController.value);
-                                })),
-                      ),
+                                print(controller.dateController.value);
+                              })),
                     ],
                   ),
+                ],
+              ),
+              SizedBox(
+                height: 0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -372,18 +465,10 @@ class CreateNewMeeting2 extends StatelessWidget {
                       ),
                     ],
                   ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
@@ -397,12 +482,12 @@ class CreateNewMeeting2 extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
-                          bottom: 0,
+                          bottom: 8,
                         ),
                         child: Align(
                           alignment: AlignmentDirectional.topStart,
                           child: Container(
-                            height: 45,
+                            height: 42,
                             width: (MediaQuery.of(context).size.width - 60) / 2,
                             child: CustomTimerWidgetForHourMinutes(
                                 callback: (val) async {
@@ -492,86 +577,270 @@ class CreateNewMeeting2 extends StatelessWidget {
                       // ),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: CustomAutoSizeTextMontserrat(
-                            text: "Meeting Type",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                ],
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Wrap(
+                    alignment: WrapAlignment.spaceBetween,
+                    runAlignment: WrapAlignment.spaceBetween,
+                    spacing: 20,
+                    runSpacing: 5,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: CustomAutoSizeTextMontserrat(
+                              text: "Meeting Type",
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Radio(
+                                  value: true,
+                                  groupValue: controller.MeetingType.value,
+                                  onChanged: (value) {
+                                    controller.MeetingType.value = true;
+                                    controller.update();
+                                  }),
+                              CustomAutoSizeTextMontserrat(
+                                text: 'Online',
+                                fontSize: 10,
+                              ),
+                              SizedBox(
+                                width: 50,
+                              ),
+                              Radio(
+                                  value: false,
+                                  groupValue: controller.MeetingType.value,
+                                  onChanged: (value) {
+                                    controller.MeetingType.value = false;
+                                    controller.fetchParticipantData();
+                                    // controller.selectedOption = 1;
+                                    controller.update();
+                                  }),
+                              CustomAutoSizeTextMontserrat(
+                                text: 'Offline',
+                                fontSize: 10,
+                              ),
+                            ],
+                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(),
+                          //   child: Align(
+                          //       alignment: AlignmentDirectional.topStart,
+                          //       child: Container(
+                          //           width:
+                          //               (MediaQuery.of(context).size.width - 60) / 2,
+                          //           child: CustomMultiDownSingle(
+                          //               callbackFunctionSingle: (val) {
+                          //                 print(val);
+                          //                 if (val == 'Offline') {
+                          //                   controller.MeetingType.value = false;
+                          //                   controller.meetingLocation =
+                          //                       true.toString();
+                          //                   controller.update();
+                          //                 } else {
+                          //                   controller.MeetingType.value = true;
+                          //                   controller.update();
+                          //                 }
+                          //               },
+                          //               enableMultiSelect: false,
+                          //               model: ['Online', 'Offline'],
+                          //               initialSelectedValue: 'Online'))),
+                          // ),
+                        ],
+                      ),
+                      // Spacer(),
+                      SizedBox(
+                        width: 20,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Padding(
+                  //   padding: const EdgeInsets.only(bottom: 8),
+                  //   child: Column(
+                  //     mainAxisAlignment: MainAxisAlignment.start,
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       Padding(
+                  //         padding: const EdgeInsets.only(bottom: 8),
+                  //         child: CustomAutoSizeTextMontserrat(
+                  //           text: "Meeting Type",
+                  //           fontSize: 14,
+                  //           fontWeight: FontWeight.w500,
+                  //         ),
+                  //       ),
+                  //       Padding(
+                  //         padding: const EdgeInsets.only(),
+                  //         child: Align(
+                  //             alignment: AlignmentDirectional.topStart,
+                  //             child: Container(
+                  //                 width:
+                  //                     (MediaQuery.of(context).size.width - 60) /
+                  //                         2,
+                  //                 child: CustomMultiDownSingle(
+                  //                     callbackFunctionSingle: (val) {
+                  //                       print(val);
+                  //                       if (val == 'Offline') {
+                  //                         controller.MeetingType.value = false;
+                  //                         controller.meetingLocation =
+                  //                             true.toString();
+                  //                         controller.update();
+                  //                       } else {
+                  //                         controller.MeetingType.value = true;
+                  //                         controller.update();
+                  //                       }
+                  //                     },
+                  //                     enableMultiSelect: false,
+                  //                     model: ['Online', 'Offline'],
+                  //                     initialSelectedValue: 'Online'))),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                ],
+              ),
+              if (controller.MeetingType.value == false) ...[
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Wrap(
+                      alignment: WrapAlignment.spaceBetween,
+                      runAlignment: WrapAlignment.spaceBetween,
+                      spacing: 20,
+                      runSpacing: 5,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: CustomAutoSizeTextMontserrat(
+                                text: "Location",
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Radio(
+                                    value: true.toString(),
+                                    groupValue: controller.meetingLocation,
+                                    onChanged: (value) {
+                                      controller.meetingLocation =
+                                          true.toString();
+                                      controller.update();
+                                    }),
+                                CustomAutoSizeTextMontserrat(
+                                  text: 'Siec Branch',
+                                  fontSize: 10,
+                                ),
+                                SizedBox(
+                                  width: 50,
+                                ),
+                                Radio(
+                                    value: false.toString(),
+                                    groupValue: controller.meetingLocation,
+                                    onChanged: (value) {
+                                      controller.meetingLocation =
+                                          false.toString();
+                                      controller.update();
+                                    }),
+                                CustomAutoSizeTextMontserrat(
+                                  text: 'Others',
+                                  fontSize: 10,
+                                ),
+                              ],
+                            ),
+                            // Padding(
+                            //   padding: const EdgeInsets.only(),
+                            //   child: Align(
+                            //       alignment: AlignmentDirectional.topStart,
+                            //       child: Container(
+                            //           width:
+                            //               (MediaQuery.of(context).size.width - 60) / 2,
+                            //           child: CustomMultiDownSingle(
+                            //               callbackFunctionSingle: (val) {
+                            //                 print(val);
+                            //                 if (val == 'Offline') {
+                            //                   controller.MeetingType.value = false;
+                            //                   controller.meetingLocation =
+                            //                       true.toString();
+                            //                   controller.update();
+                            //                 } else {
+                            //                   controller.MeetingType.value = true;
+                            //                   controller.update();
+                            //                 }
+                            //               },
+                            //               enableMultiSelect: false,
+                            //               model: ['Online', 'Offline'],
+                            //               initialSelectedValue: 'Online'))),
+                            // ),
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(),
-                          child: Align(
-                              alignment: AlignmentDirectional.topStart,
-                              child: Container(
-                                  width:
-                                      (MediaQuery.of(context).size.width - 60) /
-                                          2,
-                                  child: CustomMultiDownSingle(
-                                      callbackFunctionSingle: (val) {
-                                        print(val);
-                                        if (val == 'Offline') {
-                                          controller.MeetingType.value = false;
-                                          controller.meetingLocation =
-                                              true.toString();
-                                          controller.update();
-                                        } else {
-                                          controller.MeetingType.value = true;
-                                          controller.update();
-                                        }
-                                      },
-                                      enableMultiSelect: false,
-                                      model: ['Online', 'Offline'],
-                                      initialSelectedValue: 'Online'))),
+                        // Spacer(),
+                        SizedBox(
+                          width: 20,
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
-              if (controller.MeetingType.value == false) ...[
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Align(
-                    alignment: AlignmentDirectional.topStart,
-                    child: CustomAutoSizeTextMontserrat(
-                      text: "Location",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                //
-
-                Container(
-                  child: CustomMultiDownSingle(
-                    enableMultiSelect: false,
-                    model: ['Siec Branch', 'Others'],
-                    initialSelectedValue: 'Siec Branch',
-                    callbackFunctionSingle: (val) {
-                      print(val);
-                      if (val == 'Others') {
-                        controller.meetingLocation = false.toString();
-                        controller.update();
-                      }
-                      if (val == 'Siec Branch') {
-                        controller.meetingLocation = true.toString();
-                        controller.update();
-                      }
-                    },
-                  ),
                 ),
 
-                SizedBox(
-                  height: 10,
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(bottom: 8),
+                //   child: Align(
+                //     alignment: AlignmentDirectional.topStart,
+                //     child: CustomAutoSizeTextMontserrat(
+                //       text: "Location",
+                //       fontSize: 14,
+                //       fontWeight: FontWeight.w500,
+                //     ),
+                //   ),
+                // ),
+                // //
+
+                // Container(
+                //   child: CustomMultiDownSingle(
+                //     enableMultiSelect: false,
+                //     model: ['Siec Branch', 'Others'],
+                //     initialSelectedValue: 'Siec Branch',
+                //     callbackFunctionSingle: (val) {
+                //       print(val);
+                //       if (val == 'Others') {
+                //         controller.meetingLocation = false.toString();
+                //         controller.update();
+                //       }
+                //       if (val == 'Siec Branch') {
+                //         controller.meetingLocation = true.toString();
+                //         controller.update();
+                //       }
+                //     },
+                //   ),
+                // ),
+
+                // SizedBox(
+                //   height: 10,
+                // ),
                 if (controller.meetingLocation == true.toString()) ...[
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8),
@@ -584,19 +853,81 @@ class CreateNewMeeting2 extends StatelessWidget {
                       ),
                     ),
                   ),
-                  //
                   Container(
-                    child: CustomMultiDownSingleAllUser(
-                      enableMultiSelect: false,
-                      model: controller.branchList,
-                      initialSelectedValue: 'Siec Branch',
-                      callbackFunctionSingle: (AllUserModel val) {
-                        print('$val ddd');
-                        controller.selectMeetingBranch.value = val;
-                        controller.update();
-                      },
-                    ),
+                    margin: const EdgeInsets.symmetric(vertical: 5),
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    height: 110,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: controller.branchListwithFlag.length,
+                        itemBuilder: (context, index) => InkWell(
+                              onTap: () {
+                                controller.selectMeetingBranch.value =
+                                    controller.branchListwithFlag[index].id!;
+                                controller.update();
+                              },
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                width: 140,
+                                decoration: BoxDecoration(
+                                    color:
+                                        controller.selectMeetingBranch.value ==
+                                                controller
+                                                    .branchListwithFlag[index]
+                                                    .id
+                                            ? ThemeConstants.lightblueColor2
+                                            : ThemeConstants.whitecolor,
+                                    borderRadius: BorderRadius.circular(15),
+                                    border: Border.all(
+                                        width: 1,
+                                        color: ThemeConstants.bluecolor)),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: 50,
+                                        height: 50,
+                                        child: CachedNetworkImage(
+                                          imageUrl: controller
+                                              .branchListwithFlag[index]
+                                              .imageLink!,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        '${controller.branchListwithFlag[index].name}',
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      )
+                                    ]),
+                              ),
+                            )),
                   ),
+
+                  //
+                  // Container(
+                  //   child: CustomMultiDownSingleAllUser(
+                  //     enableMultiSelect: false,
+                  //     model: controller.branchList,
+                  //     initialSelectedValue: 'Siec Branch',
+                  //     callbackFunctionSingle: (AllUserModel val) {
+                  //       print('$val ddd');
+                  //       controller.selectMeetingBranch.value = val;
+                  //       controller.update();
+                  //     },
+                  //   ),
+                  // ),
 
                   SizedBox(
                     height: 10,
@@ -639,14 +970,72 @@ class CreateNewMeeting2 extends StatelessWidget {
                     ),
                   ),
                 ),
-                CustomMultiDownSingle(
-                  enableMultiSelect: false,
-                  model: ['Zoom', 'Meet', 'Teams'],
-                  initialSelectedValue: 'Zoom',
-                  callbackFunctionSingle: (val) {
-                    controller.modeOfMeeting.value = val;
-                  },
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  height: 110,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 3,
+                      itemBuilder: (context, index) => InkWell(
+                            onTap: () {
+                              controller.modeOfMeeting.value =
+                                  controller.modeOfMeetingList[index];
+
+                              print(controller.modeOfMeeting.value);
+                              // controller.selectMeetingBranch.value =
+                              //     controller.branchListwithFlag[index].id!;
+                              controller.update();
+                            },
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              width: 140,
+                              decoration: BoxDecoration(
+                                  color: controller.modeOfMeeting.value ==
+                                          controller.modeOfMeetingList[index]
+                                      ? ThemeConstants.lightblueColor2
+                                      : ThemeConstants.whitecolor,
+                                  borderRadius: BorderRadius.circular(15),
+                                  border: Border.all(
+                                      width: 1,
+                                      color: ThemeConstants.bluecolor)),
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 50,
+                                      height: 50,
+                                      child: Image.asset(
+                                          controller.modeOfMeetingIcon[index]),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      '${controller.modeOfMeetingList[index]}',
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    )
+                                  ]),
+                            ),
+                          )),
                 ),
+                // CustomMultiDownSingle(
+                //   enableMultiSelect: false,
+                //   model: ['Zoom', 'Meet', 'Teams'],
+                //   initialSelectedValue: 'Zoom',
+                //   callbackFunctionSingle: (val) {
+                //     controller.modeOfMeeting.value = val;
+                //   },
+                // ),
                 SizedBox(
                   height: 15,
                 ),
@@ -688,7 +1077,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                     alignment: AlignmentDirectional.topStart,
                     child: CustomAutoSizeTextMontserrat(
                       text: "Participants",
-                      fontSize: 25,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -966,77 +1355,145 @@ class CreateNewMeeting2 extends StatelessWidget {
                     ),
                   ]
                 ],
-                Align(
-                  alignment: AlignmentDirectional.topStart,
-                  child: GestureDetector(
-                    onTap: () {
-                      addRepresentative(context, controllers);
-                      // showDialog(
-                      //     context: context,
-                      //     builder: (_) => CustomProfileDialogue(
-                      //         child: Container(
-                      //           child: Column(children: [
-                      //             Row(
-                      //               children: [
-                      //                 CustomButton(text: 'Unive', onPressed: () {}),
-                      //                 CustomButton(
-                      //                     text: 'Vendor', onPressed: () {}),
-                      //                 CustomButton(text: 'Bank', onPressed: () {}),
-                      //               ],
-                      //             ),
-                      //             Padding(
-                      //               padding: const EdgeInsets.only(left: 15),
-                      //               child: Align(
-                      //                 alignment: AlignmentDirectional.topStart,
-                      //                 child: CustomAutoSizeTextMontserrat(
-                      //                   text: "University",
-                      //                   fontSize: 16,
-                      //                   fontWeight: FontWeight.bold,
-                      //                 ),
-                      //               ),
-                      //             ),
-                      //           ]),
-                      //         ),
-                      //         title: 'Add Representative'));
-                    },
-                    child: Container(
-                      height: 38,
-                      width: MediaQuery.of(context).size.width * 0.55,
-                      decoration: BoxDecoration(
-                          color: ThemeConstants.bluecolor,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(30.0))),
-                      child: Center(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        controller.showRepresentativeData =
+                            !controller.showRepresentativeData;
+
+                        // showDialog(
+                        //     context: context,
+                        //     builder: (_) => DialogHora(controller: controller));
+                        // controller.listOfParticipants
+                        //     .add(controllers.participantData.value);
+                        controller.update();
+                      },
+                      child: Container(
+                        height: 38,
+                        width: MediaQuery.of(context).size.width * 0.35,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 1, color: ThemeConstants.orangeColor),
+                            color: Colors.transparent,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(30.0))),
+                        child: Center(
+                          child: CustomAutoSizeTextMontserrat(
+                              text: "View Representative Data",
+                              align: TextAlign.center,
+                              textColor: ThemeConstants.orangeColor,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        addRepresentative(context, controllers);
+                        // showDialog(
+                        //     context: context,
+                        //     builder: (_) => CustomProfileDialogue(
+                        //         child: Container(
+                        //           child: Column(children: [
+                        //             Row(
+                        //               children: [
+                        //                 CustomButton(text: 'Unive', onPressed: () {}),
+                        //                 CustomButton(
+                        //                     text: 'Vendor', onPressed: () {}),
+                        //                 CustomButton(text: 'Bank', onPressed: () {}),
+                        //               ],
+                        //             ),
+                        //             Padding(
+                        //               padding: const EdgeInsets.only(left: 15),
+                        //               child: Align(
+                        //                 alignment: AlignmentDirectional.topStart,
+                        //                 child: CustomAutoSizeTextMontserrat(
+                        //                   text: "University",
+                        //                   fontSize: 16,
+                        //                   fontWeight: FontWeight.bold,
+                        //                 ),
+                        //               ),
+                        //             ),
+                        //           ]),
+                        //         ),
+                        //         title: 'Add Representative'));
+                      },
+                      child: Container(
+                        height: 38,
+                        width: MediaQuery.of(context).size.width * 0.55,
+                        decoration: BoxDecoration(
+                            color: ThemeConstants.bluecolor,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(30.0))),
+                        child: Center(
+                          child: CustomAutoSizeTextMontserrat(
+                            text: "Add New Representative",
+                            textColor: ThemeConstants.whitecolor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      // child: CustomAutoSizeTextMontserrat(
+                      //   text: "ADD",
+                      //   fontSize: 16,
+                      //   fontWeight: FontWeight.bold,
+                      // ),
+                    ),
+                  ],
+                ),
+
+                if (controller.showRepresentativeData == true) ...[
+                  if (controller.meetingWith.value !=
+                      'University Meetings') ...[
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Align(
+                        alignment: AlignmentDirectional.topStart,
                         child: CustomAutoSizeTextMontserrat(
-                          text: "Add New Representative",
-                          textColor: ThemeConstants.whitecolor,
+                          text: "Name of the Person",
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
-                    // child: CustomAutoSizeTextMontserrat(
-                    //   text: "ADD",
-                    //   fontSize: 16,
-                    //   fontWeight: FontWeight.bold,
-                    // ),
-                  ),
-                ),
-                if (controller.meetingWith.value != 'University Meetings') ...[
-                  SizedBox(
-                    height: 10,
-                  ),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 9, horizontal: 10),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: ThemeConstants.bluecolor, width: 1),
+                          color: ThemeConstants.lightVioletColor,
+                          borderRadius: BorderRadius.circular(500)),
+                      width: double.infinity,
+                      height: 40,
+                      child: CustomAutoSizeTextMontserrat(
+                        text: '${controller.participantData.value.personName}',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.only(bottom: 8, top: 8),
                     child: Align(
                       alignment: AlignmentDirectional.topStart,
                       child: CustomAutoSizeTextMontserrat(
-                        text: "Name of the Person",
+                        text: "Designation",
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
+
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 9, horizontal: 10),
                     decoration: BoxDecoration(
@@ -1047,132 +1504,103 @@ class CreateNewMeeting2 extends StatelessWidget {
                     width: double.infinity,
                     height: 40,
                     child: CustomAutoSizeTextMontserrat(
-                      text: '${controller.participantData.value.personName}',
+                      text: '${controller.participantData.value.designation}',
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+
                   SizedBox(
                     height: 10,
                   ),
+                  // CustomTextField(
+                  //   hint: '',
+                  //   controller: controller.designation.value,
+                  // ),
+
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 15),
+                  //   child: Align(
+                  //     alignment: AlignmentDirectional.topStart,
+                  //     child: CustomAutoSizeTextMontserrat(
+                  //       text: "Add Representative",
+                  //       fontSize: 16,
+                  //       fontWeight: FontWeight.bold,
+                  //     ),
+                  //   ),
+                  // ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Align(
+                      alignment: AlignmentDirectional.topStart,
+                      child: CustomAutoSizeTextMontserrat(
+                        text: "Email id",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 0),
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 9, horizontal: 10),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: ThemeConstants.bluecolor, width: 1),
+                          color: ThemeConstants.lightVioletColor,
+                          borderRadius: BorderRadius.circular(500)),
+                      width: double.infinity,
+                      height: 40,
+                      child: CustomAutoSizeTextMontserrat(
+                        text: '${controller.participantData.value.email}',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: 10,
+                  ),
+                  // CustomTextField(
+                  //   hint: '',
+                  //   controller: controller.designation.value,
+                  // ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Align(
+                      alignment: AlignmentDirectional.topStart,
+                      child: CustomAutoSizeTextMontserrat(
+                        text: "Phone Number",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 0),
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 9, horizontal: 10),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: ThemeConstants.bluecolor, width: 1),
+                          color: ThemeConstants.lightVioletColor,
+                          borderRadius: BorderRadius.circular(500)),
+                      width: double.infinity,
+                      height: 40,
+                      child: CustomAutoSizeTextMontserrat(
+                        text: controller.participantData.value.phone == null
+                            ? ''
+                            : '${controller.participantData.value.phone}',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
                 ],
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8, top: 8),
-                  child: Align(
-                    alignment: AlignmentDirectional.topStart,
-                    child: CustomAutoSizeTextMontserrat(
-                      text: "Designation",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 9, horizontal: 10),
-                  decoration: BoxDecoration(
-                      border:
-                          Border.all(color: ThemeConstants.bluecolor, width: 1),
-                      color: ThemeConstants.lightVioletColor,
-                      borderRadius: BorderRadius.circular(500)),
-                  width: double.infinity,
-                  height: 40,
-                  child: CustomAutoSizeTextMontserrat(
-                    text: '${controller.participantData.value.designation}',
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-
-                SizedBox(
-                  height: 10,
-                ),
-                // CustomTextField(
-                //   hint: '',
-                //   controller: controller.designation.value,
-                // ),
-
-                // Padding(
-                //   padding: const EdgeInsets.only(left: 15),
-                //   child: Align(
-                //     alignment: AlignmentDirectional.topStart,
-                //     child: CustomAutoSizeTextMontserrat(
-                //       text: "Add Representative",
-                //       fontSize: 16,
-                //       fontWeight: FontWeight.bold,
-                //     ),
-                //   ),
-                // ),
-
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Align(
-                    alignment: AlignmentDirectional.topStart,
-                    child: CustomAutoSizeTextMontserrat(
-                      text: "Email id",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 0),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 9, horizontal: 10),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: ThemeConstants.bluecolor, width: 1),
-                        color: ThemeConstants.lightVioletColor,
-                        borderRadius: BorderRadius.circular(500)),
-                    width: double.infinity,
-                    height: 40,
-                    child: CustomAutoSizeTextMontserrat(
-                      text: '${controller.participantData.value.email}',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-
-                SizedBox(
-                  height: 10,
-                ),
-                // CustomTextField(
-                //   hint: '',
-                //   controller: controller.designation.value,
-                // ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Align(
-                    alignment: AlignmentDirectional.topStart,
-                    child: CustomAutoSizeTextMontserrat(
-                      text: "Phone Number",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 0),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 9, horizontal: 10),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: ThemeConstants.bluecolor, width: 1),
-                        color: ThemeConstants.lightVioletColor,
-                        borderRadius: BorderRadius.circular(500)),
-                    width: double.infinity,
-                    height: 40,
-                    child: CustomAutoSizeTextMontserrat(
-                      text: controller.participantData.value.phone == null
-                          ? ''
-                          : '${controller.participantData.value.phone}',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-
                 SizedBox(
                   height: 15,
                 ),
@@ -1318,7 +1746,7 @@ class CreateNewMeeting2 extends StatelessWidget {
               ],
 
               Padding(
-                padding: const EdgeInsets.only(left: 0),
+                padding: const EdgeInsets.only(left: 0, top: 10),
                 child: Align(
                   alignment: AlignmentDirectional.topStart,
                   child: CustomAutoSizeTextMontserrat(
@@ -1343,60 +1771,151 @@ class CreateNewMeeting2 extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
+
               Padding(
-                padding: const EdgeInsets.only(left: 0, bottom: 8),
+                padding: const EdgeInsets.only(bottom: 8, top: 8),
                 child: Align(
                   alignment: AlignmentDirectional.topStart,
                   child: CustomAutoSizeTextMontserrat(
                     text: "Select target Audience Type",
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    mandatory: true,
                   ),
                 ),
               ),
+              Container(
+                margin: const EdgeInsets.symmetric(
+                  vertical: 5,
+                ),
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                height: 110,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: controller.selectTargetAudienceType.length,
+                    itemBuilder: (context, index) => InkWell(
+                          onTap: () {
+                            controller.selectedTargetAudience.value =
+                                controller.selectTargetAudienceType[index];
 
-              CustomMultiDownSingle(
-                  field: Container(
-                    height: 22,
-                    child: CustomTextField(
-                      forDropDown: false,
-                      backgroundCOlour: Colors.transparent,
-                      hint: '',
-                      readOrEdit: true,
-                      controller: TextEditingController(),
-                      validator: controller.selectedTargetAudience.value == ''
-                          ? Validator.plzSelectOne
-                          : null,
-                    ),
-                  ),
-                  callbackFunctionSingle: (val) async {
-                    print(val);
-                    controller.selectedTargetAudience.value = val;
+                            // controller.preFilledUsers.clear();
+                            // if (val.toString().toLowerCase() == 'branch based') {
+                            //   await controller.getBranchData();
+                            //   controller.update();
+                            // }
+                            controller.groupNames.value = '';
+                            controller.preFilledUsers = [];
+                            if (controller.selectedTargetAudience.value ==
+                                'Branch Based') {
+                              controller
+                                  .branchSelected(controller.branchList[0]);
+                            }
+                            if (controller.selectedTargetAudience.value ==
+                                'All User') {
+                              controller.preFilledUsers =
+                                  Get.find<BaseController>().allSiecMembersList;
+                            }
+                            controller.update();
+                            // controller.selectMeetingBranch.value =
+                            //     controller.branchListwithFlag[index].id!;
+                            // controller.update();
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            width: 140,
+                            decoration: BoxDecoration(
+                                color: controller.selectedTargetAudience ==
+                                        controller
+                                            .selectTargetAudienceType[index]
+                                    ? ThemeConstants.lightblueColor2
+                                    : ThemeConstants.whitecolor,
+                                borderRadius: BorderRadius.circular(15),
+                                border: Border.all(
+                                    width: 1, color: ThemeConstants.bluecolor)),
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      width: 50,
+                                      height: 50,
+                                      child: Icon(
+                                        Icons.group,
+                                        size: 45,
+                                      )),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    '${controller.selectTargetAudienceType[index]}',
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  )
+                                ]),
+                          ),
+                        )),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 0, bottom: 8),
+              //   child: Align(
+              //     alignment: AlignmentDirectional.topStart,
+              //     child: CustomAutoSizeTextMontserrat(
+              //       text: "Select target Audience Type",
+              //       fontSize: 14,
+              //       fontWeight: FontWeight.w500,
+              //       mandatory: true,
+              //     ),
+              //   ),
+              // ),
 
-                    // controller.preFilledUsers.clear();
-                    // if (val.toString().toLowerCase() == 'branch based') {
-                    //   await controller.getBranchData();
-                    //   controller.update();
-                    // }
-                    controller.groupNames.value = '';
-                    controller.preFilledUsers = [];
-                    if (controller.selectedTargetAudience.value ==
-                        'Branch Based') {
-                      controller.branchSelected(controller.branchList[0]);
-                    }
-                    if (controller.selectedTargetAudience.value == 'All User') {
-                      controller.preFilledUsers =
-                          Get.find<BaseController>().allSiecMembersList;
-                    }
-                    controller.update();
+              // CustomMultiDownSingle(
+              //     field: Container(
+              //       height: 22,
+              //       child: CustomTextField(
+              //         forDropDown: false,
+              //         backgroundCOlour: Colors.transparent,
+              //         hint: '',
+              //         readOrEdit: true,
+              //         controller: TextEditingController(),
+              //         validator: controller.selectedTargetAudience.value == ''
+              //             ? Validator.plzSelectOne
+              //             : null,
+              //       ),
+              //     ),
+              //     callbackFunctionSingle: (val) async {
+              //       print(val);
+              //       controller.selectedTargetAudience.value = val;
 
-                    // print(controller.selectedTargetAudience.value);
-                  },
-                  enableMultiSelect: false,
-                  model: controller.selectTargetAudienceType,
-                  initialSelectedValue:
-                      '${controller.selectedTargetAudience.value}'),
+              //       // controller.preFilledUsers.clear();
+              //       // if (val.toString().toLowerCase() == 'branch based') {
+              //       //   await controller.getBranchData();
+              //       //   controller.update();
+              //       // }
+              //       controller.groupNames.value = '';
+              //       controller.preFilledUsers = [];
+              //       if (controller.selectedTargetAudience.value ==
+              //           'Branch Based') {
+              //         controller.branchSelected(controller.branchList[0]);
+              //       }
+              //       if (controller.selectedTargetAudience.value == 'All User') {
+              //         controller.preFilledUsers =
+              //             Get.find<BaseController>().allSiecMembersList;
+              //       }
+              //       controller.update();
+
+              //       // print(controller.selectedTargetAudience.value);
+              //     },
+              //     enableMultiSelect: false,
+              //     model: controller.selectTargetAudienceType,
+              //     initialSelectedValue:
+              //         '${controller.selectedTargetAudience.value}'),
 
               if (controller.selectedTargetAudience.value == 'Group Wise') ...[
                 Padding(
@@ -1564,8 +2083,9 @@ class CreateNewMeeting2 extends StatelessWidget {
                 child: Align(
                   alignment: AlignmentDirectional.topStart,
                   child: CustomAutoSizeTextMontserrat(
-                    text: "Meeting Cordinator",
+                    text: "Meeting Coordinator",
                     mandatory: true,
+                    fontSize: 14,
                     textColor: ThemeConstants.bluecolor,
                     fontWeight: FontWeight.bold,
                   ),
@@ -1578,6 +2098,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                     child: CustomTextField(
                       forDropDown: false,
                       backgroundCOlour: Colors.transparent,
+                      readOrEdit: true,
                       hint: '',
                       controller: TextEditingController(),
                       validator: controller.selectedCoordinatorList.length == 0

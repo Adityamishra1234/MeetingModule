@@ -65,6 +65,8 @@ dependencies:
   flutter_splash_screen: ^1.0.0+6
   local_auth: ^2.1.6
   webview_flutter: ^4.2.2
+  cached_network_image: ^3.2.3
+  connectivity_plus: ^4.0.2
 
 dev_dependencies:
   flutter_test:

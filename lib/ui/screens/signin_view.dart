@@ -72,278 +72,290 @@ class _SignInViewState extends State<SignInView> {
 
                       alignment: Alignment.bottomCenter,
                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Color.fromARGB(215, 5, 38, 129),
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            // SizedBox(
-                            //     height: 150,
-                            //     child: Column(
-                            //       mainAxisAlignment: MainAxisAlignment.end,
-                            //       children: [
-                            //         CustomAutoSizeTextMontserrat(
-                            //           text: 'Welcome!',
-                            //           fontSize: 30,
-                            //         ),
-                            //         CustomAutoSizeTextMontserrat(
-                            //           text: "Lets's Sign you in",
-                            //           fontSize: 20,
-                            //         )
-                            //       ],
-                            //     )),
-                            // SizedBox(
-                            //   height: 0,
-                            // ),
-                            // SizedBox(
-                            //     width: 350,
-                            //     height: 350,
-                            //     child:
-                            //         Image.asset('assets/images/Login-Image.png')),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 20),
-                              child: CustomAutoSizeTextMontserrat(
-                                text: 'Sign In',
-                                textColor: ThemeConstants.whitecolor,
+                      child: Form(
+                        key: controller.key,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(215, 5, 38, 129),
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            // crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              // SizedBox(
+                              //     height: 150,
+                              //     child: Column(
+                              //       mainAxisAlignment: MainAxisAlignment.end,
+                              //       children: [
+                              //         CustomAutoSizeTextMontserrat(
+                              //           text: 'Welcome!',
+                              //           fontSize: 30,
+                              //         ),
+                              //         CustomAutoSizeTextMontserrat(
+                              //           text: "Lets's Sign you in",
+                              //           fontSize: 20,
+                              //         )
+                              //       ],
+                              //     )),
+                              // SizedBox(
+                              //   height: 0,
+                              // ),
+                              // SizedBox(
+                              //     width: 350,
+                              //     height: 350,
+                              //     child:
+                              //         Image.asset('assets/images/Login-Image.png')),
+                              // Padding(
+                              //   padding: const EdgeInsets.symmetric(vertical: 20),
+                              //   child: CustomAutoSizeTextMontserrat(
+                              //     text: 'Sign In',
+                              //     textColor: ThemeConstants.whitecolor,
+                              //   ),
+                              // ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                child: CustomTextField(
+                                    hint: "Enter your office email",
+                                    validator: Validator.email,
+                                    backgroundCOlour: ThemeConstants.whitecolor,
+                                    controller: emailController),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              child: CustomTextField(
-                                  hint: "Enter your office email",
-                                  validator: Validator.email,
-                                  backgroundCOlour: ThemeConstants.whitecolor,
-                                  controller: emailController),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              child: CustomTextField(
-                                  hint: "Enter your password",
-                                  backgroundCOlour: ThemeConstants.whitecolor,
-                                  validator: Validator.password,
-                                  controller: password),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (_) => AlertDialog(
-                                    content: Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.7,
-                                      child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child:
-                                                  CustomAutoSizeTextMontserrat(
-                                                text: 'Reset password',
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: CustomTextField(
-                                                  backgroundCOlour:
-                                                      ThemeConstants.whitecolor,
-                                                  hint:
-                                                      "Enter your office email",
-                                                  validator: Validator.email,
-                                                  controller: emailController),
-                                            ),
-                                            if (controller.verifyEmail == true)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                child: CustomTextField(
+                                    hint: "Enter your password",
+                                    backgroundCOlour: ThemeConstants.whitecolor,
+                                    validator: Validator.passwordWithSpecial,
+                                    controller: password),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) => AlertDialog(
+                                      content: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.7,
+                                        child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
                                               Padding(
                                                 padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 40,
-                                                        vertical: 2),
-                                                child: LoadingButton(
-                                                  height: 35,
-                                                  borderRadius: 8,
-                                                  animate: true,
-                                                  color:
-                                                      ThemeConstants.bluecolor,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.44,
-                                                  loader: Container(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10),
-                                                    width: 40,
-                                                    height: 40,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      valueColor:
-                                                          AlwaysStoppedAnimation<
-                                                                  Color>(
-                                                              ThemeConstants
-                                                                  .bluecolor),
-                                                    ),
-                                                  ),
-                                                  child:
-                                                      CustomAutoSizeTextMontserrat(
-                                                    text: 'get OTP',
-                                                    textColor: ThemeConstants
-                                                        .whitecolor,
-                                                  ),
-                                                  onTap: (startLoading,
-                                                      stopLoading,
-                                                      buttonState) async {
-                                                    // print(widget.path);
-                                                    if (buttonState ==
-                                                        ButtonState.idle) {
-                                                      startLoading();
-                                                      if (emailController
-                                                          .text.isNotEmpty) {
-                                                        await controller
-                                                            .forgetPaasword(
-                                                                emailController
-                                                                    .text,
-                                                                context);
-                                                      } else {
-                                                        getToast(
-                                                            "Kindly check your email address");
-                                                      }
-
-                                                      // var res = await controller.logIn(
-                                                      //     emailController.value.text,
-                                                      //     password.value.text);
-
-                                                      // if (res) {
-                                                      //   controllerBase.user.value = res;
-                                                      // }
-                                                      // await download(widget.path);
-                                                      // await Future.delayed(const Duration(seconds: 5))
-                                                      stopLoading();
-                                                    }
-                                                  },
+                                                    const EdgeInsets.all(10.0),
+                                                child:
+                                                    CustomAutoSizeTextMontserrat(
+                                                  text: 'Reset password',
                                                 ),
                                               ),
-                                          ]),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
+                                                child: CustomTextField(
+                                                    backgroundCOlour:
+                                                        ThemeConstants
+                                                            .whitecolor,
+                                                    hint:
+                                                        "Enter your office email",
+                                                    validator: Validator.email,
+                                                    controller:
+                                                        emailController),
+                                              ),
+                                              if (controller.verifyEmail ==
+                                                  true)
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 40,
+                                                      vertical: 2),
+                                                  child: LoadingButton(
+                                                    height: 35,
+                                                    borderRadius: 8,
+                                                    animate: true,
+                                                    color: ThemeConstants
+                                                        .bluecolor,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.44,
+                                                    loader: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10),
+                                                      width: 40,
+                                                      height: 40,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        valueColor:
+                                                            AlwaysStoppedAnimation<
+                                                                    Color>(
+                                                                ThemeConstants
+                                                                    .bluecolor),
+                                                      ),
+                                                    ),
+                                                    child:
+                                                        CustomAutoSizeTextMontserrat(
+                                                      text: 'get OTP',
+                                                      textColor: ThemeConstants
+                                                          .whitecolor,
+                                                    ),
+                                                    onTap: (startLoading,
+                                                        stopLoading,
+                                                        buttonState) async {
+                                                      // print(widget.path);
+                                                      if (buttonState ==
+                                                          ButtonState.idle) {
+                                                        startLoading();
+                                                        if (emailController
+                                                            .text.isNotEmpty) {
+                                                          await controller
+                                                              .forgetPaasword(
+                                                                  emailController
+                                                                      .text,
+                                                                  context);
+                                                        } else {
+                                                          getToast(
+                                                              "Kindly check your email address");
+                                                        }
+
+                                                        // var res = await controller.logIn(
+                                                        //     emailController.value.text,
+                                                        //     password.value.text);
+
+                                                        // if (res) {
+                                                        //   controllerBase.user.value = res;
+                                                        // }
+                                                        // await download(widget.path);
+                                                        // await Future.delayed(const Duration(seconds: 5))
+                                                        stopLoading();
+                                                      }
+                                                    },
+                                                  ),
+                                                ),
+                                            ]),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  alignment: Alignment.centerRight,
+                                  width: double.infinity,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 30),
+                                    child: Text(
+                                      "Forg\ot password",
+                                      style: TextStyle(
+                                          color: ThemeConstants.whitecolor),
                                     ),
                                   ),
-                                );
-                              },
-                              child: Container(
-                                alignment: Alignment.centerRight,
-                                width: double.infinity,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              // InkWell(
+                              //   onTap: () async {
+                              //     var res = await controller.logIn(
+                              //         emailController.value.text, password.value.text);
+
+                              //     if (res) {
+                              //       controllerBase.user.value = res;
+                              //     }
+                              //     // Get.to(
+                              //     //     () => CreatePasswrord(email: texfield.value.text));
+                              //     // controller.otpcheck(texfield.text, otpfield.text);
+                              //   },
+                              //   child:
+                              LoadingButton(
+                                height: 35,
+                                borderRadius: 8,
+                                animate: true,
+                                color: ThemeConstants.lightVioletColor,
+                                width: MediaQuery.of(context).size.width * 0.44,
+                                loader: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  width: 40,
+                                  height: 40,
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        ThemeConstants.bluecolor),
+                                  ),
+                                ),
+                                child: CustomAutoSizeTextMontserrat(
+                                  text: 'Sign in',
+                                  textColor: ThemeConstants.blackcolor,
+                                ),
+                                onTap: (startLoading, stopLoading,
+                                    buttonState) async {
+                                  // print(widget.path);
+                                  if (controller.key.currentState!.validate()) {
+                                    if (buttonState == ButtonState.idle) {
+                                      startLoading();
+                                      var res = await controller.logIn(
+                                          emailController.value.text,
+                                          password.value.text);
+
+                                      if (res != false) {
+                                        controllerBase.user.value = res;
+                                        Get.offAllNamed(DashBoard.routeNamed);
+                                      }
+                                      // await download(widget.path);
+                                      // await Future.delayed(const Duration(seconds: 5))
+                                      stopLoading();
+                                    }
+                                  }
+                                },
+                              ),
+                              //
+                              //
+                              // Container(
+                              //   height: 40,
+                              //   width: MediaQuery.of(context).size.width - 20,
+                              //   decoration: BoxDecoration(
+                              //       color: ThemeConstants.bluecolor,
+                              //       borderRadius:
+                              //           BorderRadius.all(Radius.circular(20.0))),
+                              //   child: Center(
+                              //     child: CustomAutoSizeTextMontserrat(
+                              //       text: "Submit",
+                              //       textColor: ThemeConstants.whitecolor,
+                              //     ),
+                              //   ),
+                              // ),
+
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.offNamed(LoginPage.routeNamed);
+                                },
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      vertical: 5, horizontal: 30),
-                                  child: Text(
-                                    "Forg\ot password",
-                                    style: TextStyle(
-                                        color: ThemeConstants.whitecolor),
+                                      vertical: 5, horizontal: 20),
+                                  child: Container(
+                                    width: double.infinity,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Not registered? Click here",
+                                      style: TextStyle(
+                                          color:
+                                              ThemeConstants.lightVioletColor),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            // InkWell(
-                            //   onTap: () async {
-                            //     var res = await controller.logIn(
-                            //         emailController.value.text, password.value.text);
-
-                            //     if (res) {
-                            //       controllerBase.user.value = res;
-                            //     }
-                            //     // Get.to(
-                            //     //     () => CreatePasswrord(email: texfield.value.text));
-                            //     // controller.otpcheck(texfield.text, otpfield.text);
-                            //   },
-                            //   child:
-                            LoadingButton(
-                              height: 35,
-                              borderRadius: 8,
-                              animate: true,
-                              color: ThemeConstants.lightVioletColor,
-                              width: MediaQuery.of(context).size.width * 0.44,
-                              loader: Container(
-                                padding: const EdgeInsets.all(10),
-                                width: 40,
-                                height: 40,
-                                child: CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      ThemeConstants.bluecolor),
-                                ),
+                              const SizedBox(
+                                height: 15,
                               ),
-                              child: CustomAutoSizeTextMontserrat(
-                                text: 'Sign in',
-                                textColor: ThemeConstants.blackcolor,
-                              ),
-                              onTap: (startLoading, stopLoading,
-                                  buttonState) async {
-                                // print(widget.path);
-                                if (buttonState == ButtonState.idle) {
-                                  startLoading();
-                                  var res = await controller.logIn(
-                                      emailController.value.text,
-                                      password.value.text);
-
-                                  if (res != false) {
-                                    controllerBase.user.value = res;
-                                    Get.offAllNamed(DashBoard.routeNamed);
-                                  }
-                                  // await download(widget.path);
-                                  // await Future.delayed(const Duration(seconds: 5))
-                                  stopLoading();
-                                }
-                              },
-                            ),
-                            //
-                            //
-                            // Container(
-                            //   height: 40,
-                            //   width: MediaQuery.of(context).size.width - 20,
-                            //   decoration: BoxDecoration(
-                            //       color: ThemeConstants.bluecolor,
-                            //       borderRadius:
-                            //           BorderRadius.all(Radius.circular(20.0))),
-                            //   child: Center(
-                            //     child: CustomAutoSizeTextMontserrat(
-                            //       text: "Submit",
-                            //       textColor: ThemeConstants.whitecolor,
-                            //     ),
-                            //   ),
-                            // ),
-
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Get.offNamed(LoginPage.routeNamed);
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 20),
-                                child: Container(
-                                  width: double.infinity,
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Not registered? Click here",
-                                    style: TextStyle(
-                                        color: ThemeConstants.lightVioletColor),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),

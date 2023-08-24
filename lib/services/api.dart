@@ -92,4 +92,8 @@ abstract class API {
     required notes,
     required userId,
   });
+
+  addAgenda({required agenda, userId});
+
+  allAgenda();
 }

@@ -57,8 +57,8 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                             Padding(
                               padding: const EdgeInsets.only(left: 15),
                               child: CustomAutoSizeTextMontserrat(
-                                text: "Add more \nnotes & files",
-                                fontSize: 40,
+                                text: "Add notes & files",
+                                fontSize: 35,
                                 textColor: ThemeConstants.bluecolor,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -68,6 +68,12 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                               height: 10,
                             ),
                             CustomTabWidget(
+                              dontChangeTab: Get.find<BaseController>()
+                                          .selectedMeetingData
+                                          .meetingStarted ==
+                                      false
+                                  ? true
+                                  : null,
                               defaultIndex: argumentData[1],
                               title0: 'Add Notes',
                               title1: 'Add Files',
@@ -439,7 +445,8 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 15),
+                                padding:
+                                    const EdgeInsets.only(left: 5, top: 10),
                                 child: CustomAutoSizeTextMontserrat(
                                   text: "Notes",
                                   fontSize: 30,

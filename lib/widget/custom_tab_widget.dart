@@ -10,11 +10,13 @@ class CustomTabWidget extends StatefulWidget {
   final Function callback;
   final int? defaultIndex;
   final Function? changeOfIndexFromParent;
+  bool? dontChangeTab;
 
   CustomTabWidget(
       {super.key,
       this.changeOfIndexFromParent,
       this.defaultIndex,
+      this.dontChangeTab,
       required this.title0,
       required this.title1,
       required this.callback});
@@ -81,9 +83,12 @@ class CustomTabWidgetState extends State<CustomTabWidget> {
                   child: GestureDetector(
                       onTap: () {
                         setState(() {
-                          indexOfTab = 0;
-                          print(indexOfTab);
-                          widget.callback(indexOfTab);
+                          if (widget.dontChangeTab != null) {
+                          } else {
+                            indexOfTab = 0;
+                            print(indexOfTab);
+                            widget.callback(indexOfTab);
+                          }
                         });
                       },
                       child: Container(

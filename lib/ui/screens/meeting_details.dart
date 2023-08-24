@@ -87,7 +87,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                 left: 15, top: 10, bottom: 10),
                             child: CustomAutoSizeTextMontserrat(
                               text: "${meetingData.meetingAgenda}",
-                              fontSize: 28,
+                              fontSize: 22,
                               fontWeight: FontWeight.w700,
                               textColor: ThemeConstants.bluecolor,
                             ),
@@ -150,14 +150,19 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10, left: 10),
                         child: SizedBox(
-                          height: 72,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
+                          child: Wrap(
+                            // crossAxisAlignment: CrossAxisAlignment.start,
+                            // mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Container(
+                                margin: EdgeInsets.only(
+                                  left: 0,
+                                  top: 10,
+                                  bottom: 10,
+                                  right: 10,
+                                ),
                                 height: 72,
-                                width: MediaQuery.of(context).size.width / 2.2,
+                                width: 180,
                                 decoration: BoxDecoration(
                                   boxShadow: [
                                     const BoxShadow(
@@ -212,9 +217,16 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                   ),
                                 ),
                               ),
-                              const Spacer(),
+                              // const Spacer(),
+
                               Container(
-                                width: MediaQuery.of(context).size.width / 2.2,
+                                margin: EdgeInsets.only(
+                                  left: 0,
+                                  top: 10,
+                                  bottom: 20,
+                                  right: 10,
+                                ),
+                                width: 180,
                                 height: 72,
                                 decoration: BoxDecoration(
                                   boxShadow: const [
@@ -268,7 +280,6 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                   ),
                                 ),
                               ),
-                              const Spacer(),
                             ],
                           ),
                         ),
@@ -1089,10 +1100,16 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                           controller.meetingEndedValue ==
                                               true) {
                                         showDialog(
+                                            barrierDismissible: true,
                                             context: context,
                                             builder: (_) => showPoPUp(
                                                 'Meeting Already Ended',
-                                                Icon(Icons.error)));
+                                                Icon(
+                                                  Icons.error,
+                                                  size: 40,
+                                                  color:
+                                                      ThemeConstants.bluecolor,
+                                                )));
                                       }
                                       // showDialog(
                                       //     context: context,
@@ -1226,12 +1243,13 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                 : InkWell(
                                     onTap: () {
                                       showDialog(
+                                          barrierDismissible: true,
                                           context: context,
                                           builder: (_) => showPoPUp(
                                               'Only Co-ordinator or meeting creator can start and end the meeting',
                                               Icon(
                                                 Icons.error,
-                                                size: 50,
+                                                size: 40,
                                                 color: ThemeConstants.bluecolor,
                                               )));
                                     },

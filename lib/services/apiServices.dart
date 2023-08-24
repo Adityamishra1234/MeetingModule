@@ -281,6 +281,20 @@ class ApiServices extends BaseServices implements API {
   }
 
   @override
+  allBranch2() async {
+    // var url = '${Endpoints.baseUrl}${Endpoints.allBranch}';
+    var url = 'https://api.sieceducation.in/api/get-all-branches-address';
+
+    var res2 = await httpPostNullBody2(url);
+
+    if (res2 != null) {
+      return res2;
+    }
+    // TODO: implement allBranch
+    // throw UnimplementedError();
+  }
+
+  @override
   getSpecificBranchUsers(int branchCode) async {
     var url = '${Endpoints.baseUrl}${Endpoints.specificBranchUsers}';
 
@@ -914,5 +928,51 @@ class ApiServices extends BaseServices implements API {
       throw UnimplementedError();
     }
     // TODO: implement findUniversityCountryByMeetingId
+  }
+
+  @override
+  addAgenda({required agenda, userId}) async {
+    // TODO: implement addAgenda
+    try {
+      var url = '${Endpoints.baseUrl}${Endpoints.addAgenda}';
+
+      var jsonData = {
+        "id": 0,
+        "agenda_of_meeting": "$agenda",
+        "is_active": true,
+        "created_by": userId,
+        "updated_by": userId,
+        "created_at": "2023-05-10T10:23:17.000Z",
+        "updated_at": "2023-05-10T10:23:17.000Z"
+      };
+
+      var data = json.encode(jsonData);
+
+      var res = await httpPostHeader(url, data);
+
+      if (res != null) {
+        getToast(res["message"]);
+        return true;
+      }
+    } catch (e) {
+      throw UnimplementedError();
+    }
+  }
+
+  @override
+  allAgenda() async {
+    try {
+      var url = '${Endpoints.baseUrl}allAgenda';
+
+      var res = await httpPostNullBody(url);
+
+      if (res != null) {
+        return res['model'];
+        // getToast(res["message"]);
+        // return true;
+      }
+    } catch (e) {
+      throw UnimplementedError();
+    }
   }
 }

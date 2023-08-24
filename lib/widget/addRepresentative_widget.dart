@@ -63,7 +63,7 @@ class AddRepresentativeWidget extends StatelessWidget {
                       ),
 
                   SizedBox(
-                    height: 8,
+                    height: 10,
                   ),
                   // Wrap(
                   //   children: [
@@ -122,7 +122,7 @@ class AddRepresentativeWidget extends StatelessWidget {
                         },
                         enableMultiSelect: false),
                     SizedBox(
-                      height: 8,
+                      height: 10,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
@@ -152,7 +152,7 @@ class AddRepresentativeWidget extends StatelessWidget {
                         },
                         enableMultiSelect: false),
                     SizedBox(
-                      height: 8,
+                      height: 10,
                     ),
                   ],
                   if (controller.addRepresentaitveType.value == 'Vendor') ...[
@@ -172,7 +172,7 @@ class AddRepresentativeWidget extends StatelessWidget {
                         hint: 'Vendor name',
                         controller: controller.nameOfTheVendor.value),
                     SizedBox(
-                      height: 8,
+                      height: 10,
                     ),
                   ],
                   if (controller.addRepresentaitveType.value == 'Bank') ...[
@@ -192,7 +192,7 @@ class AddRepresentativeWidget extends StatelessWidget {
                         hint: 'Name of Bank',
                         controller: controller.nameOfTheBank.value),
                     SizedBox(
-                      height: 8,
+                      height: 10,
                     ),
                   ],
                   Padding(
@@ -211,7 +211,7 @@ class AddRepresentativeWidget extends StatelessWidget {
                       hint: 'Person Name',
                       controller: controller.nameOfThePerson.value),
                   SizedBox(
-                    height: 8,
+                    height: 10,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 15, bottom: 5),
@@ -227,10 +227,10 @@ class AddRepresentativeWidget extends StatelessWidget {
 
                   CustomTextField(
                       validator: Validator.email,
-                      hint: 'hint',
+                      hint: 'Enter Your Email',
                       controller: controller.email.value),
                   SizedBox(
-                    height: 8,
+                    height: 10,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 15, bottom: 5),
@@ -245,10 +245,10 @@ class AddRepresentativeWidget extends StatelessWidget {
                   ),
                   CustomTextField(
                       validator: Validator.notEmpty,
-                      hint: 'hint',
+                      hint: 'Enter Your Designation',
                       controller: controller.designation.value),
                   SizedBox(
-                    height: 8,
+                    height: 10,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 15, bottom: 5),
@@ -263,7 +263,7 @@ class AddRepresentativeWidget extends StatelessWidget {
                   ),
                   CustomTextField(
                       validator: Validator.phone,
-                      hint: 'hint',
+                      hint: 'Enter Your Phone Number',
                       keybord: TextInputType.number,
                       controller: controller.RePphoneNumber.value),
                 ]),

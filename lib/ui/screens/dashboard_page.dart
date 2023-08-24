@@ -7,12 +7,14 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
+
 import 'package:meeting_module2/presentation/constants/loading.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting2.dart';
 import 'package:meeting_module2/ui/screens/dashboard_notes.dart';
+import 'package:meeting_module2/ui/screens/loginUi.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
 
 import 'package:meeting_module2/utils/theme.dart';
@@ -59,8 +61,11 @@ class _DashBoardState extends State<DashBoard> {
   void initState() {
     controllerBase.token2();
     controllerBase.getId();
+    if (Get.previousRoute == '${LoginView.routeNamed}' ||
+        Get.previousRoute == "/signin") {
+      _authenticate();
+    }
 
-    _authenticate();
     // controller.getMeetingData();
 
     // TODO: implement initState
@@ -211,7 +216,7 @@ class _DashBoardState extends State<DashBoard> {
                   ),
                   CustomAutoSizeTextMontserrat(
                     text: "Your Meetings",
-                    fontSize: 35,
+                    fontSize: 30,
                     textColor: ThemeConstants.bluecolor,
                     fontWeight: FontWeight.bold,
                   ),
@@ -1262,6 +1267,7 @@ class DashboardMeetings extends StatelessWidget {
                                               )));
                                 } else {
                                   showAnimatedDialog(
+                                      barrierDismissible: true,
                                       animationType: DialogTransitionType
                                           .slideFromBottomFade,
                                       curve: Curves.easeInOutQuart,
@@ -1271,12 +1277,13 @@ class DashboardMeetings extends StatelessWidget {
                                           'Meeting already started',
                                           Icon(
                                             Icons.error,
-                                            size: 50,
+                                            size: 40,
                                             color: ThemeConstants.bluecolor,
                                           )));
                                 }
                               } else {
                                 showAnimatedDialog(
+                                    barrierDismissible: true,
                                     animationType: DialogTransitionType
                                         .slideFromBottomFade,
                                     curve: Curves.easeInOutQuart,
@@ -1286,7 +1293,7 @@ class DashboardMeetings extends StatelessWidget {
                                         "Only Co-ordinator's and creator can reshedule the meeting",
                                         Icon(
                                           Icons.error,
-                                          size: 50,
+                                          size: 40,
                                           color: ThemeConstants.bluecolor,
                                         )));
                               }

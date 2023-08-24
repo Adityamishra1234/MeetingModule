@@ -16,24 +16,26 @@ class _DialogHoraState extends State<DialogHora> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+        insetPadding: EdgeInsets.all(20),
         content: Container(
             alignment: Alignment.center,
             height: 500,
-            width: 400,
+            width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width: 250,
+                      width: 180,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 0),
                         child: Align(
                           alignment: AlignmentDirectional.topStart,
                           child: CustomAutoSizeTextMontserrat(
                             text: "Participants Details",
-                            fontSize: 35,
+                            fontSize: 20,
                             textColor: ThemeConstants.bluecolor,
                             fontWeight: FontWeight.bold,
                           ),

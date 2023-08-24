@@ -73,9 +73,14 @@ class DashboardNotesController extends GetxController with StateMixin {
     for (var i = 0; i < notesType.length; i++) {
       // String note2 = await getNoteTypefromId(data[i].noteType!);
       // notesType.add(note2);
-      if (data.length > 0) {
-        if (data[i].image_note == null) {
-          viewNotes.add({notesType[i]: []});
+
+      if (i == 0) {
+        viewNotes.add({notesType[0]: []});
+      } else {
+        if (data.length > 0) {
+          if (data[i - 1].image_note == null) {
+            viewNotes.add({notesType[i]: []});
+          }
         }
       }
     }
@@ -213,7 +218,7 @@ class DashboardNotesController extends GetxController with StateMixin {
                     ),
                   ),
                 ),
-                if (data[i].noteType == 10 && (id == 12 || id == 130)) ...[
+                if (data[i].noteType == 10) ...[
                   InkWell(
                     onTap: () {
                       // Get.to(AssignToView(), arguments: widget.dataList![i]);

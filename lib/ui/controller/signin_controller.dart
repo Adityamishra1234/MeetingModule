@@ -20,6 +20,7 @@ class SigninController extends GetxController with StateMixin {
   bool createPassword = false;
   bool passwordForget = false;
 
+  GlobalKey<FormState> key = GlobalKey<FormState>();
   var otpController = TextEditingController();
   var passwordController = TextEditingController();
 

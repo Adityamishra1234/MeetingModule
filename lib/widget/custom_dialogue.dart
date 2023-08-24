@@ -266,11 +266,11 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                     height: 5,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                          width: (MediaQuery.of(context).size.width - 40) / 2.5,
+                          width: (MediaQuery.of(context).size.width - 40) / 2.8,
                           child: CustomMultiDownSingle(
                               callbackFunctionSingle: (val) {
                                 print(val);
@@ -431,6 +431,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                   await widget.controller
                                       .resheduleMeeting(data);
                                   showAnimatedDialog(
+                                      barrierDismissible: true,
                                       context: context,
                                       animationType: DialogTransitionType
                                           .slideFromBottomFade,
@@ -440,9 +441,9 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                       builder: (_) => showPoPUp(
                                           'Reschedule Meeting',
                                           Icon(
-                                            Icons.check_box_rounded,
-                                            size: 45,
-                                            color: ThemeConstants.GreenColor,
+                                            Icons.error,
+                                            size: 40,
+                                            color: ThemeConstants.bluecolor,
                                           )));
                                 }
                               }),

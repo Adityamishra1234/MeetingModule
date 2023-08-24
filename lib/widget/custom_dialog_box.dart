@@ -78,7 +78,7 @@ class CustomProfileDialogue extends StatelessWidget {
                 heightFactor: 0.1,
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -102,7 +102,7 @@ class CustomProfileDialogue extends StatelessWidget {
                               color: ThemeConstants.bluecolor,
                               borderRadius: BorderRadius.circular(10)),
                           padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                           child: Text(
                             'Save & Next',
                             style: TextStyle(color: ThemeConstants.whitecolor),

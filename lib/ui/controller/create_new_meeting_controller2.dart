@@ -7,8 +7,10 @@ import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allBranchModel.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
+import 'package:meeting_module2/models/branchesWithImagesModel.dart';
 import 'package:meeting_module2/models/participantsModel.dart';
 import 'package:meeting_module2/models/selectedAudienceTypeModel.dart';
+import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/utils/theme.dart';
@@ -24,9 +26,11 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     super.onInit();
     await getGroupData();
     await getBranchData();
+    await getBranchData2();
     await getAllCountries();
     await getUniversities(13);
     await userID();
+    await getAllAgenda();
     // inItGetRepresentative();
     await getRepresentativesByUniversity();
 
@@ -52,6 +56,9 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
   Rx<TextEditingController> meetingNameController = TextEditingController().obs;
 
+  Rx<TextEditingController> addNewAgendaController =
+      TextEditingController().obs;
+
   // RxString dateController =
   //     '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}'
   //         .obs;
@@ -69,9 +76,11 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
   RxBool MeetingType = true.obs; //true online
 
-  String meetingLocation = ''; //
+  String meetingLocation = true.toString(); //
 
-  Rx<AllUserModel> selectMeetingBranch = AllUserModel().obs;
+  // Rx<AllUserModel> selectMeetingBranch = AllUserModel().obs;
+
+  Rx<int> selectMeetingBranch = 0.obs;
 
   RxString modeOfMeeting = 'Zoom'.obs;
   Rx<TextEditingController> specifyMeetingLocation =
@@ -79,9 +88,9 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
   Rx<TextEditingController> meetingLink = TextEditingController().obs;
 
+  bool selectedOption = false;
   // Drop down list
   List<String> selectTargetAudienceType = <String>[
-    'Select Target Audience Type',
     'Group Wise',
     'Branch Based',
     'User Based',
@@ -117,6 +126,14 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
   //   'Europe Team'
   // ].obs;
 
+  List<String> modeOfMeetingIcon = [
+    'assets/images/zoom.png',
+    'assets/images/Google_Meet.png',
+    'assets/images/teams.png'
+  ];
+
+  List<String> modeOfMeetingList = ['Zoom', 'Meet', 'Teams'];
+
   RxString selectedBranch = ''.obs;
 
   RxString selectedTargetAudience = ''.obs;
@@ -132,6 +149,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
   List<AllUserModel> preFilledUsers = <AllUserModel>[];
 
   List<AllUserModel> branchList = <AllUserModel>[];
+
+  List<BranchWithImagesModel> branchListwithFlag = <BranchWithImagesModel>[];
 
   // Rx<TextEditingController> dateController = TextEditingController().obs;
 
@@ -487,13 +506,16 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     ///offline
     ///
     ///
+    ///
+    ///
+    ///
     meetingModel.value.locationOfTheMeeting = meetingLocation;
 
     meetingModel.value.specificLocationOfTheMeeting =
         specifyMeetingLocation.value.text;
 
     meetingModel.value.siecBranch =
-        selectMeetingBranch.value.id == null ? 0 : selectMeetingBranch.value.id;
+        selectMeetingBranch == null ? 0 : selectMeetingBranch.value;
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var id = await prefs.getInt('id');
@@ -594,7 +616,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     meetingModel.value.meetingLink = meetingLink.value.text;
 
     ///offline
-    meetingModel.value.siecBranch = selectMeetingBranch.value.id;
+    meetingModel.value.siecBranch = selectMeetingBranch.value;
 
     meetingModel.value.specificLocationOfTheMeeting =
         specifyMeetingLocation.value.text;
@@ -619,7 +641,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
             .map((e) => SiecParticipants.fromJson(e.toJson())));
 
     meetingModel.value.siecBranch =
-        selectMeetingBranch.value.id == null ? 0 : selectMeetingBranch.value.id;
+        selectMeetingBranch.value == null ? 0 : selectMeetingBranch.value;
     // var res = await api.createMeeting(meetingModel.value);
     // print(res);
 
@@ -696,11 +718,32 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     // print('fvffg');
     var res = await api.allBranch();
 
+    // var data =
+    //     List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)));
+
     var data =
         List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)));
     print(data.toString());
 
     branchList = data;
+
+    // allBranchList.value = data;
+
+    update();
+  }
+
+  getBranchData2() async {
+    // print('fvffg');
+    var res = await api.allBranch2();
+
+    // var data =
+    //     List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)));
+
+    var data = List<BranchWithImagesModel>.from(
+        res.map((e) => BranchWithImagesModel.fromJson(e)));
+    print(data.toString());
+
+    branchListwithFlag = data;
 
     // allBranchList.value = data;
 
@@ -757,4 +800,26 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     // print(preFilledUsers.value.toString());
   }
+
+  addNewAgenda({required agenda, required userId}) async {
+    var res = await api.addAgenda(agenda: agenda, userId: userId);
+
+    if (res != null) {
+      Get.back();
+      getAllAgenda();
+    }
+  }
+
+  List<String> agendaList = [];
+  getAllAgenda() async {
+    change(null, status: RxStatus.loading());
+    var res = await api.allAgenda();
+
+    agendaList = List<String>.from(res as List);
+    change(null, status: RxStatus.success());
+
+    update();
+  }
+
+  bool showRepresentativeData = false;
 }

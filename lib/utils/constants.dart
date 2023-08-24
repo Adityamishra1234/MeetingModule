@@ -157,6 +157,91 @@ getPasswordValidator(String? value) {
   }
 }
 
+getPasswordWithSpecialCharacterValidator(String? value) {
+  if (value!.isEmpty) {
+    return 'Password is required';
+  }
+  if (!containsUppercase(value)) {
+    return 'Password must contain at least one uppercase letter';
+  }
+  if (!containsLowercase(value)) {
+    return 'Password must contain at least one lowercase letter';
+  }
+  if (!containsSpecialCharacter(value)) {
+    return 'Password must contain at least one special character';
+  }
+  if (value.length < 8) {
+    return 'Password must be 6 digit long';
+  }
+
+  if (!containsDigit(value)) {
+    return 'Password must contain at least one digit';
+  }
+  return null;
+}
+
+bool containsDigit(String value) {
+  for (var char in value.runes) {
+    var character = new String.fromCharCode(char);
+    if (character.contains(new RegExp(r'[0-9]'))) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool containsUppercase(String value) {
+  for (var char in value.runes) {
+    var character = new String.fromCharCode(char);
+    if (character == character.toUpperCase() &&
+        character != character.toLowerCase()) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool containsLowercase(String value) {
+  for (var char in value.runes) {
+    var character = new String.fromCharCode(char);
+    if (character == character.toLowerCase() &&
+        character != character.toUpperCase()) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool containsSpecialCharacter(String value) {
+  var specialCharacters = r"!@#\$&*~";
+  for (var char in value.runes) {
+    var character = new String.fromCharCode(char);
+    if (specialCharacters.contains(character)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// if (value != null) {
+//   String pattern =
+//       r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+//   RegExp regExp = new RegExp(pattern);
+//   if (regExp.hasMatch(value) == false) {
+//     return 'Must be 8 digit long, have a special character both lower case and uppercase';
+//   } else {
+//     return null;
+//   }
+
+//   //   if (value.length < 6) {
+//   //     return 'Kindly enter your password minimum 6 \nlength characters';
+//   //   } else if(  value )
+//   //     return null;
+//   // } else {
+//   //   return "Kindly enter your password minimum 6 \nlength characters";
+//   // }
+// }
+
 getOtpvalidation(String? value) {
   if (value != null) {
     if (value.length != 6) {

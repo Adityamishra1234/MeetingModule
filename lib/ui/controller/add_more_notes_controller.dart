@@ -50,7 +50,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
   // Rx<TextEditingController> noteText = TextEditingController().obs;
 
   //Selcted dropdown fields
-  RxString noteTypeSelected = "Select Add notes for".obs;
+  RxString noteTypeSelected = "Notes Category".obs;
   RxInt noteTypeSelectedID = 0.obs;
   RxList<AllUserModel> accessibileUserSelected = RxList<AllUserModel>();
 
@@ -262,39 +262,53 @@ class AddMoreNotesController extends GetxController with StateMixin {
     List notesType = [];
     List notesTypeString = [];
 
+    List<FindNotesModel> writtenNotes = [];
+
     for (var i = 0; i < notesList.length; i++) {
       if (notesList[i].image_note == null) {
-        notesType.add(notesList[i].noteType);
+        writtenNotes.add(notesList[i]);
+        // notesType.add(notesList[i].noteType);
       } else {
         imageNotesList.add(notesList[i]);
       }
     }
 
-    notesType = notesType.toSet().toList();
-
-    for (var i = 0; i < notesType.length; i++) {
-      if (notesList[i].image_note == null) {
-        var res = getNoteTypefromId(notesType[i]);
-        notesTypeString.add(res);
-      }
-
-      // var data1 = res.toString().split(' ')[0];
-      // var data2 = res.toString().split(' ')[1] == null
-      //     ? ''
-      //     : res.toString().split(' ')[1];
-      // print(data1 + data2);
-
-      // print(temp);
+    for (var i = 0; i < writtenNotes.length; i++) {
+      var res = getNoteTypefromId(writtenNotes[i].noteType!);
+      notesTypeString.add(res);
     }
+
+    notesTypeString = notesTypeString.toSet().toList();
+
+    // for (var i = 0; i < notesType.length; i++) {
+    //   for (var j = 0; j < notesList.length; j++) {
+    //     if (notesList[j].image_note == null) {
+    //       var res = getNoteTypefromId(notesType[i]);
+    //       notesTypeString.add(res);
+    //     } else {
+    //       imageNotesList.add(notesList[j]);
+    //     }
+    //   }
+    //   // if (notesList[i].image_note == null) {
+    //   //   var res = getNoteTypefromId(notesType[i]);
+    //   //   notesTypeString.add(res);
+    //   // }
+
+    //   // var data1 = res.toString().split(' ')[0];
+    //   // var data2 = res.toString().split(' ')[1] == null
+    //   //     ? ''
+    //   //     : res.toString().split(' ')[1];
+    //   // print(data1 + data2);
+
+    //   // print(temp);
+    // }
 
     notesTypeToShowInDropDown.addAll(notesTypeString);
     // print(notesTypeToShowInDropDown);
 
     List<Map<String, List<FindNotesModel>>> list = [];
-    for (var i = 0; i < notesType.length; i++) {
-      if (notesList[i].image_note == null) {
-        list.add({notesTypeString[i]: []});
-      }
+    for (var i = 0; i < writtenNotes.length; i++) {
+      list.add({notesTypeString[i]: []});
     }
 
     if (notesTypeString.length > 0) {

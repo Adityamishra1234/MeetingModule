@@ -4,6 +4,8 @@ import 'package:meeting_module2/utils/theme.dart';
 
 showPoPUp(String text, Icon icon) {
   return AlertDialog(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+    contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
     content: Container(
         constraints: BoxConstraints(minHeight: 100),
         width: 350,
@@ -24,6 +26,7 @@ showPoPUp(String text, Icon icon) {
                   child: Icon(
                     Icons.close,
                     size: 15,
+                    color: ThemeConstants.whitecolor,
                   ),
                 ),
               ),

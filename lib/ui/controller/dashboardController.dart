@@ -528,108 +528,94 @@ class DashBoardController extends GetxController with StateMixin {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Wrap(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 2),
-                                child: SizedBox(
-                                  // width: 300,
-                                  child: CustomAutoSizeTextMontserrat(
-                                    text: "${listToShow[i].meetingAgenda}",
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                      Container(
+                        width: MediaQuery.of(context).size.width - 20,
+                        child: Wrap(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 12),
+                              child: SizedBox(
+                                // width: 300,
+                                child: CustomAutoSizeTextMontserrat(
+                                  text: "${listToShow[i].meetingAgenda}",
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              listToShow[i].meetingStarted! &&
-                                      !listToShow[i].meetingEnded!
-                                  ? Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Transform.scale(
-                                          scale: 0.8,
-                                          child: Radio(
-                                              activeColor: Colors.green,
-                                              value: true,
-                                              groupValue: true,
-                                              onChanged: (val) {}),
-                                        ),
-                                        CustomAutoSizeTextMontserrat(
-                                          fontSize: 12,
-                                          text: '(Started)',
-                                          textColor: ThemeConstants.GreenColor,
-                                        )
-                                      ],
-                                    )
-                                  : SizedBox.shrink(),
-                              listToShow[i].meetingStarted! &&
-                                      listToShow[i].meetingEnded!
-                                  ? Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Transform.scale(
-                                          scale: 0.8,
-                                          child: Radio(
-                                              activeColor: Colors.red,
-                                              value: true,
-                                              groupValue: true,
-                                              onChanged: (val) {}),
-                                        ),
-                                        CustomAutoSizeTextMontserrat(
-                                          text: '(Ended)',
-                                          fontSize: 12,
-                                          textColor: Colors.red,
-                                        )
-                                      ],
-                                    )
-                                  : SizedBox.shrink(),
-                              !listToShow[i].meetingStarted! &&
-                                      !listToShow[i].meetingEnded!
-                                  ? Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Transform.scale(
-                                          scale: 0.8,
-                                          child: Radio(
-                                              activeColor: const Color.fromARGB(
-                                                  255, 114, 114, 114),
-                                              value: true,
-                                              groupValue: true,
-                                              onChanged: (val) {}),
-                                        ),
-                                        CustomAutoSizeTextMontserrat(
-                                          text: 'Not Started',
-                                          fontSize: 14,
-                                          textColor: const Color.fromARGB(
-                                              255, 114, 114, 114),
-                                        )
-                                      ],
-                                    )
-                                  : SizedBox.shrink()
-                            ],
-                          ),
-                          const Spacer(),
-
-                          // InkWell(
-                          //     onTap: () {
-                          //       innerSetState(() {
-                          //         if (menu == false) {
-                          //           menu = true;
-                          //         } else {
-                          //           menu = false;
-                          //         }
-                          //       });
-                          //     },
-                          //     child: Container(
-                          //         width: 40,
-                          //         child: const Icon(Icons.more_vert_rounded)))
-                        ],
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                listToShow[i].meetingStarted! &&
+                                        !listToShow[i].meetingEnded!
+                                    ? Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Transform.scale(
+                                            scale: 0.8,
+                                            child: Radio(
+                                                activeColor: Colors.green,
+                                                value: true,
+                                                groupValue: true,
+                                                onChanged: (val) {}),
+                                          ),
+                                          CustomAutoSizeTextMontserrat(
+                                            fontSize: 12,
+                                            text: '(Started)',
+                                            textColor:
+                                                ThemeConstants.GreenColor,
+                                          )
+                                        ],
+                                      )
+                                    : SizedBox.shrink(),
+                                listToShow[i].meetingStarted! &&
+                                        listToShow[i].meetingEnded!
+                                    ? Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Transform.scale(
+                                            scale: 0.8,
+                                            child: Radio(
+                                                activeColor: Colors.red,
+                                                value: true,
+                                                groupValue: true,
+                                                onChanged: (val) {}),
+                                          ),
+                                          CustomAutoSizeTextMontserrat(
+                                            text: '(Ended)',
+                                            fontSize: 12,
+                                            textColor: Colors.red,
+                                          )
+                                        ],
+                                      )
+                                    : SizedBox.shrink(),
+                                !listToShow[i].meetingStarted! &&
+                                        !listToShow[i].meetingEnded!
+                                    ? Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Transform.scale(
+                                            scale: 0.8,
+                                            child: Radio(
+                                                activeColor:
+                                                    const Color.fromARGB(
+                                                        255, 114, 114, 114),
+                                                value: true,
+                                                groupValue: true,
+                                                onChanged: (val) {}),
+                                          ),
+                                          CustomAutoSizeTextMontserrat(
+                                            text: 'Not Started',
+                                            fontSize: 14,
+                                            textColor: const Color.fromARGB(
+                                                255, 114, 114, 114),
+                                          )
+                                        ],
+                                      )
+                                    : SizedBox.shrink()
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                       CustomAutoSizeTextMontserrat(
                         text: "${listToShow[i].nameOfTheMeeting}",
@@ -737,6 +723,7 @@ class DashBoardController extends GetxController with StateMixin {
                                             ));
                                   } else {
                                     showAnimatedDialog(
+                                        barrierDismissible: true,
                                         animationType: DialogTransitionType
                                             .slideFromBottomFade,
                                         curve: Curves.easeInOutQuart,
@@ -746,12 +733,13 @@ class DashBoardController extends GetxController with StateMixin {
                                             'Meeting already started',
                                             Icon(
                                               Icons.error,
-                                              size: 50,
+                                              size: 40,
                                               color: ThemeConstants.bluecolor,
                                             )));
                                   }
                                 } else {
                                   showAnimatedDialog(
+                                      barrierDismissible: true,
                                       animationType: DialogTransitionType
                                           .slideFromBottomFade,
                                       curve: Curves.easeInOutQuart,
@@ -761,7 +749,7 @@ class DashBoardController extends GetxController with StateMixin {
                                           "Only Co-ordinator's and creator can reshedule the meeting",
                                           Icon(
                                             Icons.error,
-                                            size: 50,
+                                            size: 40,
                                             color: ThemeConstants.bluecolor,
                                           )));
                                 }

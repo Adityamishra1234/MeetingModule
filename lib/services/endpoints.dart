@@ -1,15 +1,19 @@
 class Endpoints {
-  static String baseUrl = 'http://192.168.107.88:3001/api/';
+  // static String baseUrl = 'http://192.168.107.88:3001/api/';
 //jp
   // static String baseUrl = 'http://192.168.104.20:3001/api/';
 
   // static String baseUrl = 'http://localhost:3001/api/';
-//
-  // static String baseUrl = 'http://164.52.208.95:3001/api/';
+
+  ///production
+  static String baseUrl = 'http://164.52.208.95:3001/api/';
 
   static String allMeetings = 'getMeetingListByUser';
 
   static String allUser = 'allUser';
+
+  static String addAgenda = 'addAgenda';
+  static String allAgenda = 'allAgenda';
 
   static String findNotes = 'findNotesByMeetingID';
 
@@ -86,4 +90,6 @@ class Endpoints {
   static String passwordUpdateForgetCase = 'otpPasswordUpdate';
 
   static String universityIdByMeetingId = 'univeristyByMeetingID';
+
+  static String getAllBranchesWithImage = 'get-all-branches-address';
 }
