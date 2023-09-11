@@ -7,6 +7,7 @@ import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
+import 'package:meeting_module2/ui/controller/logincontroller.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
 import 'package:meeting_module2/utils/theme.dart';
@@ -84,7 +85,6 @@ class DashBoardController extends GetxController with StateMixin {
   // }
 
   frfr(val) {
-    print('$val dcdcd');
     selectedFilter.value = val;
     print(selectedFilter.value);
     update();
@@ -99,9 +99,6 @@ class DashBoardController extends GetxController with StateMixin {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var id = await prefs.getInt('id');
-    print(id);
-
-    ///todo
 
     var res = await api.getAllMeetings(id!);
 
@@ -117,6 +114,8 @@ class DashBoardController extends GetxController with StateMixin {
 
     var email = await prefs.getString('email');
     var password = await prefs.getString('password');
+
+    // var logout = await api.login(email: email, password: password!);
 
     var login = await api.login(email: email!, password: password!);
 
@@ -230,9 +229,12 @@ class DashBoardController extends GetxController with StateMixin {
     }
 
     List<Map<String, List<FindNotesModel>>> list = [];
+
     for (var i = 0; i < notesType.length; i++) {
       list.add({notesTypeString[i]: []});
     }
+
+    print('dw');
 
     for (var i = 0; i < notesList.length; i++) {
       for (var j = 0; j < notesTypeString.length; j++) {

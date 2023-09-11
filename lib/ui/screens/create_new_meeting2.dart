@@ -1691,7 +1691,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                           },
                           child: Container(
                             height: 38,
-                            width: MediaQuery.of(context).size.width * 0.45,
+                            width: MediaQuery.of(context).size.width * 0.55,
                             decoration: BoxDecoration(
                                 color: ThemeConstants.bluecolor,
                                 borderRadius: const BorderRadius.all(
@@ -1807,8 +1807,12 @@ class CreateNewMeeting2 extends StatelessWidget {
                             controller.preFilledUsers = [];
                             if (controller.selectedTargetAudience.value ==
                                 'Branch Based') {
-                              controller
-                                  .branchSelected(controller.branchList[0]);
+                              controller.selectedBranchForUserList =
+                                  controller.branchListwithFlag[0].id!;
+                              controller.branchSelected(
+                                  controller.branchListwithFlag[0].id!);
+                              // controller
+                              //     .branchSelected(controller.branchList[0]);
                             }
                             if (controller.selectedTargetAudience.value ==
                                 'All User') {
@@ -1957,7 +1961,7 @@ class CreateNewMeeting2 extends StatelessWidget {
               if (controller.selectedTargetAudience.value ==
                   'Branch Based') ...[
                 Padding(
-                  padding: const EdgeInsets.only(left: 0),
+                  padding: const EdgeInsets.only(bottom: 8),
                   child: Align(
                     alignment: AlignmentDirectional.topStart,
                     child: CustomAutoSizeTextMontserrat(
@@ -1967,31 +1971,102 @@ class CreateNewMeeting2 extends StatelessWidget {
                     ),
                   ),
                 ),
-                CustomMultiDownSingleAllUser(
-                  field: Container(
-                    height: 22,
-                    child: CustomTextField(
-                      forDropDown: false,
-                      backgroundCOlour: Colors.transparent,
-                      hint: '',
-                      controller: TextEditingController(),
-                      validator: controller.selectedBranch.value == ''
-                          ? Validator.plzSelectOne
-                          : null,
-                    ),
-                  ),
-                  enableMultiSelect: false,
-                  model: controller.branchList,
-
-                  initialSelectedValue: 'Siec Branch',
-                  callbackFunctionSingle: (AllUserModel val) async {
-                    await controller.branchSelected(val);
-                  },
-                  // callbackFunctionSingle: (AllUserModel val) {
-                  //   print('$val ddd');
-                  //   controller.selectMeetingBranch.value = val;
-                  // },
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  height: 110,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controller.branchListwithFlag.length,
+                      itemBuilder: (context, index) => InkWell(
+                            onTap: () {
+                              controller.branchSelected(
+                                  controller.branchListwithFlag[index].id!);
+                              // controller.selectMeetingBranch.value =
+                              //     controller.branchListwithFlag[index].id!;
+                              // controller.update();
+                            },
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              width: 140,
+                              decoration: BoxDecoration(
+                                  color: controller.selectedBranchForUserList ==
+                                          controller
+                                              .branchListwithFlag[index].id
+                                      ? ThemeConstants.lightblueColor2
+                                      : ThemeConstants.whitecolor,
+                                  borderRadius: BorderRadius.circular(15),
+                                  border: Border.all(
+                                      width: 1,
+                                      color: ThemeConstants.bluecolor)),
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 50,
+                                      height: 50,
+                                      child: CachedNetworkImage(
+                                        imageUrl: controller
+                                            .branchListwithFlag[index]
+                                            .imageLink!,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      '${controller.branchListwithFlag[index].name}',
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    )
+                                  ]),
+                            ),
+                          )),
                 ),
+                // Padding(
+                //   padding: const EdgeInsets.only(left: 0),
+                //   child: Align(
+                //     alignment: AlignmentDirectional.topStart,
+                //     child: CustomAutoSizeTextMontserrat(
+                //       text: "Select Branch",
+                //       fontSize: 14,
+                //       fontWeight: FontWeight.w500,
+                //     ),
+                //   ),
+                // ),
+                // CustomMultiDownSingleAllUser(
+                //   field: Container(
+                //     height: 22,
+                //     child: CustomTextField(
+                //       forDropDown: false,
+                //       backgroundCOlour: Colors.transparent,
+                //       hint: '',
+                //       controller: TextEditingController(),
+                //       validator: controller.selectedBranch.value == ''
+                //           ? Validator.plzSelectOne
+                //           : null,
+                //     ),
+                //   ),
+                //   enableMultiSelect: false,
+                //   model: controller.branchList,
+
+                //   initialSelectedValue: 'Siec Branch',
+                //   callbackFunctionSingle: (AllUserModel val) async {
+                //     await controller.branchSelected(val);
+                //   },
+                //   // callbackFunctionSingle: (AllUserModel val) {
+                //   //   print('$val ddd');
+                //   //   controller.selectMeetingBranch.value = val;
+                //   // },
+                // ),
 
                 // CustomMultiDownSingle(
                 //     callbackFunctionSingle: (val) async {

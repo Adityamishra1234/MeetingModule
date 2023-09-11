@@ -750,14 +750,17 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     update();
   }
 
-  branchSelected(AllUserModel val) async {
-    print(val);
+  int selectedBranchForUserList = 0;
+  branchSelected(codeID) async {
+    selectedBranchForUserList = codeID;
+    update();
+    // print(val);
     // selectedBranch.value = val;
     // var branchCode = allBranchList.value.map(
     //     (e) => e.branchName!.toLowerCase() == val.toString().toLowerCase(),
     //     print(e));
     // print(branchCode);
-    int code = val.id!;
+    int code = codeID;
     // var bb = allBranchList.forEach((e) {
     //   if (e.branchName!.toLowerCase() == val.toString().toLowerCase()) {
     //     code = e.id!;

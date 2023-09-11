@@ -35,9 +35,9 @@ class _SignInViewState extends State<SignInView> {
 
   var controller = Get.put(SigninController());
 
-  TextEditingController password = TextEditingController();
-
   TextEditingController otpfield = TextEditingController();
+
+  TextEditingController password = TextEditingController();
 
   TextEditingController confirmpassword = TextEditingController();
 
@@ -87,7 +87,7 @@ class _SignInViewState extends State<SignInView> {
                               // SizedBox(
                               //     height: 150,
                               //     child: Column(
-                              //       mainAxisAlignment: MainAxisAlignment.end,
+                              //       mainAxisAlignment: MainAxisuuuuuiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiAlignment.end,
                               //       children: [
                               //         CustomAutoSizeTextMontserrat(
                               //           text: 'Welcome!',
@@ -296,10 +296,10 @@ class _SignInViewState extends State<SignInView> {
                                   // print(widget.path);
                                   if (controller.key.currentState!.validate()) {
                                     if (buttonState == ButtonState.idle) {
-                                      startLoading();
                                       var res = await controller.logIn(
                                           emailController.value.text,
                                           password.value.text);
+//todo
 
                                       if (res != false) {
                                         controllerBase.user.value = res;

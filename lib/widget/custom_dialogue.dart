@@ -67,6 +67,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
 //   // pageBuilder: (ctx, a1, a2) {
 //   //   return Container();
 //   // },
+
 //   // transitionDuration: const Duration(milliseconds: 0),
 //   // transitionBuilder: (ctx, a1, a2, child) {
 //   //   print(a2.value);
@@ -101,7 +102,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                       width: 240,
                       alignment: Alignment.centerLeft,
                       child: CustomAutoSizeTextMontserrat(
-                        text: "Reschedule the Meeting",
+                        text: "Reschedule Meeting",
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
                         textColor: ThemeConstants.bluecolor,
@@ -239,15 +240,106 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                   SizedBox(
                     height: 10,
                   ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Wrap(
+                        alignment: WrapAlignment.spaceBetween,
+                        runAlignment: WrapAlignment.spaceBetween,
+                        spacing: 20,
+                        runSpacing: 5,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: CustomAutoSizeTextMontserrat(
+                                  text: "Meeting Type",
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Radio(
+                                      value: '1',
+                                      groupValue: meetingType,
+                                      onChanged: (value) {
+                                        // controller.MeetingType.value = false;
+                                        // controller.update();
+                                        setState(() {});
 
+                                        meetingType = '1';
+
+                                        // controller.MeetingType.value = true;
+                                        // controller.update();
+                                      }),
+                                  CustomAutoSizeTextMontserrat(
+                                    text: 'Online',
+                                    fontSize: 10,
+                                  ),
+                                  SizedBox(
+                                    width: 50,
+                                  ),
+                                  Radio(
+                                      value: '2',
+                                      groupValue: meetingType,
+                                      onChanged: (value) {
+                                        meetingType = '2';
+                                        setState(() {});
+                                      }),
+                                  CustomAutoSizeTextMontserrat(
+                                    text: 'Offline',
+                                    fontSize: 10,
+                                  ),
+                                ],
+                              ),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(),
+                              //   child: Align(
+                              //       alignment: AlignmentDirectional.topStart,
+                              //       child: Container(
+                              //           width:
+                              //               (MediaQuery.of(context).size.width - 60) / 2,
+                              //           child: CustomMultiDownSingle(
+                              //               callbackFunctionSingle: (val) {
+                              //                 print(val);
+                              //                 if (val == 'Offline') {
+                              //                   controller.MeetingType.value = false;
+                              //                   controller.meetingLocation =
+                              //                       true.toString();
+                              //                   controller.update();
+                              //                 } else {
+                              //                   controller.MeetingType.value = true;
+                              //                   controller.update();
+                              //                 }
+                              //               },
+                              //               enableMultiSelect: false,
+                              //               model: ['Online', 'Offline'],
+                              //               initialSelectedValue: 'Online'))),
+                              // ),
+                            ],
+                          ),
+                          // Spacer(),
+                          SizedBox(
+                            width: 20,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CustomAutoSizeTextMontserrat(
-                        text: "Meeting Type",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      // CustomAutoSizeTextMontserrat(
+                      //   text: "Meeting Type",
+                      //   fontSize: 14,
+                      //   fontWeight: FontWeight.w500,
+                      // ),
                       if (meetingType == '1')
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
@@ -269,29 +361,29 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                          width: (MediaQuery.of(context).size.width - 40) / 2.8,
-                          child: CustomMultiDownSingle(
-                              callbackFunctionSingle: (val) {
-                                print(val);
-                                if (val == 'Offline') {
-                                  meetingType = '2';
-                                  // controller.MeetingType.value = false;
-                                  // controller.update();
-                                  setState(() {});
-                                } else {
-                                  meetingType = '1';
-                                  setState(() {});
-                                  // controller.MeetingType.value = true;
-                                  // controller.update();
-                                }
-                              },
-                              enableMultiSelect: false,
-                              model: ['Online', 'Offline'],
-                              initialSelectedValue:
-                                  widget.meetingData.meetingMode == '1'
-                                      ? 'Online'
-                                      : 'Offline')),
+                      // Container(
+                      //     width: (MediaQuery.of(context).size.width - 40) / 2.8,
+                      //     child: CustomMultiDownSingle(
+                      //         callbackFunctionSingle: (val) {
+                      //           print(val);
+                      //           if (val == 'Offline') {
+                      //             meetingType = '2';
+                      //             // controller.MeetingType.value = false;
+                      //             // controller.update();
+                      //             setState(() {});
+                      //           } else {
+                      //             meetingType = '1';
+                      //             setState(() {});
+                      //             // controller.MeetingType.value = true;
+                      //             // controller.update();
+                      //           }
+                      //         },
+                      //         enableMultiSelect: false,
+                      //         model: ['Online', 'Offline'],
+                      //         initialSelectedValue:
+                      //             widget.meetingData.meetingMode == '1'
+                      //                 ? 'Online'
+                      //                 : 'Offline')),
                       if (meetingType == '1')
                         Container(
                           width: (MediaQuery.of(context).size.width - 40) / 2.7,

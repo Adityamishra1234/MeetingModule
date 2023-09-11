@@ -314,7 +314,7 @@ class _MyAppState extends State<MyApp> {
           // GetPage(
           //   name: MeetingDetails.routeNamed,
           //   page: () => MeetingDetails(),
-          // ),
+          //
           GetPage(
             name: CreateNewMeeting2.routeNamed,
             page: () => CreateNewMeeting2(),
