@@ -201,7 +201,7 @@ class SigninController extends GetxController with StateMixin {
               child: CustomTextField(
                   backgroundCOlour: ThemeConstants.whitecolor,
                   hint: "Enter your password",
-                  validator: Validator.password,
+                  validator: Validator.passwordWithSpecial,
                   controller: passwordController),
             ),
             Padding(

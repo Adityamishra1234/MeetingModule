@@ -329,13 +329,11 @@ class _MyAppState extends State<MyApp> {
           ),
           GetPage(
             name: DashBoard.routeNamed,
-            page: () => const DashBoard(),
-            // binding: DashboardBinding()
+            page: () => DashBoard(),
           ),
           GetPage(
             name: AddMoreNotesView.routeName,
             page: () => AddMoreNotesView(),
-            // binding: DashboardBinding()
           )
         ]);
   }

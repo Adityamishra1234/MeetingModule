@@ -100,7 +100,7 @@ class BaseController extends GetxController {
     if (id != 0) {
       await Future.delayed(Duration(seconds: 1));
       hideScreen();
-      Get.toNamed(DashBoard.routeNamed);
+      Get.offAllNamed(DashBoard.routeNamed);
     } else {
       await Future.delayed(Duration(seconds: 1));
       hideScreen();

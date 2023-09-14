@@ -148,7 +148,17 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 10, left: 10),
+                        padding:
+                            const EdgeInsets.only(left: 15, top: 0, bottom: 10),
+                        child: CustomAutoSizeTextMontserrat(
+                          text: "${meetingData.nameOfTheMeeting}",
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          textColor: ThemeConstants.bluecolor,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5, left: 10),
                         child: SizedBox(
                           child: Wrap(
                             // crossAxisAlignment: CrossAxisAlignment.start,

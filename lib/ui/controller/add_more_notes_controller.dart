@@ -307,7 +307,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     // print(notesTypeToShowInDropDown);
 
     List<Map<String, List<FindNotesModel>>> list = [];
-    for (var i = 0; i < writtenNotes.length; i++) {
+    for (var i = 0; i < notesTypeString.length; i++) {
       list.add({notesTypeString[i]: []});
     }
 

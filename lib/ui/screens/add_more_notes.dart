@@ -313,7 +313,7 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                                         .toDelta()
                                         .toString());
                                     if (controller.noteTypeSelected ==
-                                        "Select Add notes for") {
+                                        "Notes Category") {
                                       getToast(SnackBarConstants.notestype!);
                                     } else if (controller.noteText.document
                                             .toDelta()
@@ -412,7 +412,7 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                                       .toDelta()
                                       .toString());
                                   if (controller.noteTypeSelected ==
-                                      "Select Add notes for") {
+                                      "Notes Category") {
                                     getToast(SnackBarConstants.notestype!);
                                   } else if (controller.noteText.document
                                           .toDelta()
