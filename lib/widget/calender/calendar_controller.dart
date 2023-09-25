@@ -3,6 +3,10 @@ import 'dart:collection';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:jiffy/jiffy.dart';
+import 'package:meeting_module2/services/apiServices.dart';
+import 'package:meeting_module2/services/endpoints.dart';
+import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/widget/calender/src/shared/utils.dart';
 
 class Event {
@@ -23,10 +27,41 @@ Map<DateTime, List<Event>> map1 = {
   DateTime.now(): [Event('ddd'), Event('ddd')]
 };
 
-class CalendarController with ChangeNotifier {
-  void datesHaveMeetings() {
-    notifyListeners();
+class CalendarController extends GetxController with StateMixin {
+  @override
+  void onInit() async {
+    var date = DateTime.now();
+    await getMonthMeetingDates(
+        Get.find<BaseController>().id, date.month, date.year);
+    // TODO: implement onInit
+    super.onInit();
   }
+
+  ApiServices api = ApiServices();
+
+  List<DateTime> meetingListData = [];
+  getMonthMeetingDates(int id, int month, int year) async {
+    var endpoint = await datesOfCalendarMeetingEndpoint(id, month, year);
+
+    List res = await api.getMonthMeetingDates(endpoint);
+
+    if (res != []) {
+      res.forEach((element) {
+        var dateTime = Jiffy.parse(element, pattern: 'yyyy-MM-dd');
+
+        meetingListData.add(dateTime.dateTime);
+      });
+
+      update();
+      // List<String> data = res;
+
+      // DateTime.parse()
+    }
+  }
+
+  // void datesHaveMeetings() {
+  //   notifyListeners();
+  // }
 
   bool thisMonthHaveEvent = false;
   bool loading = false;
@@ -34,14 +69,11 @@ class CalendarController with ChangeNotifier {
   tableCalendarSwipeEvent(month, year) async {
     print('object');
     loading = true;
-    notifyListeners();
+
     thisMonthHaveEvent = !thisMonthHaveEvent;
-    notifyListeners();
+
     await Future.delayed(Duration(seconds: 2));
-
     loading = false;
-
-    notifyListeners();
   }
 
   // Copyright 2019 Aleksander Woźniak

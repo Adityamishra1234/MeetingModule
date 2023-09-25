@@ -21,6 +21,7 @@ import 'package:meeting_module2/ui/screens/meeting_details.dart';
 
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/calender/calendar_controller.dart';
+import 'package:meeting_module2/widget/calender/src/customization/calendar_builders.dart';
 import 'package:meeting_module2/widget/calender/src/customization/calendar_style.dart';
 import 'package:meeting_module2/widget/calender/src/customization/days_of_week_style.dart';
 import 'package:meeting_module2/widget/calender/src/customization/header_style.dart';
@@ -267,80 +268,85 @@ class _DashBoardState extends State<DashBoard> {
                   //     fontWeight: FontWeight.bold,
                   //   ),
                   // ),
-                  ChangeNotifierProvider<CalendarController>(
-                    create: (_) => CalendarController(),
-                    builder: (context, child) {
-                      return Padding(
-                        padding:
-                            const EdgeInsets.only(top: 5, left: 25, right: 25),
-                        child: context.watch<CalendarController>().loading ==
-                                true
-                            ? getLoading(context)
-                            : TableCalendar<Event>(
-                                selectedDayPredicate: (day) =>
-                                    context.watch<CalendarController>().thisMonthHaveEvent
-                                        ? isSameDay(DateTime.now(), day)
-                                        : isSameDay(DateTime(2023, 9, 17), day),
-                                eventLoader: _getEventsForDay,
-                                daysOfWeekStyle: DaysOfWeekStyle(
-                                  weekendStyle: TextStyle(
-                                      color: ThemeConstants.whitecolor),
-                                  weekdayStyle: TextStyle(
-                                      color: ThemeConstants.whitecolor),
-                                ),
-                                calendarStyle: CalendarStyle(
-                                    selectedDecoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(200),
-                                        color: ThemeConstants.yellow),
-                                    outsideDaysVisible: false,
-                                    selectedTextStyle: TextStyle(
-                                        color: ThemeConstants.blackcolor),
-                                    outsideTextStyle:
-                                        TextStyle(color: ThemeConstants.yellow),
-                                    defaultTextStyle: TextStyle(
-                                        color: ThemeConstants.whitecolor),
-                                    weekendTextStyle: TextStyle(
-                                        color: ThemeConstants.whitecolor),
-                                    todayTextStyle: TextStyle(
-                                        color: ThemeConstants.bluecolor),
-                                    todayDecoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(200),
-                                        color: ThemeConstants.whitecolor)),
-                                onTapHeaderCustomButton: () {
-                                  // Get.to(CreateNewMeeting2());
-                                  print('ddd');
-                                },
-                                headerStyle: HeaderStyle(headerPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 20), titleTextStyle: TextStyle(fontSize: 14, color: ThemeConstants.whitecolor), formatButtonVisible: false, leftChevronVisible: false, rightChevronVisible: false),
-                                calendarFormat: controller.calendarFormat,
-                                onFormatChanged: (format) {
-                                  if (controller.calendarFormat != format) {
-                                    // Call `setState()` when updating calendar format
+                  // ChangeNotifierProvider<CalendarController>(
+                  //   create: (_) => CalendarController(),
+                  //   builder: (context, child) {
+                  //     return
 
-                                    controller.calendarFormat = format;
-                                  }
-                                  controller.update();
-                                },
-                                // calendarStyle: CalendarStyle(
-                                //   // Use `CalendarStyle` to customize the UI
-                                //   outsideDaysVisible: false,
-                                // ),
-                                onPageChanged: (focusedDay) {
-                                  var month = focusedDay.month;
-                                  var year = focusedDay.year;
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5, left: 25, right: 25),
+                    child: TableCalendar<Event>(
+                        calendarBuilders: CalendarBuilders(),
+                        selectedDayPredicate: (day) =>
+                            isSameDay(DateTime.now(), day),
+                        eventLoader: _getEventsForDay,
+                        daysOfWeekStyle: DaysOfWeekStyle(
+                          weekendStyle:
+                              TextStyle(color: ThemeConstants.whitecolor),
+                          weekdayStyle:
+                              TextStyle(color: ThemeConstants.whitecolor),
+                        ),
+                        calendarStyle: CalendarStyle(
+                            markerDecoration:
+                                BoxDecoration(color: ThemeConstants.GreenColor),
+                            selectedDecoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(200),
+                                color: ThemeConstants.yellow),
+                            outsideDaysVisible: false,
+                            selectedTextStyle:
+                                TextStyle(color: ThemeConstants.blackcolor),
+                            outsideTextStyle:
+                                TextStyle(color: ThemeConstants.yellow),
+                            defaultTextStyle:
+                                TextStyle(color: ThemeConstants.whitecolor),
+                            weekendTextStyle:
+                                TextStyle(color: ThemeConstants.whitecolor),
+                            todayTextStyle:
+                                TextStyle(color: ThemeConstants.bluecolor),
+                            todayDecoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(200),
+                                color: ThemeConstants.whitecolor)),
+                        onTapHeaderCustomButton: () {
+                          // Get.to(CreateNewMeeting2());
+                          print('ddd');
+                        },
+                        headerStyle: HeaderStyle(
+                            headerPadding: EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 20),
+                            titleTextStyle: TextStyle(
+                                fontSize: 14, color: ThemeConstants.whitecolor),
+                            formatButtonVisible: false,
+                            leftChevronVisible: false,
+                            rightChevronVisible: false),
+                        calendarFormat: controller.calendarFormat,
+                        onFormatChanged: (format) {
+                          if (controller.calendarFormat != format) {
+                            // Call `setState()` when updating calendar format
 
-                                  // print(focusedDay);
-                                  Provider.of<CalendarController>(context,
-                                          listen: false)
-                                      .tableCalendarSwipeEvent(month, year);
-                                  // _focusedDay = focusedDay;
-                                },
-                                focusedDay: DateTime.now(),
-                                firstDay: DateTime(2017, 9, 10),
-                                lastDay: DateTime(2027, 9, 10)),
-                      );
-                    },
+                            controller.calendarFormat = format;
+                          }
+                          controller.update();
+                        },
+                        // calendarStyle: CalendarStyle(
+                        //   // Use `CalendarStyle` to customize the UI
+                        //   outsideDaysVisible: false,
+                        // ),
+                        onPageChanged: (focusedDay) {
+                          var month = focusedDay.month;
+                          var year = focusedDay.year;
+
+                          // print(focusedDay);
+                          Provider.of<CalendarController>(context,
+                                  listen: false)
+                              .tableCalendarSwipeEvent(month, year);
+                          // _focusedDay = focusedDay;
+                        },
+                        focusedDay: DateTime.now(),
+                        firstDay: DateTime(2017, 9, 10),
+                        lastDay: DateTime(2027, 9, 10)),
                   ),
+                  // },
+                  // ),
                   const SizedBox(
                     height: 5,
                   ),
@@ -487,22 +493,22 @@ class _DashBoardState extends State<DashBoard> {
                   SizedBox(
                     height: 15,
                   ),
-                  Expanded(
-                    // padding: EdgeInsets.symmetric(vertical: 20),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: ThemeConstants.whitecolor,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(35),
-                              topRight: Radius.circular(35))),
-                      padding:
-                          const EdgeInsets.only(top: 30, left: 25, right: 25),
-                      child: ListView(children: [
-                        ...controller.singleMeetingDetails(context),
-                        ...controller.singleMeetingDetails(context),
-                      ]),
-                    ),
-                  ),
+                  // Expanded(
+                  //   // padding: EdgeInsets.symmetric(vertical: 20),
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //         color: ThemeConstants.whitecolor,
+                  //         borderRadius: BorderRadius.only(
+                  //             topLeft: Radius.circular(35),
+                  //             topRight: Radius.circular(35))),
+                  //     padding:
+                  //         const EdgeInsets.only(top: 30, left: 25, right: 25),
+                  //     child: ListView(children: [
+                  //       ...controller.singleMeetingDetails(context),
+                  //       ...controller.singleMeetingDetails(context),
+                  //     ]),
+                  //   ),
+                  // ),
 
                   // SizedBox(
                   //   height: 10,

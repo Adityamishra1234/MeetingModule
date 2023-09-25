@@ -52,8 +52,9 @@ class BaseController extends GetxController {
     selectedMeetingData = data;
   }
 
-  getId() async {
+  Future<int> getId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
     if (prefs.getInt('id') == null) {
       id = 0;
     } else {
@@ -67,6 +68,8 @@ class BaseController extends GetxController {
     } else {
       token = await prefs.getString('token')!;
     }
+
+    return id;
   }
 
   logOut() async {

@@ -62,9 +62,11 @@ class DashBoardController extends GetxController with StateMixin {
     // print('fff');
     // await token();
     // helo.value = 2;
-    await getMeetingData();
+    // await getMeetingData();
 
     // getNotes('1', null);
+
+    change(null, status: RxStatus.success());
   }
 
   // @override

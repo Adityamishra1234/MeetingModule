@@ -96,4 +96,6 @@ abstract class API {
   addAgenda({required agenda, userId});
 
   allAgenda();
+
+  getMonthMeetingDates(String endpoint);
 }
