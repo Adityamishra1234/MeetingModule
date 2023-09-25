@@ -275,10 +275,21 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
+  // final routerDelegate = BeamerDelegate(
+  //   locationBuilder: BeamerLocationBuilder(
+  //     beamLocations: [BooksLocation()],
+  //   ),
+  //   notFoundRedirectNamed: '/books',
+  // );
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+
+//         routerDelegate: routerDelegate,
+// routeInformationParser: BeamerParser(),
         // smartManagement: SmartManagement.keepFactory,
+
         debugShowCheckedModeBanner: false,
         initialRoute: SignInView.route,
         getPages: [

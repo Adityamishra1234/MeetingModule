@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ThemeConstants {
+  static LinearGradient backgroundGradient = const LinearGradient(
+    colors: [
+      Color(0xff3088C6),
+      Color(0xff1556BE),
+    ],
+  );
+
   static TextStyle defaultTextStyle = const TextStyle(
       color: Colors.white70, fontSize: 20, fontWeight: FontWeight.w600);
   static TextStyle selectedTextStyle = const TextStyle(
@@ -52,6 +59,8 @@ class ThemeConstants {
   static Color GreenColor = const Color(0xFF2FAF5E);
   static Color ultraLightgreyColor = const Color(0xFFF6F6F6);
   static Color lightYellow = const Color(0xFFFFEFD8);
+  static Color paleYellow = const Color(0xFFFFF385);
+
   static Color lightSkyblue = const Color(0xFFe7fbfc);
   static Color lightbrow = const Color(0xFFfbefde);
   static Color browcolor = const Color(0xFFBC7B1D);

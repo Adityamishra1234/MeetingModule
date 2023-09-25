@@ -11,6 +11,7 @@ import 'package:meeting_module2/ui/controller/logincontroller.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
 import 'package:meeting_module2/utils/theme.dart';
+import 'package:meeting_module2/widget/calender/src/shared/utils.dart';
 import 'package:meeting_module2/widget/customExpansionTile.dart';
 import 'package:meeting_module2/widget/custom_button.dart';
 import 'package:meeting_module2/widget/custom_dialogue.dart';
@@ -26,6 +27,8 @@ class DashBoardController extends GetxController with StateMixin {
   List<AllMeetings> allMeetingslist = [];
 
   int indexOfTab = 0;
+
+  CalendarFormat calendarFormat = CalendarFormat.month;
 
   // RxList<AllMeetings> listToShowBackup = <AllMeetings>[].obs;
 
@@ -521,7 +524,7 @@ class DashBoardController extends GetxController with StateMixin {
                   stops: [0.00, 0.05, 0.05],
                 ),
                 border: Border.all(color: const Color(0xff1940b3)),
-                borderRadius: BorderRadius.circular(10.0)),
+                borderRadius: BorderRadius.circular(15.0)),
             child: Padding(
               padding: const EdgeInsets.only(left: 30, top: 0),
               child: Stack(

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'dart:io';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -18,12 +20,20 @@ import 'package:meeting_module2/ui/screens/loginUi.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
 
 import 'package:meeting_module2/utils/theme.dart';
+import 'package:meeting_module2/widget/calender/calendar_controller.dart';
+import 'package:meeting_module2/widget/calender/src/customization/calendar_style.dart';
+import 'package:meeting_module2/widget/calender/src/customization/days_of_week_style.dart';
+import 'package:meeting_module2/widget/calender/src/customization/header_style.dart';
+import 'package:meeting_module2/widget/calender/src/shared/utils.dart';
+import 'package:meeting_module2/widget/calender/src/table_calendar.dart';
 import 'package:meeting_module2/widget/custom_button.dart';
 import 'package:meeting_module2/widget/custom_dialogue.dart';
 import 'package:meeting_module2/widget/custom_tab_widget.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/popups/custom_error_popup.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:meeting_module2/widget/calender/src/shared/utils.dart';
+import 'package:provider/provider.dart';
 
 class DashBoard extends StatefulWidget {
   static const routeNamed = '/DashBoard';
@@ -44,8 +54,28 @@ class _DashBoardState extends State<DashBoard> {
 
   GlobalKey<CustomTabWidgetState> _childKey = CustomTabWidget.globalKey;
 
+  CalendarController controller2 = Get.put(CalendarController());
+
+  List<Event> _getEventsForDay(DateTime day) {
+    final kEvents = LinkedHashMap<DateTime, List<Event>>(
+      equals: isSameDay,
+      hashCode: getHashCode,
+    )..addAll(map1);
+    // Implementation example
+    return kEvents[day] ?? [];
+  }
+
+  int getHashCode(DateTime key) {
+    return key.day * 1000000 + key.month * 10000 + key.year;
+  }
+
+  Map<DateTime, List<Event>> map1 = {
+    DateTime(2023, 9, 21): [Event('ddd'), Event('ddd')],
+    DateTime.now(): [Event('ddd'), Event('ddd')]
+  };
   // var controller = Get.put(DashBoardController());
   var controllerBase = Get.find<BaseController>();
+
   var controller = Get.find<DashBoardController>();
   String? selectedValue = 'All Meetings';
   bool showFilterList = true;
@@ -101,257 +131,348 @@ class _DashBoardState extends State<DashBoard> {
       body: controller.obx(
         (state) => SafeArea(
           child: Container(
-            padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
             width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              color: Color(0xffffffff),
-            ),
+            decoration:
+                BoxDecoration(gradient: ThemeConstants.backgroundGradient),
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 80,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                            width: 60,
-                            height: 60,
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                CircleAvatar(
-                                  backgroundColor: ThemeConstants.bluecolor,
-                                  radius: 35,
-                                ),
-                                CircleAvatar(
-                                  backgroundColor: ThemeConstants.whitecolor,
-                                  radius: 28,
-                                ),
-                                CircleAvatar(
-                                  backgroundColor:
-                                      ThemeConstants.ultraLightgreyColor,
-                                  radius: 25,
-                                  child: Icon(
-                                    Icons.person,
-                                    size: 35,
-                                    color: ThemeConstants.bluecolor,
-                                  ),
-                                ),
-                              ],
-                            )),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Container(
-                            height: 70,
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 20, left: 25, right: 25),
+                    child: SizedBox(
+                      height: 80,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            // height: 70,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 CustomAutoSizeTextMontserrat(
                                   text: "Hello,",
-                                  fontSize: 18,
+                                  textColor: ThemeConstants.whitecolor,
+                                  fontSize: 20,
+                                ),
+                                SizedBox(
+                                  height: 4,
                                 ),
                                 CustomAutoSizeTextMontserrat(
                                   text: "${controller.user.value.name}",
-                                  fontSize: 24,
+                                  textColor: ThemeConstants.paleYellow,
+                                  fontSize: 30,
                                 ),
                               ],
                             ),
                           ),
-                        ),
-                        Spacer(),
-                        Container(
-                          child: Wrap(
-                            spacing: 5,
-                            // mainAxisSize: MainAxisSize.max,
-                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Get.toNamed(DashboardNotesView.routenamed);
-                                },
-                                child: Container(
-                                  width: 45,
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(200),
-                                      border: Border.all(
-                                          width: 1.5,
-                                          color: ThemeConstants.yellow),
-                                      color: ThemeConstants.lightYellow),
-                                  height: 45,
-                                  child: SvgPicture.asset(
-                                      'assets/images/note.svg'),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  controllerBase.logOut();
-                                },
-                                child: Container(
-                                  width: 45,
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(200),
-                                      border: Border.all(
-                                          width: 1.5,
-                                          color: ThemeConstants.bluecolor),
-                                      color: ThemeConstants.lightblueColor),
-                                  height: 45,
-                                  child: Icon(Icons.logout),
-                                ),
-                              ),
-                            ],
+                          Spacer(),
+                          SizedBox(
+                              width: 60,
+                              height: 60,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  CircleAvatar(
+                                    backgroundColor: ThemeConstants.whitecolor,
+                                    radius: 35,
+                                  ),
+                                  CircleAvatar(
+                                    backgroundColor: ThemeConstants.bluecolor,
+                                    radius: 28.5,
+                                  ),
+                                  CircleAvatar(
+                                    backgroundColor: ThemeConstants.whitecolor,
+                                    radius: 25,
+                                    child: Icon(
+                                      Icons.person,
+                                      size: 35,
+                                      color: ThemeConstants.bluecolor,
+                                    ),
+                                  ),
+                                ],
+                              )),
+
+                          // Spacer(),
+                          // Container(
+                          //   child: Wrap(
+                          //     spacing: 5,
+                          //     // mainAxisSize: MainAxisSize.max,
+                          //     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       InkWell(
+                          //         onTap: () {
+                          //           Get.toNamed(DashboardNotesView.routenamed);
+                          //         },
+                          //         child: Container(
+                          //           width: 45,
+                          //           padding: EdgeInsets.all(10),
+                          //           decoration: BoxDecoration(
+                          //               borderRadius:
+                          //                   BorderRadius.circular(200),
+                          //               border: Border.all(
+                          //                   width: 1.5,
+                          //                   color: ThemeConstants.yellow),
+                          //               color: ThemeConstants.lightYellow),
+                          //           height: 45,
+                          //           child: SvgPicture.asset(
+                          //               'assets/images/note.svg'),
+                          //         ),
+                          //       ),
+                          //       InkWell(
+                          //         onTap: () {
+                          //           controllerBase.logOut();
+                          //         },
+                          //         child: Container(
+                          //           width: 45,
+                          //           padding: EdgeInsets.all(10),
+                          //           decoration: BoxDecoration(
+                          //               borderRadius:
+                          //                   BorderRadius.circular(200),
+                          //               border: Border.all(
+                          //                   width: 1.5,
+                          //                   color: ThemeConstants.bluecolor),
+                          //               color: ThemeConstants.lightblueColor),
+                          //           height: 45,
+                          //           child: Icon(Icons.logout),
+                          //         ),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+                          SizedBox(
+                            width: 10,
                           ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                  CustomAutoSizeTextMontserrat(
-                    text: "Your Meetings",
-                    fontSize: 30,
-                    textColor: ThemeConstants.bluecolor,
-                    fontWeight: FontWeight.bold,
+
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5, left: 25, right: 25),
+                    child: Divider(
+                      color: ThemeConstants.whitecolor,
+                    ),
+                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 5, left: 25, right: 25),
+                  //   child: CustomAutoSizeTextMontserrat(
+                  //     text: "Your Meetings",
+                  //     fontSize: 30,
+                  //     textColor: ThemeConstants.bluecolor,
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  // ),
+                  ChangeNotifierProvider<CalendarController>(
+                    create: (_) => CalendarController(),
+                    builder: (context, child) {
+                      return Padding(
+                        padding:
+                            const EdgeInsets.only(top: 5, left: 25, right: 25),
+                        child: context.watch<CalendarController>().loading ==
+                                true
+                            ? getLoading(context)
+                            : TableCalendar<Event>(
+                                selectedDayPredicate: (day) =>
+                                    context.watch<CalendarController>().thisMonthHaveEvent
+                                        ? isSameDay(DateTime.now(), day)
+                                        : isSameDay(DateTime(2023, 9, 17), day),
+                                eventLoader: _getEventsForDay,
+                                daysOfWeekStyle: DaysOfWeekStyle(
+                                  weekendStyle: TextStyle(
+                                      color: ThemeConstants.whitecolor),
+                                  weekdayStyle: TextStyle(
+                                      color: ThemeConstants.whitecolor),
+                                ),
+                                calendarStyle: CalendarStyle(
+                                    selectedDecoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(200),
+                                        color: ThemeConstants.yellow),
+                                    outsideDaysVisible: false,
+                                    selectedTextStyle: TextStyle(
+                                        color: ThemeConstants.blackcolor),
+                                    outsideTextStyle:
+                                        TextStyle(color: ThemeConstants.yellow),
+                                    defaultTextStyle: TextStyle(
+                                        color: ThemeConstants.whitecolor),
+                                    weekendTextStyle: TextStyle(
+                                        color: ThemeConstants.whitecolor),
+                                    todayTextStyle: TextStyle(
+                                        color: ThemeConstants.bluecolor),
+                                    todayDecoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(200),
+                                        color: ThemeConstants.whitecolor)),
+                                onTapHeaderCustomButton: () {
+                                  // Get.to(CreateNewMeeting2());
+                                  print('ddd');
+                                },
+                                headerStyle: HeaderStyle(headerPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 20), titleTextStyle: TextStyle(fontSize: 14, color: ThemeConstants.whitecolor), formatButtonVisible: false, leftChevronVisible: false, rightChevronVisible: false),
+                                calendarFormat: controller.calendarFormat,
+                                onFormatChanged: (format) {
+                                  if (controller.calendarFormat != format) {
+                                    // Call `setState()` when updating calendar format
+
+                                    controller.calendarFormat = format;
+                                  }
+                                  controller.update();
+                                },
+                                // calendarStyle: CalendarStyle(
+                                //   // Use `CalendarStyle` to customize the UI
+                                //   outsideDaysVisible: false,
+                                // ),
+                                onPageChanged: (focusedDay) {
+                                  var month = focusedDay.month;
+                                  var year = focusedDay.year;
+
+                                  // print(focusedDay);
+                                  Provider.of<CalendarController>(context,
+                                          listen: false)
+                                      .tableCalendarSwipeEvent(month, year);
+                                  // _focusedDay = focusedDay;
+                                },
+                                focusedDay: DateTime.now(),
+                                firstDay: DateTime(2017, 9, 10),
+                                lastDay: DateTime(2027, 9, 10)),
+                      );
+                    },
                   ),
                   const SizedBox(
                     height: 5,
                   ),
-                  Wrap(
-                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        child: CustomTabWidget(
-                          key: _childKey,
-                          title0: "Upcoming",
-                          title1: "Done",
-                          callback: (val) => {
-                            controller.indexOfTab = val,
-                            print(val == 1),
-                            if (val == 0)
-                              {
-                                print('dcdfrfvfvf'),
-                                controller.showUpcomingList(),
-                                controller.update()
-                              }
-                            else if (val == 1)
-                              {
-                                print('$val dcdcd'),
-                                controller.showDoneList(),
-                                controller.update()
-                              }
-                          },
-                        ),
-                      ),
-                      // DropdownButton<String>(
-                      //   // value: dropdownValue,
-                      //   icon: const Icon(Icons.arrow_downward),
-                      //   elevation: 16,
-                      //   style: const TextStyle(color: Colors.deepPurple),
-                      //   underline: Container(
-                      //     height: 2,
-                      //     color: Colors.deepPurpleAccent,
-                      //   ),
-                      //   onChanged: (String? value) {
-                      //     // This is called when the user selects an item.
-                      //     setState(() {
-                      //       // dropdownValue = value!;
-                      //     });
-                      //   },
-                      //   items: list.map<DropdownMenuItem<String>>(
-                      //       (String value) {
-                      //     return DropdownMenuItem<String>(
-                      //       value: value,
-                      //       child: Text(value),
-                      //     );
-                      //   }).toList(),
-                      // ),
-                      SizedBox(
-                        width: 30,
-                      ),
+                  // Wrap(
+                  //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     Container(
+                  //       child: CustomTabWidget(
+                  //         key: _childKey,
+                  //         title0: "Upcoming",
+                  //         title1: "Done",
+                  //         callback: (val) => {
+                  //           controller.indexOfTab = val,
+                  //           print(val == 1),
+                  //           if (val == 0)
+                  //             {
+                  //               print('dcdfrfvfvf'),
+                  //               controller.showUpcomingList(),
+                  //               controller.update()
+                  //             }
+                  //           else if (val == 1)
+                  //             {
+                  //               print('$val dcdcd'),
+                  //               controller.showDoneList(),
+                  //               controller.update()
+                  //             }
+                  //         },
+                  //       ),
+                  //     ),
+                  //     // DropdownButton<String>(
+                  //     //   // value: dropdownValue,
+                  //     //   icon: const Icon(Icons.arrow_downward),
+                  //     //   elevation: 16,
+                  //     //   style: const TextStyle(color: Colors.deepPurple),
+                  //     //   underline: Container(
+                  //     //     height: 2,
+                  //     //     color: Colors.deepPurpleAccent,
+                  //     //   ),
+                  //     //   onChanged: (String? value) {
+                  //     //     // This is called when the user selects an item.
+                  //     //     setState(() {
+                  //     //       // dropdownValue = value!;
+                  //     //     });
+                  //     //   },
+                  //     //   items: list.map<DropdownMenuItem<String>>(
+                  //     //       (String value) {
+                  //     //     return DropdownMenuItem<String>(
+                  //     //       value: value,
+                  //     //       child: Text(value),
+                  //     //     );
+                  //     //   }).toList(),
+                  //     // ),
+                  //     SizedBox(
+                  //       width: 30,
+                  //     ),
 
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: Obx(
-                          () => DropdownButton2(
-                            underline: Container(),
-                            buttonStyleData: ButtonStyleData(
-                                elevation: 0,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(
-                                        width: 1,
-                                        color: ThemeConstants.blackcolor))),
-                            dropdownStyleData: DropdownStyleData(elevation: 1),
-                            hint: Text(
-                              '${controller.selectedFilter.value}',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Theme.of(context).hintColor,
-                              ),
-                            ),
+                  //     Padding(
+                  //       padding: const EdgeInsets.only(top: 8),
+                  //       child: Obx(
+                  //         () => DropdownButton2(
+                  //           underline: Container(),
+                  //           buttonStyleData: ButtonStyleData(
+                  //               elevation: 0,
+                  //               height: 40,
+                  //               decoration: BoxDecoration(
+                  //                   color: Colors.transparent,
+                  //                   borderRadius: BorderRadius.circular(20),
+                  //                   border: Border.all(
+                  //                       width: 1,
+                  //                       color: ThemeConstants.blackcolor))),
+                  //           dropdownStyleData: DropdownStyleData(elevation: 1),
+                  //           hint: Text(
+                  //             '${controller.selectedFilter.value}',
+                  //             style: TextStyle(
+                  //               fontSize: 14,
+                  //               color: Theme.of(context).hintColor,
+                  //             ),
+                  //           ),
 
-                            items: list
-                                .map((item) => DropdownMenuItem<String>(
-                                      value: item,
-                                      child: Text(
-                                        item,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ))
-                                .toList(),
-                            value: controller.selectedFilter.value == null
-                                ? selectedValue
-                                : controller.selectedFilter.value,
-                            onChanged: (value) {
-                              // controller.frfr(value);
+                  //           items: list
+                  //               .map((item) => DropdownMenuItem<String>(
+                  //                     value: item,
+                  //                     child: Text(
+                  //                       item,
+                  //                       style: const TextStyle(
+                  //                         fontSize: 14,
+                  //                       ),
+                  //                     ),
+                  //                   ))
+                  //               .toList(),
+                  //           value: controller.selectedFilter.value == null
+                  //               ? selectedValue
+                  //               : controller.selectedFilter.value,
+                  //           onChanged: (value) {
+                  //             // controller.frfr(value);
 
-                              controller.selectedFilter.value =
-                                  value.toString();
+                  //             controller.selectedFilter.value =
+                  //                 value.toString();
 
-                              controller.changeInFilter();
+                  //             controller.changeInFilter();
 
-                              controller.update();
+                  //             controller.update();
 
-                              // controller.showSpecificMeeting(value);
-                            },
-                            // buttonHeight: 40,
-                            // buttonWidth: 140,
-                            // itemHeight: 40,
-                            // itemWidth: 140,
-                          ),
-                        ),
-                      )
+                  //             // controller.showSpecificMeeting(value);
+                  //           },
+                  //           // buttonHeight: 40,
+                  //           // buttonWidth: 140,
+                  //           // itemHeight: 40,
+                  //           // itemWidth: 140,
+                  //         ),
+                  //       ),
+                  //     )
 
-                      // CustomFilterSelector(
-                      //   callBack: (val) {
-                      //     // showDialog(
-                      //     //     context: context,
-                      //     //     builder: (_) => AlertDialog(
-                      //     //           content: Container(
-                      //     //             width: 40,
-                      //     //             height: 40,
-                      //     //             child: Text('dd'),
-                      //     //           ),
-                      //     //         ));
-                      //     print(val);
-                      //     setState(() {
-                      //       showFilterList = val;
-                      //     });
-                      //   },
-                      // ),
-                    ],
-                  ),
+                  //     // CustomFilterSelector(
+                  //     //   callBack: (val) {
+                  //     //     // showDialog(
+                  //     //     //     context: context,
+                  //     //     //     builder: (_) => AlertDialog(
+                  //     //     //           content: Container(
+                  //     //     //             width: 40,
+                  //     //     //             height: 40,
+                  //     //     //             child: Text('dd'),
+                  //     //     //           ),
+                  //     //     //         ));
+                  //     //     print(val);
+                  //     //     setState(() {
+                  //     //       showFilterList = val;
+                  //     //     });
+                  //     //   },
+                  //     // ),
+                  //   ],
+                  // ),
                   // GetX<DashBoardController>(
                   //   init: DashBoardController(),
                   //   builder: (controller) {
@@ -367,38 +488,25 @@ class _DashBoardState extends State<DashBoard> {
                     height: 15,
                   ),
                   Expanded(
-                    child: GestureDetector(
-                      onHorizontalDragEnd: (details) {
-                        print(controller.indexOfTab);
-                        print(details);
-                        if (controller.indexOfTab == 0) {
-                          controller.showUpcomingList();
-                          controller.update();
-                          controller.indexOfTab = 1;
-                          _childKey.currentState?.changeOfIndexFromParent(1);
-                        } else if (controller.indexOfTab == 1) {
-                          controller.showDoneList();
-                          controller.update();
-                          controller.indexOfTab = 0;
-                          _childKey.currentState?.changeOfIndexFromParent(0);
-                        }
-                        // if (controller.indexOfTab == 0) {
-                        //   controller.indexOfTab == 1;
-                        // } else {
-                        //   controller.indexOfTab == 0;
-                        // }
-                        // print(controller.indexOfTab);
-                        // controller.update();
-                      },
+                    // padding: EdgeInsets.symmetric(vertical: 20),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: ThemeConstants.whitecolor,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(35),
+                              topRight: Radius.circular(35))),
+                      padding:
+                          const EdgeInsets.only(top: 30, left: 25, right: 25),
                       child: ListView(children: [
-                        ...controller.singleMeetingDetails(context)
+                        ...controller.singleMeetingDetails(context),
+                        ...controller.singleMeetingDetails(context),
                       ]),
                     ),
                   ),
 
-                  SizedBox(
-                    height: 10,
-                  )
+                  // SizedBox(
+                  //   height: 10,
+                  // )
 
                   // Row(
                   //   children: [
