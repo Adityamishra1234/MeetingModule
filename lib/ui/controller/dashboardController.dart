@@ -56,7 +56,23 @@ class DashBoardController extends GetxController with StateMixin {
   var helo = 0.obs;
 
   @override
+  void onReady() async {
+    await getMeetingOfThatDate(DateTime.now());
+
+    // getNotes('1', null);
+
+    change(null, status: RxStatus.success());
+    // TODO: implement onReady
+    super.onReady();
+  }
+
+  @override
   void onInit() async {
+    await getMeetingOfThatDate(DateTime.now());
+
+    // getNotes('1', null);
+
+    change(null, status: RxStatus.success());
     // await Future.delayed(Duration(seconds: 5));
     // RxStatus.loading();5
     super.onInit();
@@ -65,12 +81,6 @@ class DashBoardController extends GetxController with StateMixin {
     // await token();
     // helo.value = 2;
     // await getMeetingData();
-
-    await getMeetingOfThatDate(DateTime.now());
-
-    // getNotes('1', null);
-
-    change(null, status: RxStatus.success());
   }
 
   // @override
@@ -181,6 +191,7 @@ class DashBoardController extends GetxController with StateMixin {
   }
 
   getMeetingOfThatDate(DateTime date) async {
+    change(null, status: RxStatus.loading());
     // change(null, status: RxStatus.loading());
     // RxStatus.loading();
     // print('dddd');
@@ -222,6 +233,7 @@ class DashBoardController extends GetxController with StateMixin {
     // var data = json.decode(login);
 
     user.value = UserModel.fromJson(login);
+    update();
 
     change(null, status: RxStatus.success());
 
