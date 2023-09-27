@@ -991,4 +991,20 @@ class ApiServices extends BaseServices implements API {
     // TODO: implement getMonthMeetingDates
     // throw UnimplementedError();
   }
+
+  @override
+  getMeetingOfDates(String endpoint) async {
+    try {
+      var res = await httpPostNullBody('${Endpoints.baseUrl}$endpoint');
+
+      if (res != null) {
+        return res['meetingModel'];
+        // getToast(res["message"]);
+        // return true;
+      }
+    } catch (e) {
+      throw UnimplementedError();
+    }
+    // TODO: implement getMeetingOfDates
+  }
 }

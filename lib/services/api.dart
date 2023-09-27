@@ -98,4 +98,6 @@ abstract class API {
   allAgenda();
 
   getMonthMeetingDates(String endpoint);
+
+  getMeetingOfDates(String endpoint);
 }

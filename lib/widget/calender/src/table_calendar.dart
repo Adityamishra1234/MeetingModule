@@ -162,7 +162,7 @@ class TableCalendar<T> extends StatefulWidget {
   final RangeSelectionMode rangeSelectionMode;
 
   /// Function that assigns a list of events to a specified day.
-  final List<T> Function(DateTime day)? eventLoader;
+  final bool Function(DateTime day)? eventLoader;
 
   /// Function deciding whether given day should be enabled or not.
   /// If `false` is returned, this day will be disabled.
@@ -292,6 +292,11 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
     _rangeSelectionMode = widget.rangeSelectionMode;
   }
 
+  bool isEventDay = false;
+  _getEventData(DateTime day) {
+    isEventDay = widget.eventLoader!.call(day);
+  }
+
   @override
   void didUpdateWidget(TableCalendar<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -327,6 +332,8 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
       !widget.calendarStyle.outsideDaysVisible &&
       widget.calendarFormat == CalendarFormat.month;
 
+  CalendarFormat formatGlobalVal = CalendarFormat.month;
+
   void _swipeCalendarFormat(SwipeDirection direction) {
     if (widget.onFormatChanged != null) {
       final formats = widget.availableCalendarFormats.keys.toList();
@@ -342,6 +349,8 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
       } else {
         id = max(0, id - 1);
       }
+
+      formatGlobalVal = formats[id];
 
       widget.onFormatChanged!(formats[id]);
     }
@@ -494,6 +503,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           child: TableCalendarBase(
             onCalendarCreated: (pageController) {
               _pageController = pageController;
+
               widget.onCalendarCreated?.call(pageController);
             },
             focusedDay: _focusedDay.value,
@@ -520,7 +530,14 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
             onVerticalSwipe: _swipeCalendarFormat,
             onPageChanged: (focusedDay) {
               _focusedDay.value = focusedDay;
+
+              _getEventData(focusedDay);
+
+              // if (formatGlobalVal.name == 'month') {
               widget.onPageChanged?.call(focusedDay);
+              // } else if (formatGlobalVal.name == 'month') {
+
+              // }
             },
             weekNumbersVisible: widget.weekNumbersVisible,
             weekNumberBuilder: (BuildContext context, DateTime day) {
@@ -632,7 +649,11 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
         final isDisabled = _isDayDisabled(day);
         final isWeekend = _isWeekend(day, weekendDays: widget.weekendDays);
 
+        _getEventData(day);
+        // final isEventDay = widget.eventLoader?.call(day);
+
         Widget content = CellContent(
+          isHaveAEvent: isEventDay,
           key: ValueKey('CellContent-${day.year}-${day.month}-${day.day}'),
           day: day,
           focusedDay: focusedDay,
@@ -653,49 +674,49 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
 
         children.add(content);
 
-        if (!isDisabled) {
-          final events = widget.eventLoader?.call(day) ?? [];
-          Widget? markerWidget =
-              widget.calendarBuilders.markerBuilder?.call(context, day, events);
+        // if (!isDisabled) {
+        //   final events = widget.eventLoader?.call(day) ?? [];
+        //   Widget? markerWidget =
+        //       widget.calendarBuilders.markerBuilder?.call(context, day, events);
 
-          if (events.isNotEmpty && markerWidget == null) {
-            final center = constraints.maxHeight / 2;
+        //   if (events == true && markerWidget == null) {
+        //     final center = constraints.maxHeight / 2;
 
-            final markerSize = widget.calendarStyle.markerSize ??
-                (shorterSide - widget.calendarStyle.cellMargin.vertical) *
-                    widget.calendarStyle.markerSizeScale;
+        //     final markerSize = widget.calendarStyle.markerSize ??
+        //         (shorterSide - widget.calendarStyle.cellMargin.vertical) *
+        //             widget.calendarStyle.markerSizeScale;
 
-            final markerAutoAlignmentTop = center +
-                (shorterSide - widget.calendarStyle.cellMargin.vertical) / 2 -
-                (markerSize * widget.calendarStyle.markersAnchor);
+        //     final markerAutoAlignmentTop = center +
+        //         (shorterSide - widget.calendarStyle.cellMargin.vertical) / 2 -
+        //         (markerSize * widget.calendarStyle.markersAnchor);
 
-            markerWidget = PositionedDirectional(
-              top: widget.calendarStyle.markersAutoAligned
-                  ? markerAutoAlignmentTop
-                  : widget.calendarStyle.markersOffset.top,
-              bottom: widget.calendarStyle.markersAutoAligned
-                  ? null
-                  : widget.calendarStyle.markersOffset.bottom,
-              start: widget.calendarStyle.markersAutoAligned
-                  ? null
-                  : widget.calendarStyle.markersOffset.start,
-              end: widget.calendarStyle.markersAutoAligned
-                  ? null
-                  : widget.calendarStyle.markersOffset.end,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: events
-                    .take(widget.calendarStyle.markersMaxCount)
-                    .map((event) => _buildSingleMarker(day, event, markerSize))
-                    .toList(),
-              ),
-            );
-          }
+        //     markerWidget = PositionedDirectional(
+        //       top: widget.calendarStyle.markersAutoAligned
+        //           ? markerAutoAlignmentTop
+        //           : widget.calendarStyle.markersOffset.top,
+        //       bottom: widget.calendarStyle.markersAutoAligned
+        //           ? null
+        //           : widget.calendarStyle.markersOffset.bottom,
+        //       start: widget.calendarStyle.markersAutoAligned
+        //           ? null
+        //           : widget.calendarStyle.markersOffset.start,
+        //       end: widget.calendarStyle.markersAutoAligned
+        //           ? null
+        //           : widget.calendarStyle.markersOffset.end,
+        //       child: Row(
+        //         mainAxisSize: MainAxisSize.min,
+        //         children: events
+        //             .take(widget.calendarStyle.markersMaxCount)
+        //             .map((event) => _buildSingleMarker(day, event, markerSize))
+        //             .toList(),
+        //       ),
+        //     );
+        //   }
 
-          if (markerWidget != null) {
-            children.add(markerWidget);
-          }
-        }
+        //   if (markerWidget != null) {
+        //     children.add(markerWidget);
+        //   }
+        // }
 
         return Stack(
           alignment: widget.calendarStyle.markersAlignment,

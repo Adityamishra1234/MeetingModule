@@ -6,6 +6,7 @@ import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/services/apiServices.dart';
+import 'package:meeting_module2/services/endpoints.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/logincontroller.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
@@ -15,6 +16,7 @@ import 'package:meeting_module2/widget/calender/src/shared/utils.dart';
 import 'package:meeting_module2/widget/customExpansionTile.dart';
 import 'package:meeting_module2/widget/custom_button.dart';
 import 'package:meeting_module2/widget/custom_dialogue.dart';
+import 'package:meeting_module2/widget/custom_no_data_widget.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/popups/custom_error_popup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,6 +65,8 @@ class DashBoardController extends GetxController with StateMixin {
     // await token();
     // helo.value = 2;
     // await getMeetingData();
+
+    await getMeetingOfThatDate(DateTime.now());
 
     // getNotes('1', null);
 
@@ -115,6 +119,97 @@ class DashBoardController extends GetxController with StateMixin {
 
       RxList<AllMeetings> userID = <AllMeetings>[].obs;
       showUpcomingList();
+    }
+
+    var email = await prefs.getString('email');
+    var password = await prefs.getString('password');
+
+    // var logout = await api.login(email: email, password: password!);
+
+    var login = await api.login(email: email!, password: password!);
+
+    // var data = json.decode(login);
+
+    user.value = UserModel.fromJson(login);
+
+    change(null, status: RxStatus.success());
+
+//     allMeetingslist.forEach((e) {
+
+// userID.add(item);
+//       e.siecParticipants!.where((element) => element.id == userID);
+//       e.meetingCoordinator!.where((element) => element.id == userID);
+//     });
+
+    // var res2 = await api.getDropdown(Endpoints.allUser);
+
+    // var data2 = await json.decode(res2);
+
+    // allUserList.value = await List<AllUserModel>.from(
+    //     data2.map((x) => AllUserModel.fromJson(x)));
+
+    // listBro.value =
+    //     List<AllUserModel>.from(allUserList.map((element) => element)).toList();
+    // loading1.value = true;
+
+    // list = await data;
+
+    // allMeetingslist.where((element) {
+    //   print(element);
+    //   if (element.meetingEnded == true) {
+    //     print(element);
+    //     doneMeetings.add(element);
+    //   }
+
+    //   return true;
+    // });
+    // print(doneMeetings.length);
+
+    // for (var i = 0; i < allMeetingslist.length; i++) {
+    //   if (allMeetingslist[i].meetingEnded == true) {
+    //     doneMeetings.add(allMeetingslist[i]);
+    //     print(doneMeetings);
+    //   } else {
+    //     upcomingMeetings.add(allMeetingslist[i]);
+    //   }
+    // }
+    // loading.value = false;
+
+    // listToShow = upcomingMeetings;
+
+    // update();
+  }
+
+  getMeetingOfThatDate(DateTime date) async {
+    // change(null, status: RxStatus.loading());
+    // RxStatus.loading();
+    // print('dddd');
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    var id = await prefs.getInt('id');
+
+    var endpoint = await meetingsOfCalendarMeetingEndpoint(
+        id!, date.month, date.year, date.day);
+
+    // var res = await api.getAllMeetings(id!);
+
+    var res = await api.getMeetingOfDates(endpoint);
+
+    if (res.length != 0) {
+      meetingsToShowInDashboardWidgetList = [];
+      // var data = await json.decode(res);
+
+      allMeetingslist =
+          await List<AllMeetings>.from(res.map((x) => AllMeetings.fromJson(x)));
+
+      RxList<AllMeetings> userID = <AllMeetings>[].obs;
+      showUpcomingList();
+    } else {
+      meetingsToShowInDashboardWidgetList = [];
+      meetingsToShowInDashboardWidgetList.add(CustomNoDataWidget(
+        text: 'No Meeting',
+      ));
     }
 
     var email = await prefs.getString('email');
@@ -421,6 +516,8 @@ class DashBoardController extends GetxController with StateMixin {
       }
     }
 
+    listToShow = allMeetingslist;
+    singleMeetingDetails(Get.context!);
     update();
   }
 
@@ -500,6 +597,7 @@ class DashBoardController extends GetxController with StateMixin {
     getMeetingData();
   }
 
+  List<Widget> meetingsToShowInDashboardWidgetList = [];
   singleMeetingDetails(BuildContext context) {
     bool menu = false;
     List<Widget> data = [];
@@ -907,7 +1005,8 @@ class DashBoardController extends GetxController with StateMixin {
         ),
       ));
     }
-
+    meetingsToShowInDashboardWidgetList = data;
+    update();
     return data;
     // // Padding(
     //   padding: const EdgeInsets.only(left: 10, right: 10, top: 10),

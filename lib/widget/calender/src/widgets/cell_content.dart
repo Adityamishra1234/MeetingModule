@@ -3,6 +3,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:meeting_module2/utils/theme.dart';
 
 import '../customization/calendar_builders.dart';
 import '../customization/calendar_style.dart';
@@ -23,9 +24,11 @@ class CellContent extends StatelessWidget {
   final bool isWeekend;
   final CalendarStyle calendarStyle;
   final CalendarBuilders calendarBuilders;
+  final bool isHaveAEvent;
 
   const CellContent({
     Key? key,
+    required this.isHaveAEvent,
     required this.day,
     required this.focusedDay,
     required this.calendarStyle,
@@ -77,6 +80,16 @@ class CellContent extends StatelessWidget {
             child: Text(text, style: calendarStyle.disabledTextStyle),
           );
     } else if (isSelected) {
+      cell = calendarBuilders.selectedBuilder?.call(context, day, focusedDay) ??
+          AnimatedContainer(
+            duration: duration,
+            margin: margin,
+            padding: padding,
+            decoration: calendarStyle.weekendDecoration,
+            alignment: alignment,
+            child: Text(text, style: calendarStyle.weekendTextStyle),
+          );
+    } else if (isHaveAEvent) {
       cell = calendarBuilders.selectedBuilder?.call(context, day, focusedDay) ??
           AnimatedContainer(
             duration: duration,
@@ -154,13 +167,13 @@ class CellContent extends StatelessWidget {
             duration: duration,
             margin: margin,
             padding: padding,
-            decoration: isWeekend
-                ? calendarStyle.weekendDecoration
-                : calendarStyle.defaultDecoration,
+            decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(100)),
             alignment: alignment,
             child: Text(
               text,
-              style: isWeekend
+              style: false
                   ? calendarStyle.weekendTextStyle
                   : calendarStyle.defaultTextStyle,
             ),

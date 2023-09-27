@@ -100,7 +100,7 @@ datesOfCalendarMeetingEndpoint(int id, int month, int year) {
 }
 
 meetingsOfCalendarMeetingEndpoint(int id, int month, int year, int day) {
-  return 'getMeetingListByUserForDate/$id/$day/$month/$year';
+  return 'getMeetingListByUser/$id/$day/$month/$year';
 }
 
 
