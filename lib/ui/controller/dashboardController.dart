@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
+import 'package:meeting_module2/di/get_it.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
@@ -12,6 +14,7 @@ import 'package:meeting_module2/ui/controller/logincontroller.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
 import 'package:meeting_module2/utils/theme.dart';
+import 'package:meeting_module2/widget/calender/calendar_controller.dart';
 import 'package:meeting_module2/widget/calender/src/shared/utils.dart';
 import 'package:meeting_module2/widget/customExpansionTile.dart';
 import 'package:meeting_module2/widget/custom_button.dart';
@@ -22,6 +25,13 @@ import 'package:meeting_module2/widget/popups/custom_error_popup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DashBoardController extends GetxController with StateMixin {
+  SharedPreferences sharedPreferenceInstance = locator.get<SharedPreferences>();
+
+  BuildContext? currentPageBuildContext = null;
+  getBuildContextOfThePage(BuildContext context) {
+    currentPageBuildContext = context;
+  }
+
   ApiServices api = ApiServices();
 
   RxString selectedFilter = 'All Meetings'.obs;
@@ -57,7 +67,8 @@ class DashBoardController extends GetxController with StateMixin {
 
   @override
   void onReady() async {
-    await getMeetingOfThatDate(DateTime.now());
+    // todo
+    // await getMeetingOfThatDate(DateTime.now());
 
     // getNotes('1', null);
 
@@ -68,6 +79,9 @@ class DashBoardController extends GetxController with StateMixin {
 
   @override
   void onInit() async {
+    await dashboardInitialLoginForUserDetails();
+
+    //todo
     await getMeetingOfThatDate(DateTime.now());
 
     // getNotes('1', null);
@@ -190,15 +204,29 @@ class DashBoardController extends GetxController with StateMixin {
     // update();
   }
 
+  dashboardInitialLoginForUserDetails() async {
+    var email = await sharedPreferenceInstance.getString('email');
+    var password = await sharedPreferenceInstance.getString('password');
+
+    // var logout = await api.login(email: email, password: password!);
+
+    var login = await api.login(email: email!, password: password!);
+
+    // var data = json.decode(login);
+
+    user.value = UserModel.fromJson(login);
+
+    update();
+  }
+
   getMeetingOfThatDate(DateTime date) async {
-    change(null, status: RxStatus.loading());
     // change(null, status: RxStatus.loading());
     // RxStatus.loading();
     // print('dddd');
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    var id = await prefs.getInt('id');
+    var id = await sharedPreferenceInstance.getInt('id');
 
     var endpoint = await meetingsOfCalendarMeetingEndpoint(
         id!, date.month, date.year, date.day);
@@ -223,19 +251,7 @@ class DashBoardController extends GetxController with StateMixin {
       ));
     }
 
-    var email = await prefs.getString('email');
-    var password = await prefs.getString('password');
-
-    // var logout = await api.login(email: email, password: password!);
-
-    var login = await api.login(email: email!, password: password!);
-
-    // var data = json.decode(login);
-
-    user.value = UserModel.fromJson(login);
     update();
-
-    change(null, status: RxStatus.success());
 
 //     allMeetingslist.forEach((e) {
 
@@ -468,7 +484,7 @@ class DashBoardController extends GetxController with StateMixin {
   //       .toList();
   // }
 
-  changeInFilter() async {
+  Future<bool> changeInFilter() async {
     if (indexOfTab == 0) {
       if (selectedFilter.value == "All Meetings") {
         // print('dcdcd');
@@ -529,14 +545,25 @@ class DashBoardController extends GetxController with StateMixin {
     }
 
     listToShow = allMeetingslist;
-    singleMeetingDetails(Get.context!);
+    singleMeetingDetails(currentPageBuildContext!);
     update();
+
+    return true;
   }
 
+  bool loadingMeetingSection = false;
   showUpcomingList() async {
-    // print('ddd');
+    loadingMeetingSection = true;
+    update();
 
-    changeInFilter();
+    // await Future.delayed(Duration(seconds: 10));
+    // print('ddd');
+    var bool = await changeInFilter();
+
+    if (bool != null) {
+      loadingMeetingSection = false;
+    }
+    update();
   }
 
   // upcomingMeetings;
@@ -615,10 +642,17 @@ class DashBoardController extends GetxController with StateMixin {
     List<Widget> data = [];
     for (var i = 0; i < listToShow.length; i++) {
       data.add(InkWell(
-        onTap: () {
+        onTap: () async {
           Get.find<BaseController>().selectedMeeting(listToShow[i]);
           // getNotes('${listToShow[i].id}', i);
-          Get.to(MeetingDetails());
+          // context.pushNamed('secondRoute');
+          context.push('/DashBoard/MeetingDetails');
+          // if (val == 'lol') {
+          //   // getMeetingOfThatDate(
+          //   //     Get.find<CalendarController>().selectedDayGlobal!);
+          // }
+
+          // Get.to(MeetingDetails());
         },
         child: Padding(
           padding: const EdgeInsets.only(bottom: 12),
@@ -1019,6 +1053,7 @@ class DashBoardController extends GetxController with StateMixin {
     }
     meetingsToShowInDashboardWidgetList = data;
     update();
+    change(null, status: RxStatus.success());
     return data;
     // // Padding(
     //   padding: const EdgeInsets.only(left: 10, right: 10, top: 10),

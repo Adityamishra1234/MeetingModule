@@ -8,7 +8,7 @@ import 'package:meeting_module2/widget/custom_tab_widget.dart';
 class ViewNotesDetails extends StatelessWidget {
   var controller = Get.find<AddMoreNotesController>();
 
-  static const routeNamed = '/ViewNotesDetails';
+  static const routeNamed = 'ViewNotesDetails';
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
