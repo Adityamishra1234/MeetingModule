@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:meeting_module2/services/apiServices.dart';
-import 'package:meeting_module2/ui/screens/dashboard_page.dart';
+import 'package:meeting_module2/presentation/dashboard/view/ui/dashboard_page.dart';
 import 'package:meeting_module2/ui/screens/login_page.dart';
 
 class CreatePasswordController extends GetxController {

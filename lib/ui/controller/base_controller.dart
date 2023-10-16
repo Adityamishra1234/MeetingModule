@@ -1,12 +1,18 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_splash_screen/flutter_splash_screen.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
+import 'package:meeting_module2/utils/routes/router_config.dart';
 import 'package:meeting_module2/main.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/services/endpoints.dart';
-import 'package:meeting_module2/ui/screens/dashboard_page.dart';
+import 'package:meeting_module2/presentation/dashboard/view/ui/dashboard_page.dart';
 import 'package:meeting_module2/ui/screens/signin_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,13 +28,40 @@ class BaseController extends GetxController {
   int id = 0;
   String token = '';
 
+  StreamSubscription? connectionStream;
+
+  bool connectedToInternet = false;
+
+  connection() {
+    connectionStream = Connectivity().onConnectivityChanged.listen((result) {
+      if (result == ConnectivityResult.wifi ||
+          result == ConnectivityResult.mobile) {
+        connectedToInternet = true;
+        // currentPageBuildContext!.go('/MeetingDetails');
+        update();
+      } else {
+        currentPageBuildContext!.go('/MeetingDetails');
+
+        connectedToInternet = false;
+        update();
+      }
+    });
+  }
+
+  BuildContext? currentPageBuildContext;
+  getBuildContextOfThePage(BuildContext context) {
+    currentPageBuildContext = context;
+  }
+
   @override
   void onInit() async {
+    connection();
+
     // await Future.delayed(Duration(seconds: 5));
     // RxStatus.loading();5
     super.onInit();
     await getId();
-    await checkUser();
+    // await checkUser();
     await getAllSiecMembersList();
 
     // getNotes('1');
@@ -98,15 +131,18 @@ class BaseController extends GetxController {
         List<AllUserModel>.from(allUserList.map((element) => element)).toList();
   }
 
-  checkUser() async {
-    print(id);
-    if (id != 0) {
-      await Future.delayed(Duration(seconds: 1));
-      hideScreen();
-      Get.offAllNamed(DashBoard.routeNamed);
-    } else {
-      await Future.delayed(Duration(seconds: 1));
-      hideScreen();
-    }
-  }
+  // checkUser() async {
+  //   print(id);
+  //   if (id != 0) {
+  //     await Future.delayed(Duration(seconds: 1));
+  //     hideScreen();
+  //     BuildContext conte = Get.context!;
+
+  //     GoRouter.of(conte).go(DashBoard.routeNamed);
+  //     // Get.offAllNamed(DashBoard.routeNamed);
+  //   } else {
+  //     await Future.delayed(Duration(seconds: 1));
+  //     hideScreen();
+  //   }
+  // }
 }

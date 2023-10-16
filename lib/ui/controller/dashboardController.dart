@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:meeting_module2/di/get_it.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
@@ -25,7 +25,7 @@ import 'package:meeting_module2/widget/popups/custom_error_popup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DashBoardController extends GetxController with StateMixin {
-  late SharedPreferences sharedPreferenceInstance;
+  SharedPreferences sharedPreferenceInstance = locator.get<SharedPreferences>();
 
   BuildContext? currentPageBuildContext = null;
   getBuildContextOfThePage(BuildContext context) {
@@ -67,8 +67,8 @@ class DashBoardController extends GetxController with StateMixin {
 
   @override
   void onReady() async {
-    sharedPreferenceInstance = await SharedPreferences.getInstance();
-
+    // todo
+    // await getMeetingOfThatDate(DateTime.now());
     // todo
     // await getMeetingOfThatDate(DateTime.now());
 
@@ -81,9 +81,9 @@ class DashBoardController extends GetxController with StateMixin {
 
   @override
   void onInit() async {
-    sharedPreferenceInstance = await SharedPreferences.getInstance();
     await dashboardInitialLoginForUserDetails();
 
+    //todo
     //todo
     await getMeetingOfThatDate(DateTime.now());
 
@@ -548,7 +548,7 @@ class DashBoardController extends GetxController with StateMixin {
     }
 
     listToShow = allMeetingslist;
-    var con = Get.context;
+    singleMeetingDetails(currentPageBuildContext!);
     singleMeetingDetails(con!);
     update();
 
@@ -650,13 +650,13 @@ class DashBoardController extends GetxController with StateMixin {
           Get.find<BaseController>().selectedMeeting(listToShow[i]);
           // getNotes('${listToShow[i].id}', i);
           // context.pushNamed('secondRoute');
-          // context.push('/DashBoard/MeetingDetails');
+          context.push('/DashBoard/MeetingDetails');
           // if (val == 'lol') {
           //   // getMeetingOfThatDate(
           //   //     Get.find<CalendarController>().selectedDayGlobal!);
           // }
 
-          Get.to(MeetingDetails());
+          // Get.to(MeetingDetails());
         },
         child: Padding(
           padding: const EdgeInsets.only(bottom: 12),

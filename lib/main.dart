@@ -9,12 +9,15 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_splash_screen/flutter_splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/bindings/dashboardBindings.dart';
+import 'package:meeting_module2/utils/routes/router_config.dart';
+import 'package:meeting_module2/di/get_it.dart';
 import 'package:meeting_module2/models/dashboardNotesModel.dart';
+import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/screens/add_more_notes.dart';
 import 'package:meeting_module2/ui/screens/add_representative.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting2.dart';
 import 'package:meeting_module2/ui/screens/dashboard_notes.dart';
-import 'package:meeting_module2/ui/screens/dashboard_page.dart';
+import 'package:meeting_module2/presentation/dashboard/view/ui/dashboard_page.dart';
 import 'package:meeting_module2/ui/screens/login_page.dart';
 import 'package:meeting_module2/ui/screens/participants_details.dart';
 import 'package:meeting_module2/ui/screens/reschedule_meeting.dart';
@@ -122,6 +125,8 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]).then((value) => runApp(MyApp()));
+
+  await setupDI();
   runApp(MyApp());
 }
 
@@ -275,6 +280,8 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
+  var controllerBase = Get.put(BaseController(), permanent: true);
+
   // final routerDelegate = BeamerDelegate(
   //   locationBuilder: BeamerLocationBuilder(
   //     beamLocations: [BooksLocation()],
@@ -284,69 +291,73 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-
+    return MaterialApp.router(
+      routerConfig: GoRouterConfig().router,
 //         routerDelegate: routerDelegate,
 // routeInformationParser: BeamerParser(),
-        // smartManagement: SmartManagement.keepFactory,
+      // smartManagement: SmartManagement.keepFactory,
 
-        debugShowCheckedModeBanner: false,
-        initialRoute: SignInView.route,
-        getPages: [
-          GetPage(
-            name: SignInView.route,
-            page: () => SignInView(),
-          ),
-          GetPage(
-            name: LoginPage.routeNamed,
-            page: () => LoginPage(),
-          ),
-          GetPage(
+      debugShowCheckedModeBanner: false,
+      // initialRoute: SignInView.route,
+      // getPages: [
+      //   GetPage(
+      //     name: SignInView.route,
+      //     page: () => SignInView(),
+      //   ),
             name: DashBoard.routeNamed,
             page: () => DashBoard(),
           ),
-          GetPage(
-            name: DashboardNotesView.routenamed,
-            page: () => DashboardNotesView(),
-          ),
+      //   GetPage(
+      //     name: LoginPage.routeNamed,
+      //     page: () => LoginPage(),
+      //   ),
+      //   GetPage(
+      //       name: DashBoard.routeNamed,
+      //       page: () => DashBoard(),
+      //       binding: DashboardBinding()),
+      //   GetPage(
+      //     name: DashboardNotesView.routenamed,
+      //     page: () => DashboardNotesView(),
+      //   ),
 
-          // GetPage(
-          //   name: LoginPage.routeNamed,
-          //   page: () => LoginPage(),
-          // ),pi
-          GetPage(
-            name: ViewNotesDetails.routeNamed,
-            page: () => ViewNotesDetails(),
-          ),
-          GetPage(
-            name: ParticipantsDetails.routeNamed,
-            page: () => ParticipantsDetails(),
-          ),
-          // GetPage(
-          //   name: MeetingDetails.routeNamed,
-          //   page: () => MeetingDetails(),
-          //
-          GetPage(
-            name: CreateNewMeeting2.routeNamed,
-            page: () => CreateNewMeeting2(),
-          ),
-          GetPage(
-            name: AddRepresentative.routeNamed,
-            page: () => AddRepresentative(),
-          ),
-          GetPage(
-            name: RescheduleMeeting.routeNamed,
-            page: () => RescheduleMeeting(),
-          ),
-          GetPage(
-            name: DashBoard.routeNamed,
-            page: () => DashBoard(),
-          ),
-          GetPage(
-            name: AddMoreNotesView.routeName,
-            page: () => AddMoreNotesView(),
-          )
-        ]);
+      //   // GetPage(
+      //   //   name: LoginPage.routeNamed,
+      //   //   page: () => LoginPage(),
+      //   // ),pi
+      //   GetPage(
+      //     name: ViewNotesDetails.routeNamed,
+      //     page: () => ViewNotesDetails(),
+      //   ),
+      //   GetPage(
+      //     name: ParticipantsDetails.routeNamed,
+      //     page: () => ParticipantsDetails(),
+      //   ),
+      //   // GetPage(
+      //   //   name: MeetingDetails.routeNamed,
+      //   //   page: () => MeetingDetails(),
+      //   //
+      //   GetPage(
+      //     name: CreateNewMeeting2.routeNamed,
+      //     page: () => CreateNewMeeting2(),
+      //   ),
+      //   GetPage(
+      //     name: AddRepresentative.routeNamed,
+      //     page: () => AddRepresentative(),
+      //   ),
+      //   GetPage(
+      //     name: RescheduleMeeting.routeNamed,
+      //     page: () => RescheduleMeeting(),
+      //   ),
+      //   GetPage(
+      //     name: DashBoard.routeNamed,
+      //     page: () => DashBoard(),
+      //   ),
+      //   GetPage(
+      //     name: AddMoreNotesView.routeName,
+      //     page: () => AddMoreNotesView(),
+      //   )
+      // ]
+    );
   }
 }
 

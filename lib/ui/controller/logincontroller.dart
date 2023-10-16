@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
-import 'package:meeting_module2/ui/screens/dashboard_page.dart';
+import 'package:meeting_module2/presentation/dashboard/view/ui/dashboard_page.dart';
 import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';

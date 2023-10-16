@@ -52,6 +52,7 @@ class CalendarController extends GetxController with StateMixin {
 
   DateTime? selectedDayGlobal;
   DateTime? focusedDayGlobal = DateTime.now();
+
   void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(selectedDayGlobal, selectedDay)) {
       selectedDayGlobal = selectedDay;

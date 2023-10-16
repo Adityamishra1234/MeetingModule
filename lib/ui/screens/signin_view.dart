@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meeting_module2/ui/screens/dashboard_page.dart';
+import 'package:meeting_module2/presentation/dashboard/view/ui/dashboard_page.dart';
 import 'package:meeting_module2/utils/snackbarconstants.dart';
 import 'package:meeting_module2/widget/backgroundLogin.dart';
 import 'package:nice_loading_button/nice_loading_button.dart';
@@ -16,7 +16,7 @@ import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/customtextfield.dart';
 
 class SignInView extends StatefulWidget {
-  static const route = '/signin';
+  static const route = 'signin';
   SignInView({super.key});
 
   @override
@@ -31,7 +31,7 @@ class _SignInViewState extends State<SignInView> {
     super.dispose();
   }
 
-  var controllerBase = Get.put(BaseController(), permanent: true);
+  var controllerBase = Get.find<BaseController>();
 
   var controller = Get.put(SigninController());
 

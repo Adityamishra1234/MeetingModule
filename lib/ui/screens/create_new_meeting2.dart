@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/presentation/constants/loading.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/create_new_meeting_controller2.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
-import 'package:meeting_module2/ui/screens/dashboard_page.dart';
+import 'package:meeting_module2/presentation/dashboard/view/ui/dashboard_page.dart';
 import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/snackbarconstants.dart';
 import 'package:meeting_module2/utils/theme.dart';
@@ -35,7 +36,7 @@ class CreateNewMeeting2 extends StatelessWidget {
         body: controller.obx(
             (state) => WillPopScope(
                   onWillPop: () async {
-                    Get.back(result: 'true');
+                    context.pop('true');
                     return true;
                   },
                   child: SafeArea(

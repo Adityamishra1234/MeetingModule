@@ -19,7 +19,7 @@ import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_all
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dart';
 
 class AddMoreNotesView extends StatefulWidget {
-  static String routeName = '/addmorenotes';
+  static const routeName = '/addmorenotes';
   AddMoreNotesView({super.key});
 
   @override
