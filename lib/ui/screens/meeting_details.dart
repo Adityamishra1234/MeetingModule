@@ -6,7 +6,7 @@ import 'package:meeting_module2/ui/controller/add_more_notes_controller.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/add_more_notes.dart';
-import 'package:meeting_module2/ui/screens/dashboard_page.dart';
+// import 'package:meeting_module2/ui/screens/dashboard_page.dart';
 import 'package:meeting_module2/ui/screens/view_docs.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
 import 'package:meeting_module2/utils/theme.dart';
@@ -20,7 +20,7 @@ import 'package:quickalert/quickalert.dart';
 
 class MeetingDetails extends StatefulWidget {
   // MeetingDetails();
-  static const routeNamed = '/MeetingDetails';
+  static const routeNamed = 'MeetingDetails';
 
   @override
   State<MeetingDetails> createState() => _MeetingDetailsState();

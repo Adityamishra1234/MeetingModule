@@ -6,17 +6,6 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
-<<<<<<<< HEAD:lib/ui/screens/dashboard_page.dart
-
-import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
-
-import 'package:meeting_module2/models/allMeetingsModels.dart';
-
-import 'package:meeting_module2/presentation/constants/loading.dart';
-
-========
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -26,7 +15,6 @@ import 'package:meeting_module2/models/allMeetingsModels.dart';
 
 import 'package:meeting_module2/presentation/constants/loading.dart';
 import 'package:meeting_module2/presentation/dashboard/bloc/dashboard_bloc.dart';
->>>>>>>> go_router_Implemenation:lib/presentation/dashboard/view/ui/dashboard_page.dart
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting.dart';
@@ -86,7 +74,7 @@ class _DashBoardState extends State<DashBoard> {
   // var controller = Get.put(DashBoardController());
   var controllerBase = Get.find<BaseController>();
 
-  var controller = Get.put(DashBoardController(), permanent: true);
+  var controller = Get.find<DashBoardController>();
 
   //  var    Get.put(CalendarController());
 
@@ -109,11 +97,7 @@ class _DashBoardState extends State<DashBoard> {
     // dashboardBloc = locator.get<DashboardBloc>();
     // dashboardBloc.add(DashboardIntitalEvent(context));
 
-<<<<<<<< HEAD:lib/ui/screens/dashboard_page.dart
-    // Get.find<BaseController>().getBuildContextOfThePage(context);
-========
     Get.find<BaseController>().getBuildContextOfThePage(context);
->>>>>>>> go_router_Implemenation:lib/presentation/dashboard/view/ui/dashboard_page.dart
     controller.getBuildContextOfThePage(context);
     // controllerBase.token2();
     controllerBase.getId();
@@ -226,41 +210,6 @@ class _DashBoardState extends State<DashBoard> {
                                   ),
                                 ],
                               )),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              controllerBase.logOut();
-                            },
-                            child: SizedBox(
-                                width: 60,
-                                height: 60,
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor:
-                                          ThemeConstants.whitecolor,
-                                      radius: 35,
-                                    ),
-                                    CircleAvatar(
-                                      backgroundColor: ThemeConstants.bluecolor,
-                                      radius: 28.5,
-                                    ),
-                                    CircleAvatar(
-                                      backgroundColor:
-                                          ThemeConstants.whitecolor,
-                                      radius: 25,
-                                      child: Icon(
-                                        Icons.logout,
-                                        size: 30,
-                                        color: ThemeConstants.bluecolor,
-                                      ),
-                                    ),
-                                  ],
-                                )),
-                          ),
 
                           // Spacer(),
                           // Container(
@@ -398,25 +347,11 @@ class _DashBoardState extends State<DashBoard> {
                                             BorderRadius.circular(200),
                                         color: ThemeConstants.yellow)),
                                 onTapHeaderCustomButton: () async {
-<<<<<<<< HEAD:lib/ui/screens/dashboard_page.dart
-                                  var result = await Get.toNamed(
-                                      CreateNewMeeting2.routeNamed);
-                                  print(
-                                      '$result efdddeeeeeeeeeeeeee\f\e\ffefefeef');
-                                  if (result == 'true') {
-                                    Get.find<DashBoardController>().onInit();
-
-                                    calendarController.selectedDayGlobal =
-                                        DateTime.now();
-
-                                    calendarController.update();
-========
                                   var result = await context
                                       .push(CreateNewMeeting2.routeNamed);
 
                                   if (result == 'true') {
                                     Get.find<DashBoardController>().onInit();
->>>>>>>> go_router_Implemenation:lib/presentation/dashboard/view/ui/dashboard_page.dart
                                   }
 
                                   // Get.to(CreateNewMeeting2());
@@ -1676,3 +1611,9 @@ class DashboardMeetings extends StatelessWidget {
     );
   }
 }
+
+//  'All Meetings',
+//     'University Meeting',
+//     'Bank Meeting',
+//     'Vendow Meeting',
+//     'Internal Meeting'

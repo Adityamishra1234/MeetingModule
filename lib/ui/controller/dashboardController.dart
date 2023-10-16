@@ -549,7 +549,7 @@ class DashBoardController extends GetxController with StateMixin {
 
     listToShow = allMeetingslist;
     singleMeetingDetails(currentPageBuildContext!);
-    singleMeetingDetails(con!);
+    // singleMeetingDetails(con!);
     update();
 
     return true;

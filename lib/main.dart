@@ -304,9 +304,9 @@ class _MyAppState extends State<MyApp> {
       //     name: SignInView.route,
       //     page: () => SignInView(),
       //   ),
-            name: DashBoard.routeNamed,
-            page: () => DashBoard(),
-          ),
+      // name: DashBoard.routeNamed,
+      // page: () => DashBoard(),
+      // ),
       //   GetPage(
       //     name: LoginPage.routeNamed,
       //     page: () => LoginPage(),
