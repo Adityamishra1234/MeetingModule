@@ -35,16 +35,12 @@ class CreateNewMeeting2 extends StatelessWidget {
         body: controller.obx(
             (state) => WillPopScope(
                   onWillPop: () async {
-                    Get.offAllNamed(DashBoard.routeNamed);
-
+                    Get.back(result: 'true');
                     return true;
                   },
                   child: SafeArea(
                     child: Container(
-                      padding: EdgeInsets.only(
-                          top: ScreenUtil().statusBarHeight,
-                          left: 10,
-                          right: 10),
+                      padding: EdgeInsets.only(top: 10, left: 10, right: 10),
                       child: Column(
                         children: [
                           SizedBox(
@@ -1358,37 +1354,37 @@ class CreateNewMeeting2 extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        controller.showRepresentativeData =
-                            !controller.showRepresentativeData;
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     controller.showRepresentativeData =
+                    //         !controller.showRepresentativeData;
 
-                        // showDialog(
-                        //     context: context,
-                        //     builder: (_) => DialogHora(controller: controller));
-                        // controller.listOfParticipants
-                        //     .add(controllers.participantData.value);
-                        controller.update();
-                      },
-                      child: Container(
-                        height: 38,
-                        width: MediaQuery.of(context).size.width * 0.35,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 1, color: ThemeConstants.orangeColor),
-                            color: Colors.transparent,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(30.0))),
-                        child: Center(
-                          child: CustomAutoSizeTextMontserrat(
-                              text: "View Representative Data",
-                              align: TextAlign.center,
-                              textColor: ThemeConstants.orangeColor,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ),
+                    //     // showDialog(
+                    //     //     context: context,
+                    //     //     builder: (_) => DialogHora(controller: controller));
+                    //     // controller.listOfParticipants
+                    //     //     .add(controllers.participantData.value);
+                    //     controller.update();
+                    //   },
+                    //   child: Container(
+                    //     height: 38,
+                    //     width: MediaQuery.of(context).size.width * 0.35,
+                    //     decoration: BoxDecoration(
+                    //         border: Border.all(
+                    //             width: 1, color: ThemeConstants.orangeColor),
+                    //         color: Colors.transparent,
+                    //         borderRadius:
+                    //             const BorderRadius.all(Radius.circular(30.0))),
+                    //     child: Center(
+                    //       child: CustomAutoSizeTextMontserrat(
+                    //           text: "View Representative Data",
+                    //           align: TextAlign.center,
+                    //           textColor: ThemeConstants.orangeColor,
+                    //           fontSize: 12,
+                    //           fontWeight: FontWeight.w500),
+                    //     ),
+                    //   ),
+                    // ),
                     GestureDetector(
                       onTap: () {
                         addRepresentative(context, controllers);
@@ -1445,7 +1441,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                   ],
                 ),
 
-                if (controller.showRepresentativeData == true) ...[
+                if (true) ...[
                   if (controller.meetingWith.value !=
                       'University Meetings') ...[
                     SizedBox(
@@ -1613,8 +1609,10 @@ class CreateNewMeeting2 extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 0),
                   child: Align(
                     alignment: Alignment.topLeft,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
                           onTap: () {
@@ -1628,7 +1626,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                           },
                           child: Container(
                             height: 38,
-                            width: MediaQuery.of(context).size.width * 0.35,
+                            width: 170,
                             decoration: BoxDecoration(
                                 border: Border.all(
                                     width: 1,

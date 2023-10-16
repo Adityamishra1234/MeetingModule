@@ -6,6 +6,8 @@ class DashboardBinding implements Bindings {
   @override
   void dependencies() {
     // Get.put(ApplicationDetail());
-    Get.lazyPut(() => DashBoardController(), fenix: true);
+    Get.put(
+      DashBoardController(),
+    );
   }
 }

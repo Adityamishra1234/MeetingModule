@@ -302,9 +302,9 @@ class _MyAppState extends State<MyApp> {
             page: () => LoginPage(),
           ),
           GetPage(
-              name: DashBoard.routeNamed,
-              page: () => DashBoard(),
-              binding: DashboardBinding()),
+            name: DashBoard.routeNamed,
+            page: () => DashBoard(),
+          ),
           GetPage(
             name: DashboardNotesView.routenamed,
             page: () => DashboardNotesView(),

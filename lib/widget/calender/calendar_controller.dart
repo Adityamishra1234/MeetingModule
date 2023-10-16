@@ -67,6 +67,8 @@ class CalendarController extends GetxController with StateMixin {
 
       // _selectedEvents.value = _getEventsForDay(selectedDay);
     }
+
+    update();
   }
 
   var counter = DateTime.now().month;

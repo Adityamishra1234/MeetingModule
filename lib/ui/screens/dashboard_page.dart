@@ -6,11 +6,15 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
+
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
+
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 
 import 'package:meeting_module2/presentation/constants/loading.dart';
+
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting.dart';
@@ -70,7 +74,7 @@ class _DashBoardState extends State<DashBoard> {
   // var controller = Get.put(DashBoardController());
   var controllerBase = Get.find<BaseController>();
 
-  var controller = Get.find<DashBoardController>();
+  var controller = Get.put(DashBoardController(), permanent: true);
 
   //  var    Get.put(CalendarController());
 
@@ -84,8 +88,17 @@ class _DashBoardState extends State<DashBoard> {
     'Internal Meeting'
   ];
 
+  // late DashboardBloc dashboardBloc;
+
   @override
   void initState() {
+    print(context);
+
+    // dashboardBloc = locator.get<DashboardBloc>();
+    // dashboardBloc.add(DashboardIntitalEvent(context));
+
+    // Get.find<BaseController>().getBuildContextOfThePage(context);
+    controller.getBuildContextOfThePage(context);
     // controllerBase.token2();
     controllerBase.getId();
     if (Get.previousRoute == '${LoginView.routeNamed}' ||
@@ -125,7 +138,12 @@ class _DashBoardState extends State<DashBoard> {
       // body: controller.obx((state) {
       //   print(state);
       body: controller.obx(
-        (state) => SafeArea(
+        (state) =>
+            // BlocConsumer<DashboardBloc, DashboardState>(
+            // listener: (context, state) {
+            // TODO: implement listener
+            // }, builder: (context, state) {
+            SafeArea(
           child: Container(
             width: MediaQuery.of(context).size.width,
             decoration:
@@ -192,6 +210,41 @@ class _DashBoardState extends State<DashBoard> {
                                   ),
                                 ],
                               )),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              controllerBase.logOut();
+                            },
+                            child: SizedBox(
+                                width: 60,
+                                height: 60,
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundColor:
+                                          ThemeConstants.whitecolor,
+                                      radius: 35,
+                                    ),
+                                    CircleAvatar(
+                                      backgroundColor: ThemeConstants.bluecolor,
+                                      radius: 28.5,
+                                    ),
+                                    CircleAvatar(
+                                      backgroundColor:
+                                          ThemeConstants.whitecolor,
+                                      radius: 25,
+                                      child: Icon(
+                                        Icons.logout,
+                                        size: 30,
+                                        color: ThemeConstants.bluecolor,
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          ),
 
                           // Spacer(),
                           // Container(
@@ -251,7 +304,7 @@ class _DashBoardState extends State<DashBoard> {
                   Padding(
                     padding: const EdgeInsets.only(top: 5, left: 25, right: 25),
                     child: Divider(
-                      color: ThemeConstants.whitecolor,
+                      color: Colors.white,
                     ),
                   ),
                   // Padding(
@@ -328,7 +381,20 @@ class _DashBoardState extends State<DashBoard> {
                                         borderRadius:
                                             BorderRadius.circular(200),
                                         color: ThemeConstants.yellow)),
-                                onTapHeaderCustomButton: () {
+                                onTapHeaderCustomButton: () async {
+                                  var result = await Get.toNamed(
+                                      CreateNewMeeting2.routeNamed);
+                                  print(
+                                      '$result efdddeeeeeeeeeeeeee\f\e\ffefefeef');
+                                  if (result == 'true') {
+                                    Get.find<DashBoardController>().onInit();
+
+                                    calendarController.selectedDayGlobal =
+                                        DateTime.now();
+
+                                    calendarController.update();
+                                  }
+
                                   // Get.to(CreateNewMeeting2());
                                   print('ddd');
                                 },
@@ -523,7 +589,13 @@ class _DashBoardState extends State<DashBoard> {
                       padding:
                           const EdgeInsets.only(top: 30, left: 25, right: 25),
                       child: ListView(children: [
-                        ...controller.meetingsToShowInDashboardWidgetList
+                        if (controller.loadingMeetingSection == false) ...[
+                          ...controller.meetingsToShowInDashboardWidgetList
+                        ] else ...[
+                          CircularProgressIndicator(
+                            color: ThemeConstants.bluecolor,
+                          )
+                        ]
                         // ...controller.singleMeetingDetails(context),
                       ]),
                     ),
@@ -602,22 +674,24 @@ class _DashBoardState extends State<DashBoard> {
         ),
         onLoading: getLoading(context),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        // isExtended: true,
-        child: Icon(Icons.add),
-        backgroundColor: ThemeConstants.bluecolor,
-        onPressed: () {
-          print('object');
-          // ApiServices().addMeeting();
-          // Get.toNamed(CreateNewMeeting.routeNamed);
-          Get.to(CreateNewMeeting2());
 
-          // Get.to(
-          //   () => MeetingDetails(),
-          // );
-        },
-      ),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      // floatingActionButton: FloatingActionButton(
+      //   // isExtended: true,
+      //   child: Icon(Icons.add),
+      //   backgroundColor: ThemeConstants.bluecolor,
+      //   onPressed: () {
+      //     print('object');
+      //     // ApiServices().addMeeting();
+      //     // Get.toNamed(CreateNewMeeting.routeNamed);
+      //     Get.to(CreateNewMeeting2());
+
+      //     // Get.to(
+      //     //   () => MeetingDetails(),
+      //     // );
+      //   },
+      // ),
     );
   }
 
@@ -1578,9 +1652,3 @@ class DashboardMeetings extends StatelessWidget {
     );
   }
 }
-
-//  'All Meetings',
-//     'University Meeting',
-//     'Bank Meeting',
-//     'Vendow Meeting',
-//     'Internal Meeting'

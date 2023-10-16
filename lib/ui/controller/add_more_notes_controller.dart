@@ -86,6 +86,26 @@ class AddMoreNotesController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
+  @override
+  void onReady() async {
+    change(null, status: RxStatus.loading());
+    id = baseController.id;
+    print('$id fffff');
+    // await meetingId();
+    await getNotesOfMeeting();
+    await checkUserIsCordinator();
+    await getMeetingParticipantsList();
+    await getReasonOfNotAttedingsAll(baseController.selectedMeetingData.id!);
+    // getMeetingCountryAndUniversity();
+    // await showPublishButtonOrNot();
+    meetingStartedValue = baseController.selectedMeetingData.meetingStarted!;
+    meetingEndedValue = baseController.selectedMeetingData.meetingEnded!;
+
+    change(null, status: RxStatus.success());
+    // TODO: implement onReady
+    super.onReady();
+  }
+
   int meetingUniversityID = 0;
   var meetingCountryID = 0;
 
@@ -248,6 +268,10 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
     // List<FindNotesModel> data = List<FindNotesModel>.from(
     //     json.decode(res).map((x) => FindNotesModel.fromJson(x)));
+    if (res == null) {
+      documentlist.add(CustomNoDataWidget(text: 'No Notes Available'));
+      return;
+    }
 
     var data =
         List<FindNotesModel>.from(res.map((x) => FindNotesModel.fromJson(x)));
@@ -790,9 +814,9 @@ class AddMoreNotesController extends GetxController with StateMixin {
           margin: EdgeInsets.all(5),
           padding: EdgeInsets.all(5),
           decoration: BoxDecoration(
-              color: ThemeConstants.lightVioletColor,
+              // color: ThemeConstants.whitecolor,
               borderRadius: BorderRadius.circular(5),
-              border: Border.all(width: 1, color: ThemeConstants.VioletColor)),
+              border: Border.all(width: 1, color: ThemeConstants.whitecolor)),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -803,10 +827,10 @@ class AddMoreNotesController extends GetxController with StateMixin {
               ),
               CircleAvatar(
                 radius: 12,
-                backgroundColor: Colors.white,
+                backgroundColor: const Color.fromARGB(0, 255, 255, 255),
                 child: Icon(
                   Icons.person,
-                  color: ThemeConstants.blackcolor,
+                  color: ThemeConstants.whitecolor,
                   size: 15,
                 ),
               ),
@@ -814,19 +838,31 @@ class AddMoreNotesController extends GetxController with StateMixin {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Name: ${dataList[i].personName}'),
+                    Text(
+                      'Name:  ${dataList[i].personName}',
+                      style: TextStyle(color: ThemeConstants.whitecolor),
+                    ),
                     SizedBox(
                       height: 2.5,
                     ),
-                    Text('Designation: ${dataList[i].designation}'),
+                    Text(
+                      'Designation:  ${dataList[i].designation}',
+                      style: TextStyle(color: ThemeConstants.whitecolor),
+                    ),
                     SizedBox(
                       height: 2.5,
                     ),
-                    Text('Email: ${dataList[i].email}'),
+                    Text(
+                      'Email:  ${dataList[i].email}',
+                      style: TextStyle(color: ThemeConstants.whitecolor),
+                    ),
                     SizedBox(
                       height: 2.5,
                     ),
-                    Text('Phone: ${dataList[i].phone}'),
+                    Text(
+                      'Phone:  ${dataList[i].phone}',
+                      style: TextStyle(color: ThemeConstants.whitecolor),
+                    ),
                   ]),
             ],
           ),
