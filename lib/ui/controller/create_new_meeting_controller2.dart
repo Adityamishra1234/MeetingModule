@@ -14,8 +14,10 @@ import 'package:meeting_module2/models/selectedAudienceTypeModel.dart';
 import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
+import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
+import 'package:meeting_module2/widget/popups/custom_error_popup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateNewMeetingController2 extends GetxController with StateMixin {
@@ -481,7 +483,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
   ///
 
   RxList<AllBranchModel> allBranchList = <AllBranchModel>[].obs;
-  createNewMeeting() async {
+  createNewMeeting(BuildContext context) async {
     meetingModel.value.meetingWith = '';
 
     meetingModel.value.meetingType = 'Internal Meeting';
@@ -552,33 +554,38 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     Get.delete<CreateNewMeetingController2>();
     Get.put(CreateNewMeetingController2());
     change(null, status: RxStatus.success());
-    Get.defaultDialog(
-        title: '',
-        titlePadding: EdgeInsets.all(0),
-        content: Container(
-          width: 200,
-          height: 200,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Meeting Added Successfully',
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Icon(
-                  Icons.check_circle_rounded,
-                  color: ThemeConstants.GreenColor,
-                  size: 60,
-                ),
-              ]),
-        ));
+    getToast('Meeting Added Successfully');
+    // showPoPUp(
+    //     'Meeting Added Successfully',
+    //     Icon(
+    //       Icons.check_circle_rounded,
+    //       color: ThemeConstants.GreenColor,
+    //       size: 60,
+    //     ),
+    //     context);
+    // Get.defaultDialog(
+    //     title: '',
+    //     titlePadding: EdgeInsets.all(0),
+    //     content: Container(
+    //       width: 200,
+    //       height: 200,
+    //       child: Column(
+    //           mainAxisAlignment: MainAxisAlignment.center,
+    //           crossAxisAlignment: CrossAxisAlignment.center,
+    //           children: [
+    //             Text(
+    //               'Meeting Added Successfully',
+    //               textAlign: TextAlign.center,
+    //             ),
+    //             SizedBox(
+    //               height: 10,
+    //             ),
+
+    //           ]),
+    //     ));
   }
 
-  createExternalNewMeeting() async {
+  createExternalNewMeeting(BuildContext context) async {
     if (listOfParticipants.length < 1) {
       Get.defaultDialog(
           content: Container(
@@ -682,30 +689,15 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     Get.delete<CreateNewMeetingController2>();
     Get.put(CreateNewMeetingController2());
     change(null, status: RxStatus.success());
-    Get.defaultDialog(
-        title: '',
-        titlePadding: EdgeInsets.all(0),
-        content: Container(
-          width: 200,
-          height: 200,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Meeting Added Successfully',
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Icon(
-                  Icons.check_circle_rounded,
-                  color: ThemeConstants.GreenColor,
-                  size: 60,
-                ),
-              ]),
-        ));
+    getToast('Meeting Added Successfully');
+    // showPoPUp(
+    //     'Meeting Added Successfully',
+    //     Icon(
+    //       Icons.check_circle_rounded,
+    //       color: ThemeConstants.GreenColor,
+    //       size: 60,
+    //     ),
+    //     context);
   }
 
   getGroupData() async {

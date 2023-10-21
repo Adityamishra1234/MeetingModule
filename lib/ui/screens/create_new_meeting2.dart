@@ -2233,9 +2233,9 @@ class CreateNewMeeting2 extends StatelessWidget {
                     print(controller.externalMeeting);
                     if (controller.externalMeeting == false) {
                       print('ff');
-                      controller.createNewMeeting();
+                      controller.createNewMeeting(context);
                     } else {
-                      controller.createExternalNewMeeting();
+                      controller.createExternalNewMeeting(context);
                     }
                     controller.key.currentState!.save();
                   } else {

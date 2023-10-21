@@ -321,12 +321,14 @@ class _SignInViewState extends State<SignInView> {
                                           var res = await controller.logIn(
                                               emailController.value.text,
                                               password.value.text);
+
                                           //todo
 
                                           if (res != false) {
                                             controllerBase.user.value = res;
 
                                             context.go(DashBoard.routeNamed);
+                                            controllerBase.update();
                                           }
                                           // await download(widget.path);
                                           // await Future.delayed(const Duration(seconds: 5))

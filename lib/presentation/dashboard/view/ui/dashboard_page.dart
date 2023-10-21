@@ -103,6 +103,8 @@ class _DashBoardState extends State<DashBoard> {
     // controller.getBuildContextOfThePage(context);
     // controllerBase.token2();
     controllerBase.getId();
+    controller.user.value = controllerBase.user.value;
+
     if (Get.previousRoute == '${LoginView.routeNamed}' ||
         Get.previousRoute == "/signin") {
       _authenticate();
@@ -116,6 +118,7 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   void dispose() {
+    controller.onDelete;
     // TODO: implement dispose
     super.dispose();
   }
