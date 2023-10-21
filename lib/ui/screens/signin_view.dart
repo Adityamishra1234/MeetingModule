@@ -228,11 +228,15 @@ class _SignInViewState extends State<SignInView> {
                                                             if (emailController
                                                                 .text
                                                                 .isNotEmpty) {
-                                                              await controller
+                                                              var res = await controller
                                                                   .forgetPaasword(
                                                                       emailController
                                                                           .text,
                                                                       context);
+
+                                                              if (res) {
+                                                                context.pop();
+                                                              }
                                                             } else {
                                                               getToast(
                                                                   "Kindly check your email address");

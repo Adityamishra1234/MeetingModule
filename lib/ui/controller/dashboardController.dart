@@ -634,10 +634,12 @@ class DashBoardController extends GetxController with StateMixin {
 
   resheduleMeeting(data) async {
     var res = await api.resheduleMeeting(data);
-    Get.back();
+
     //todo
 
     getMeetingData();
+
+    return true;
   }
 
   List<Widget> meetingsToShowInDashboardWidgetList = [];
@@ -1774,7 +1776,8 @@ class SingleMeetingWidget extends StatelessWidget {
                                             Icons.error,
                                             size: 40,
                                             color: ThemeConstants.bluecolor,
-                                          )));
+                                          ),
+                                          context));
                                 }
                               } else {
                                 showAnimatedDialog(
@@ -1790,7 +1793,8 @@ class SingleMeetingWidget extends StatelessWidget {
                                           Icons.error,
                                           size: 40,
                                           color: ThemeConstants.bluecolor,
-                                        )));
+                                        ),
+                                        context));
                               }
                             }),
                         // CustomButton(text: 'Delete', onPressed: () {})

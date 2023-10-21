@@ -1249,6 +1249,7 @@ class DashboardMeetings extends StatelessWidget {
       onTap: () {
         Get.find<BaseController>().selectedMeeting(data);
         // getNotes('${data.id}', i);
+        context.push('MeetingDetails');
         Get.to(MeetingDetails());
       },
       child: Padding(
@@ -1492,7 +1493,8 @@ class DashboardMeetings extends StatelessWidget {
                                             Icons.error,
                                             size: 40,
                                             color: ThemeConstants.bluecolor,
-                                          )));
+                                          ),
+                                          context));
                                 }
                               } else {
                                 showAnimatedDialog(
@@ -1508,7 +1510,8 @@ class DashboardMeetings extends StatelessWidget {
                                           Icons.error,
                                           size: 40,
                                           color: ThemeConstants.bluecolor,
-                                        )));
+                                        ),
+                                        context));
                               }
                             }),
                         // CustomButton(text: 'Delete', onPressed: () {})

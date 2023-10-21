@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/utils/constants.dart';
@@ -152,15 +153,16 @@ class SigninController extends GetxController with StateMixin {
   forgetPaasword(String email, BuildContext context) async {
     var res = await api.forgetpassword(email);
     if (res != null) {
-      Get.back();
       getDailogForForget(context, email);
+
+      return true;
     }
   }
 
   updatePasswordForget(String email, String password, String otp) async {
     var res = await api.updatePasswordForget(email, otp, password);
     if (res != null) {
-      Get.back();
+      return true;
     }
   }
 
@@ -231,8 +233,10 @@ class SigninController extends GetxController with StateMixin {
                   startLoading();
                   if (passwordController.text.isNotEmpty &&
                       otpController.text.isNotEmpty) {
-                    await updatePasswordForget(
+                    var res = await updatePasswordForget(
                         email, passwordController.text, otpController.text);
+
+                    context.pop();
                   } else {
                     getToast("Kindly check your fields");
                   }

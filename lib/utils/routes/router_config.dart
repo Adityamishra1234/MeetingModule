@@ -15,6 +15,7 @@ import 'package:meeting_module2/ui/screens/loginUi.dart';
 import 'package:meeting_module2/ui/screens/logintemp.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
 import 'package:meeting_module2/ui/screens/signin_view.dart';
+import 'package:meeting_module2/ui/screens/view_docs.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,6 +27,8 @@ class Routes {
   static const addMoreNotesView = AddMoreNotesView.routeName;
   static const meetingDetails = MeetingDetails.routeNamed;
   static const viewNotes = ViewNotesDetails.routeNamed;
+
+  static const viewDocs = 'viewDocs';
 }
 
 class GoRouterConfig {
@@ -90,13 +93,13 @@ class GoRouterConfig {
       //     return CreateNewMeeting2();
       //   },
       // ),
-      GoRoute(
-        path: Routes.addMoreNotesView,
-        builder: (context, state) {
-          // Get.put(DashBoardController());
-          return AddMoreNotesView();
-        },
-      ),
+      // GoRoute(
+      //   path: Routes.addMoreNotesView,
+      //   builder: (context, state) {
+      //     // Get.put(DashBoardController());
+      //     return AddMoreNotesView();
+      //   },
+      // ),
       //         GetPage(
       //           name: CreateNewMeeting2.routeNamed,
       //           page: () => CreateNewMeeting2(),
@@ -146,6 +149,17 @@ class GoRouterConfig {
                     builder: (context, state) => ViewNotesDetails(
                       id: state.pathParameters['id']!,
                     ),
+                  ),
+                  GoRoute(
+                    path: '${Routes.addMoreNotesView}/:meetingId/:tab',
+                    builder: (context, state) => AddMoreNotesView(
+                      tab: state.pathParameters['tab']!,
+                      meetingID: state.pathParameters['meetingId']!,
+                    ),
+                  ),
+                  GoRoute(
+                    path: '${Routes.viewDocs}',
+                    builder: (context, state) => ViewDocs(),
                   ),
                 ]),
             GoRoute(

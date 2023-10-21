@@ -1257,8 +1257,10 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                               InkWell(
                                 onTap: () {
                                   if (controller.meetingStartedValue == true) {
-                                    Get.toNamed(AddMoreNotesView.routeName,
-                                        arguments: [meetingData.id, 0]);
+                                    context.push(
+                                        '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.addMoreNotesView}/${meetingData.id}/0');
+                                    // Get.toNamed(AddMoreNotesView.routeName,
+                                    //     arguments: [meetingData.id, 0]);
                                   } else {
                                     showDialog(
                                         context: context,
@@ -1268,7 +1270,8 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                               Icons.error,
                                               size: 40,
                                               color: ThemeConstants.bluecolor,
-                                            )));
+                                            ),
+                                            context));
                                   }
                                 },
                                 child: Column(
@@ -1318,8 +1321,8 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  Get.toNamed(AddMoreNotesView.routeName,
-                                      arguments: [meetingData.id, 1]);
+                                  context.push(
+                                      '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.addMoreNotesView}/${meetingData.id}/1');
                                 },
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1411,7 +1414,8 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                     size: 40,
                                                     color: ThemeConstants
                                                         .bluecolor,
-                                                  )));
+                                                  ),
+                                                  context));
                                         }
                                         // showDialog(
                                         //     context: context,
@@ -1562,7 +1566,8 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                   size: 40,
                                                   color:
                                                       ThemeConstants.bluecolor,
-                                                )));
+                                                ),
+                                                context));
                                       },
                                       child: IgnorePointer(
                                         ignoring: true,
@@ -1744,7 +1749,8 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                                     "Mark Attendance"),
                                                             InkWell(
                                                               onTap: () {
-                                                                Get.back();
+                                                                context.pop();
+                                                                // Get.back();
                                                               },
                                                               child:
                                                                   CircleAvatar(
@@ -1935,6 +1941,8 @@ class _MeetingDetailsState extends State<MeetingDetails> {
 
                               InkWell(
                                 onTap: () {
+                                  context.push(
+                                      '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.viewDocs}');
                                   Get.to(ViewDocs());
                                 },
                                 child: Container(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/presentation/constants/loading.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
@@ -91,7 +92,8 @@ class _CustomDocumentViewerState extends State<CustomDocumentViewer> {
                       ),
                       child: IconButton(
                           onPressed: () {
-                            Get.back();
+                            context.pop();
+                            // Get.back();
                           },
                           icon: Icon(
                             Icons.close,

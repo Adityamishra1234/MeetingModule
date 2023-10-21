@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/utils/theme.dart';
@@ -110,7 +111,8 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                   Spacer(),
                   GestureDetector(
                     onTap: () {
-                      Get.back();
+                      context.pop();
+                      // Get.back();
                     },
                     child: Container(
                       width: 25,
@@ -520,8 +522,13 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                   //todo
 
                                   // print(data.toJson());
-                                  await widget.controller
+                                  var res = await widget.controller
                                       .resheduleMeeting(data);
+
+                                  if (res) {
+                                    context.pop();
+                                  }
+
                                   showAnimatedDialog(
                                       barrierDismissible: true,
                                       context: context,
@@ -536,7 +543,8 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                             Icons.error,
                                             size: 40,
                                             color: ThemeConstants.bluecolor,
-                                          )));
+                                          ),
+                                          context));
                                 }
                               }),
                           SizedBox(

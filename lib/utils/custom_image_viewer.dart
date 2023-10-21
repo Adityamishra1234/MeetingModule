@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/presentation/constants/loading.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
@@ -57,7 +58,8 @@ class CustomImageViewer extends StatelessWidget {
                 ),
                 child: IconButton(
                     onPressed: () {
-                      Get.back();
+                      // Get.back();
+                      context.pop();
                     },
                     icon: Icon(
                       Icons.close,

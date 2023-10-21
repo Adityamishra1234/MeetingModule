@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quil;
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
@@ -19,8 +21,14 @@ import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_all
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dart';
 
 class AddMoreNotesView extends StatefulWidget {
-  static const routeName = '/addmorenotes';
-  AddMoreNotesView({super.key});
+  static const routeName = 'addmorenotes';
+  String meetingID;
+  String tab;
+  AddMoreNotesView({
+    super.key,
+    required this.tab,
+    required this.meetingID,
+  });
 
   @override
   State<AddMoreNotesView> createState() => _AddMoreNotesViewState();
@@ -28,13 +36,14 @@ class AddMoreNotesView extends StatefulWidget {
 
 class _AddMoreNotesViewState extends State<AddMoreNotesView> {
   bool _isTextFieldFocused = false;
-  dynamic argumentData = Get.arguments;
+  // dynamic argumentData = Get.arguments;
   final _focusNode = FocusNode();
   var controller = Get.put(AddMoreNotesController());
   @override
   void initState() {
+    print(widget.meetingID);
     super.initState();
-    if (argumentData[1] == 0) {
+    if (widget.tab == '0') {
       controller.addNotes = true;
     } else {
       controller.addNotes = false;
@@ -74,7 +83,7 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                                       false
                                   ? true
                                   : null,
-                              defaultIndex: argumentData[1],
+                              defaultIndex: int.parse(widget.tab),
                               title0: 'Add Notes',
                               title1: 'Add Files',
                               callback: (e) {
@@ -422,11 +431,15 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                                   } else {
                                     if (controller.noteTypeSelected ==
                                         'Confidential Notes') {
-                                      controller.saveAndNext(argumentData[0],
-                                          controller.noteText, true);
+                                      controller.saveAndNext(
+                                          int.parse(widget.meetingID),
+                                          controller.noteText,
+                                          true);
                                     } else {
-                                      controller.saveAndNext(argumentData[0],
-                                          controller.noteText, false);
+                                      controller.saveAndNext(
+                                          int.parse(widget.meetingID),
+                                          controller.noteText,
+                                          false);
                                     }
                                   }
                                 },

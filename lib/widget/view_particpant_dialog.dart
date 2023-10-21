@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/ui/controller/create_new_meeting_controller2.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
@@ -44,7 +45,8 @@ class _DialogHoraState extends State<DialogHora> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Get.back();
+                        context.pop();
+                        // Get.back();
                       },
                       child: Container(
                         margin: EdgeInsets.only(top: 10),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/utils/theme.dart';
 
-showPoPUp(String text, Icon icon) {
+showPoPUp(String text, Icon icon, BuildContext context) {
   return AlertDialog(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
     contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
@@ -18,7 +19,8 @@ showPoPUp(String text, Icon icon) {
               width: double.infinity,
               child: InkWell(
                 onTap: () {
-                  Get.back();
+                  context.pop();
+                  // Get.back();
                 },
                 child: CircleAvatar(
                   radius: 10,

@@ -1491,7 +1491,8 @@ class DashboardMeetings extends StatelessWidget {
                                             Icons.error,
                                             size: 40,
                                             color: ThemeConstants.bluecolor,
-                                          )));
+                                          ),
+                                          context));
                                 }
                               } else {
                                 showAnimatedDialog(
@@ -1507,7 +1508,8 @@ class DashboardMeetings extends StatelessWidget {
                                           Icons.error,
                                           size: 40,
                                           color: ThemeConstants.bluecolor,
-                                        )));
+                                        ),
+                                        context));
                               }
                             }),
                         // CustomButton(text: 'Delete', onPressed: () {})
