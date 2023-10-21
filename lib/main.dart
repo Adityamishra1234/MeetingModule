@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_splash_screen/flutter_splash_screen.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/bindings/dashboardBindings.dart';
 import 'package:meeting_module2/utils/routes/router_config.dart';
 import 'package:meeting_module2/di/get_it.dart';
@@ -288,11 +289,14 @@ class _MyAppState extends State<MyApp> {
   //   ),
   //   notFoundRedirectNamed: '/books',
   // );
-
+  GoRouter router = GoRouterConfig().router;
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerConfig: GoRouterConfig().router,
+      routeInformationParser: router.routeInformationParser,
+      routeInformationProvider: router.routeInformationProvider,
+      routerDelegate: router.routerDelegate,
+      // routerConfig: GoRouterConfig().router,
 //         routerDelegate: routerDelegate,
 // routeInformationParser: BeamerParser(),
       // smartManagement: SmartManagement.keepFactory,

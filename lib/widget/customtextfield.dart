@@ -37,8 +37,9 @@ class CustomTextField extends StatelessWidget {
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
           hintText: hint,
+          hintStyle: TextStyle(color: ThemeConstants.blackcolor),
           filled: true,
-          fillColor: backgroundCOlour ?? ThemeConstants.ultraLightgreyColor,
+          fillColor: backgroundCOlour ?? Colors.transparent,
           errorBorder: OutlineInputBorder(
             borderRadius: forDropDown!
                 ? BorderRadius.circular(200)
@@ -50,7 +51,7 @@ class CustomTextField extends StatelessWidget {
             borderSide: BorderSide(
                 width: forDropDown! ? 1 : 0,
                 color: forDropDown!
-                    ? ThemeConstants.lightgreycolor
+                    ? ThemeConstants.blackcolor
                     : Colors.transparent),
             borderRadius: forDropDown!
                 ? BorderRadius.circular(200)
@@ -60,7 +61,7 @@ class CustomTextField extends StatelessWidget {
             borderSide: BorderSide(
                 width: forDropDown! ? 1 : 0,
                 color: forDropDown!
-                    ? ThemeConstants.lightgreycolor
+                    ? ThemeConstants.blackcolor
                     : Colors.transparent),
             borderRadius: forDropDown!
                 ? BorderRadius.circular(200)
@@ -70,7 +71,7 @@ class CustomTextField extends StatelessWidget {
             borderSide: BorderSide(
                 width: forDropDown! ? 1 : 0,
                 color: forDropDown!
-                    ? ThemeConstants.lightgreycolor
+                    ? ThemeConstants.blackcolor
                     : Colors.transparent),
             borderRadius: forDropDown!
                 ? BorderRadius.circular(200)

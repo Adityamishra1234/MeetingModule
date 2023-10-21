@@ -6,11 +6,18 @@ import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/custom_tab_widget.dart';
 
 class ViewNotesDetails extends StatelessWidget {
+  final String id;
+
   var controller = Get.find<AddMoreNotesController>();
 
   static const routeNamed = 'ViewNotesDetails';
+
+  ViewNotesDetails({super.key, required this.id});
+
   @override
   Widget build(BuildContext context) {
+    print(id);
+
     return WillPopScope(
       onWillPop: () async {
         controller.viewNotesSection = 0;

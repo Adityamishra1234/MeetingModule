@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/presentation/constants/loading.dart';
 import 'package:meeting_module2/ui/controller/add_more_notes_controller.dart';
@@ -9,6 +10,7 @@ import 'package:meeting_module2/ui/screens/add_more_notes.dart';
 // import 'package:meeting_module2/ui/screens/dashboard_page.dart';
 import 'package:meeting_module2/ui/screens/view_docs.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
+import 'package:meeting_module2/utils/routes/router_config.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/custom_button.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
@@ -1291,8 +1293,11 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  Get.to(ViewNotesDetails(),
-                                      arguments: meetingData.id);
+                                  context.push(
+                                    '${Routes.dashboard}/${Routes.meetingDetails}/${ViewNotesDetails.routeNamed}/:${meetingData.id}',
+                                  );
+                                  // Get.to(ViewNotesDetails(),
+                                  //     arguments: meetingData.id);
                                 },
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,

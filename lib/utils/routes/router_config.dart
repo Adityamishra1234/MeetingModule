@@ -11,6 +11,7 @@ import 'package:meeting_module2/ui/screens/add_more_notes.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting2.dart';
 import 'package:meeting_module2/ui/screens/dashboard_notes.dart';
 import 'package:meeting_module2/presentation/dashboard/view/ui/dashboard_page.dart';
+import 'package:meeting_module2/ui/screens/loginUi.dart';
 import 'package:meeting_module2/ui/screens/logintemp.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
 import 'package:meeting_module2/ui/screens/signin_view.dart';
@@ -24,10 +25,12 @@ class Routes {
   static const loginPage = LoginPage.routeNamed;
   static const addMoreNotesView = AddMoreNotesView.routeName;
   static const meetingDetails = MeetingDetails.routeNamed;
+  static const viewNotes = ViewNotesDetails.routeNamed;
 }
 
 class GoRouterConfig {
   var router = GoRouter(
+    debugLogDiagnostics: true,
     routes: [
       GoRoute(
         path: Routes.loginPage,
@@ -80,13 +83,13 @@ class GoRouterConfig {
       //         //   page: () => MeetingDetails(),
       //         //
 
-      GoRoute(
-        path: Routes.createMeeting,
-        builder: (context, state) {
-          // Get.put(DashBoardController());
-          return CreateNewMeeting2();
-        },
-      ),
+      // GoRoute(
+      //   path: Routes.createMeeting,
+      //   builder: (context, state) {
+      //     // Get.put(DashBoardController());
+      //     return CreateNewMeeting2();
+      //   },
+      // ),
       GoRoute(
         path: Routes.addMoreNotesView,
         builder: (context, state) {
@@ -116,6 +119,12 @@ class GoRouterConfig {
       //         )
       GoRoute(path: Routes.signin, builder: (context, state) => SignInView()),
 
+      GoRoute(
+          path: SignInView.route, builder: (context, state) => SignInView()),
+
+      GoRoute(
+          path: LoginPage.routeNamed, builder: (context, state) => LoginPage()),
+
       // GoRoute(
       //   path: SignInView.route,
       //   builder: (context, state) => SignInView(),
@@ -133,10 +142,16 @@ class GoRouterConfig {
                 builder: (context, state) => MeetingDetails(),
                 routes: [
                   GoRoute(
-                    path: ViewNotesDetails.routeNamed,
-                    builder: (context, state) => ViewNotesDetails(),
+                    path: '${Routes.viewNotes}/:id',
+                    builder: (context, state) => ViewNotesDetails(
+                      id: state.pathParameters['id']!,
+                    ),
                   ),
                 ]),
+            GoRoute(
+              path: Routes.createMeeting,
+              builder: (context, state) => CreateNewMeeting2(),
+            ),
           ]),
 
       // GoRoute(
@@ -181,7 +196,8 @@ class GoRouterConfig {
           // Get.offAllNamed(DashBoard.routeNamed);
         } else {
           await Future.delayed(Duration(seconds: 1));
-          Get.find<BaseController>().hideScreen();
+          await Get.find<BaseController>().hideScreen();
+          return '/';
         }
       }
 

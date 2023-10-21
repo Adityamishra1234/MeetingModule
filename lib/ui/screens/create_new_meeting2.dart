@@ -27,7 +27,7 @@ import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropdown.dar
 import 'package:meeting_module2/widget/view_particpant_dialog.dart';
 
 class CreateNewMeeting2 extends StatelessWidget {
-  static const routeNamed = '/CreateNewMeeting';
+  static const routeNamed = 'CreateNewMeeting';
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(CreateNewMeetingController2());

@@ -108,7 +108,10 @@ class BaseController extends GetxController {
   logOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
-    Get.offAllNamed(SignInView.route);
+
+    return true;
+
+    // Get.offAllNamed(SignInView.route);
     // Get.offAllNamed(SignInView.route);
   }
 

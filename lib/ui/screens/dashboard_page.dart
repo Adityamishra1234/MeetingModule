@@ -23,7 +23,6 @@ import 'package:meeting_module2/ui/screens/dashboard_notes.dart';
 import 'package:meeting_module2/ui/screens/loginUi.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
 import 'package:meeting_module2/ui/screens/signin_view.dart';
-import 'package:meeting_module2/utils/routes/router_config.dart';
 
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/calender/calendar_controller.dart';
@@ -219,8 +218,8 @@ class _DashBoardState extends State<DashBoard> {
                             onTap: () async {
                               var res = await controllerBase.logOut();
 
-                              if (true) {
-                                context.go('/');
+                              if (res == true) {
+                                context.go(SignInView.route);
                               }
                             },
                             child: SizedBox(
@@ -388,18 +387,18 @@ class _DashBoardState extends State<DashBoard> {
                                             BorderRadius.circular(200),
                                         color: ThemeConstants.yellow)),
                                 onTapHeaderCustomButton: () async {
-                                  context.push(
-                                      '/DashBoard/${Routes.createMeeting}');
-                                  // print(
-                                  //     '$result efdddeeeeeeeeeeeeee\f\e\ffefefeef');
-                                  // if (result == 'true') {
-                                  //   Get.find<DashBoardController>().onInit();
+                                  var result = await Get.toNamed(
+                                      CreateNewMeeting2.routeNamed);
+                                  print(
+                                      '$result efdddeeeeeeeeeeeeee\f\e\ffefefeef');
+                                  if (result == 'true') {
+                                    Get.find<DashBoardController>().onInit();
 
-                                  //   calendarController.selectedDayGlobal =
-                                  //       DateTime.now();
+                                    calendarController.selectedDayGlobal =
+                                        DateTime.now();
 
-                                  //   calendarController.update();
-                                  // }
+                                    calendarController.update();
+                                  }
 
                                   // Get.to(CreateNewMeeting2());
                                   print('ddd');
