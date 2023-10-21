@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allBranchModel.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
@@ -808,8 +809,11 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     var res = await api.addAgenda(agenda: agenda, userId: userId);
 
     if (res != null) {
-      Get.back();
+      // var con = Get.context;
+
       getAllAgenda();
+
+      return true;
     }
   }
 

@@ -217,7 +217,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                                             backgroundColor:
                                                 ThemeConstants.bluecolor,
                                             text: 'Add',
-                                            onPressed: () {
+                                            onPressed: () async {
                                               if (controller
                                                       .addNewAgendaController
                                                       .value
@@ -225,14 +225,19 @@ class CreateNewMeeting2 extends StatelessWidget {
                                                   '') {
                                                 getToast('Please Fill');
                                               } else {
-                                                controller.addNewAgenda(
-                                                    agenda: controller
-                                                        .addNewAgendaController
-                                                        .value
-                                                        .text,
-                                                    userId: Get.find<
-                                                            BaseController>()
-                                                        .id);
+                                                var data = await controller
+                                                    .addNewAgenda(
+                                                        agenda: controller
+                                                            .addNewAgendaController
+                                                            .value
+                                                            .text,
+                                                        userId: Get.find<
+                                                                BaseController>()
+                                                            .id);
+
+                                                if (data) {
+                                                  context.pop();
+                                                }
                                               }
                                             })
                                       ],
