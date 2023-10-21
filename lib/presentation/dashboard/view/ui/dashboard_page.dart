@@ -391,18 +391,20 @@ class _DashBoardState extends State<DashBoard> {
                                             BorderRadius.circular(200),
                                         color: ThemeConstants.yellow)),
                                 onTapHeaderCustomButton: () async {
-                                  context.push(
+                                  var result = await context.push(
                                       '/DashBoard/${Routes.createMeeting}');
                                   // print(
                                   //     '$result efdddeeeeeeeeeeeeee\f\e\ffefefeef');
-                                  // if (result == 'true') {
-                                  //   Get.find<DashBoardController>().onInit();
+                                  if (result == 'true') {
+                                    Get.find<DashBoardController>().onInit();
+                                    calendarController.onInit();
 
-                                  //   calendarController.selectedDayGlobal =
-                                  //       DateTime.now();
+                                    calendarController.selectedDayGlobal =
+                                        DateTime.now();
 
-                                  //   calendarController.update();
-                                  // }
+                                    calendarController.update();
+                                    setState(() {});
+                                  }
 
                                   // Get.to(CreateNewMeeting2());
                                   print('ddd');
