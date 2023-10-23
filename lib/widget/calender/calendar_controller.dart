@@ -32,6 +32,8 @@ class CalendarController extends GetxController with StateMixin {
   @override
   void onInit() async {
     var date = DateTime.now();
+
+    print(Get.find<BaseController>().id);
     await getMonthMeetingDates(
         Get.find<BaseController>().id, date.month, date.year);
     // TODO: implement onInit
@@ -56,9 +58,8 @@ class CalendarController extends GetxController with StateMixin {
   void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(selectedDayGlobal, selectedDay)) {
       selectedDayGlobal = selectedDay;
-      focusedDayGlobal = focusedDay;
-
       Get.find<DashBoardController>().getMeetingOfThatDate(selectedDay);
+      focusedDayGlobal = focusedDay;
 
       update();
       // _focusedDay = focusedDay;
@@ -140,6 +141,8 @@ class CalendarController extends GetxController with StateMixin {
 
       // DateTime.parse()
     }
+
+    update();
 
     loading = false;
   }

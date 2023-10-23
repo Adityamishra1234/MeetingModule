@@ -208,6 +208,7 @@ class DashBoardController extends GetxController with StateMixin {
   }
 
   dashboardInitialLoginForUserDetails() async {
+    change(null, status: RxStatus.loading());
     var email = await sharedPreferenceInstance.getString('email');
     var password = await sharedPreferenceInstance.getString('password');
 
@@ -218,6 +219,8 @@ class DashBoardController extends GetxController with StateMixin {
     // var data = json.decode(login);
 
     user.value = UserModel.fromJson(login);
+
+    change(null, status: RxStatus.success());
 
     update();
   }

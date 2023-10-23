@@ -147,7 +147,7 @@ class GoRouterConfig {
       GoRoute(
           path: Routes.dashboard,
           builder: (context, state) {
-            Get.put(DashBoardController());
+            // Get.put(DashBoardController());
             return DashBoard();
           },
           routes: [
@@ -212,7 +212,8 @@ class GoRouterConfig {
           // token = await prefs.getString('token')!;
         }
         if (id != 0) {
-          Get.find<BaseController>().hideScreen();
+          await Get.find<BaseController>().hideScreen();
+          await Get.find<BaseController>().getId();
           // BuildContext conte = Get.context!;
 
           return DashBoard.routeNamed;

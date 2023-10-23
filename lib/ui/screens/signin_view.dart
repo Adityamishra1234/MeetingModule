@@ -345,7 +345,7 @@ class _SignInViewState extends State<SignInView> {
                                           //todo
 
                                           if (res != false) {
-                                            controllerBase.user.value = res;
+                                            // controllerBase.user.value = res;
 
                                             context.go(DashBoard.routeNamed);
                                             controllerBase.update();
