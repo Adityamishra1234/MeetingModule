@@ -119,7 +119,7 @@ class ViewNotesDetails extends StatelessWidget {
 
                         controller.selectedDropDown = value.toString();
 
-                        controller.showThisNote();
+                        controller.showThisNote(context);
 
                         controller.update();
 

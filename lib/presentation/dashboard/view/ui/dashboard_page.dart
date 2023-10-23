@@ -220,11 +220,15 @@ class _DashBoardState extends State<DashBoard> {
                           ),
                           InkWell(
                             onTap: () async {
+                              controller.change(null,
+                                  status: RxStatus.loading());
                               var res = await controllerBase.logOut();
 
                               if (true) {
                                 context.go('/');
                               }
+                              controller.change(null,
+                                  status: RxStatus.success());
                             },
                             child: SizedBox(
                                 width: 60,
@@ -1499,7 +1503,7 @@ class DashboardMeetings extends StatelessWidget {
                                             size: 40,
                                             color: ThemeConstants.bluecolor,
                                           ),
-                                          context));
+                                          ctx));
                                 }
                               } else {
                                 showAnimatedDialog(
@@ -1516,7 +1520,7 @@ class DashboardMeetings extends StatelessWidget {
                                           size: 40,
                                           color: ThemeConstants.bluecolor,
                                         ),
-                                        context));
+                                        ctx));
                               }
                             }),
                         // CustomButton(text: 'Delete', onPressed: () {})

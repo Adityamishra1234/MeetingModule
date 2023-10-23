@@ -5,9 +5,11 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart';
 import 'package:meeting_module2/di/get_it.dart';
+import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/add_more_notes.dart';
+import 'package:meeting_module2/ui/screens/assign_to_view.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting2.dart';
 import 'package:meeting_module2/ui/screens/dashboard_notes.dart';
 import 'package:meeting_module2/presentation/dashboard/view/ui/dashboard_page.dart';
@@ -27,7 +29,7 @@ class Routes {
   static const addMoreNotesView = AddMoreNotesView.routeName;
   static const meetingDetails = MeetingDetails.routeNamed;
   static const viewNotes = ViewNotesDetails.routeNamed;
-
+  static const assignViewMeetings = '/assignToView';
   static const viewDocs = 'viewDocs';
 }
 
@@ -119,7 +121,16 @@ class GoRouterConfig {
       //         GetPage(
       //           name: AddMoreNotesView.routeName,
       //           page: () => AddMoreNotesView(),
-      //         )
+      //
+      //
+      //      )
+
+      GoRoute(
+        path: '${Routes.assignViewMeetings}',
+        builder: (context, state) => AssignToView(
+          notesModel: state.extra as FindNotesModel,
+        ),
+      ),
       GoRoute(path: Routes.signin, builder: (context, state) => SignInView()),
 
       GoRoute(
@@ -145,11 +156,11 @@ class GoRouterConfig {
                 builder: (context, state) => MeetingDetails(),
                 routes: [
                   GoRoute(
-                    path: '${Routes.viewNotes}/:id',
-                    builder: (context, state) => ViewNotesDetails(
-                      id: state.pathParameters['id']!,
-                    ),
-                  ),
+                      path: '${Routes.viewNotes}/:id',
+                      builder: (context, state) => ViewNotesDetails(
+                            id: state.pathParameters['id']!,
+                          ),
+                      routes: []),
                   GoRoute(
                     path: '${Routes.addMoreNotesView}/:meetingId/:tab',
                     builder: (context, state) => AddMoreNotesView(
@@ -201,7 +212,6 @@ class GoRouterConfig {
           // token = await prefs.getString('token')!;
         }
         if (id != 0) {
-          await Future.delayed(Duration(seconds: 1));
           Get.find<BaseController>().hideScreen();
           // BuildContext conte = Get.context!;
 
@@ -209,7 +219,6 @@ class GoRouterConfig {
           // context.go(DashBoard.routeNamed);
           // Get.offAllNamed(DashBoard.routeNamed);
         } else {
-          await Future.delayed(Duration(seconds: 1));
           await Get.find<BaseController>().hideScreen();
           return '/';
         }

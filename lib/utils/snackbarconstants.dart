@@ -14,7 +14,7 @@ class SnackBarConstants {
 
   static String? errorUserNotFound = "Please Contact HR";
 
-  static String? passwordNotMatching = "Please check your password";
+  static String? passwordNotMatching = "Password didn't matched";
 
   static String? notRegistered = "Not registered Please register first";
 

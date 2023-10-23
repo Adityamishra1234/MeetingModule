@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/utils/theme.dart';
+import 'package:meeting_module2/widget/calender/calendar_controller.dart';
 import 'package:meeting_module2/widget/custom_button.dart';
 import 'package:meeting_module2/widget/custom_date_picker/custom_time_picker_only.dart';
 import 'package:meeting_module2/widget/custom_date_picker/custom_timer_widget.dart';
@@ -508,6 +509,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                     "updatedBY": 44
                                   };
 
+                                  Get.find<CalendarController>().onInit();
                                   print(data);
                                   // var data2 = json.encode(data);
 
@@ -529,22 +531,22 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                     context.pop();
                                   }
 
-                                  showAnimatedDialog(
-                                      barrierDismissible: true,
-                                      context: context,
-                                      animationType: DialogTransitionType
-                                          .slideFromBottomFade,
-                                      curve: Curves.easeInOutQuart,
-                                      // barrierDismissible: false,
+                                  // showAnimatedDialog(
+                                  //     barrierDismissible: true,
+                                  //     context: context,
+                                  //     animationType: DialogTransitionType
+                                  //         .slideFromBottomFade,
+                                  //     curve: Curves.easeInOutQuart,
+                                  //     // barrierDismissible: false,
 
-                                      builder: (_) => showPoPUp(
-                                          'Reschedule Meeting',
-                                          Icon(
-                                            Icons.error,
-                                            size: 40,
-                                            color: ThemeConstants.bluecolor,
-                                          ),
-                                          context));
+                                  //     builder: (_) => showPoPUp(
+                                  //         'Reschedule Meeting',
+                                  //         Icon(
+                                  //           Icons.error,
+                                  //           size: 40,
+                                  //           color: ThemeConstants.bluecolor,
+                                  //         ),
+                                  //         context));
                                 }
                               }),
                           SizedBox(

@@ -87,7 +87,7 @@ class _SignInViewState extends State<SignInView> {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 // crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   // SizedBox(
                                   //     height: 150,
@@ -153,14 +153,30 @@ class _SignInViewState extends State<SignInView> {
                                             child: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10.0),
-                                                    child:
-                                                        CustomAutoSizeTextMontserrat(
-                                                      text: 'Reset password',
-                                                    ),
+                                                  Row(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(10.0),
+                                                        child:
+                                                            CustomAutoSizeTextMontserrat(
+                                                          text:
+                                                              'Reset password',
+                                                        ),
+                                                      ),
+                                                      Spacer(),
+                                                      InkWell(
+                                                        onTap: () {
+                                                          context.pop();
+                                                        },
+                                                        child: Icon(Icons.close,
+                                                            size: 18,
+                                                            color:
+                                                                ThemeConstants
+                                                                    .bluecolor),
+                                                      )
+                                                    ],
                                                   ),
                                                   Padding(
                                                     padding:
@@ -212,7 +228,7 @@ class _SignInViewState extends State<SignInView> {
                                                         ),
                                                         child:
                                                             CustomAutoSizeTextMontserrat(
-                                                          text: 'get OTP',
+                                                          text: 'Get OTP',
                                                           textColor:
                                                               ThemeConstants
                                                                   .whitecolor,
@@ -236,6 +252,10 @@ class _SignInViewState extends State<SignInView> {
 
                                                               if (res) {
                                                                 context.pop();
+                                                                controller.getDailogForForget(
+                                                                    context,
+                                                                    emailController
+                                                                        .text);
                                                               }
                                                             } else {
                                                               getToast(
@@ -270,7 +290,7 @@ class _SignInViewState extends State<SignInView> {
                                         child: Text(
                                           "Forg\ot password",
                                           style: TextStyle(
-                                              color: ThemeConstants.whitecolor),
+                                              color: ThemeConstants.bluecolor),
                                         ),
                                       ),
                                     ),

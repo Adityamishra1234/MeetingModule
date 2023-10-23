@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meeting_module2/extensions/siecMemberNamefromId.dart';
 import 'package:meeting_module2/models/addRepresentative.dart';
@@ -23,6 +24,7 @@ import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/custom_doc_viewer.dart';
 import 'package:meeting_module2/utils/custom_image_viewer.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
+import 'package:meeting_module2/utils/routes/router_config.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customExpansionTile.dart';
 import 'package:meeting_module2/widget/custom_no_data_widget.dart';
@@ -75,7 +77,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     id = baseController.id;
     print('$id fffff');
     // await meetingId();
-    await getNotesOfMeeting();
+
     await checkUserIsCordinator();
     await getMeetingParticipantsList();
     await getReasonOfNotAttedingsAll(baseController.selectedMeetingData.id!);
@@ -92,7 +94,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     id = baseController.id;
     print('$id fffff');
     // await meetingId();
-    await getNotesOfMeeting();
+
     await checkUserIsCordinator();
     await getMeetingParticipantsList();
     await getReasonOfNotAttedingsAll(baseController.selectedMeetingData.id!);
@@ -248,7 +250,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
   reasonOfNoteAttedning() {}
 
-  getNotesOfMeeting() async {
+  getNotesOfMeeting(BuildContext context) async {
     documentlist = [];
     notesList = [];
     selectedDropDown = '';
@@ -338,7 +340,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     if (notesTypeString.length > 0) {
       selectedDropDown = notesTypeString[0];
     }
-    showThisNote();
+    showThisNote(context);
 
     // for (var i = 0; i < notesList.length; i++) {
     //   for (var j = 0; j < notesTypeString.length; j++) {
@@ -464,7 +466,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     }
   }
 
-  showThisNote() async {
+  showThisNote(BuildContext context) async {
     print('daaa');
     List<Widget> beta = [];
     for (var i = 0; i < notesList.length; i++) {
@@ -532,7 +534,11 @@ class AddMoreNotesController extends GetxController with StateMixin {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.to(AssignToView(), arguments: notesList![i]);
+                    print(context);
+
+                    context.push('${Routes.assignViewMeetings}',
+                        extra: notesList[i]);
+                    // Get.to(AssignToView(), arguments: notesList![i]);
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(top: 10),
@@ -594,8 +600,8 @@ class AddMoreNotesController extends GetxController with StateMixin {
     update();
   }
 
-  saveAndNext(
-      int metingID, quill.QuillController contro, bool encrypted) async {
+  saveAndNext(int metingID, quill.QuillController contro, bool encrypted,
+      BuildContext context) async {
     print(metingID);
     change(null, status: RxStatus.loading());
     List<AllUserModel> visibleTo = [];
@@ -641,7 +647,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
       // change(null, status: RxStatus.success());
     }
 
-    await getNotesOfMeeting();
+    await getNotesOfMeeting(context);
 
     update();
     change(null, status: RxStatus.success());
@@ -698,7 +704,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     return html;
   }
 
-  saveNotes(int metingID) async {
+  saveNotes(int metingID, BuildContext context) async {
     change(null, status: RxStatus.loading());
     List<AllUserModel> visibleTo = [];
     for (var element in accessibileUserSelected_meetingDetail) {
@@ -722,7 +728,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
       noteText_meetingdetails.value.text = "";
       accessibileUserSelected_meetingDetail.value = [];
       accessibileUserSelected_meetingDetail.refresh();
-      getNotesOfMeeting();
+      getNotesOfMeeting(context);
       change(null, status: RxStatus.success());
     }
   }
@@ -893,7 +899,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
   List<CommonUploadDocument> documentModel = [];
 
-  uploadDocument(
+  uploadDocument(BuildContext context
       //   String id, {
       //   String orgname = "",
       // }
@@ -933,7 +939,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
                 uploadFilename: uploadFilename);
             if (res != null) {
               await saveImageNote(
-                  baseController.selectedMeetingData.id!, res['view']);
+                  baseController.selectedMeetingData.id!, res['view'], context);
               // CommonUploadStatus model = CommonUploadStatus();
               // model = res;
               // if (model.status == "sucesss") {
@@ -960,7 +966,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     }
   }
 
-  saveImageNote(int metingID, String imageId) async {
+  saveImageNote(int metingID, String imageId, BuildContext context) async {
     print(metingID);
     change(null, status: RxStatus.loading());
     List<AllUserModel> visibleTo = [];
@@ -1007,7 +1013,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
       // change(null, status: RxStatus.success());
     }
 
-    await getNotesOfMeeting();
+    await getNotesOfMeeting(context);
 
     update();
     change(null, status: RxStatus.success());

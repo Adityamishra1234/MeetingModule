@@ -51,6 +51,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
   // }
   @override
   void initState() {
+    controller.getNotesOfMeeting(context);
     meetingData = controllerbase.selectedMeetingData;
 
     meetingStarted = meetingData.meetingStarted!;

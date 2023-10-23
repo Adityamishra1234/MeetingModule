@@ -434,12 +434,14 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                                       controller.saveAndNext(
                                           int.parse(widget.meetingID),
                                           controller.noteText,
-                                          true);
+                                          true,
+                                          context);
                                     } else {
                                       controller.saveAndNext(
                                           int.parse(widget.meetingID),
                                           controller.noteText,
-                                          false);
+                                          false,
+                                          context);
                                     }
                                   }
                                 },
@@ -487,7 +489,7 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                                       child: InkWell(
                                         onTap: () {
                                           ///todo
-                                          controller.uploadDocument();
+                                          controller.uploadDocument(context);
                                           // uploadDocument('2', 1);
                                         },
                                         child: Container(

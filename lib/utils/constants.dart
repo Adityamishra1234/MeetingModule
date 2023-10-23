@@ -171,7 +171,7 @@ getPasswordWithSpecialCharacterValidator(String? value) {
     return 'Password must contain at least one special character';
   }
   if (value.length < 8) {
-    return 'Password must be 6 digit long';
+    return 'Password must be 6 character long';
   }
 
   if (!containsDigit(value)) {

@@ -153,8 +153,6 @@ class SigninController extends GetxController with StateMixin {
   forgetPaasword(String email, BuildContext context) async {
     var res = await api.forgetpassword(email);
     if (res != null) {
-      getDailogForForget(context, email);
-
       return true;
     }
   }
@@ -175,11 +173,26 @@ class SigninController extends GetxController with StateMixin {
         content: Container(
           width: MediaQuery.of(context).size.width * 0.7,
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: CustomAutoSizeTextMontserrat(
-                text: 'Reset password',
-              ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: CustomAutoSizeTextMontserrat(
+                    text: 'Reset password',
+                  ),
+                ),
+                Spacer(),
+                InkWell(
+                  onTap: () {
+                    context.pop();
+                  },
+                  child: Icon(
+                    Icons.close,
+                    color: ThemeConstants.bluecolor,
+                    size: 16,
+                  ),
+                )
+              ],
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),

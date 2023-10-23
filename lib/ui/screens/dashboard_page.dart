@@ -1492,7 +1492,7 @@ class DashboardMeetings extends StatelessWidget {
                                             size: 40,
                                             color: ThemeConstants.bluecolor,
                                           ),
-                                          context));
+                                          ctx));
                                 }
                               } else {
                                 showAnimatedDialog(
@@ -1509,7 +1509,7 @@ class DashboardMeetings extends StatelessWidget {
                                           size: 40,
                                           color: ThemeConstants.bluecolor,
                                         ),
-                                        context));
+                                        ctx));
                               }
                             }),
                         // CustomButton(text: 'Delete', onPressed: () {})

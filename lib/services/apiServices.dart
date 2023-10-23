@@ -25,9 +25,7 @@ class ApiServices extends BaseServices implements API {
 
     if (res2 != null) {
       return res2;
-    } else {
-      getToast('Please use a valid mail');
-    }
+    } else {}
   }
 
   @override
