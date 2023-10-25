@@ -146,9 +146,8 @@ class CalendarController extends GetxController with StateMixin {
       // DateTime.parse()
     }
 
-    update();
-
     loading = false;
+    update();
   }
 
   bool getEventsForDay(DateTime day) {

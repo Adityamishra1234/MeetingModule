@@ -99,7 +99,10 @@ class _DashBoardState extends State<DashBoard> {
     controllerBase.getId;
     print(context);
 
-    // caleCon = Get.put(CalendarController());
+    caleCon = Get.put(CalendarController());
+
+    caleCon.getMonthMeetingDates(Get.find<BaseController>().id,
+        DateTime.now().month, DateTime.now().year);
 
     // dashboardBloc = locator.get<DashboardBloc>();
     // dashboardBloc.add(DashboardIntitalEvent(context));
@@ -113,10 +116,10 @@ class _DashBoardState extends State<DashBoard> {
 
     // controller.user.value = controllerBase.user.value;
 
-    if (Get.previousRoute == '${LoginView.routeNamed}' ||
-        Get.previousRoute == "/signin") {
-      _authenticate();
-    }
+    // if (Get.previousRoute == '${LoginView.routeNamed}' ||
+    //     Get.previousRoute == "/") {
+    //   _authenticate();
+    // }
 
     // controller.getMeetingData();
 
@@ -231,7 +234,7 @@ class _DashBoardState extends State<DashBoard> {
                                   status: RxStatus.loading());
                               var res = await controllerBase.logOut();
 
-                              if (true) {
+                              if (res) {
                                 context.go('/');
                               }
                               controller.change(null,
@@ -265,52 +268,39 @@ class _DashBoardState extends State<DashBoard> {
                                   ],
                                 )),
                           ),
-
-                          // Spacer(),
-                          // Container(
-                          //   child: Wrap(
-                          //     spacing: 5,
-                          //     // mainAxisSize: MainAxisSize.max,
-                          //     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //     children: [
-                          //       InkWell(
-                          //         onTap: () {
-                          //           Get.toNamed(DashboardNotesView.routenamed);
-                          //         },
-                          //         child: Container(
-                          //           width: 45,
-                          //           padding: EdgeInsets.all(10),
-                          //           decoration: BoxDecoration(
-                          //               borderRadius:
-                          //                   BorderRadius.circular(200),
-                          //               border: Border.all(
-                          //                   width: 1.5,
-                          //                   color: ThemeConstants.yellow),
-                          //               color: ThemeConstants.lightYellow),
-                          //           height: 45,
-                          //           child: SvgPicture.asset(
-                          //               'assets/images/note.svg'),
-                          //         ),
-                          //       ),
-                          //       InkWell(
-                          //         onTap: () {
-                          //           controllerBase.logOut();
-                          //         },
-                          //         child: Container(
-                          //           width: 45,
-                          //           padding: EdgeInsets.all(10),
-                          //           decoration: BoxDecoration(
-                          //               borderRadius:
-                          //                   BorderRadius.circular(200),
-                          //               border: Border.all(
-                          //                   width: 1.5,
-                          //                   color: ThemeConstants.bluecolor),
-                          //               color: ThemeConstants.lightblueColor),
-                          //           height: 45,
-                          //           child: Icon(Icons.logout),
-                          //         ),
-                          //       ),
-                          //     ],
+                          InkWell(
+                            onTap: () {
+                              context.push(
+                                  '${Routes.dashboard}/${Routes.viewDashboardNotes}');
+                              // Get.toNamed(DashboardNotesView.routenamed);
+                            },
+                            child: Container(
+                              width: 45,
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(200),
+                                  border: Border.all(
+                                      width: 1.5, color: ThemeConstants.yellow),
+                                  color: ThemeConstants.lightYellow),
+                              height: 45,
+                              child: SvgPicture.asset('assets/images/note.svg'),
+                            ),
+                          ),
+                          // InkWell(
+                          //   onTap: () {
+                          //     controllerBase.logOut();
+                          //   },
+                          //   child: Container(
+                          //     width: 45,
+                          //     padding: EdgeInsets.all(10),
+                          //     decoration: BoxDecoration(
+                          //         borderRadius: BorderRadius.circular(200),
+                          //         border: Border.all(
+                          //             width: 1.5,
+                          //             color: ThemeConstants.bluecolor),
+                          //         color: ThemeConstants.lightblueColor),
+                          //     height: 45,
+                          //     child: Icon(Icons.logout),
                           //   ),
                           // ),
                           SizedBox(

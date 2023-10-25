@@ -1987,7 +1987,6 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                   onTap: () {
                                     context.push(
                                         '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.viewDocs}');
-                                    Get.to(ViewDocs());
                                   },
                                   child: Container(
                                       width:

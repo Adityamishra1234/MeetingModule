@@ -72,7 +72,8 @@ class ViewDocs extends StatelessWidget {
                                     InkWell(
                                       onTap: () {
                                         Get.find<AddMoreNotesController>()
-                                            .getViewDocument(model.image_note!);
+                                            .getViewDocument(
+                                                model.image_note!, context);
                                       },
                                       child: Container(
                                         height: 35,

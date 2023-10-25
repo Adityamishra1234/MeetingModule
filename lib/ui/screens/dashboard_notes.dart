@@ -19,10 +19,18 @@ class _DashboardNotesViewState extends State<DashboardNotesView> {
 
   @override
   void dispose() {
-    controller.dispose();
+    controller.onDelete;
 
     // TODO: implement dispose
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    controller.doIntial(context);
+
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -91,7 +99,7 @@ class _DashboardNotesViewState extends State<DashboardNotesView> {
                                   controller.selectedDropDown =
                                       value.toString();
 
-                                  controller.showThisNotesList();
+                                  controller.showThisNotesList(context);
 
                                   controller.update();
 

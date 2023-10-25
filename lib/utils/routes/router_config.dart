@@ -19,6 +19,9 @@ import 'package:meeting_module2/ui/screens/meeting_details.dart';
 import 'package:meeting_module2/ui/screens/signin_view.dart';
 import 'package:meeting_module2/ui/screens/view_docs.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
+import 'package:meeting_module2/utils/custom_doc_viewer.dart';
+import 'package:meeting_module2/utils/custom_image_viewer.dart';
+import 'package:meeting_module2/widget/decryption_popup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Routes {
@@ -31,6 +34,12 @@ class Routes {
   static const viewNotes = ViewNotesDetails.routeNamed;
   static const assignViewMeetings = '/assignToView';
   static const viewDocs = 'viewDocs';
+  static const viewSingleDoc = 'singleDocView';
+  static const viewSingleDocImg = 'singleDocViewImg';
+
+  static const decryptNoteView = 'decryptNoteView';
+
+  static const viewDashboardNotes = 'viewDashboardNotes';
 }
 
 class GoRouterConfig {
@@ -152,6 +161,18 @@ class GoRouterConfig {
           },
           routes: [
             GoRoute(
+              path: '${Routes.viewDashboardNotes}',
+              builder: (context, state) => DashboardNotesView(),
+              routes: [
+                GoRoute(
+                    path: '${Routes.decryptNoteView}',
+                    builder: (context, state) => PopUpForDecryption(
+                          encyrptedNote: state.extra as String,
+                        ),
+                    routes: []),
+              ],
+            ),
+            GoRoute(
                 path: Routes.meetingDetails,
                 builder: (context, state) => MeetingDetails(),
                 routes: [
@@ -169,9 +190,20 @@ class GoRouterConfig {
                     ),
                   ),
                   GoRoute(
-                    path: '${Routes.viewDocs}',
-                    builder: (context, state) => ViewDocs(),
-                  ),
+                      path: '${Routes.viewDocs}',
+                      builder: (context, state) => ViewDocs(),
+                      routes: [
+                        GoRoute(
+                            path: '${Routes.viewSingleDoc}',
+                            builder: (context, state) => CustomDocumentViewer(
+                                  url: state.extra as String,
+                                )),
+                        GoRoute(
+                            path: '${Routes.viewSingleDocImg}',
+                            builder: (context, state) => CustomImageViewer(
+                                  url: state.extra as String,
+                                ))
+                      ]),
                 ]),
             GoRoute(
               path: Routes.createMeeting,
@@ -193,7 +225,9 @@ class GoRouterConfig {
     ],
     redirect: (context, state) async {
       if (state.fullPath == '/DashBoard') {
-        // Get.find<DashBoardController>().onInit();
+        await Get.find<BaseController>().getId();
+
+        // Get.find<DashBoardController>().onInit();await Get.find<BaseController>().getId();
       }
 
       if (state.fullPath == '/') {

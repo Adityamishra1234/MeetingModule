@@ -92,6 +92,9 @@ class AddMoreNotesController extends GetxController with StateMixin {
   void onReady() async {
     change(null, status: RxStatus.loading());
     id = baseController.id;
+
+    meetingStartedValue = baseController.selectedMeetingData.meetingStarted!;
+    meetingEndedValue = baseController.selectedMeetingData.meetingEnded!;
     print('$id fffff');
     // await meetingId();
 
@@ -1019,26 +1022,41 @@ class AddMoreNotesController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
-  getViewDocument(String url) {
+  getViewDocument(String url, BuildContext context) {
     print(url);
     String extension = url.split('.').last;
     print(extension);
     if (extension == "pdf") {
-      return Get.to(CustomDocumentViewer(
-        url: url,
-      ));
+      context.push(
+          extra: url,
+          '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.viewDocs}/${Routes.viewSingleDoc}');
+
+      // return Get.to(CustomDocumentViewer(
+      //   url: url,
+      // ));
     } else if (extension == "doc") {
-      Get.to(CustomDocumentViewer(
-        url: url,
-      ));
+      context.push(
+          extra: url,
+          '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.viewDocs}/${Routes.viewSingleDoc}');
+      // Get.to(CustomDocumentViewer(
+      //   url: url,
+      // ));
     } else if (extension == "docx") {
-      Get.to(CustomDocumentViewer(
-        url: url,
-      ));
+      context.push(
+          extra: url,
+          '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.viewDocs}/${Routes.viewSingleDoc}');
+      // Get.to(CustomDocumentViewer(
+      //   url: url,
+      // ));
     } else {
-      Get.to(CustomImageViewer(
-        url: url,
-      ));
+      context.push(
+          '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.viewDocs}/${Routes.viewSingleDocImg}',
+          extra: url);
+      // Get.to(CustomImageViewer(
+      //   url: url,
+      // )
+
+      // );
     }
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meeting_module2/models/dashboardNotesModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
@@ -9,6 +10,7 @@ import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/ui/screens/assign_to_view.dart';
 import 'package:meeting_module2/ui/screens/assign_to_view_dasboard.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
+import 'package:meeting_module2/utils/routes/router_config.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/custom_no_data_widget.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
@@ -26,10 +28,13 @@ class DashboardNotesController extends GetxController with StateMixin {
     // TODO: implement onInit
 
     await userID();
-    await getNotesData();
 
     change(null, status: RxStatus.success());
     super.onInit();
+  }
+
+  doIntial(BuildContext context) async {
+    await getNotesData(context);
   }
 
   List<Widget> notes = [];
@@ -43,7 +48,7 @@ class DashboardNotesController extends GetxController with StateMixin {
   List<Widget> beta = [];
 
   List<FindNotesModel> data = [];
-  getNotesData() async {
+  getNotesData(BuildContext context) async {
     var res = await apiServices.findNoteByUser(id);
     List<dynamic> data2 = res;
 
@@ -91,12 +96,12 @@ class DashboardNotesController extends GetxController with StateMixin {
     //   beta.addAll(viewNotes[i].entries.first.value);
     //   // documentlist.addAll(list[i].entries.first.value);
     // }
-    showThisNotesList();
+    showThisNotesList(context);
   }
 
   var decryptedNote = '';
   TextEditingController password = TextEditingController();
-  showThisNotesList() {
+  showThisNotesList(BuildContext context) {
     beta = [];
     for (var i = 0; i < data.length; i++) {
       if (selectedDropDown == 'All Notes') {
@@ -236,9 +241,12 @@ class DashboardNotesController extends GetxController with StateMixin {
                                   Radius.circular(30.0))),
                           child: InkWell(
                             onTap: () {
-                              var con = Get.context;
-                              Get.to(PopUpForDecryption(
-                                  encyrptedNote: data[i].note!));
+                              // var con = Get.context;
+
+                              context.push(
+                                  '${Routes.dashboard}/${Routes.viewDashboardNotes}/${Routes.decryptNoteView}',
+                                  extra: data[i].note!);
+
                               // showAnimatedDialog(
                               //     animationType:
                               //         DialogTransitionType.slideFromBottomFade,
