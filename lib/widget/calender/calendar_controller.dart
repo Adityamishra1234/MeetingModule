@@ -40,6 +40,12 @@ class CalendarController extends GetxController with StateMixin {
     super.onInit();
   }
 
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    super.onReady();
+  }
+
   ApiServices api = ApiServices();
 
   List<DateTime> meetingListData = [];
@@ -92,7 +98,6 @@ class CalendarController extends GetxController with StateMixin {
   }
 
   getMonthMeetingDates(int id, int month, int year) async {
-    loading = true;
     update();
 
     // var endpoint = await datesOfCalendarMeetingEndpoint(id, month, year);
@@ -120,7 +125,6 @@ class CalendarController extends GetxController with StateMixin {
 
     // List dub = await api.getMonthMeetingDates(endpoint);
     res.add(await api.getMonthMeetingDates(endpoint1));
-
     res.add(await api.getMonthMeetingDates(endpoint2));
     res.add(await api.getMonthMeetingDates(endpoint3));
 

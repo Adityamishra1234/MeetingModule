@@ -99,7 +99,8 @@ class _DashBoardState extends State<DashBoard> {
     controllerBase.getId;
     print(context);
 
-    caleCon = Get.put(CalendarController());
+    // caleCon = Get.put(CalendarController());
+
     // dashboardBloc = locator.get<DashboardBloc>();
     // dashboardBloc.add(DashboardIntitalEvent(context));
 
@@ -232,7 +233,6 @@ class _DashBoardState extends State<DashBoard> {
                               var res = await controllerBase.logOut();
 
                               if (true) {
-                                Get.find<CalendarController>().onDelete;
                                 context.go('/');
                               }
                               controller.change(null,
@@ -341,108 +341,117 @@ class _DashBoardState extends State<DashBoard> {
                   //   create: (_) => CalendarController(),
                   //   builder: (context, child) {
                   //     return
-                  caleCon.obx(
-                    (calendarController) {
-                      return Padding(
-                        padding:
-                            const EdgeInsets.only(top: 5, left: 25, right: 25),
-                        child: TableCalendar<Event>(
-                            selectedDayPredicate: (day) => isSameDay(
-                                calendarController.selectedDayGlobal, day),
-                            eventLoader: calendarController.getEventsForDay,
-                            daysOfWeekStyle: DaysOfWeekStyle(
-                              weekendStyle:
-                                  TextStyle(color: ThemeConstants.whitecolor),
-                              weekdayStyle:
-                                  TextStyle(color: ThemeConstants.whitecolor),
-                            ),
-                            calendarStyle: CalendarStyle(
-                                isTodayHighlighted: true,
-                                selectedDecoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.circular(200),
-                                  border: Border.all(
-                                      width: 1, color: ThemeConstants.yellow),
+                  GetBuilder<CalendarController>(
+                      init: Get.put(CalendarController()),
+                      builder: (calendarController) {
+                        if (calendarController.loading == true) {
+                          return getLoading(context);
+                        } else {
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                                top: 5, left: 25, right: 25),
+                            child: TableCalendar<Event>(
+                                selectedDayPredicate: (day) => isSameDay(
+                                    calendarController.selectedDayGlobal, day),
+                                eventLoader: calendarController.getEventsForDay,
+                                daysOfWeekStyle: DaysOfWeekStyle(
+                                  weekendStyle: TextStyle(
+                                      color: ThemeConstants.whitecolor),
+                                  weekdayStyle: TextStyle(
+                                      color: ThemeConstants.whitecolor),
                                 ),
-                                defaultDecoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.circular(200),
-                                ),
-                                weekendDecoration: BoxDecoration(
-                                    color: ThemeConstants.whitecolor,
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(200)),
-                                outsideDecoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(200)),
-                                disabledDecoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(200)),
-                                outsideDaysVisible: true,
-                                selectedTextStyle:
-                                    TextStyle(color: ThemeConstants.whitecolor),
-                                outsideTextStyle:
-                                    TextStyle(color: Colors.yellow),
-                                defaultTextStyle:
-                                    TextStyle(color: ThemeConstants.whitecolor),
-                                weekendTextStyle:
-                                    TextStyle(color: ThemeConstants.blackcolor),
-                                todayTextStyle:
-                                    TextStyle(color: ThemeConstants.blackcolor),
-                                todayDecoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(200),
-                                    color: ThemeConstants.yellow)),
-                            onTapHeaderCustomButton: () async {
-                              var result = await context
-                                  .push('/DashBoard/${Routes.createMeeting}');
-                              // print(
-                              //     '$result efdddeeeeeeeeeeeeee\f\e\ffefefeef');
-                              if (result == 'true') {
-                                Get.find<DashBoardController>().onInit();
-                                calendarController.onInit();
+                                calendarStyle: CalendarStyle(
+                                    isTodayHighlighted: true,
+                                    selectedDecoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(200),
+                                      border: Border.all(
+                                          width: 1,
+                                          color: ThemeConstants.yellow),
+                                    ),
+                                    defaultDecoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(200),
+                                    ),
+                                    weekendDecoration: BoxDecoration(
+                                        color: ThemeConstants.whitecolor,
+                                        shape: BoxShape.rectangle,
+                                        borderRadius:
+                                            BorderRadius.circular(200)),
+                                    outsideDecoration: BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        borderRadius:
+                                            BorderRadius.circular(200)),
+                                    disabledDecoration: BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        borderRadius:
+                                            BorderRadius.circular(200)),
+                                    outsideDaysVisible: true,
+                                    selectedTextStyle: TextStyle(
+                                        color: ThemeConstants.whitecolor),
+                                    outsideTextStyle:
+                                        TextStyle(color: Colors.yellow),
+                                    defaultTextStyle: TextStyle(
+                                        color: ThemeConstants.whitecolor),
+                                    weekendTextStyle: TextStyle(
+                                        color: ThemeConstants.blackcolor),
+                                    todayTextStyle: TextStyle(
+                                        color: ThemeConstants.blackcolor),
+                                    todayDecoration: BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        borderRadius:
+                                            BorderRadius.circular(200),
+                                        color: ThemeConstants.yellow)),
+                                onTapHeaderCustomButton: () async {
+                                  var result = await context.push(
+                                      '/DashBoard/${Routes.createMeeting}');
+                                  // print(
+                                  //     '$result efdddeeeeeeeeeeeeee\f\e\ffefefeef');
+                                  if (result == 'true') {
+                                    Get.find<DashBoardController>().onInit();
+                                    calendarController.onInit();
 
-                                calendarController.selectedDayGlobal =
-                                    DateTime.now();
+                                    calendarController.selectedDayGlobal =
+                                        DateTime.now();
 
-                                calendarController.update();
-                                setState(() {});
-                              }
+                                    calendarController.update();
+                                    setState(() {});
+                                  }
 
-                              // Get.to(CreateNewMeeting2());
-                              print('ddd');
-                            },
-                            headerStyle: HeaderStyle(
-                                headerPadding: EdgeInsets.symmetric(
-                                    horizontal: 0, vertical: 20),
-                                titleTextStyle: TextStyle(
-                                    fontSize: 14,
-                                    color: ThemeConstants.whitecolor),
-                                formatButtonVisible: false,
-                                leftChevronVisible: false,
-                                rightChevronVisible: false),
-                            calendarFormat: controller.calendarFormat,
-                            onDaySelected: calendarController.onDaySelected,
-                            onFormatChanged: (format) {
-                              if (controller.calendarFormat != format) {
-                                // Call `setState()` when updating calendar format
+                                  // Get.to(CreateNewMeeting2());
+                                  print('ddd');
+                                },
+                                headerStyle: HeaderStyle(
+                                    headerPadding: EdgeInsets.symmetric(
+                                        horizontal: 0, vertical: 20),
+                                    titleTextStyle: TextStyle(
+                                        fontSize: 14,
+                                        color: ThemeConstants.whitecolor),
+                                    formatButtonVisible: false,
+                                    leftChevronVisible: false,
+                                    rightChevronVisible: false),
+                                calendarFormat: controller.calendarFormat,
+                                onDaySelected: calendarController.onDaySelected,
+                                onFormatChanged: (format) {
+                                  if (controller.calendarFormat != format) {
+                                    // Call `setState()` when updating calendar format
 
-                                controller.calendarFormat = format;
-                              }
-                              controller.update();
-                            },
-                            // calendarStyle: CalendarStyle(
-                            //   // Use `CalendarStyle` to customize the UI
-                            //   outsideDaysVisible: false,
-                            // ),
-                            onPageChanged: calendarController.onPageChanged,
-                            focusedDay: calendarController.focusedDayGlobal!,
-                            firstDay: DateTime(2017, 9, 10),
-                            lastDay: DateTime(2027, 9, 10)),
-                      );
-                    },
-                    onLoading: getLoading(context),
-                  ),
+                                    controller.calendarFormat = format;
+                                  }
+                                  controller.update();
+                                },
+                                // calendarStyle: CalendarStyle(
+                                //   // Use `CalendarStyle` to customize the UI
+                                //   outsideDaysVisible: false,
+                                // ),
+                                onPageChanged: calendarController.onPageChanged,
+                                focusedDay:
+                                    calendarController.focusedDayGlobal!,
+                                firstDay: DateTime(2017, 9, 10),
+                                lastDay: DateTime(2027, 9, 10)),
+                          );
+                        }
+                      }),
 
                   // },
                   // ),
