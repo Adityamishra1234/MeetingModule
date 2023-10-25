@@ -126,7 +126,6 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   void dispose() {
-    controller.onDelete;
     // TODO: implement dispose
     super.dispose();
   }
