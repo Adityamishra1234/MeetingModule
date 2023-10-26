@@ -5,7 +5,7 @@ import 'package:meeting_module2/utils/theme.dart';
 
 showPoPUp(String text, Icon icon, BuildContext context) {
   return AlertDialog(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
     content: Container(
         constraints: BoxConstraints(minHeight: 100),
@@ -14,25 +14,25 @@ showPoPUp(String text, Icon icon, BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              alignment: Alignment.topRight,
-              width: double.infinity,
-              child: InkWell(
-                onTap: () {
-                  context.pop();
-                  // Get.back();
-                },
-                child: CircleAvatar(
-                  radius: 10,
-                  backgroundColor: ThemeConstants.bluecolor,
-                  child: Icon(
-                    Icons.close,
-                    size: 15,
-                    color: ThemeConstants.whitecolor,
-                  ),
-                ),
-              ),
-            ),
+            // Container(
+            //   alignment: Alignment.topRight,
+            //   width: double.infinity,
+            //   child: InkWell(
+            //     onTap: () {
+            //       context.pop();
+            //       // Get.back();
+            //     },
+            //     child: CircleAvatar(
+            //       radius: 10,
+            //       backgroundColor: ThemeConstants.bluecolor,
+            //       child: Icon(
+            //         Icons.close,
+            //         size: 15,
+            //         color: ThemeConstants.whitecolor,
+            //       ),
+            //     ),
+            //   ),
+            // ),
             SizedBox(
               height: 5,
             ),

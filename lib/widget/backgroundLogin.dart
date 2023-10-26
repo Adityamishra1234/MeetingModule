@@ -3,7 +3,8 @@ import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 
 class BackgroundAuthView extends StatelessWidget {
-  const BackgroundAuthView({super.key});
+  String text;
+  BackgroundAuthView({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class BackgroundAuthView extends StatelessWidget {
             fontSize: 30,
           ),
           CustomAutoSizeTextMontserrat(
-            text: "Let's Sign you in 001",
+            text: "$text",
             textColor: ThemeConstants.paleYellow,
             fontSize: 20,
           ),
@@ -28,8 +29,8 @@ class BackgroundAuthView extends StatelessWidget {
             height: 0,
           ),
           SizedBox(
-              width: 350,
-              height: 350,
+              width: 300,
+              height: 300,
               child: Image.asset('assets/images/Login-Image.png')),
         ],
       ),

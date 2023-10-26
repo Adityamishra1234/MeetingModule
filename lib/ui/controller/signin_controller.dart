@@ -151,8 +151,8 @@ class SigninController extends GetxController with StateMixin {
   }
 
   forgetPaasword(String email, BuildContext context) async {
-    var res = await api.forgetpassword(email);
-    if (res != null) {
+    // var res = await api.forgetpassword(email);
+    if (true) {
       return true;
     }
   }
@@ -170,28 +170,30 @@ class SigninController extends GetxController with StateMixin {
     return showDialog(
       context: context,
       builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         content: Container(
           width: MediaQuery.of(context).size.width * 0.7,
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.only(left: 10.0, top: 5),
                   child: CustomAutoSizeTextMontserrat(
                     text: 'Reset password',
+                    fontSize: ThemeConstants.fontSizeMedium,
                   ),
                 ),
                 Spacer(),
-                InkWell(
-                  onTap: () {
-                    context.pop();
-                  },
-                  child: Icon(
-                    Icons.close,
-                    color: ThemeConstants.bluecolor,
-                    size: 16,
-                  ),
-                )
+                // InkWell(
+                //   onTap: () {
+                //     context.pop();
+                //   },
+                //   child: Icon(
+                //     Icons.close,
+                //     color: ThemeConstants.bluecolor,
+                //     size: 16,
+                //   ),
+                // )
               ],
             ),
             Padding(
@@ -239,6 +241,7 @@ class SigninController extends GetxController with StateMixin {
                 child: CustomAutoSizeTextMontserrat(
                   text: 'Update Password',
                   textColor: ThemeConstants.whitecolor,
+                  fontSize: ThemeConstants.fontSizeMedium,
                 ),
                 onTap: (startLoading, stopLoading, buttonState) async {
                   // print(widget.path);

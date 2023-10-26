@@ -88,6 +88,24 @@ class AddMoreNotesController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
+  initFromUI() async {
+    change(null, status: RxStatus.loading());
+
+    id = baseController.id;
+    print('$id fffff');
+    // await meetingId();
+
+    await checkUserIsCordinator();
+    await getMeetingParticipantsList();
+    await getReasonOfNotAttedingsAll(baseController.selectedMeetingData.id!);
+    // getMeetingCountryAndUniversity();
+    // await showPublishButtonOrNot();
+    meetingStartedValue = baseController.selectedMeetingData.meetingStarted!;
+    meetingEndedValue = baseController.selectedMeetingData.meetingEnded!;
+
+    change(null, status: RxStatus.success());
+  }
+
   @override
   void onReady() async {
     change(null, status: RxStatus.loading());

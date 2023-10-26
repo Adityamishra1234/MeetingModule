@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
@@ -10,6 +11,7 @@ import 'package:meeting_module2/ui/screens/add_more_notes.dart';
 // import 'package:meeting_module2/ui/screens/dashboard_page.dart';
 import 'package:meeting_module2/ui/screens/view_docs.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
+import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/routes/router_config.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/custom_button.dart';
@@ -56,12 +58,15 @@ class _MeetingDetailsState extends State<MeetingDetails> {
 
     meetingStarted = meetingData.meetingStarted!;
     meetingEnded = meetingData.meetingEnded!;
+
+    controller.initFromUI();
     // TODO: implement initState
     super.initState();
   }
 
   @override
   void dispose() {
+    controller.onDelete;
     // TODO: implement dispose
     super.dispose();
   }
@@ -1292,16 +1297,17 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                       // Get.toNamed(AddMoreNotesView.routeName,
                                       //     arguments: [meetingData.id, 0]);
                                     } else {
-                                      showDialog(
-                                          context: context,
-                                          builder: (_) => showPoPUp(
-                                              'Meeting not started yet',
-                                              Icon(
-                                                Icons.error,
-                                                size: 40,
-                                                color: ThemeConstants.bluecolor,
-                                              ),
-                                              context));
+                                      getToast('Meeting not started yet');
+                                      // showDialog(
+                                      //     context: context,
+                                      //     builder: (_) => showPoPUp(
+                                      //         'Meeting not started yet',
+                                      //         Icon(
+                                      //           Icons.error,
+                                      //           size: 40,
+                                      //           color: ThemeConstants.bluecolor,
+                                      //         ),
+                                      //         context));
                                     }
                                   },
                                   child: Column(
@@ -1435,18 +1441,20 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                   true &&
                                               controller.meetingEndedValue ==
                                                   true) {
-                                            showDialog(
-                                                barrierDismissible: true,
-                                                context: context,
-                                                builder: (_) => showPoPUp(
-                                                    'Meeting Already Ended',
-                                                    Icon(
-                                                      Icons.error,
-                                                      size: 40,
-                                                      color: ThemeConstants
-                                                          .bluecolor,
-                                                    ),
-                                                    context));
+                                            getToast('Meeting Already Ended');
+
+                                            // showDialog(
+                                            //     barrierDismissible: true,
+                                            //     context: context,
+                                            //     builder: (_) => showPoPUp(
+                                            //         'Meeting Already Ended',
+                                            //         Icon(
+                                            //           Icons.error,
+                                            //           size: 40,
+                                            //           color: ThemeConstants
+                                            //               .bluecolor,
+                                            //         ),
+                                            //         context));
                                           }
                                           // showDialog(
                                           //     context: context,
@@ -1591,18 +1599,20 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                       )
                                     : InkWell(
                                         onTap: () {
-                                          showDialog(
-                                              barrierDismissible: true,
-                                              context: context,
-                                              builder: (_) => showPoPUp(
-                                                  'Only Co-ordinator or meeting creator can start and end the meeting',
-                                                  Icon(
-                                                    Icons.error,
-                                                    size: 40,
-                                                    color: ThemeConstants
-                                                        .bluecolor,
-                                                  ),
-                                                  context));
+                                          getToast(
+                                              'Only Co-ordinator or meeting creator can start and end the meeting');
+                                          // showDialog(
+                                          //     barrierDismissible: true,
+                                          //     context: context,
+                                          //     builder: (_) => showPoPUp(
+                                          //         'Only Co-ordinator or meeting creator can start and end the meeting',
+                                          //         Icon(
+                                          //           Icons.error,
+                                          //           size: 40,
+                                          //           color: ThemeConstants
+                                          //               .bluecolor,
+                                          //         ),
+                                          //         context));
                                         },
                                         child: IgnorePointer(
                                           ignoring: true,
@@ -1758,184 +1768,193 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                 //     )),
                                 InkWell(
                                   onTap: () {
-                                    showDialog(
+                                    showAnimatedDialog(
+                                        barrierDismissible: true,
+                                        duration: Duration(milliseconds: 350),
+                                        animationType: DialogTransitionType
+                                            .slideFromBottomFade,
                                         context: context,
                                         builder: (_) => StatefulBuilder(
-                                            builder: (context,
-                                                    StateSetter setState) =>
-                                                AlertDialog(
-                                                  content: Container(
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      100)),
-                                                      width: 350,
-                                                      child: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
+                                            builder:
+                                                (context,
+                                                        StateSetter setState) =>
+                                                    SafeArea(
+                                                      child: Stack(
+                                                        // mainAxisAlignment:
+                                                        //     MainAxisAlignment
+                                                        //         .center,
+                                                        // crossAxisAlignment:
+                                                        //     CrossAxisAlignment
+                                                        //         .center,
                                                         children: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              CustomAutoSizeTextMontserrat(
-                                                                  textColor:
-                                                                      ThemeConstants
-                                                                          .bluecolor,
-                                                                  text:
-                                                                      "Mark Attendance"),
-                                                              InkWell(
+                                                          Center(
+                                                            child: AlertDialog(
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20)),
+                                                              content:
+                                                                  Container(
+                                                                      decoration: BoxDecoration(
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              200)),
+                                                                      width:
+                                                                          350,
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.min,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              CustomAutoSizeTextMontserrat(textColor: ThemeConstants.bluecolor, text: "Mark Attendance"),
+                                                                              // InkWell(
+                                                                              //   onTap:
+                                                                              //       () {
+                                                                              //     context.pop();
+                                                                              //     // Get.back();
+                                                                              //   },
+                                                                              //   child:
+                                                                              //       CircleAvatar(
+                                                                              //     backgroundColor:
+                                                                              //         ThemeConstants.bluecolor,
+                                                                              //     radius:
+                                                                              //         10,
+                                                                              //     child:
+                                                                              //         Icon(
+                                                                              //       Icons.close,
+                                                                              //       size: 16,
+                                                                              //     ),
+                                                                              //   ),
+                                                                              // ),
+                                                                            ],
+                                                                          ),
+                                                                          InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              setState(() {
+                                                                                daata = 1;
+                                                                              });
+                                                                            },
+                                                                            child:
+                                                                                Row(
+                                                                              children: [
+                                                                                Radio(
+                                                                                    value: 1,
+                                                                                    groupValue: daata,
+                                                                                    onChanged: (val) async {
+                                                                                      setState(() {
+                                                                                        daata = val!;
+                                                                                      });
+                                                                                    }),
+                                                                                CustomAutoSizeTextMontserrat(fontSize: 15, fontWeight: FontWeight.w500, text: "Present")
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                          InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              setState(() {
+                                                                                daata = 2;
+                                                                              });
+                                                                            },
+                                                                            child:
+                                                                                Row(
+                                                                              children: [
+                                                                                Radio(
+                                                                                    value: 2,
+                                                                                    groupValue: daata,
+                                                                                    onChanged: (val) {
+                                                                                      print(daata);
+                                                                                      print(val);
+                                                                                      setState(() {
+                                                                                        daata = val!;
+                                                                                      });
+
+                                                                                      print(daata);
+                                                                                      ;
+                                                                                    }),
+                                                                                CustomAutoSizeTextMontserrat(fontSize: 15, fontWeight: FontWeight.w500, text: "Absent")
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+                                                                          if (daata ==
+                                                                              2) ...[
+                                                                            Container(
+                                                                              width: double.infinity,
+                                                                              alignment: Alignment.topLeft,
+                                                                              child: CustomAutoSizeTextMontserrat(fontSize: 14, fontWeight: FontWeight.w500, text: 'Please Specify reason of absent'),
+                                                                            ),
+                                                                            SizedBox(
+                                                                              height: 10,
+                                                                            ),
+                                                                            Form(
+                                                                              key: _keyForReasonOfNotAttending,
+                                                                              child: CustomTextField(validator: Validator.notEmpty, hint: 'Enter', controller: reasonOfNotAttending),
+                                                                            )
+                                                                          ],
+                                                                          CustomButton(
+                                                                              backgroundColor: ThemeConstants.bluecolor,
+                                                                              text: 'Submit',
+                                                                              onPressed: () {
+                                                                                if (daata == 1) {
+                                                                                  controller.markAttendance(meetingData.id!);
+                                                                                } else {
+                                                                                  if (_keyForReasonOfNotAttending.currentState!.validate()) {
+                                                                                    controller.reasonOfNotAttendance(meetingData.id!, reasonOfNotAttending.text);
+                                                                                    print('object');
+                                                                                  }
+                                                                                }
+                                                                              })
+                                                                        ],
+                                                                      )),
+                                                            ),
+                                                          ),
+                                                          Align(
+                                                            alignment: Alignment
+                                                                .bottomCenter,
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      bottom:
+                                                                          20),
+                                                              child:
+                                                                  GestureDetector(
                                                                 onTap: () {
                                                                   context.pop();
                                                                   // Get.back();
                                                                 },
                                                                 child:
-                                                                    CircleAvatar(
-                                                                  backgroundColor:
-                                                                      ThemeConstants
+                                                                    Container(
+                                                                  width: 50,
+                                                                  height: 50,
+                                                                  decoration: BoxDecoration(
+                                                                      color: ThemeConstants
                                                                           .bluecolor,
-                                                                  radius: 10,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              200)),
                                                                   child: Icon(
-                                                                    Icons.close,
-                                                                    size: 16,
+                                                                    Icons
+                                                                        .close_rounded,
+                                                                    color: ThemeConstants
+                                                                        .whitecolor,
                                                                   ),
                                                                 ),
                                                               ),
-                                                            ],
-                                                          ),
-                                                          InkWell(
-                                                            onTap: () {
-                                                              setState(() {
-                                                                daata = 1;
-                                                              });
-                                                            },
-                                                            child: Row(
-                                                              children: [
-                                                                Radio(
-                                                                    value: 1,
-                                                                    groupValue:
-                                                                        daata,
-                                                                    onChanged:
-                                                                        (val) async {
-                                                                      setState(
-                                                                          () {
-                                                                        daata =
-                                                                            val!;
-                                                                      });
-                                                                    }),
-                                                                CustomAutoSizeTextMontserrat(
-                                                                    fontSize:
-                                                                        15,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    text:
-                                                                        "Present")
-                                                              ],
                                                             ),
-                                                          ),
-                                                          InkWell(
-                                                            onTap: () {
-                                                              setState(() {
-                                                                daata = 2;
-                                                              });
-                                                            },
-                                                            child: Row(
-                                                              children: [
-                                                                Radio(
-                                                                    value: 2,
-                                                                    groupValue:
-                                                                        daata,
-                                                                    onChanged:
-                                                                        (val) {
-                                                                      print(
-                                                                          daata);
-                                                                      print(
-                                                                          val);
-                                                                      setState(
-                                                                          () {
-                                                                        daata =
-                                                                            val!;
-                                                                      });
-
-                                                                      print(
-                                                                          daata);
-                                                                      ;
-                                                                    }),
-                                                                CustomAutoSizeTextMontserrat(
-                                                                    fontSize:
-                                                                        15,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    text:
-                                                                        "Absent")
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 5,
-                                                          ),
-                                                          if (daata == 2) ...[
-                                                            Container(
-                                                              width: double
-                                                                  .infinity,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .topLeft,
-                                                              child: CustomAutoSizeTextMontserrat(
-                                                                  fontSize: 14,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  text:
-                                                                      'Please Specify reason of absent'),
-                                                            ),
-                                                            SizedBox(
-                                                              height: 10,
-                                                            ),
-                                                            Form(
-                                                              key:
-                                                                  _keyForReasonOfNotAttending,
-                                                              child: CustomTextField(
-                                                                  validator:
-                                                                      Validator
-                                                                          .notEmpty,
-                                                                  hint: 'Enter',
-                                                                  controller:
-                                                                      reasonOfNotAttending),
-                                                            )
-                                                          ],
-                                                          CustomButton(
-                                                              backgroundColor:
-                                                                  ThemeConstants
-                                                                      .bluecolor,
-                                                              text: 'Submit',
-                                                              onPressed: () {
-                                                                if (daata ==
-                                                                    1) {
-                                                                  controller.markAttendance(
-                                                                      meetingData
-                                                                          .id!);
-                                                                } else {
-                                                                  if (_keyForReasonOfNotAttending
-                                                                      .currentState!
-                                                                      .validate()) {
-                                                                    controller.reasonOfNotAttendance(
-                                                                        meetingData
-                                                                            .id!,
-                                                                        reasonOfNotAttending
-                                                                            .text);
-                                                                    print(
-                                                                        'object');
-                                                                  }
-                                                                }
-                                                              })
+                                                          )
                                                         ],
-                                                      )),
-                                                )));
+                                                      ),
+                                                    )));
                                   },
                                   child: Container(
                                       width:
@@ -2210,20 +2229,28 @@ class _MeetingDetailsState extends State<MeetingDetails> {
   }
 }
 
-class ParticipantListWidget extends StatelessWidget {
+class ParticipantListWidget extends StatefulWidget {
   List<Widget> nameList;
   String title;
+
   ParticipantListWidget(
       {super.key, required this.nameList, required this.title});
+
+  @override
+  State<ParticipantListWidget> createState() => _ParticipantListWidgetState();
+}
+
+class _ParticipantListWidgetState extends State<ParticipantListWidget> {
+  bool showAllParticipants = false;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 20),
+          padding: const EdgeInsets.only(left: 20, right: 20),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Container(
               //   // guardianesJ (211:620)
@@ -2238,7 +2265,7 @@ class ParticipantListWidget extends StatelessWidget {
               // ),
               CustomAutoSizeTextMontserrat(
                 textColor: ThemeConstants.paleYellow,
-                text: "$title",
+                text: "${widget.title}",
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
@@ -2247,18 +2274,38 @@ class ParticipantListWidget extends StatelessWidget {
               //   fontSize: 14,
               //   fontWeight: FontWeight.w600,
               // )
+              Spacer(),
+              if (widget.nameList.length > 1) ...[
+                widget.nameList[0],
+                InkWell(
+                  onTap: () {
+                    showAllParticipants = !showAllParticipants;
+                    setState(() {});
+                  },
+                  child: Text(
+                    'View all',
+                    style: TextStyle(
+                        fontSize: ThemeConstants.fontSizeSmall.toDouble(),
+                        color: ThemeConstants.paleYellow,
+                        decoration: TextDecoration.underline),
+                  ),
+                )
+              ] else ...[
+                ...widget.nameList,
+              ]
             ],
           ),
         ),
-        Container(
-            width: double.infinity,
-            padding: EdgeInsets.only(top: 0, left: 15, bottom: 5, right: 20),
-            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(13),
-            ),
-            child: Wrap(children: [...nameList])),
+        if (showAllParticipants)
+          Container(
+              width: double.infinity,
+              padding: EdgeInsets.only(top: 0, left: 15, bottom: 5, right: 20),
+              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(13),
+              ),
+              child: Wrap(children: [...widget.nameList])),
         const SizedBox(
           height: 5,
         ),

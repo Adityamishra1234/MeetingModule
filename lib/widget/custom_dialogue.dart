@@ -102,7 +102,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                 children: [
                   Container(
                       width: 240,
-                      alignment: Alignment.centerLeft,
+                      alignment: Alignment.topLeft,
                       child: CustomAutoSizeTextMontserrat(
                         text: "Reschedule Meeting",
                         fontSize: 20,
@@ -110,26 +110,6 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                         textColor: ThemeConstants.bluecolor,
                       )),
                   Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      context.pop();
-                      // Get.back();
-                    },
-                    child: Container(
-                      width: 25,
-                      height: 25,
-                      alignment: Alignment.centerRight,
-                      child: CircleAvatar(
-                        radius: 25,
-                        backgroundColor: ThemeConstants.bluecolor,
-                        child: Icon(
-                          Icons.close,
-                          color: ThemeConstants.whitecolor,
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),

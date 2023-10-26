@@ -11,8 +11,12 @@ class CustomTextField extends StatelessWidget {
   bool? readOrEdit = false;
   Color? backgroundCOlour;
   bool? forDropDown;
+
+  int? fontSize;
+
   CustomTextField({
     Key? key,
+    this.fontSize,
     this.forDropDown = true,
     this.backgroundCOlour,
     required this.hint,
@@ -32,12 +36,12 @@ class CustomTextField extends StatelessWidget {
         controller: controller,
         scrollPadding: EdgeInsets.symmetric(
             vertical: MediaQuery.of(context).viewInsets.bottom + 30),
-        style: ThemeConstants.montserrattextstyle2,
+        style: ThemeConstants.montserratTextStyleSmall,
         readOnly: readOrEdit == null ? false : readOrEdit!,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
           hintText: hint,
-          hintStyle: TextStyle(color: ThemeConstants.blackcolor),
+          hintStyle: ThemeConstants.montserratTextStyleSmall,
           filled: true,
           fillColor: backgroundCOlour ?? Colors.transparent,
           errorBorder: OutlineInputBorder(

@@ -12,6 +12,7 @@ import 'package:meeting_module2/services/endpoints.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/logincontroller.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
+import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/calender/calendar_controller.dart';
@@ -40,7 +41,7 @@ class DashBoardController extends GetxController with StateMixin {
 
   int indexOfTab = 0;
 
-  CalendarFormat calendarFormat = CalendarFormat.month;
+  CalendarFormat calendarFormat = CalendarFormat.twoWeeks;
 
   // RxList<AllMeetings> listToShowBackup = <AllMeetings>[].obs;
 
@@ -1030,46 +1031,86 @@ class SingleMeetingWidget extends StatelessWidget {
                                       curve: Curves.easeInOutQuart,
                                       // barrierDismissible: false,
                                       context: context,
-                                      builder: (ctx) =>
-                                          ResheduleMeetingDialogue(
-                                            controller:
-                                                Get.find<DashBoardController>(),
-                                            indexz: i,
-                                            meetingData: listToShow,
+                                      builder: (ctx) => Stack(
+                                            children: [
+                                              Center(
+                                                child: ResheduleMeetingDialogue(
+                                                  controller: Get.find<
+                                                      DashBoardController>(),
+                                                  indexz: i,
+                                                  meetingData: listToShow,
+                                                ),
+                                              ),
+                                              Align(
+                                                alignment:
+                                                    Alignment.bottomCenter,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 30),
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      context.pop();
+                                                      // Get.back();
+                                                    },
+                                                    child: Container(
+                                                      width: 50,
+                                                      height: 50,
+                                                      decoration: BoxDecoration(
+                                                          color: ThemeConstants
+                                                              .bluecolor,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      200)),
+                                                      child: Icon(
+                                                        Icons.close_rounded,
+                                                        color: ThemeConstants
+                                                            .whitecolor,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            ],
                                           ));
                                 } else {
-                                  showAnimatedDialog(
-                                      barrierDismissible: true,
-                                      animationType: DialogTransitionType
-                                          .slideFromBottomFade,
-                                      curve: Curves.easeInOutQuart,
-                                      // barrierDismissible: false,
-                                      context: context,
-                                      builder: (ctx) => showPoPUp(
-                                          'Meeting already started',
-                                          Icon(
-                                            Icons.error,
-                                            size: 40,
-                                            color: ThemeConstants.bluecolor,
-                                          ),
-                                          ctx));
+                                  getToast('Meeting already started');
+                                  // showAnimatedDialog(
+                                  //     barrierDismissible: true,
+                                  //     animationType: DialogTransitionType
+                                  //         .slideFromBottomFade,
+                                  //     curve: Curves.easeInOutQuart,
+                                  //     // barrierDismissible: false,
+                                  //     context: context,
+                                  //     builder: (ctx) => showPoPUp(
+                                  //         'Meeting already started',
+                                  //         Icon(
+                                  //           Icons.error,
+                                  //           size: 40,
+                                  //           color: ThemeConstants.bluecolor,
+                                  //         ),
+                                  //         ctx));
                                 }
                               } else {
-                                showAnimatedDialog(
-                                    barrierDismissible: true,
-                                    animationType: DialogTransitionType
-                                        .slideFromBottomFade,
-                                    curve: Curves.easeInOutQuart,
-                                    // barrierDismissible: false,
-                                    context: context,
-                                    builder: (ctx) => showPoPUp(
-                                        "Only Co-ordinator's and creator can reshedule the meeting",
-                                        Icon(
-                                          Icons.error,
-                                          size: 40,
-                                          color: ThemeConstants.bluecolor,
-                                        ),
-                                        ctx));
+                                getToast(
+                                    "Only Co-ordinator's and creator can reshedule the meeting");
+
+                                // showAnimatedDialog(
+                                //     barrierDismissible: true,
+                                //     animationType: DialogTransitionType
+                                //         .slideFromBottomFade,
+                                //     curve: Curves.easeInOutQuart,
+                                //     // barrierDismissible: false,
+                                //     context: context,
+                                //     builder: (ctx) => showPoPUp(
+                                //         "Only Co-ordinator's and creator can reshedule the meeting",
+                                //         Icon(
+                                //           Icons.error,
+                                //           size: 40,
+                                //           color: ThemeConstants.bluecolor,
+                                //         ),
+                                //         ctx));
                               }
                             }),
                         // CustomButton(text: 'Delete', onPressed: () {})
