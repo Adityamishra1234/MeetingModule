@@ -7,6 +7,7 @@ import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/models/userModal.dart';
+import 'package:meeting_module2/presentation/custom_widgets/meeting_status.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/services/endpoints.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
@@ -850,92 +851,51 @@ class SingleMeetingWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.watch_later_outlined,
+                          color: ThemeConstants.TextColor,
+                          size: 18,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        CustomAutoSizeTextMontserrat(
+                          text: '${listToShow.timeOfTheMeeting}',
+                          fontSize: ThemeConstants.fontSizeMedium,
+                          textColor: ThemeConstants.TextColor,
+                        )
+                      ],
+                    ),
                     Container(
+                      height: 30,
                       width: MediaQuery.of(context).size.width - 20,
-                      child: Wrap(
+                      child: Row(
+                        // runAlignment: WrapAlignment.end,
+                        // crossAxisAlignment: WrapCrossAlignment.end,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 12),
-                            child: SizedBox(
-                              // width: 300,
-                              child: CustomAutoSizeTextMontserrat(
-                                text: "${listToShow.meetingAgenda}",
-                                fontWeight: FontWeight.w700,
-                              ),
+                          SizedBox(
+                            // width: 300,
+                            child: CustomAutoSizeTextMontserrat(
+                              text: "${listToShow.meetingAgenda}",
+                              fontWeight: FontWeight.w600,
+                              fontSize: ThemeConstants.fontSizeMedium,
                             ),
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              listToShow.meetingStarted! &&
-                                      !listToShow.meetingEnded!
-                                  ? Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Transform.scale(
-                                          scale: 0.8,
-                                          child: Radio(
-                                              activeColor: Colors.green,
-                                              value: true,
-                                              groupValue: true,
-                                              onChanged: (val) {}),
-                                        ),
-                                        CustomAutoSizeTextMontserrat(
-                                          fontSize: 12,
-                                          text: '(Started)',
-                                          textColor: ThemeConstants.GreenColor,
-                                        )
-                                      ],
-                                    )
-                                  : SizedBox.shrink(),
-                              listToShow.meetingStarted! &&
-                                      listToShow.meetingEnded!
-                                  ? Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Transform.scale(
-                                          scale: 0.8,
-                                          child: Radio(
-                                              activeColor: Colors.red,
-                                              value: true,
-                                              groupValue: true,
-                                              onChanged: (val) {}),
-                                        ),
-                                        CustomAutoSizeTextMontserrat(
-                                          text: '(Ended)',
-                                          fontSize: 12,
-                                          textColor: Colors.red,
-                                        )
-                                      ],
-                                    )
-                                  : SizedBox.shrink(),
-                              !listToShow.meetingStarted! &&
-                                      !listToShow.meetingEnded!
-                                  ? Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Transform.scale(
-                                          scale: 0.8,
-                                          child: Radio(
-                                              activeColor: const Color.fromARGB(
-                                                  255, 114, 114, 114),
-                                              value: true,
-                                              groupValue: true,
-                                              onChanged: (val) {}),
-                                        ),
-                                        CustomAutoSizeTextMontserrat(
-                                          text: 'Not Started',
-                                          fontSize: 14,
-                                          textColor: const Color.fromARGB(
-                                              255, 114, 114, 114),
-                                        )
-                                      ],
-                                    )
-                                  : SizedBox.shrink()
-                            ],
+                          SizedBox(
+                            width: 10,
                           ),
+                          Spacer(),
+                          MeetingStatus(listToShow: listToShow)
                         ],
                       ),
+                    ),
+                    const SizedBox(
+                      height: 5,
                     ),
                     CustomAutoSizeTextMontserrat(
                       text: "${listToShow.nameOfTheMeeting}",
@@ -968,7 +928,7 @@ class SingleMeetingWidget extends StatelessWidget {
                           child: SizedBox(
                             // color: Colors.amber,
                             height: 50,
-                            width: 150,
+                            width: 120,
                             child: Stack(
                               //alignment:new Alignment(x, y)
                               children: [

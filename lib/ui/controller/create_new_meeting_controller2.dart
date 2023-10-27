@@ -55,7 +55,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
   }
 //////Common in Both
 
-  RxString agendaPurposeOfMeeting = 'All Meetings'.obs;
+  RxString agendaPurposeOfMeeting = 'Accountability and Strategy Meetings'.obs;
 
   Rx<TextEditingController> meetingNameController = TextEditingController().obs;
 

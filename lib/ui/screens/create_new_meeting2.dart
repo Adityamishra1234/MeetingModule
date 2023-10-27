@@ -1656,41 +1656,48 @@ class CreateNewMeeting2 extends StatelessWidget {
                           onTap: () {
                             if (controller.listOfParticipants
                                 .contains(controllers.participantData.value)) {
-                              showDialog(
-                                  context: context,
-                                  builder: (_) => AlertDialog(
-                                        content: Container(
-                                            child: Text('Already added')),
-                                      ));
+                              getToast('Already added');
+                              // showDialog(
+                              //     context: context,
+                              //     builder: (_) => AlertDialog(
+                              //           content: Container(
+                              //               child: Text('Already added')),
+                              //         ));
                             } else if (controllers.participantData.value.id ==
                                 0) {
-                              showDialog(
-                                  context: context,
-                                  builder: (_) => AlertDialog(
-                                        content: Container(
-                                            child: Text(
-                                                'Please add a representative')),
-                                      ));
+                              // showDialog(
+                              //     context: context,
+                              //     builder: (_) => AlertDialog(
+                              //           content: Container(
+                              //               child: Text(
+                              //                   'Please add a representative')),
+                              //         ));
+
+                              getToast('Please add a representative');
                             } else {
                               controller.listOfParticipants
                                   .add(controllers.participantData.value);
                               controller.update();
-                              showDialog(
-                                  context: context,
-                                  builder: (_) => AlertDialog(
-                                        content: Container(
-                                          child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Text(
-                                                    'Participant Added Successfully'),
-                                                Icon(Icons.check_circle,
-                                                    size: 30,
-                                                    color: ThemeConstants
-                                                        .GreenColor)
-                                              ]),
-                                        ),
-                                      ));
+                              getToast('Participant Added Successfully');
+                              // showDialog(
+                              //     context: context,
+                              //     builder: (_) => AlertDialog(
+                              //           shape: RoundedRectangleBorder(
+                              //               borderRadius:
+                              //                   BorderRadius.circular(20)),
+                              //           content: Container(
+                              //             child: Column(
+                              //                 mainAxisSize: MainAxisSize.min,
+                              //                 children: [
+                              //                   Text(
+                              //                       'Participant Added Successfully'),
+                              //                   Icon(Icons.check_circle,
+                              //                       size: 30,
+                              //                       color: ThemeConstants
+                              //                           .GreenColor)
+                              //                 ]),
+                              //           ),
+                              //         ));
                             }
                           },
                           child: Container(

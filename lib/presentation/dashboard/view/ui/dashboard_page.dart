@@ -186,7 +186,7 @@ class _DashBoardState extends State<DashBoard> {
                                 CustomAutoSizeTextMontserrat(
                                   text: "Hello,",
                                   textColor: ThemeConstants.whitecolor,
-                                  fontSize: ThemeConstants.fontSizeMedium,
+                                  fontSize: 16,
                                 ),
                                 SizedBox(
                                   height: 4,
@@ -194,7 +194,7 @@ class _DashBoardState extends State<DashBoard> {
                                 CustomAutoSizeTextMontserrat(
                                   text: "${controller.user.value.name}",
                                   textColor: ThemeConstants.paleYellow,
-                                  fontSize: ThemeConstants.fontSizelarge,
+                                  fontSize: 20,
                                 ),
                               ],
                             ),
@@ -303,9 +303,9 @@ class _DashBoardState extends State<DashBoard> {
                           //     child: Icon(Icons.logout),
                           //   ),
                           // ),
-                          SizedBox(
-                            width: 10,
-                          ),
+                          // SizedBox(
+                          //   width: 10,
+                          // ),
                         ],
                       ),
                     ),

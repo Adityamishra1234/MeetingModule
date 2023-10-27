@@ -102,7 +102,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                         left: 15, top: 20, bottom: 5),
                                     child: CustomAutoSizeTextMontserrat(
                                       text: "${meetingData.meetingAgenda}",
-                                      fontSize: 22,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w500,
                                       textColor: ThemeConstants.whitecolor,
                                     ),
@@ -167,7 +167,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                     left: 15, top: 0, bottom: 10),
                                 child: CustomAutoSizeTextMontserrat(
                                   text: "${meetingData.nameOfTheMeeting}",
-                                  fontSize: 28,
+                                  fontSize: 24,
                                   fontWeight: FontWeight.w600,
                                   textColor: ThemeConstants.paleYellow,
                                 ),
@@ -183,11 +183,11 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                       border: Border.all(
                                           width: 1.5,
                                           color: ThemeConstants.whitecolor)),
-                                  child: Wrap(
-                                    alignment: WrapAlignment.center,
-                                    crossAxisAlignment:
-                                        WrapCrossAlignment.center,
-                                    runAlignment: WrapAlignment.center,
+                                  child: Row(
+                                    // alignment: WrapAlignment.center,
+                                    // crossAxisAlignment:
+                                    //     WrapCrossAlignment.center,
+                                    // runAlignment: WrapAlignment.center,
                                     children: [
                                       Container(
                                         margin: EdgeInsets.only(
@@ -217,8 +217,8 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                 width: 15,
                                               ),
                                               SizedBox(
-                                                width: 33,
-                                                height: 33,
+                                                width: 25,
+                                                height: 25,
                                                 child: Image.asset(
                                                   'assets/page-1/images/image-2-7kL.png',
                                                   fit: BoxFit.cover,
@@ -231,10 +231,12 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                 padding: const EdgeInsets.only(
                                                     top: 18),
                                                 child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     CustomAutoSizeTextMontserrat(
                                                       text: "Meeting Type",
-                                                      fontSize: 14,
+                                                      fontSize: 12,
                                                       textColor: ThemeConstants
                                                           .whitecolor,
                                                       fontWeight:
@@ -819,6 +821,74 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                     const SizedBox(
                                       height: 5,
                                     ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 15),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Icon(
+                                            Icons.link,
+                                            weight: 20,
+                                            size: 20,
+                                            color: ThemeConstants.whitecolor,
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          CustomAutoSizeTextMontserrat(
+                                            text: "Registration Link:",
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
+                                            textColor:
+                                                ThemeConstants.whitecolor,
+                                          ),
+                                          // CustomAutoSizeTextMontserrat(
+                                          //   text: "Time:",
+                                          //   fontWeight: FontWeight.w500,
+                                          //   fontSize: 14,
+                                          //   textColor: ThemeConstants.TextColor,
+                                          // ),
+                                          // SizedBox(
+                                          //   width: 24,
+                                          //   height: 24,
+                                          //   child: Image.asset(
+                                          //     'assets/page-1/images/group-9-CJc.png',
+                                          //     width: 24,
+                                          //     height: 24,
+                                          //   ),
+                                          // ),
+                                          Spacer(),
+                                          // CustomAutoSizeTextMontserrat(
+                                          //   text: "Link: ",
+                                          //   fontWeight: FontWeight.w500,
+                                          //   fontSize: 14,
+                                          //   textColor: ThemeConstants.TextColor,
+                                          // ),
+                                          // // Container(
+                                          //   // linknYG (211:616)
+                                          //   margin: const EdgeInsets.fromLTRB(
+                                          //       0, 0, 7.14, 0),
+                                          //   width: 24,
+                                          //   height: 24,
+                                          //   child: Image.asset(
+                                          //     'assets/page-1/images/link.png',
+                                          //     fit: BoxFit.contain,
+                                          //   ),
+                                          // ),
+
+                                          CustomAutoSizeTextMontserrat(
+                                            text: "${meetingData.meetingLink}",
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            textColor:
+                                                ThemeConstants.whitecolor,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -870,6 +940,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                       controller.participantDataList.length != 0
                                   ? Container(
                                       width: double.infinity,
+                                      height: 130,
                                       padding: EdgeInsets.only(
                                           top: 5,
                                           left: 5,
@@ -889,7 +960,8 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                       ),
                                       child: meetingData.meetingType ==
                                               'External Meeting'
-                                          ? Wrap(
+                                          ? ListView(
+                                              scrollDirection: Axis.horizontal,
                                               children: [
                                                 ...controller
                                                     .participantDataList
@@ -1262,7 +1334,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                 topLeft: Radius.circular(45),
                                 topRight: Radius.circular(45))),
                         padding:
-                            const EdgeInsets.only(top: 30, left: 25, right: 25),
+                            const EdgeInsets.only(top: 30, left: 15, right: 15),
                         child:
                             Column(mainAxisSize: MainAxisSize.max, children: [
                           Container(
@@ -1272,7 +1344,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                             padding: EdgeInsets.only(
                                 top: 0, left: 0, bottom: 5, right: 0),
                             margin: EdgeInsets.only(
-                                left: 0, right: 0, top: 0, bottom: 10),
+                                left: 0, right: 0, top: 0, bottom: 0),
                             decoration: BoxDecoration(
                               border: Border.all(
                                   width: 1, color: ThemeConstants.whitecolor),
@@ -1286,7 +1358,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                               borderRadius: BorderRadius.circular(13),
                             ),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 InkWell(
                                   onTap: () {
@@ -1384,7 +1456,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                             padding: const EdgeInsets.symmetric(horizontal: 0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 controller.showTheStartEndOptions
                                     ? InkWell(
@@ -1475,11 +1547,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                           //         ));
                                         },
                                         child: Container(
-                                            width: (MediaQuery.of(context)
-                                                        .size
-                                                        .width -
-                                                    100) /
-                                                3,
+                                            width: 100,
                                             height: 90,
                                             // padding: EdgeInsets.only(
                                             //     top: 5, left: 5, bottom: 5, right: 20),
@@ -1640,11 +1708,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                         ));
                                               },
                                               child: Container(
-                                                  width: (MediaQuery.of(context)
-                                                              .size
-                                                              .width -
-                                                          100) /
-                                                      3,
+                                                  width: 100,
                                                   height: 90,
                                                   // padding: EdgeInsets.only(
                                                   //     top: 5, left: 5, bottom: 5, right: 20),
@@ -1957,12 +2021,9 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                     )));
                                   },
                                   child: Container(
-                                      width:
-                                          (MediaQuery.of(context).size.width -
-                                                  100) /
-                                              3,
+                                      width: 100,
                                       height: 90,
-                                      margin: EdgeInsets.only(left: 20),
+                                      // margin: EdgeInsets.only(left: 20),
                                       // padding: EdgeInsets.only(
                                       //     top: 5, left: 5, bottom: 5, right: 20),
                                       // margin: EdgeInsets.symmetric(
@@ -2008,12 +2069,9 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                         '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.viewDocs}');
                                   },
                                   child: Container(
-                                      width:
-                                          (MediaQuery.of(context).size.width -
-                                                  100) /
-                                              3,
+                                      width: 100,
                                       height: 90,
-                                      margin: EdgeInsets.only(left: 20),
+                                      // margin: EdgeInsets.only(left: 20),
                                       // padding: EdgeInsets.only(
                                       //     top: 5, left: 5, bottom: 5, right: 20),
                                       // margin: EdgeInsets.symmetric(

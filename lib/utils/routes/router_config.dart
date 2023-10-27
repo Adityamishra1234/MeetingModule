@@ -10,6 +10,7 @@ import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/add_more_notes.dart';
 import 'package:meeting_module2/ui/screens/assign_to_view.dart';
+import 'package:meeting_module2/ui/screens/assign_to_view_dasboard.dart';
 import 'package:meeting_module2/ui/screens/create_new_meeting2.dart';
 import 'package:meeting_module2/ui/screens/dashboard_notes.dart';
 import 'package:meeting_module2/presentation/dashboard/view/ui/dashboard_page.dart';
@@ -38,6 +39,8 @@ class Routes {
   static const viewSingleDocImg = 'singleDocViewImg';
 
   static const decryptNoteView = 'decryptNoteView';
+
+  static const assignDashboardNotes = 'assignDashboardNotes';
 
   static const viewDashboardNotes = 'viewDashboardNotes';
 }
@@ -170,6 +173,12 @@ class GoRouterConfig {
                           encyrptedNote: state.extra as String,
                         ),
                     routes: []),
+                GoRoute(
+                  path: '${Routes.assignDashboardNotes}',
+                  builder: (context, state) => AssignToView2(
+                    argu: state.extra as FindNotesModel,
+                  ),
+                ),
               ],
             ),
             GoRoute(

@@ -296,12 +296,12 @@ class _MyAppState extends State<MyApp> {
       routeInformationParser: router.routeInformationParser,
       routeInformationProvider: router.routeInformationProvider,
       routerDelegate: router.routerDelegate,
+
+      debugShowCheckedModeBanner: false,
       // routerConfig: GoRouterConfig().router,
 //         routerDelegate: routerDelegate,
 // routeInformationParser: BeamerParser(),
       // smartManagement: SmartManagement.keepFactory,
-
-      debugShowCheckedModeBanner: false,
       // initialRoute: SignInView.route,
       // getPages: [
       //   GetPage(

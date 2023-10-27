@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:meeting_module2/models/dashboardNotesModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/services/apiServices.dart';
+import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/screens/assign_to_view.dart';
 import 'package:meeting_module2/ui/screens/assign_to_view_dasboard.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
@@ -49,7 +50,7 @@ class DashboardNotesController extends GetxController with StateMixin {
 
   List<FindNotesModel> data = [];
   getNotesData(BuildContext context) async {
-    var res = await apiServices.findNoteByUser(id);
+    var res = await apiServices.findNoteByUser(Get.find<BaseController>().id);
     List<dynamic> data2 = res;
 
     data = await List<FindNotesModel>.from(
@@ -150,7 +151,10 @@ class DashboardNotesController extends GetxController with StateMixin {
                                 const BorderRadius.all(Radius.circular(30.0))),
                         child: InkWell(
                           onTap: () {
-                            Get.to(AssignToView2(), arguments: data[i]);
+                            context.push(
+                                '${Routes.dashboard}/${Routes.viewDashboardNotes}/${Routes.assignDashboardNotes}',
+                                extra: data[i]);
+                            // Get.to(AssignToView2(), arguments: data[i]);
                           },
                           child: Center(
                             child: CustomAutoSizeTextMontserrat(
