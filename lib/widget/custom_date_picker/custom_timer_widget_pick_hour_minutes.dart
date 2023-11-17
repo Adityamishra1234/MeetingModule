@@ -8,8 +8,13 @@ class CustomTimerWidgetForHourMinutes extends StatefulWidget {
   final Function callback;
   String? initialTime;
   bool? isBlank;
+  Widget? field;
   CustomTimerWidgetForHourMinutes(
-      {Key? key, this.isBlank, this.initialTime, required this.callback})
+      {Key? key,
+      this.field,
+      this.isBlank,
+      this.initialTime,
+      required this.callback})
       : super(key: key);
 
   @override
@@ -125,24 +130,31 @@ class _CustomTimerWidgetForHourMinutesState
           });
         });
       },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2.5),
-        width: double.infinity,
-        // height: 50,
-        decoration: BoxDecoration(
-            color: Colors.transparent,
-            border: Border.all(color: ThemeConstants.lightgreycolor, width: 1),
-            borderRadius: BorderRadius.circular(50)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('${dateToShow}', style: TextStyle(fontSize: 14)),
-            const Icon(
-              Icons.access_time,
-              size: 20,
-            )
-          ],
-        ),
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2.5),
+            width: double.infinity,
+            // height: 50,
+            height: 40,
+            decoration: BoxDecoration(
+                color: Colors.transparent,
+                border:
+                    Border.all(color: ThemeConstants.lightgreycolor, width: 1),
+                borderRadius: BorderRadius.circular(50)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('${dateToShow}', style: TextStyle(fontSize: 14)),
+                const Icon(
+                  Icons.access_time,
+                  size: 20,
+                )
+              ],
+            ),
+          ),
+          widget.field == null ? SizedBox.shrink() : widget.field!,
+        ],
       ),
     );
   }

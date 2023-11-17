@@ -135,11 +135,17 @@ class _SignInViewState extends State<SignInView> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 10),
                                     child: CustomTextField(
+                                        obscureText: controller.showPassword,
+                                        isPassword: true,
+                                        callbackForPasswordShow: () {
+                                          controller.showPassword =
+                                              !controller.showPassword;
+                                          controller.update();
+                                        },
                                         hint: "Enter your password",
                                         backgroundCOlour:
                                             ThemeConstants.whitecolor,
-                                        validator:
-                                            Validator.passwordWithSpecial,
+                                        validator: Validator.notEmpty,
                                         controller: password),
                                   ),
                                   InkWell(

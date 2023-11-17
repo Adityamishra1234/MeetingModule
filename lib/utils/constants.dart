@@ -130,7 +130,7 @@ getEmptyValidation(String? value) {
 getEmptyDropDownValidation(String? value) {
   print(value);
   if (value == null || value == '') {
-    return '* Please Select one Field';
+    return '* Please Select';
   } else
     return null;
 }

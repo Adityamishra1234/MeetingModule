@@ -235,7 +235,6 @@ class BaseServices {
     if (login == false) {
       await checkUserConnection();
     }
-
     var response = await http.post(
       Uri.parse(url),
     );

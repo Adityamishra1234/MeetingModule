@@ -93,6 +93,11 @@ class Endpoints {
   static String universityIdByMeetingId = 'univeristyByMeetingID';
 
   static String getAllBranchesWithImage = 'get-all-branches-address';
+
+  static String findUserNotesTaskById = 'findMeetingNotesTaskById';
+
+  static String findMeetingNotesTaskByIdwithUpdate =
+      'findMeetingNotesTaskByIdwithUpdate';
 }
 
 datesOfCalendarMeetingEndpoint(int id, int month, int year) {

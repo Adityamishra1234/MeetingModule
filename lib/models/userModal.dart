@@ -25,6 +25,7 @@ class UserModel {
   String? meetingModuleOtp;
   String? meetingModulePassword;
   bool? meetingModuleIsActive;
+  String? registrationLinkOfTheMeeting;
 
   UserModel(
       {this.id,
@@ -52,7 +53,8 @@ class UserModel {
       this.fcmTokenIos,
       this.meetingModuleOtp,
       this.meetingModulePassword,
-      this.meetingModuleIsActive});
+      this.meetingModuleIsActive,
+      this.registrationLinkOfTheMeeting});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -81,6 +83,7 @@ class UserModel {
     meetingModuleOtp = json['meeting_module_otp'];
     meetingModulePassword = json['meeting_module_password'];
     meetingModuleIsActive = json['meeting_module_is_active'];
+    registrationLinkOfTheMeeting = json['registration_link_of_the_meeting'];
   }
 
   Map<String, dynamic> toJson() {
@@ -111,6 +114,8 @@ class UserModel {
     data['meeting_module_otp'] = this.meetingModuleOtp;
     data['meeting_module_password'] = this.meetingModulePassword;
     data['meeting_module_is_active'] = this.meetingModuleIsActive;
+    data['registration_link_of_the_meeting'] =
+        this.registrationLinkOfTheMeeting;
     return data;
   }
 }

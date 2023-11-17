@@ -10,7 +10,7 @@
 
 
    <application
-        android:label="meeting_module2"
+        android:label="SIEC Organisers"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:enableOnBackInvokedCallback="true"

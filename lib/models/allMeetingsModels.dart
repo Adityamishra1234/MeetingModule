@@ -11,6 +11,8 @@ class AllMeetings {
   String? meetingMode;
   String? meetingModeType;
   String? meetingLink;
+  String? registrationLink;
+
   String? locationOfTheMeeting;
   int? siecBranch;
   String? specificLocationOfTheMeeting;
@@ -30,38 +32,38 @@ class AllMeetings {
   String? meeting_started_by;
   String? meeting_ended_by;
 
-  AllMeetings({
-    this.id = 0,
-    this.meetingType = 'Internal Meeting',
-    this.meetingWith = 'University Meetings',
-    this.meetingAgenda = 'All Meetings',
-    this.specificPurposeOfTheMeeting = '',
-    this.nameOfTheMeeting = '',
-    this.dateOfMeeting = '2023-04-27',
-    this.timeOfTheMeeting = '17:20',
-    this.durationOfMeeting = '',
-    this.meetingMode = '1',
-    this.meetingModeType = 'Zoom',
-    this.meetingLink = 'test',
-    this.locationOfTheMeeting = '',
-    this.siecBranch = 0,
-    this.specificLocationOfTheMeeting = '',
-    this.siecParticipants,
-    this.meetingCoordinator,
-    this.meetingStarted = false,
-    this.isReschedule = false,
-    this.meetingEnded = false,
-    this.meetingExceeded = false,
-    this.isActive = true,
-    this.createdBy = 105,
-    this.updatedBy = 105,
-    this.createdAt = "2023-04-07T09:48:35.000Z",
-    this.updatedAt = "2023-04-07T09:48:35.000Z",
-    this.meeting_started_time = null,
-    this.meeting_ended_time = null,
-    this.meeting_started_by = null,
-    this.meeting_ended_by = null,
-  });
+  AllMeetings(
+      {this.id = 0,
+      this.meetingType = 'Internal Meeting',
+      this.meetingWith = 'University Meetings',
+      this.meetingAgenda = 'All Meetings',
+      this.specificPurposeOfTheMeeting = '',
+      this.nameOfTheMeeting = '',
+      this.dateOfMeeting = '2023-04-27',
+      this.timeOfTheMeeting = '17:20',
+      this.durationOfMeeting = '',
+      this.meetingMode = '1',
+      this.meetingModeType = 'Zoom',
+      this.meetingLink = 'test',
+      this.locationOfTheMeeting = '',
+      this.siecBranch = 0,
+      this.specificLocationOfTheMeeting = '',
+      this.siecParticipants,
+      this.meetingCoordinator,
+      this.meetingStarted = false,
+      this.isReschedule = false,
+      this.meetingEnded = false,
+      this.meetingExceeded = false,
+      this.isActive = true,
+      this.createdBy = 105,
+      this.updatedBy = 105,
+      this.createdAt = "2023-04-07T09:48:35.000Z",
+      this.updatedAt = "2023-04-07T09:48:35.000Z",
+      this.meeting_started_time = null,
+      this.meeting_ended_time = null,
+      this.meeting_started_by = null,
+      this.meeting_ended_by = null,
+      this.registrationLink = null});
 
   // List<SiecParticipants> defaultSiecList = [
   //   {"name": "dddd", "id": 150},
@@ -83,6 +85,9 @@ class AllMeetings {
     meetingMode = json['meeting_mode'].toString();
     meetingModeType = json['meeting_mode_type'];
     meetingLink = json['meeting_link'];
+
+    registrationLink = json['registration_link_of_the_meeting'];
+
     locationOfTheMeeting = json['location_of_the_meeting'];
     siecBranch = json['siec_branch'];
     specificLocationOfTheMeeting = json['specific_location_of_the_meeting'];
@@ -162,6 +167,7 @@ class AllMeetings {
     data['updated_by'] = updatedBy;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    data['registration_link_of_the_meeting'] = registrationLink;
     return data;
   }
 }

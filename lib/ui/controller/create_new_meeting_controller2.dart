@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -91,6 +90,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
   Rx<TextEditingController> meetingLink = TextEditingController().obs;
 
+  Rx<TextEditingController> registrationLink = TextEditingController().obs;
+
   bool selectedOption = false;
   // Drop down list
   List<String> selectTargetAudienceType = <String>[
@@ -161,6 +162,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
   Rx<AllMeetings> meetingModel = AllMeetings().obs;
   ApiServices api = ApiServices();
 
+  bool existingRepresentative = false;
+
   // RxString proposedDuration = ''.obs;
 
   ///External Meeting
@@ -223,7 +226,6 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     print(repModel.value.toJson());
     var res = await api.addRepresentative(repModel.value);
 
-    await fetchParticipantData();
     return res;
   }
 
@@ -268,8 +270,6 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     var data = meetingWith.value.split(' ')[0];
     // substring(0, meetingWith.value.length - 9);
 
-    print(data);
-
     var res = await api.findRepresentativeForDropDown(data);
 
     listOfParticipantData =
@@ -285,7 +285,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
   ///
   ///
   Rx<AllUserModel> participantID = AllUserModel().obs;
-  Rx<RepresentativeModel> participantData = RepresentativeModel().obs;
+  RepresentativeModel participantData = RepresentativeModel();
 
   fetchParticipantData() async {
     print(participantID.value.id);
@@ -293,24 +293,24 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
         ? listOfParticipantData[0].id!
         : participantID.value.id!);
 
-    participantData.value = RepresentativeModel.fromJson(res);
+    participantData = RepresentativeModel.fromJson(res);
 
     update();
 
-    print(participantData.value.toJson());
+    print(participantData.toJson());
   }
 
   makeParticipantDataClear() {
-    participantData.value.bankName = null;
-    participantData.value.country = null;
-    participantData.value.createdAt = null;
-    participantData.value.createdBy = null;
-    participantData.value.designation = '';
-    participantData.value.email = '';
-    participantData.value.id = 0;
-    participantData.value.isActive = null;
-    participantData.value.personName = '';
-    participantData.value.phone = null;
+    participantData.bankName = null;
+    participantData.country = null;
+    participantData.createdAt = null;
+    participantData.createdBy = null;
+    participantData.designation = '';
+    participantData.email = '';
+    participantData.id = 0;
+    participantData.isActive = null;
+    participantData.personName = '';
+    participantData.phone = null;
     update();
   }
 
@@ -365,7 +365,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     }
   }
 
-  RxList<RepresentativeModel> listOfParticipants = <RepresentativeModel>[].obs;
+  List<RepresentativeModel> listOfParticipants = <RepresentativeModel>[];
 
   List<Widget> allParticipants(CreateNewMeetingController2 controller) {
     List<Widget> data = [];
@@ -512,7 +512,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     ///
     ///
     ///
-    meetingModel.value.locationOfTheMeeting = meetingLocation;
+    meetingModel.value.locationOfTheMeeting =
+        meetingLocation == 'true' ? '1' : '2';
 
     meetingModel.value.specificLocationOfTheMeeting =
         specifyMeetingLocation.value.text;
@@ -547,12 +548,39 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     // print(res);
 
     // meetingModel.value.timeOfTheMeeting = meetingNameController.value.text;
-    await api.addMeeting(meetingModel.value);
+
+    meetingModel.value.registrationLink = registrationLink.value.text;
+
+    var res = await api.addMeeting(meetingModel.value);
+
+    for (var i = 0; i < selectedUsersList.length; i++) {
+      print(id);
+      var data = {
+        "id": 1,
+        "meeting_id": res['id'],
+        "meeting_notes_id": 0,
+        "task_type": 'Training',
+        "deadline_date": "12-10-2001",
+        "task_owner_id": selectedUsersList[i].id,
+        "is_active": true,
+        "closed_at": "0000-00-00 00:00:00",
+        "closed_by": 0,
+        "meeting_attented": false,
+        "reason_of_not_attended": "",
+        "created_by": id,
+        "updated_by": id,
+        "created_at": "2023-04-07T09:48:35.000Z",
+        "updated_at": "2023-04-07T09:48:35.000Z",
+        // "notes": ''
+      };
+
+      var assignToRes = await api.assignTo(data);
+    }
 
     change(null, status: RxStatus.loading());
 
-    Get.delete<CreateNewMeetingController2>();
-    Get.put(CreateNewMeetingController2());
+    // Get.delete<CreateNewMeetingController2>();
+    // Get.put(CreateNewMeetingController2());
     change(null, status: RxStatus.success());
     getToast('Meeting Added Successfully');
     // showPoPUp(
@@ -615,7 +643,10 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     meetingModel.value.durationOfMeeting = proposedDurationController.value;
 
-    meetingModel.value.meetingMode = MeetingType.value == true ? '1' : '0';
+    meetingModel.value.meetingMode = MeetingType.value == true ? '1' : '2';
+
+    meetingModel.value.locationOfTheMeeting =
+        meetingLocation == 'true' ? '1' : '2';
 
     /// online
     meetingModel.value.meetingModeType = modeOfMeeting.value;
@@ -659,6 +690,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     var id = await prefs.getInt('id');
     meetingModel.value.createdBy = id;
 
+    meetingModel.value.registrationLink = registrationLink.value.text;
+
     var res = await api.addMeeting(meetingModel.value);
 
     // var resDecoded = json.decode(res);
@@ -683,6 +716,30 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     var kd = await api.addParticipants(ko);
     print(kd.toString());
+
+    for (var i = 0; i < selectedUsersList.length; i++) {
+      print(id);
+      var data = {
+        "id": 1,
+        "meeting_id": res['id'],
+        "meeting_notes_id": 0,
+        "task_type": 'Training',
+        "deadline_date": "12-10-2001",
+        "task_owner_id": selectedUsersList[i].id,
+        "is_active": true,
+        "closed_at": "0000-00-00 00:00:00",
+        "closed_by": 0,
+        "meeting_attented": false,
+        "reason_of_not_attended": "",
+        "created_by": id,
+        "updated_by": id,
+        "created_at": "2023-04-07T09:48:35.000Z",
+        "updated_at": "2023-04-07T09:48:35.000Z",
+        // "notes": ''
+      };
+
+      var assignToRes = await api.assignTo(data);
+    }
 
     change(null, status: RxStatus.loading());
 

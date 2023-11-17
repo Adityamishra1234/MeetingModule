@@ -25,6 +25,8 @@ class SigninController extends GetxController with StateMixin {
   var otpController = TextEditingController();
   var passwordController = TextEditingController();
 
+  bool showPassword = false;
+
   startResend() async {
     // var res2 = await api.getOTP(email);
     timer.value = 10;
@@ -208,6 +210,7 @@ class SigninController extends GetxController with StateMixin {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: CustomTextField(
+                  keybord: TextInputType.number,
                   backgroundCOlour: ThemeConstants.whitecolor,
                   hint: "Enter your OTP",
                   validator: Validator.otp,
@@ -252,7 +255,7 @@ class SigninController extends GetxController with StateMixin {
                     var res = await updatePasswordForget(
                         email, passwordController.text, otpController.text);
 
-                    context.pop();
+                    if (res == true) context.pop();
                   } else {
                     getToast("Kindly check your fields");
                   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
@@ -172,174 +173,192 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                   textColor: ThemeConstants.paleYellow,
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 5, left: 10, right: 10),
-                                child: Container(
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                      color: Color.fromARGB(17, 255, 255, 255),
-                                      borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(
-                                          width: 1.5,
-                                          color: ThemeConstants.whitecolor)),
-                                  child: Row(
-                                    // alignment: WrapAlignment.center,
-                                    // crossAxisAlignment:
-                                    //     WrapCrossAlignment.center,
-                                    // runAlignment: WrapAlignment.center,
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                          left: 0,
-                                          // top: 10,/
-                                          // bottom: 10,
-                                          // right: 10,
-                                        ),
-                                        height: 72,
-                                        width: 180,
-                                        decoration: BoxDecoration(
-                                          // boxShadow: [
-                                          //   const BoxShadow(
-                                          //       blurRadius: 0.5,
-                                          //       spreadRadius: 0.1,
-                                          //       color: Color.fromARGB(40, 0, 0, 0))
-                                          // ],
-                                          // color: ThemeConstants.whitecolor,
+
+                              LayoutBuilder(
+                                builder: (context, constraints) {
+                                  var minimumWidth = constraints.minWidth;
+                                  var maximumWidth = constraints.maxWidth;
+
+                                  // print(constraints.)
+
+                                  print('$minimumWidth e');
+                                  print('$maximumWidth d');
+
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 5, left: 10, right: 10),
+                                    child: Container(
+                                      padding: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                          color:
+                                              Color.fromARGB(17, 255, 255, 255),
                                           borderRadius:
-                                              BorderRadius.circular(13),
-                                        ),
-                                        child: SizedBox(
-                                          height: 50,
-                                          child: Row(
-                                            children: [
-                                              const SizedBox(
-                                                width: 15,
-                                              ),
-                                              SizedBox(
-                                                width: 25,
-                                                height: 25,
-                                                child: Image.asset(
-                                                  'assets/page-1/images/image-2-7kL.png',
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 18),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    CustomAutoSizeTextMontserrat(
-                                                      text: "Meeting Type",
-                                                      fontSize: 12,
-                                                      textColor: ThemeConstants
-                                                          .whitecolor,
-                                                      fontWeight:
-                                                          FontWeight.w700,
+                                              BorderRadius.circular(20),
+                                          border: Border.all(
+                                              width: 1.5,
+                                              color:
+                                                  ThemeConstants.whitecolor)),
+                                      child: Row(
+                                        // alignment: WrapAlignment.center,
+                                        // crossAxisAlignment:
+                                        //     WrapCrossAlignment.center,
+                                        // runAlignment: WrapAlignment.center,
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                              left: 0,
+                                              // top: 10,/
+                                              // bottom: 10,
+                                              // right: 10,
+                                            ),
+                                            height: 72,
+                                            width: maximumWidth * .45,
+                                            decoration: BoxDecoration(
+                                              // boxShadow: [
+                                              //   const BoxShadow(
+                                              //       blurRadius: 0.5,
+                                              //       spreadRadius: 0.1,
+                                              //       color: Color.fromARGB(40, 0, 0, 0))
+                                              // ],
+                                              // color: ThemeConstants.whitecolor,
+                                              borderRadius:
+                                                  BorderRadius.circular(13),
+                                            ),
+                                            child: SizedBox(
+                                              height: 50,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  SizedBox(
+                                                    width: 25,
+                                                    height: 25,
+                                                    child: Image.asset(
+                                                      'assets/page-1/images/image-2-7kL.png',
+                                                      fit: BoxFit.cover,
                                                     ),
-                                                    CustomAutoSizeTextMontserrat(
-                                                      textColor: ThemeConstants
-                                                          .whitecolor,
-                                                      text:
-                                                          "${meetingData.meetingType}",
-                                                      fontSize: 12,
-                                                      maxLines: 12,
-                                                      fontWeight:
-                                                          FontWeight.w500,
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 18),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        CustomAutoSizeTextMontserrat(
+                                                          text: "Meeting Type",
+                                                          fontSize: 12,
+                                                          textColor:
+                                                              ThemeConstants
+                                                                  .whitecolor,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                        ),
+                                                        CustomAutoSizeTextMontserrat(
+                                                          textColor:
+                                                              ThemeConstants
+                                                                  .whitecolor,
+                                                          text:
+                                                              "${meetingData.meetingType}",
+                                                          fontSize: 12,
+                                                          maxLines: 12,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                ],
                                               ),
-                                              const SizedBox(
-                                                width: 10,
-                                              )
-                                            ],
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                      // const Spacer(),
-                                      SizedBox(
-                                        width: 5,
-                                        height: 5,
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                          left: 0,
-                                          // top: 10,
-                                          // bottom: 20,
-                                          // right: 10,
-                                        ),
-                                        width: 180,
-                                        height: 72,
-                                        decoration: BoxDecoration(
-                                          // boxShadow: const [
-                                          //   BoxShadow(
-                                          //       blurRadius: 0.5,
-                                          //       spreadRadius: 0.1,
-                                          //       color: Color.fromARGB(40, 0, 0, 0)),
-                                          // ],
-                                          // color: ThemeConstants.whitecolor,
-                                          borderRadius:
-                                              BorderRadius.circular(13),
-                                        ),
-                                        child: SizedBox(
-                                          height: 50,
-                                          child: Row(
-                                            children: [
-                                              const SizedBox(
-                                                width: 15,
-                                              ),
-                                              SizedBox(
-                                                width: 33,
-                                                height: 33,
-                                                child: Image.asset(
-                                                  'assets/page-1/images/image-3-gBS.png',
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 18),
-                                                child: Column(
-                                                  children: [
-                                                    CustomAutoSizeTextMontserrat(
-                                                      textColor: ThemeConstants
-                                                          .whitecolor,
-                                                      text: "Agenda",
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                    ),
-                                                    CustomAutoSizeTextMontserrat(
-                                                      textColor: ThemeConstants
-                                                          .whitecolor,
-                                                      text: "Networking",
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 20,
-                                              )
-                                            ],
+                                          // const Spacer(),
+                                          SizedBox(
+                                            width: 5,
+                                            height: 5,
                                           ),
-                                        ),
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                              left: 0,
+                                              // top: 10,
+                                              // bottom: 20,
+                                              // right: 10,
+                                            ),
+                                            width: maximumWidth * .40,
+                                            height: 72,
+                                            decoration: BoxDecoration(
+                                              // boxShadow: const [
+                                              //   BoxShadow(
+                                              //       blurRadius: 0.5,
+                                              //       spreadRadius: 0.1,
+                                              //       color: Color.fromARGB(40, 0, 0, 0)),
+                                              // ],
+                                              // color: ThemeConstants.whitecolor,
+                                              borderRadius:
+                                                  BorderRadius.circular(13),
+                                            ),
+                                            child: SizedBox(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  SizedBox(
+                                                    width: 33,
+                                                    height: 33,
+                                                    child: Image.asset(
+                                                      'assets/page-1/images/image-3-gBS.png',
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 18),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        CustomAutoSizeTextMontserrat(
+                                                          textColor:
+                                                              ThemeConstants
+                                                                  .whitecolor,
+                                                          text: "Agenda",
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                        ),
+                                                        CustomAutoSizeTextMontserrat(
+                                                          textColor:
+                                                              ThemeConstants
+                                                                  .whitecolor,
+                                                          text: "Networking",
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                ),
+                                    ),
+                                  );
+                                },
                               ),
+
                               SizedBox(
                                 height: 10,
                               ),
@@ -354,27 +373,47 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                     ),
-                                    // Spacer(),
+                                    Spacer(),
                                     // Container(
                                     //   padding: EdgeInsets.only(
-                                    //       top: 5, left: 8, bottom: 5, right: 20),
+                                    //       top: 2,
+                                    //       left: 15,
+                                    //       bottom: 2,
+                                    //       right: 15),
                                     //   margin: EdgeInsets.symmetric(
                                     //       vertical: 6, horizontal: 4),
                                     //   decoration: BoxDecoration(
-                                    //     boxShadow: [
-                                    //       const BoxShadow(
-                                    //           blurRadius: 0.5,
-                                    //           spreadRadius: 0.1,
-                                    //           color: Color.fromARGB(40, 0, 0, 0))
-                                    //     ],
-                                    //     color: ThemeConstants.whitecolor,
-                                    //     borderRadius: BorderRadius.circular(13),
+                                    //     border: Border.all(
+                                    //         color: ThemeConstants.whitecolor,
+                                    //         width: 1),
+
+                                    //     // boxShadow: [
+                                    //     //   const BoxShadow(
+                                    //     //       blurRadius: 0.5,
+                                    //     //       spreadRadius: 0.1,
+                                    //     //       color:
+                                    //     //           Color.fromARGB(40, 0, 0, 0))
+                                    //     // ],
+                                    //     // color: ThemeConstants.whitecolor,
+                                    //     borderRadius: BorderRadius.circular(10),
                                     //   ),
-                                    //   child: CustomAutoSizeTextMontserrat(
-                                    //     text: "Mark Attendance",
-                                    //     textColor: ThemeConstants.TextColor,
-                                    //     fontSize: 13,
-                                    //     fontWeight: FontWeight.w500,
+                                    //   child: Row(
+                                    //     children: [
+                                    //       Icon(
+                                    //         Icons.video_call,
+                                    //         color: ThemeConstants.whitecolor,
+                                    //       ),
+                                    //       SizedBox(
+                                    //         width: 10,
+                                    //       ),
+                                    //       CustomAutoSizeTextMontserrat(
+                                    //         text: "Start Meeting",
+                                    //         textColor:
+                                    //             ThemeConstants.whitecolor,
+                                    //         fontSize: 13,
+                                    //         fontWeight: FontWeight.w500,
+                                    //       ),
+                                    //     ],
                                     //   ),
                                     // ),
                                   ],
@@ -880,7 +919,8 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                           // ),
 
                                           CustomAutoSizeTextMontserrat(
-                                            text: "${meetingData.meetingLink}",
+                                            text:
+                                                "${meetingData.registrationLink}",
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500,
                                             textColor:
@@ -1347,7 +1387,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                 left: 0, right: 0, top: 0, bottom: 0),
                             decoration: BoxDecoration(
                               border: Border.all(
-                                  width: 1, color: ThemeConstants.whitecolor),
+                                  width: 1, color: Colors.transparent),
                               // boxShadow: [
                               //   const BoxShadow(
                               //       blurRadius: 0.5,
@@ -1386,24 +1426,35 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
-                                          width: 100,
-                                          alignment: Alignment.center,
-                                          child: Icon(
-                                            Icons.add,
-                                            size: 30,
-                                            color: ThemeConstants.blackcolor,
-                                          )),
+                                        width: 100,
+                                        alignment: Alignment.center,
+                                        child: SvgPicture.asset(
+                                          'assets/images/Add Note.svg',
+                                          color: ThemeConstants.bluecolor,
+                                          // color: index == 5
+                                          //     ? ThemeConstants.bluecolor
+                                          //     : const Color.fromARGB(
+                                          //         255, 31, 31, 31),
+                                          width: 30,
+                                        ),
+                                        // child: Icon(
+                                        //   Icons.add,
+                                        //   size: 30,
+                                        //   color: ThemeConstants.blackcolor,
+                                        // )
+                                      ),
                                       CustomAutoSizeTextMontserrat(
                                         text: 'Add Note',
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
-                                        textColor: ThemeConstants.blackcolor,
+                                        textColor: ThemeConstants.bluecolor,
                                       )
                                     ],
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: () {
+                                  onTap: () async {
+                                    await controller.getNotesOfMeeting(context);
                                     context.push(
                                       '${Routes.dashboard}/${Routes.meetingDetails}/${ViewNotesDetails.routeNamed}/:${meetingData.id}',
                                     );
@@ -1414,36 +1465,74 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
-                                          width: 100,
-                                          alignment: Alignment.center,
-                                          child: Icon(Icons.document_scanner,
-                                              size: 30)),
+                                        width: 100,
+                                        alignment: Alignment.center,
+                                        child: SvgPicture.asset(
+                                          'assets/images/View Note.svg',
+                                          color: ThemeConstants.bluecolor,
+                                          // color: index == 5
+                                          //     ? ThemeConstants.bluecolor
+                                          //     : const Color.fromARGB(
+                                          //         255, 31, 31, 31),
+                                          width: 30,
+                                        ),
+                                        // child: Icon(
+                                        //   Icons.add,
+                                        //   size: 30,
+                                        //   color: ThemeConstants.blackcolor,
+                                        // )
+                                      ),
                                       CustomAutoSizeTextMontserrat(
                                         text: 'View Note',
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
-                                        textColor: ThemeConstants.blackcolor,
+                                        textColor: ThemeConstants.bluecolor,
                                       )
+                                      // Container(
+                                      //     width: 100,
+                                      //     alignment: Alignment.center,
+                                      //     child: Icon(Icons.document_scanner,
+                                      //         size: 30)),
+                                      // CustomAutoSizeTextMontserrat(
+                                      //   text: 'View Note',
+                                      //   fontSize: 14,
+                                      //   fontWeight: FontWeight.w500,
+                                      //   textColor: ThemeConstants.blackcolor,
+                                      // )
                                     ],
                                   ),
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    context.push(
-                                        '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.addMoreNotesView}/${meetingData.id}/1');
+                                    if (controller.meetingStartedValue ==
+                                        true) {
+                                      context.push(
+                                          '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.addMoreNotesView}/${meetingData.id}/1');
+                                    } else {
+                                      getToast('Meeting not started yet');
+                                    }
                                   },
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
-                                          width: 100,
-                                          alignment: Alignment.center,
-                                          child: Icon(Icons.upload, size: 30)),
+                                        width: 100,
+                                        alignment: Alignment.center,
+                                        child: SvgPicture.asset(
+                                          'assets/images/Upload File.svg',
+                                          color: ThemeConstants.bluecolor,
+                                          // color: index == 5
+                                          //     ? ThemeConstants.bluecolor
+                                          //     : const Color.fromARGB(
+                                          //         255, 31, 31, 31),
+                                          width: 30,
+                                        ),
+                                      ),
                                       CustomAutoSizeTextMontserrat(
                                         text: 'Upload File',
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
-                                        textColor: ThemeConstants.blackcolor,
+                                        textColor: ThemeConstants.bluecolor,
                                       )
                                     ],
                                   ),
@@ -1549,6 +1638,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                         child: Container(
                                             width: 100,
                                             height: 90,
+
                                             // padding: EdgeInsets.only(
                                             //     top: 5, left: 5, bottom: 5, right: 20),
                                             // margin: EdgeInsets.symmetric(
@@ -1579,7 +1669,10 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                       if (controller
                                                               .showLoading ==
                                                           false) ...[
-                                                        Icon(Icons.meeting_room,
+                                                        Icon(Icons.video_call,
+                                                            color:
+                                                                ThemeConstants
+                                                                    .bluecolor,
                                                             size: 30),
                                                         CustomAutoSizeTextMontserrat(
                                                           align:
@@ -1590,7 +1683,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                               FontWeight.w500,
                                                           textColor:
                                                               ThemeConstants
-                                                                  .blackcolor,
+                                                                  .bluecolor,
                                                         )
                                                       ] else if (controller
                                                               .showLoading ==
@@ -1614,7 +1707,9 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                               false) ...[
                                                             Icon(
                                                                 Icons
-                                                                    .meeting_room,
+                                                                    .video_call,
+                                                                color: ThemeConstants
+                                                                    .bluecolor,
                                                                 size: 30),
                                                             CustomAutoSizeTextMontserrat(
                                                               align: TextAlign
@@ -1627,7 +1722,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                                       .w500,
                                                               textColor:
                                                                   ThemeConstants
-                                                                      .blackcolor,
+                                                                      .bluecolor,
                                                             )
                                                           ] else ...[
                                                             CircularProgressIndicator()
@@ -1646,7 +1741,9 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                             children: [
                                                               Icon(
                                                                   Icons
-                                                                      .meeting_room,
+                                                                      .video_call,
+                                                                  color: ThemeConstants
+                                                                      .bluecolor,
                                                                   size: 30),
                                                               CustomAutoSizeTextMontserrat(
                                                                 align: TextAlign
@@ -1659,7 +1756,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                                         .w500,
                                                                 textColor:
                                                                     ThemeConstants
-                                                                        .blackcolor,
+                                                                        .bluecolor,
                                                               )
                                                             ],
                                                           )
@@ -1733,7 +1830,9 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                         MainAxisAlignment
                                                             .center,
                                                     children: [
-                                                      Icon(Icons.meeting_room,
+                                                      Icon(Icons.video_call,
+                                                          color: ThemeConstants
+                                                              .bluecolor,
                                                           size: 30),
                                                       CustomAutoSizeTextMontserrat(
                                                         align: TextAlign.center,
@@ -1744,7 +1843,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                             FontWeight.w500,
                                                         textColor:
                                                             ThemeConstants
-                                                                .blackcolor,
+                                                                .bluecolor,
                                                       )
                                                     ],
                                                   )),
@@ -2045,8 +2144,18 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          Icon(Icons.calendar_month_rounded,
-                                              size: 30),
+                                          SvgPicture.asset(
+                                            'assets/images/Mark Attendance.svg',
+                                            color: ThemeConstants.bluecolor,
+
+                                            // color: index == 5
+                                            //     ? ThemeConstants.bluecolor
+                                            //     : const Color.fromARGB(
+                                            //         255, 31, 31, 31),
+                                            width: 30,
+                                          ),
+                                          // Icon(Icons.calendar_month_rounded,
+                                          //     size: 30),
                                           Container(
                                             width: double.infinity,
                                             alignment: Alignment.center,
@@ -2056,7 +2165,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                               fontSize: 10,
                                               fontWeight: FontWeight.w500,
                                               textColor:
-                                                  ThemeConstants.blackcolor,
+                                                  ThemeConstants.bluecolor,
                                             ),
                                           )
                                         ],
@@ -2093,8 +2202,15 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          Icon(Icons.document_scanner_outlined,
-                                              size: 30),
+                                          SvgPicture.asset(
+                                            'assets/images/View Docs.svg',
+                                            color: ThemeConstants.bluecolor,
+                                            // color: index == 5
+                                            //     ? ThemeConstants.bluecolor
+                                            //     : const Color.fromARGB(
+                                            //         255, 31, 31, 31),
+                                            width: 30,
+                                          ),
                                           Container(
                                             width: double.infinity,
                                             alignment: Alignment.center,
@@ -2104,7 +2220,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                               fontSize: 10,
                                               fontWeight: FontWeight.w500,
                                               textColor:
-                                                  ThemeConstants.blackcolor,
+                                                  ThemeConstants.bluecolor,
                                             ),
                                           )
                                         ],
@@ -2334,7 +2450,7 @@ class _ParticipantListWidgetState extends State<ParticipantListWidget> {
               // )
               Spacer(),
               if (widget.nameList.length > 1) ...[
-                widget.nameList[0],
+                // widget.nameList[0],
                 InkWell(
                   onTap: () {
                     showAllParticipants = !showAllParticipants;

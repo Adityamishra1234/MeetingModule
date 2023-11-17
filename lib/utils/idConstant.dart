@@ -48,6 +48,6 @@ getNoteTypefromId(int noteType) {
     case 10:
       return 'Confidential Notes';
     default:
-      return -1; // Return -1 if noteType is not recognized
+      return '-1'; // Return -1 if noteType is not recognized
   }
 }

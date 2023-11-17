@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart';
 import 'package:meeting_module2/di/get_it.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
+import 'package:meeting_module2/presentation/meeting_notes_task/view/meeting_notes_taskk_view.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/ui/screens/add_more_notes.dart';
@@ -43,6 +44,8 @@ class Routes {
   static const assignDashboardNotes = 'assignDashboardNotes';
 
   static const viewDashboardNotes = 'viewDashboardNotes';
+
+  static const usesNotesTask = 'userNotesTask';
 }
 
 class GoRouterConfig {
@@ -218,6 +221,11 @@ class GoRouterConfig {
               path: Routes.createMeeting,
               builder: (context, state) => CreateNewMeeting2(),
             ),
+            GoRoute(
+                path: '${Routes.usesNotesTask}/:id',
+                builder: (context, state) => MeetingNotesTaskView(
+                      id: state.pathParameters['id']!,
+                    )),
           ]),
 
       // GoRoute(

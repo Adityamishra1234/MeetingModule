@@ -59,6 +59,9 @@ class _CustomTimerWidget2State extends State<CustomTimerWidget2> {
 
   @override
   Widget build(BuildContext context) {
+    if (dateToShow != '') {
+      dateTime = Jiffy.parse(dateToShow, pattern: 'HH:mm').dateTime;
+    }
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(

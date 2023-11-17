@@ -64,7 +64,8 @@ abstract class API {
 
   markAttendance(meetingId, userId, createdBY);
 
-  reasonOfNotAttending(int meetningID, int createdBy, String reason);
+  reasonOfNotAttending(
+      int taskID, int meetningID, int createdBy, String reason);
 
   reasonOfNotAttendingAll(int meetningID);
 
@@ -100,4 +101,11 @@ abstract class API {
   getMonthMeetingDates(String endpoint);
 
   getMeetingOfDates(String endpoint);
+
+  getNotesTaskListByUserID(String id, int bifer);
+
+  updateNoteTaskStatus(
+      {required int id,
+      required int created_by,
+      required bool meeting_attended});
 }

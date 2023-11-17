@@ -7,11 +7,13 @@ import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/logincontroller.dart';
 import 'package:meeting_module2/ui/screens/signin_view.dart';
 import 'package:meeting_module2/utils/constants.dart';
+import 'package:meeting_module2/utils/routes/router_config.dart';
 import 'package:meeting_module2/utils/snackbarconstants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/backgroundLogin.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/customtextfield.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -252,9 +254,15 @@ class LoginPage extends StatelessWidget {
                                       child: CustomTextField(
                                           backgroundCOlour:
                                               ThemeConstants.whitecolor,
-                                          obscureText: true,
+                                          obscureText: controller.showPassword,
+                                          callbackForPasswordShow: () {
+                                            controller.showPassword =
+                                                !controller.showPassword;
+                                            controller.update();
+                                          },
                                           validator:
                                               Validator.passwordWithSpecial,
+                                          isPassword: true,
                                           hint: "Please enter your password",
                                           // validator: Validator.email,
                                           controller: password),
@@ -264,7 +272,13 @@ class LoginPage extends StatelessWidget {
                                       child: CustomTextField(
                                           backgroundCOlour:
                                               ThemeConstants.whitecolor,
-                                          obscureText: true,
+                                          obscureText: controller.showPassword,
+                                          callbackForPasswordShow: () {
+                                            controller.showPassword =
+                                                !controller.showPassword;
+                                            controller.update();
+                                          },
+                                          isPassword: true,
                                           validator:
                                               Validator.passwordWithSpecial,
                                           hint:
@@ -292,7 +306,10 @@ class LoginPage extends StatelessWidget {
                                                   password.text);
 
                                           if (res) {
-                                            context.go(DashBoard.routeNamed);
+                                            var prefs = await SharedPreferences
+                                                .getInstance();
+                                            await prefs.clear();
+                                            context.go(Routes.signin);
                                             // controller.onDelete();
                                             // Get.put(LoginController());
                                           }

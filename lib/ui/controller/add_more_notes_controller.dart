@@ -228,6 +228,14 @@ class AddMoreNotesController extends GetxController with StateMixin {
                   fontSize: 14,
                 ),
               ),
+              Align(
+                alignment: AlignmentDirectional.topStart,
+                child: CustomAutoSizeTextMontserrat(
+                  text: "${data[i].createdAt!.split('T')[0]}",
+                  textColor: ThemeConstants.TextColor,
+                  fontSize: 14,
+                ),
+              ),
 
               // InkWell(
               //   onTap: () {
@@ -272,6 +280,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
   reasonOfNoteAttedning() {}
 
   getNotesOfMeeting(BuildContext context) async {
+    imageNotesList = [];
     documentlist = [];
     notesList = [];
     selectedDropDown = '';
@@ -668,7 +677,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
       // change(null, status: RxStatus.success());
     }
 
-    await getNotesOfMeeting(context);
+    // await getNotesOfMeeting(context);
 
     update();
     change(null, status: RxStatus.success());
@@ -909,7 +918,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
   }
 
   reasonOfNotAttendance(meetingID, String text) async {
-    var res = await api.reasonOfNotAttending(meetingID, id, text);
+    var res = await api.reasonOfNotAttending(0, meetingID, id, text);
   }
 
   bool showPublishButtonOrNotBool = false;
@@ -943,7 +952,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
           int sizeInBytes = f.lengthSync();
           double sizeInMb = sizeInBytes / (1024 * 1024);
           if (sizeInMb > 5) {
-            getToast('Maximuam upload size');
+            getToast('Maximum 5MB upload size');
           } else {
             // var res = await api.uploadDocumentCommon(
             //   ,
@@ -961,6 +970,8 @@ class AddMoreNotesController extends GetxController with StateMixin {
             if (res != null) {
               await saveImageNote(
                   baseController.selectedMeetingData.id!, res['view'], context);
+
+              getToast('Document uploaded successfully');
               // CommonUploadStatus model = CommonUploadStatus();
               // model = res;
               // if (model.status == "sucesss") {

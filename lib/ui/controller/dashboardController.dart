@@ -649,7 +649,26 @@ class DashBoardController extends GetxController with StateMixin {
     for (var i = 0; i < listToShow.length; i++) {
       var listOfattendes = getlist(i);
 
+      late bool showTheStartEndOptions;
+      listToShow[i].meetingCoordinator!.forEach((element) {
+        if (element.id == Get.find<BaseController>().id ||
+            listToShow[i].createdBy == Get.find<BaseController>().id) {
+          showTheStartEndOptions = true;
+        } else {
+          showTheStartEndOptions = false;
+        }
+      });
+
+      if (showTheStartEndOptions == true &&
+          listToShow[i].meetingStarted == false &&
+          listToShow[i].meetingEnded == false) {
+        showTheStartEndOptions = true;
+      } else {
+        showTheStartEndOptions = false;
+      }
+
       data.add(SingleMeetingWidget(
+        showReshedule: showTheStartEndOptions,
         getList: listOfattendes,
         i: i,
         listToShow: listToShow[i],
@@ -685,8 +704,8 @@ class DashBoardController extends GetxController with StateMixin {
         Widget uu = Positioned(
           left: 0 + x * i,
           child: Container(
-            height: 36.0,
-            width: 36.0,
+            height: 30.0,
+            width: 30.0,
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -712,8 +731,8 @@ class DashBoardController extends GetxController with StateMixin {
         Widget uu = Positioned(
           left: 0 + x * i,
           child: Container(
-            height: 36.0,
-            width: 36.0,
+            height: 30.0,
+            width: 30.0,
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -803,17 +822,20 @@ class DashBoardController extends GetxController with StateMixin {
 class SingleMeetingWidget extends StatelessWidget {
   AllMeetings listToShow;
   int i;
-
+  bool showReshedule;
   List<Widget> getList;
 
   SingleMeetingWidget(
       {super.key,
+      required this.showReshedule,
       required this.listToShow,
       required this.i,
       required this.getList});
 
   @override
   Widget build(BuildContext context) {
+    var mediaQueryWidth = MediaQuery.of(context).size.width;
+
     return InkWell(
       onTap: () async {
         Get.find<BaseController>().selectedMeeting(listToShow);
@@ -822,6 +844,7 @@ class SingleMeetingWidget extends StatelessWidget {
         var res = await context.push('/DashBoard/MeetingDetails');
         if (res == 'true') {
           Get.find<CalendarController>().onInit();
+          Get.find<DashBoardController>().onInit();
         }
 
         // Get.to(MeetingDetails());
@@ -839,7 +862,7 @@ class SingleMeetingWidget extends StatelessWidget {
                   Color.fromARGB(255, 255, 225, 150),
                   Color.fromARGB(255, 255, 255, 255)
                 ],
-                stops: [0.00, 0.05, 0.05],
+                stops: [0.00, 0.04, 0.04],
               ),
               border: Border.all(color: const Color(0xff1940b3)),
               borderRadius: BorderRadius.circular(15.0)),
@@ -868,7 +891,12 @@ class SingleMeetingWidget extends StatelessWidget {
                           text: '${listToShow.timeOfTheMeeting}',
                           fontSize: ThemeConstants.fontSizeMedium,
                           textColor: ThemeConstants.TextColor,
-                        )
+                        ),
+                        Spacer(),
+                        MeetingStatus(listToShow: listToShow),
+                        SizedBox(
+                          width: 10,
+                        ),
                       ],
                     ),
                     Container(
@@ -879,23 +907,28 @@ class SingleMeetingWidget extends StatelessWidget {
                         // crossAxisAlignment: WrapCrossAlignment.end,
                         children: [
                           SizedBox(
-                            // width: 300,
-                            child: CustomAutoSizeTextMontserrat(
-                              text: "${listToShow.meetingAgenda}",
-                              fontWeight: FontWeight.w600,
-                              fontSize: ThemeConstants.fontSizeMedium,
-                            ),
+                            width: MediaQuery.of(context).size.width * .7,
+                            child: Wrap(children: [
+                              CustomAutoSizeTextMontserrat(
+                                text: "${listToShow.meetingAgenda}",
+                                fontWeight: FontWeight.w600,
+                                fontSize: ThemeConstants.fontSizeMedium,
+                              ),
+                            ]),
                           ),
                           SizedBox(
                             width: 10,
                           ),
                           Spacer(),
-                          MeetingStatus(listToShow: listToShow)
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 5,
+                    // const SizedBox(
+                    //   height: 5,
+                    // ),
+
+                    SizedBox(
+                      height: 2,
                     ),
                     CustomAutoSizeTextMontserrat(
                       text: "${listToShow.nameOfTheMeeting}",
@@ -903,24 +936,24 @@ class SingleMeetingWidget extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       textColor: ThemeConstants.TextColor,
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    CustomAutoSizeTextMontserrat(
-                      text: "${listToShow.meetingType}",
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      textColor: ThemeConstants.TextColor,
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    CustomAutoSizeTextMontserrat(
-                      text: "${listToShow.dateOfMeeting}",
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      textColor: ThemeConstants.TextColor,
-                    ),
+                    // const SizedBox(
+                    //   height: 5,
+                    // ),
+                    // CustomAutoSizeTextMontserrat(
+                    //   text: "${listToShow.meetingType}",
+                    //   fontSize: 13,
+                    //   fontWeight: FontWeight.w600,
+                    //   textColor: ThemeConstants.TextColor,
+                    // ),
+                    // const SizedBox(
+                    //   height: 5,
+                    // ),
+                    // CustomAutoSizeTextMontserrat(
+                    //   text: "${listToShow.dateOfMeeting}",
+                    //   fontSize: 13,
+                    //   fontWeight: FontWeight.w600,
+                    //   textColor: ThemeConstants.TextColor,
+                    // ),
                     Row(
                       children: [
                         Padding(
@@ -965,77 +998,101 @@ class SingleMeetingWidget extends StatelessWidget {
                           ),
                         ),
                         Spacer(),
-                        CustomButton(
-                            backgroundColor: Color.fromARGB(255, 255, 225, 150),
-                            text: 'Reschedule',
-                            textColor: ThemeConstants.blackcolor,
-                            onPressed: () async {
-                              late bool showTheStartEndOptions;
-                              listToShow.meetingCoordinator!.forEach((element) {
-                                if (element.id ==
-                                        Get.find<BaseController>().id ||
-                                    listToShow.createdBy ==
-                                        Get.find<BaseController>().id) {
-                                  showTheStartEndOptions = true;
-                                } else {
-                                  print('${element.id}dddddddd');
-                                  showTheStartEndOptions = false;
-                                }
-                              });
-                              if (showTheStartEndOptions == true) {
-                                if (listToShow.meetingStarted == false &&
-                                    listToShow.meetingEnded == false) {
-                                  showAnimatedDialog(
-                                      animationType: DialogTransitionType
-                                          .slideFromBottomFade,
-                                      curve: Curves.easeInOutQuart,
-                                      // barrierDismissible: false,
-                                      context: context,
-                                      builder: (ctx) => Stack(
-                                            children: [
-                                              Center(
-                                                child: ResheduleMeetingDialogue(
-                                                  controller: Get.find<
-                                                      DashBoardController>(),
-                                                  indexz: i,
-                                                  meetingData: listToShow,
+                        if (showReshedule)
+                          CustomButton(
+                              backgroundColor:
+                                  Color.fromARGB(255, 255, 225, 150),
+                              text: 'Reschedule',
+                              textColor: ThemeConstants.blackcolor,
+                              onPressed: () async {
+                                late bool showTheStartEndOptions;
+                                listToShow.meetingCoordinator!
+                                    .forEach((element) {
+                                  if (element.id ==
+                                          Get.find<BaseController>().id ||
+                                      listToShow.createdBy ==
+                                          Get.find<BaseController>().id) {
+                                    showTheStartEndOptions = true;
+                                  } else {
+                                    showTheStartEndOptions = false;
+                                  }
+                                });
+                                if (showTheStartEndOptions == true) {
+                                  if (listToShow.meetingStarted == false &&
+                                      listToShow.meetingEnded == false) {
+                                    showAnimatedDialog(
+                                        animationType: DialogTransitionType
+                                            .slideFromBottomFade,
+                                        curve: Curves.easeInOutQuart,
+                                        // barrierDismissible: false,
+                                        context: context,
+                                        builder: (ctx) => Stack(
+                                              children: [
+                                                Center(
+                                                  child:
+                                                      ResheduleMeetingDialogue(
+                                                    controller: Get.find<
+                                                        DashBoardController>(),
+                                                    indexz: i,
+                                                    meetingData: listToShow,
+                                                  ),
                                                 ),
-                                              ),
-                                              Align(
-                                                alignment:
-                                                    Alignment.bottomCenter,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 30),
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      context.pop();
-                                                      // Get.back();
-                                                    },
-                                                    child: Container(
-                                                      width: 50,
-                                                      height: 50,
-                                                      decoration: BoxDecoration(
+                                                Align(
+                                                  alignment:
+                                                      Alignment.bottomCenter,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 30),
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        context.pop();
+                                                        // Get.back();
+                                                      },
+                                                      child: Container(
+                                                        width: 50,
+                                                        height: 50,
+                                                        decoration: BoxDecoration(
+                                                            color:
+                                                                ThemeConstants
+                                                                    .bluecolor,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        200)),
+                                                        child: Icon(
+                                                          Icons.close_rounded,
                                                           color: ThemeConstants
-                                                              .bluecolor,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      200)),
-                                                      child: Icon(
-                                                        Icons.close_rounded,
-                                                        color: ThemeConstants
-                                                            .whitecolor,
+                                                              .whitecolor,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              )
-                                            ],
-                                          ));
+                                                )
+                                              ],
+                                            ));
+                                  } else {
+                                    getToast('Meeting already started');
+                                    // showAnimatedDialog(
+                                    //     barrierDismissible: true,
+                                    //     animationType: DialogTransitionType
+                                    //         .slideFromBottomFade,
+                                    //     curve: Curves.easeInOutQuart,
+                                    //     // barrierDismissible: false,
+                                    //     context: context,
+                                    //     builder: (ctx) => showPoPUp(
+                                    //         'Meeting already started',
+                                    //         Icon(
+                                    //           Icons.error,
+                                    //           size: 40,
+                                    //           color: ThemeConstants.bluecolor,
+                                    //         ),
+                                    //         ctx));
+                                  }
                                 } else {
-                                  getToast('Meeting already started');
+                                  getToast(
+                                      "Only Co-ordinator's and creator can reshedule the meeting");
+
                                   // showAnimatedDialog(
                                   //     barrierDismissible: true,
                                   //     animationType: DialogTransitionType
@@ -1044,7 +1101,7 @@ class SingleMeetingWidget extends StatelessWidget {
                                   //     // barrierDismissible: false,
                                   //     context: context,
                                   //     builder: (ctx) => showPoPUp(
-                                  //         'Meeting already started',
+                                  //         "Only Co-ordinator's and creator can reshedule the meeting",
                                   //         Icon(
                                   //           Icons.error,
                                   //           size: 40,
@@ -1052,27 +1109,7 @@ class SingleMeetingWidget extends StatelessWidget {
                                   //         ),
                                   //         ctx));
                                 }
-                              } else {
-                                getToast(
-                                    "Only Co-ordinator's and creator can reshedule the meeting");
-
-                                // showAnimatedDialog(
-                                //     barrierDismissible: true,
-                                //     animationType: DialogTransitionType
-                                //         .slideFromBottomFade,
-                                //     curve: Curves.easeInOutQuart,
-                                //     // barrierDismissible: false,
-                                //     context: context,
-                                //     builder: (ctx) => showPoPUp(
-                                //         "Only Co-ordinator's and creator can reshedule the meeting",
-                                //         Icon(
-                                //           Icons.error,
-                                //           size: 40,
-                                //           color: ThemeConstants.bluecolor,
-                                //         ),
-                                //         ctx));
-                              }
-                            }),
+                              }),
                         // CustomButton(text: 'Delete', onPressed: () {})
                       ],
                     )

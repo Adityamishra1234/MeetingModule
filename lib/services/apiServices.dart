@@ -206,6 +206,7 @@ class ApiServices extends BaseServices implements API {
       "meeting_mode": modelData.meetingMode,
       "meeting_mode_type": "${modelData.meetingModeType}",
       "meeting_link": "${modelData.meetingLink}",
+      "registration_link_of_the_meeting": "${modelData.registrationLink}",
       "location_of_the_meeting": "${modelData.locationOfTheMeeting}",
       "siec_branch": modelData.siecBranch,
       "specific_location_of_the_meeting":
@@ -654,10 +655,11 @@ class ApiServices extends BaseServices implements API {
   }
 
   @override
-  reasonOfNotAttending(int meetningID, int createdBy, String reason) async {
+  reasonOfNotAttending(
+      int taskID, int meetningID, int createdBy, String reason) async {
     var url = '${Endpoints.baseUrl}${Endpoints.reasonOfNotAttending}';
     var data = {
-      "id": 121,
+      "id": taskID,
       "meeting_id": meetningID,
       "meeting_notes_id": 0,
       "task_type": "Meeting Notes Task",
@@ -665,7 +667,7 @@ class ApiServices extends BaseServices implements API {
       "task_owner_id": 136,
       "is_active": true,
       "closed_at": "2023-04-07T09:48:35.000Z",
-      "closed_by": 0,
+      "closed_by": createdBy,
       "meeting_attented": false,
       "reason_of_not_attended": "$reason",
       "created_by": createdBy,
@@ -835,7 +837,7 @@ class ApiServices extends BaseServices implements API {
         //       "Your are now eligible for Platinum Pass. Visit the View Express Pass Section.");
         // } else {
         // getToast(SnackBarConstants.documentUpload!);
-        getToast('Uplaod document');
+
         return jsondata;
         // }
 
@@ -1006,5 +1008,53 @@ class ApiServices extends BaseServices implements API {
       throw UnimplementedError();
     }
     // TODO: implement getMeetingOfDates
+  }
+
+  @override
+  getNotesTaskListByUserID(String id, int bifer) async {
+    try {
+      print(
+          '${Endpoints.baseUrl}${Endpoints.findUserNotesTaskById}/$id/$bifer');
+      var res = await httpPostNullBody(
+          '${Endpoints.baseUrl}${Endpoints.findUserNotesTaskById}/$id/$bifer');
+
+      if (res != null) {
+        return res['model'];
+        // getToast(res["message"]);
+        // return true;
+      }
+    } catch (e) {
+      throw UnimplementedError();
+    }
+    // TODO: implement getMeetingOfDates
+  }
+
+  @override
+  updateNoteTaskStatus(
+      {required int id,
+      required int created_by,
+      required bool meeting_attended}) async {
+    try {
+      var url =
+          '${Endpoints.baseUrl}${Endpoints.findMeetingNotesTaskByIdwithUpdate}';
+
+      var jsonData = {
+        "id": id,
+        "closed_by": created_by,
+        "meeting_attented": meeting_attended
+      };
+
+      var data = json.encode(jsonData);
+
+      var res = await httpPostHeader(url, data);
+
+      if (res != null) {
+        getToast(res["message"]);
+        return true;
+      }
+    } catch (e) {
+      throw UnimplementedError();
+    }
+    // TODO: implement updateNoteTaskStatus
   }
 }

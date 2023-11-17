@@ -35,6 +35,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await setupFlutterNotifications();
   showFlutterNotification(message);
+
   print('Handling a background message ${message.messageId}');
 }
 
@@ -296,10 +297,9 @@ class _MyAppState extends State<MyApp> {
       routeInformationParser: router.routeInformationParser,
       routeInformationProvider: router.routeInformationProvider,
       routerDelegate: router.routerDelegate,
-
       debugShowCheckedModeBanner: false,
       // routerConfig: GoRouterConfig().router,
-//         routerDelegate: routerDelegate,
+      //         routerDelegate: routerDelegate,
 // routeInformationParser: BeamerParser(),
       // smartManagement: SmartManagement.keepFactory,
       // initialRoute: SignInView.route,
