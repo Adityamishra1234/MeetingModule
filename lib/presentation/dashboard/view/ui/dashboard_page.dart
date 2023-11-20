@@ -115,6 +115,7 @@ class _DashBoardState extends State<DashBoard> {
     // controllerBase.token2();
 
     controllerBase.getId();
+    controllerBase.token2();
     controller.dashboardInitialLoginForUserDetails();
 
     // controller.user.value = controllerBase.user.value;

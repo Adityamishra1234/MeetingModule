@@ -121,7 +121,6 @@ class BaseController extends GetxController {
     print(token + 'ddddd');
     if (token != '') {
       var data = await api.updateFCMToken(id, token);
-
       await sendPushMessage(token);
     }
   }
