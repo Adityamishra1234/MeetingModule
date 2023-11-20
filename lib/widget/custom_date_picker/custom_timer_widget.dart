@@ -83,6 +83,7 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
   Widget build(BuildContext context) {
     if (dateToShow != '') {
       dateTime = Jiffy.parse('$dateToShow').dateTime;
+      print(dateTime);
     }
 
     return GestureDetector(
