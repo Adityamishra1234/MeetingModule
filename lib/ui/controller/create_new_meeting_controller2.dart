@@ -78,7 +78,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
   RxBool MeetingType = true.obs; //true online
 
-  String meetingLocation = true.toString(); //
+  String? meetingLocation; //
 
   // Rx<AllUserModel> selectMeetingBranch = AllUserModel().obs;
 
@@ -482,6 +482,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
   ///
   ///
 
+  meetingTypeChanged(bool type) {}
+
   RxList<AllBranchModel> allBranchList = <AllBranchModel>[].obs;
   createNewMeeting(BuildContext context) async {
     meetingModel.value.meetingWith = '';
@@ -512,8 +514,14 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     ///
     ///
     ///
-    meetingModel.value.locationOfTheMeeting =
-        meetingLocation == 'true' ? '1' : '2';
+    ///
+    ///
+    if (meetingLocation != null) {
+      meetingModel.value.locationOfTheMeeting =
+          meetingLocation == 'true' ? '1' : '2';
+    } else {
+      meetingModel.value.locationOfTheMeeting = '';
+    }
 
     meetingModel.value.specificLocationOfTheMeeting =
         specifyMeetingLocation.value.text;
@@ -551,6 +559,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     meetingModel.value.registrationLink = registrationLink.value.text;
 
+    print(meetingModel.value);
+//todoImpo
     var res = await api.addMeeting(meetingModel.value);
 
     for (var i = 0; i < selectedUsersList.length; i++) {
@@ -559,7 +569,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
         "id": 1,
         "meeting_id": res['id'],
         "meeting_notes_id": 0,
-        "task_type": 'Training',
+        "task_type": 'Meeting Notes Task',
         "deadline_date": "${meetingModel.value.dateOfMeeting}",
         "task_owner_id": selectedUsersList[i].id,
         "is_active": true,
@@ -645,8 +655,12 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     meetingModel.value.meetingMode = MeetingType.value == true ? '1' : '2';
 
-    meetingModel.value.locationOfTheMeeting =
-        meetingLocation == 'true' ? '1' : '2';
+    if (meetingLocation != null) {
+      meetingModel.value.locationOfTheMeeting =
+          meetingLocation == 'true' ? '1' : '2';
+    } else {
+      meetingModel.value.locationOfTheMeeting = '';
+    }
 
     /// online
     meetingModel.value.meetingModeType = modeOfMeeting.value;

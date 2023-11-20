@@ -649,6 +649,8 @@ class CreateNewMeeting2 extends StatelessWidget {
                                   groupValue: controller.MeetingType.value,
                                   onChanged: (value) {
                                     controller.MeetingType.value = true;
+                                    controller.meetingLocation = null;
+                                    print(controller.meetingLocation);
                                     controller.update();
                                   }),
                               CustomAutoSizeTextMontserrat(
