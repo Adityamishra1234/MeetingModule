@@ -1057,4 +1057,34 @@ class ApiServices extends BaseServices implements API {
     }
     // TODO: implement updateNoteTaskStatus
   }
+
+  @override
+  generateMultiNotifications(
+      {required String title,
+      required String body,
+      required List<int> id}) async {
+    // TODO: implement generateMultiNotifications
+    try {
+      var url = '${Endpoints.baseUrl}${Endpoints.generateNotifications}';
+
+      String idString = String.fromCharCodes(id);
+      print(idString);
+
+//todoImpo
+      idString = '103,105';
+
+      var jsonData = {"title": title, "body": body, "ids": idString};
+
+      var data = json.encode(jsonData);
+
+      var res = await httpPostHeader(url, data);
+
+      if (res != null) {
+        getToast(res["message"]);
+        return true;
+      }
+    } catch (e) {
+      throw UnimplementedError();
+    }
+  }
 }

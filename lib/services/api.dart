@@ -108,4 +108,10 @@ abstract class API {
       {required int id,
       required int created_by,
       required bool meeting_attended});
+
+  generateMultiNotifications({
+    required String title,
+    required String body,
+    required List<int> id,
+  });
 }

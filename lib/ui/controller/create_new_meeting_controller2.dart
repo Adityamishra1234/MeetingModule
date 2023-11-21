@@ -592,6 +592,9 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     // Get.delete<CreateNewMeetingController2>();
     // Get.put(CreateNewMeetingController2());
     change(null, status: RxStatus.success());
+
+    await generateTheNotifications();
+
     getToast('Meeting Added Successfully');
     // showPoPUp(
     //     'Meeting Added Successfully',
@@ -760,6 +763,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     Get.delete<CreateNewMeetingController2>();
     Get.put(CreateNewMeetingController2());
     change(null, status: RxStatus.success());
+
+    await generateTheNotifications();
     getToast('Meeting Added Successfully');
     // showPoPUp(
     //     'Meeting Added Successfully',
@@ -769,6 +774,43 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     //       size: 60,
     //     ),
     //     context);
+  }
+
+  generateTheNotifications() async {
+    List<int> idList = [];
+
+    for (var i = 0; i < meetingModel.value.siecParticipants!.length; i++) {
+      idList.add(meetingModel.value.siecParticipants![i].id!);
+    }
+
+    for (var i = 0; i < meetingModel.value.meetingCoordinator!.length; i++) {
+      idList.add(meetingModel.value.meetingCoordinator![i].id!);
+    }
+
+    var title = 'Scheduled a Meeting ';
+    var body = "You have a meeting with SIEC Family, scheduled at " "";
+
+    var res = await api.generateMultiNotifications(
+        title: title, body: body, id: idList);
+  }
+
+  generateTheNotificationsExternal() async {
+    List<int> idList = [];
+
+    for (var i = 0; i < meetingModel.value.siecParticipants!.length; i++) {
+      idList.add(meetingModel.value.siecParticipants![i].id!);
+    }
+
+    for (var i = 0; i < meetingModel.value.meetingCoordinator!.length; i++) {
+      idList.add(meetingModel.value.meetingCoordinator![i].id!);
+    }
+
+//todoImpo
+    var title = 'Scheduled a Meeting';
+    var body = "You have a meeting with SIEC Family, scheduled at ";
+
+    var res = await api.generateMultiNotifications(
+        title: title, body: body, id: idList);
   }
 
   getGroupData() async {

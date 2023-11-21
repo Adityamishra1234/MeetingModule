@@ -101,6 +101,8 @@ class Endpoints {
 
   static String findMeetingNotesTaskByIdwithUpdate =
       'findMeetingNotesTaskByIdwithUpdate';
+
+  static String generateNotifications = 'fcmMultiUser';
 }
 
 datesOfCalendarMeetingEndpoint(int id, int month, int year) {
