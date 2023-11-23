@@ -155,7 +155,7 @@ class _DashBoardState extends State<DashBoard> {
     final List<double> stops = [0.0, fillStop, fillStop, 1.0];
     return Scaffold(
       // appBar: CustomAppBar('title'),
-      drawer: CustomDrawer(),
+      // drawer: CustomDrawer(),
       // body: controller.obx((state) {
       //   print(state);
       body: controller.obx(
