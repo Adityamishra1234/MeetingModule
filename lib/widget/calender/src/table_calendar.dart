@@ -622,13 +622,14 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AnimatedIcon(
+              format: formatGlobalVal,
               onTap: () async {
                 int count = 0;
                 if (formatGlobalVal == CalendarFormat.week) {
                   _swipeCalendarFormat2(SwipeDirection.down);
-
-                  setState(() {});
-                } else {}
+                } else {
+                  _swipeCalendarFormat(SwipeDirection.up);
+                }
               },
             )
           ],
@@ -853,7 +854,8 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
 
 class AnimatedIcon extends StatefulWidget {
   VoidCallback onTap;
-  AnimatedIcon({super.key, required this.onTap});
+  CalendarFormat format;
+  AnimatedIcon({super.key, required this.onTap, required this.format});
 
   @override
   State<AnimatedIcon> createState() => _AnimatedIconState();
@@ -874,11 +876,27 @@ class _AnimatedIconState extends State<AnimatedIcon>
   }
 
   @override
+  void didUpdateWidget(covariant AnimatedIcon oldWidget) {
+    if (oldWidget.format != widget.format) {
+      setState(() {});
+    }
+
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return RotationTransition(
       turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
       child: GestureDetector(
-          onTap: widget.onTap, child: Icon(Icons.keyboard_arrow_down_rounded)),
+          onTap: widget.onTap,
+          child: Icon(
+            widget.format == CalendarFormat.month
+                ? Icons.keyboard_arrow_up_rounded
+                : Icons.keyboard_arrow_down_rounded,
+            color: Colors.white,
+          )),
     );
   }
 }
