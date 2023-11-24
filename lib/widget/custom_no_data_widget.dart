@@ -4,6 +4,7 @@ import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 class CustomNoDataWidget extends StatelessWidget {
   CustomNoDataWidget({super.key, required this.text});
   String text;
+
   @override
   Widget build(BuildContext context) {
     return Container(

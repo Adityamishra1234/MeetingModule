@@ -516,6 +516,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     ///
     ///
     ///
+    ///
+
     if (meetingLocation != null) {
       meetingModel.value.locationOfTheMeeting =
           meetingLocation == 'true' ? '1' : '2';
@@ -559,7 +561,17 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     meetingModel.value.registrationLink = registrationLink.value.text;
 
+    meetingModel.value.createdBy = id;
+    meetingModel.value.updatedBy = id;
+
     print(meetingModel.value);
+
+    if (meetingModel.value.meetingMode == '2') {
+      meetingModel.value.meetingModeType = '';
+      meetingModel.value.meetingLink = '';
+    } else {
+      meetingModel.value.siecBranch = 0;
+    }
 //todoImpo
     var res = await api.addMeeting(meetingModel.value);
 
@@ -658,6 +670,11 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     meetingModel.value.meetingMode = MeetingType.value == true ? '1' : '2';
 
+    if (meetingModel.value.meetingMode == '2') {
+      meetingModel.value.meetingModeType = '';
+      meetingModel.value.meetingLink = '';
+    }
+
     if (meetingLocation != null) {
       meetingModel.value.locationOfTheMeeting =
           meetingLocation == 'true' ? '1' : '2';
@@ -708,6 +725,16 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     meetingModel.value.createdBy = id;
 
     meetingModel.value.registrationLink = registrationLink.value.text;
+
+    meetingModel.value.createdBy = id;
+    meetingModel.value.updatedBy = id;
+
+    if (meetingModel.value.meetingMode == '2') {
+      meetingModel.value.meetingModeType = '';
+      meetingModel.value.meetingLink = '';
+    } else {
+      meetingModel.value.siecBranch = 0;
+    }
 
     var res = await api.addMeeting(meetingModel.value);
 

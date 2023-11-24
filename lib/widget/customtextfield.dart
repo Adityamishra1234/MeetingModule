@@ -42,7 +42,7 @@ class CustomTextField extends StatelessWidget {
         style: ThemeConstants.montserratTextStyleSmall,
         readOnly: readOrEdit == null ? false : readOrEdit!,
         decoration: InputDecoration(
-          errorMaxLines: 2,
+          errorMaxLines: 20,
           suffixIcon: isPassword == true
               ? IconButton(
                   icon: Icon(Icons.visibility),

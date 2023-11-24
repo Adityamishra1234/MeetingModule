@@ -188,7 +188,8 @@ class _TableCalendarBaseState extends State<TableCalendarBase> {
       builder: (context, constraints) {
         return SimpleGestureDetector(
           onVerticalSwipe: _canScrollVertically ? widget.onVerticalSwipe : null,
-          swipeConfig: widget.simpleSwipeConfig,
+          swipeConfig:
+              SimpleSwipeConfig(horizontalThreshold: 0, verticalThreshold: 0),
           child: ValueListenableBuilder<double>(
             valueListenable: _pageHeight,
             builder: (context, value, child) {

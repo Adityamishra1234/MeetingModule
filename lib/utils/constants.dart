@@ -158,11 +158,13 @@ getPasswordValidator(String? value) {
 }
 
 getPasswordWithSpecialCharacterValidator(String? value) {
+  var map = new Map();
+
   if (value!.isEmpty) {
-    return 'Password is required';
+    return '*Password is required \n *Password must contain at least one uppercase letter \n *Password must contain at least one lowercase letter \n *Password must contain at least one special character \n *Password must be 6 character long \n *Password must contain at least one digit ';
   }
   if (!containsUppercase(value)) {
-    return 'Password must contain at least one uppercase letter';
+    return '*Password must contain at least one uppercase letter \n *Password must contain at least one lowercase letter \n *Password must contain at least one special character \n *Password must be 6 character long \n *Password must contain at least one digit ';
   }
   if (!containsLowercase(value)) {
     return 'Password must contain at least one lowercase letter';
