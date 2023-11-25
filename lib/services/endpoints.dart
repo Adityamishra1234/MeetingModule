@@ -1,4 +1,7 @@
 class Endpoints {
+/////fcmToken
+  ///
+
   ///aman pc
   // static String baseUrl = 'http://192.168.107.88:3001/api/';
 //jp
@@ -93,6 +96,13 @@ class Endpoints {
   static String universityIdByMeetingId = 'univeristyByMeetingID';
 
   static String getAllBranchesWithImage = 'get-all-branches-address';
+
+  static String findUserNotesTaskById = 'findMeetingNotesTaskById';
+
+  static String findMeetingNotesTaskByIdwithUpdate =
+      'findMeetingNotesTaskByIdwithUpdate';
+
+  static String generateNotifications = 'fcmMultiUser';
 }
 
 datesOfCalendarMeetingEndpoint(int id, int month, int year) {

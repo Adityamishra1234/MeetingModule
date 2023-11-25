@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ThemeConstants {
+  static int fontSizeMedium = 14;
+  static int fontSizelarge = 18;
+  static int fontSizeSmall = 12;
+
+  static FontWeight fontWeightThin = FontWeight.w300;
+  static FontWeight fontWeightBold = FontWeight.w500;
+  static FontWeight fontWeightHeavyBold = FontWeight.w700;
+
   static LinearGradient backgroundGradient = const LinearGradient(
     colors: [
       Color(0xff3088C6),
@@ -13,6 +21,12 @@ class ThemeConstants {
       color: Colors.white70, fontSize: 20, fontWeight: FontWeight.w600);
   static TextStyle selectedTextStyle = const TextStyle(
       color: Colors.teal, fontSize: 20, fontWeight: FontWeight.w600);
+
+  static TextStyle montserratTextStyleSmall = GoogleFonts.montserrat(
+    color: Colors.black,
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+  );
 
   static TextStyle montserrattextstyle = GoogleFonts.montserrat(
     color: Colors.black,

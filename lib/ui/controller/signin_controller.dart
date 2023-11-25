@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/utils/constants.dart';
@@ -23,6 +24,8 @@ class SigninController extends GetxController with StateMixin {
   GlobalKey<FormState> key = GlobalKey<FormState>();
   var otpController = TextEditingController();
   var passwordController = TextEditingController();
+
+  bool showPassword = false;
 
   startResend() async {
     // var res2 = await api.getOTP(email);
@@ -150,17 +153,16 @@ class SigninController extends GetxController with StateMixin {
   }
 
   forgetPaasword(String email, BuildContext context) async {
-    var res = await api.forgetpassword(email);
-    if (res != null) {
-      Get.back();
-      getDailogForForget(context, email);
+    // var res = await api.forgetpassword(email);
+    if (true) {
+      return true;
     }
   }
 
   updatePasswordForget(String email, String password, String otp) async {
     var res = await api.updatePasswordForget(email, otp, password);
     if (res != null) {
-      Get.back();
+      return true;
     }
   }
 
@@ -170,14 +172,31 @@ class SigninController extends GetxController with StateMixin {
     return showDialog(
       context: context,
       builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         content: Container(
           width: MediaQuery.of(context).size.width * 0.7,
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: CustomAutoSizeTextMontserrat(
-                text: 'Reset password',
-              ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0, top: 5),
+                  child: CustomAutoSizeTextMontserrat(
+                    text: 'Reset password',
+                    fontSize: ThemeConstants.fontSizeMedium,
+                  ),
+                ),
+                Spacer(),
+                // InkWell(
+                //   onTap: () {
+                //     context.pop();
+                //   },
+                //   child: Icon(
+                //     Icons.close,
+                //     color: ThemeConstants.bluecolor,
+                //     size: 16,
+                //   ),
+                // )
+              ],
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
@@ -191,6 +210,7 @@ class SigninController extends GetxController with StateMixin {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: CustomTextField(
+                  keybord: TextInputType.number,
                   backgroundCOlour: ThemeConstants.whitecolor,
                   hint: "Enter your OTP",
                   validator: Validator.otp,
@@ -224,6 +244,7 @@ class SigninController extends GetxController with StateMixin {
                 child: CustomAutoSizeTextMontserrat(
                   text: 'Update Password',
                   textColor: ThemeConstants.whitecolor,
+                  fontSize: ThemeConstants.fontSizeMedium,
                 ),
                 onTap: (startLoading, stopLoading, buttonState) async {
                   // print(widget.path);
@@ -231,8 +252,10 @@ class SigninController extends GetxController with StateMixin {
                   startLoading();
                   if (passwordController.text.isNotEmpty &&
                       otpController.text.isNotEmpty) {
-                    await updatePasswordForget(
+                    var res = await updatePasswordForget(
                         email, passwordController.text, otpController.text);
+
+                    if (res == true) context.pop();
                   } else {
                     getToast("Kindly check your fields");
                   }

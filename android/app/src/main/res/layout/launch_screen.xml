@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:cropToPadding="true"
+        
         android:scaleType="center"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/splash_icon" />
 </LinearLayout>

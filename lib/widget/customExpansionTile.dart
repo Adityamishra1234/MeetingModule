@@ -2,11 +2,13 @@ import 'package:configurable_expansion_tile_null_safety/configurable_expansion_t
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/ui/screens/assign_to_view.dart';
 import 'package:meeting_module2/ui/screens/assign_to_view_dasboard.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
+import 'package:meeting_module2/utils/routes/router_config.dart';
 
 class CustomExpansionPlanList extends StatefulWidget {
   String? titel;
@@ -110,7 +112,9 @@ class _CustomExpansionPlanListState extends State<CustomExpansionPlanList> {
               ),
               InkWell(
                 onTap: () {
-                  Get.to(AssignToView2(), arguments: widget.dataList![i]);
+                  context.push(
+                      '${Routes.dashboard}/${Routes.viewDashboardNotes}/${Routes.assignDashboardNotes}',
+                      extra: data[i]);
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10),

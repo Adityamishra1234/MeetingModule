@@ -4,13 +4,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
     <uses-feature android:name="android.hardware.fingerprint" android:required="true" />
-    
-
-
-
-
    <application
-        android:label="meeting_module2"
+        android:label="SIEC Organisers"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:enableOnBackInvokedCallback="true"

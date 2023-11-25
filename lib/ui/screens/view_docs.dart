@@ -28,7 +28,7 @@ class ViewDocs extends StatelessWidget {
                     align: TextAlign.left,
                     textColor: ThemeConstants.bluecolor,
                     fontSize: 20,
-                    text: 'View Doc Notes'),
+                    text: 'View Document Notes'),
               ),
               SizedBox(
                 height: 10,
@@ -43,6 +43,8 @@ class ViewDocs extends StatelessWidget {
                           .imageNotesList[index];
                       var name = Get.find<AddMoreNotesController>()
                           .nameFromid(model.createdBy);
+
+                      var date = model.createdAt!.split('T')[0];
                       return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Container(
@@ -55,12 +57,31 @@ class ViewDocs extends StatelessWidget {
                                 padding: const EdgeInsets.all(15.0),
                                 child: Row(
                                   children: [
-                                    SizedBox(
-                                      width: 120,
-                                      child: CustomAutoSizeTextMontserrat(
-                                        text: name,
-                                        textColor: ThemeConstants.bluecolor,
-                                      ),
+                                    // CustomAutoSizeTextMontserrat(
+                                    //   text: 'Uploaded by',
+                                    //   textColor: ThemeConstants.blackcolor,
+                                    //   fontSize: 10,
+                                    //   fontWeight: ThemeConstants.fontWeightBold,
+                                    // ),
+                                    Column(
+                                      children: [
+                                        SizedBox(
+                                          width: 120,
+                                          child: CustomAutoSizeTextMontserrat(
+                                            text: name,
+                                            textColor: ThemeConstants.bluecolor,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 120,
+                                          child: CustomAutoSizeTextMontserrat(
+                                            text: date,
+                                            textColor: ThemeConstants.bluecolor,
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     const Spacer(),
                                     // SizedBox(
@@ -72,7 +93,8 @@ class ViewDocs extends StatelessWidget {
                                     InkWell(
                                       onTap: () {
                                         Get.find<AddMoreNotesController>()
-                                            .getViewDocument(model.image_note!);
+                                            .getViewDocument(
+                                                model.image_note!, context);
                                       },
                                       child: Container(
                                         height: 35,

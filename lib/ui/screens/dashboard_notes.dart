@@ -19,10 +19,18 @@ class _DashboardNotesViewState extends State<DashboardNotesView> {
 
   @override
   void dispose() {
-    controller.dispose();
+    controller.onDelete;
 
     // TODO: implement dispose
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    controller.doIntial(context);
+
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -45,10 +53,13 @@ class _DashboardNotesViewState extends State<DashboardNotesView> {
                                     const EdgeInsets.only(right: 10, bottom: 5),
                                 child: CustomAutoSizeTextMontserrat(
                                   text: "View Notes",
-                                  fontSize: 35,
+                                  fontSize: 22,
                                   textColor: ThemeConstants.bluecolor,
                                   fontWeight: FontWeight.bold,
                                 ),
+                              ),
+                              SizedBox(
+                                width: 10,
                               ),
                               DropdownButton2(
                                 underline: Container(),
@@ -91,7 +102,7 @@ class _DashboardNotesViewState extends State<DashboardNotesView> {
                                   controller.selectedDropDown =
                                       value.toString();
 
-                                  controller.showThisNotesList();
+                                  controller.showThisNotesList(context);
 
                                   controller.update();
 

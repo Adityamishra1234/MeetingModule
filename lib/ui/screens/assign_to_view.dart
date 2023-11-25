@@ -11,7 +11,9 @@ import 'package:meeting_module2/widget/customtextfield.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsers.dart';
 
 class AssignToView extends StatelessWidget {
-  AssignToView({super.key});
+  FindNotesModel notesModel;
+
+  AssignToView({super.key, required this.notesModel});
 
   TextEditingController controller = TextEditingController();
 
@@ -19,7 +21,7 @@ class AssignToView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FindNotesModel argu = Get.arguments;
+    FindNotesModel argu = notesModel;
 
     return Scaffold(
       body: SafeArea(

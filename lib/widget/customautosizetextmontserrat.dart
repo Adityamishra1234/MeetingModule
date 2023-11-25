@@ -33,7 +33,7 @@ class CustomAutoSizeTextMontserrat extends StatelessWidget {
       ]),
       textAlign: align,
       maxLines: maxLines ?? 100000,
-
+      minFontSize: 1,
       overflow: TextOverflow.ellipsis,
       style: GoogleFonts.montserrat(
         fontWeight: fontWeight ?? FontWeight.w600,

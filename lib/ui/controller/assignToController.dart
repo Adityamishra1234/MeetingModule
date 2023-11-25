@@ -45,7 +45,7 @@ class AssignToController extends GetxController with StateMixin {
       "updated_by": id,
       "created_at": "2023-04-07T09:48:35.000Z",
       "updated_at": "2023-04-07T09:48:35.000Z",
-      "notes": argu.note
+      // "notes": argu.note
     };
 
     var res = await api.assignTo(data);
@@ -79,7 +79,7 @@ class AssignToController extends GetxController with StateMixin {
       "updated_by": id,
       "created_at": "2023-04-07T09:48:35.000Z",
       "updated_at": "2023-04-07T09:48:35.000Z",
-      "notes": null
+      // "notes": null
     };
 
     var res = await api.assignTo(data);

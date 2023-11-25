@@ -62,7 +62,12 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
     }
 
     minimumDate = widget.startingDate ?? Jiffy.parse('1990/09/23').dateTime;
+
+    if (dateToShow != '') {
+      dateTime = Jiffy.parse('$dateToShow').dateTime;
+    }
   }
+
   // @override
   // void initState() {
   //   // TODO: implement initState
@@ -76,6 +81,11 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (dateToShow != '') {
+      dateTime = Jiffy.parse('$dateToShow').dateTime;
+      print(dateTime);
+    }
+
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
@@ -106,8 +116,14 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
                             Navigator.pop(context);
                             setState(() {
                               previousDate = date;
-                              date = dateToShow;
-                              widget.callback(dateToShow);
+
+                              if (dateToShow == '') {
+                                dateToShow = date;
+                                widget.callback(date);
+                              } else {
+                                date = dateToShow;
+                                widget.callback(dateToShow);
+                              }
                             });
                           },
                           child: const Text('Done'),

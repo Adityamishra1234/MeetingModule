@@ -68,7 +68,9 @@ class _SignInViewState extends State<SignInView> {
                       //             topRight: Radius.circular(180),
                       //           )),
                       //     )),
-                      BackgroundAuthView(),
+                      BackgroundAuthView(
+                        text: "Let's Sign you in",
+                      ),
                       SingleChildScrollView(
                         child: Container(
                           padding: EdgeInsets.symmetric(
@@ -87,7 +89,7 @@ class _SignInViewState extends State<SignInView> {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 // crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   // SizedBox(
                                   //     height: 150,
@@ -123,7 +125,7 @@ class _SignInViewState extends State<SignInView> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 10),
                                     child: CustomTextField(
-                                        hint: "Enter your office email",
+                                        hint: "Enter your official email",
                                         validator: Validator.email,
                                         backgroundCOlour:
                                             ThemeConstants.whitecolor,
@@ -133,128 +135,214 @@ class _SignInViewState extends State<SignInView> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 10),
                                     child: CustomTextField(
+                                        obscureText: controller.showPassword,
+                                        isPassword: true,
+                                        callbackForPasswordShow: () {
+                                          controller.showPassword =
+                                              !controller.showPassword;
+                                          controller.update();
+                                        },
                                         hint: "Enter your password",
                                         backgroundCOlour:
                                             ThemeConstants.whitecolor,
-                                        validator:
-                                            Validator.passwordWithSpecial,
+                                        validator: Validator.notEmpty,
                                         controller: password),
                                   ),
                                   InkWell(
                                     onTap: () {
                                       showDialog(
                                         context: context,
-                                        builder: (_) => AlertDialog(
-                                          content: Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.7,
-                                            child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10.0),
-                                                    child:
-                                                        CustomAutoSizeTextMontserrat(
-                                                      text: 'Reset password',
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10.0),
-                                                    child: CustomTextField(
-                                                        backgroundCOlour:
-                                                            ThemeConstants
-                                                                .whitecolor,
-                                                        hint:
-                                                            "Enter your office email",
-                                                        validator:
-                                                            Validator.email,
-                                                        controller:
-                                                            emailController),
-                                                  ),
-                                                  if (controller.verifyEmail ==
-                                                      true)
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 40,
-                                                          vertical: 2),
-                                                      child: LoadingButton(
-                                                        height: 35,
-                                                        borderRadius: 8,
-                                                        animate: true,
-                                                        color: ThemeConstants
-                                                            .bluecolor,
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.44,
-                                                        loader: Container(
+                                        builder: (_) => Stack(children: [
+                                          Center(
+                                            child: AlertDialog(
+                                              contentPadding:
+                                                  EdgeInsets.all(10),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                              content: Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.7,
+                                                child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(10.0),
+                                                            child:
+                                                                CustomAutoSizeTextMontserrat(
+                                                              text:
+                                                                  'Reset password',
+                                                              fontSize:
+                                                                  ThemeConstants
+                                                                      .fontSizeMedium,
+                                                              textColor:
+                                                                  ThemeConstants
+                                                                      .blackcolor,
+                                                              fontWeight:
+                                                                  ThemeConstants
+                                                                      .fontWeightBold,
+                                                            ),
+                                                          ),
+                                                          // Spacer(),
+                                                          // InkWell(
+                                                          //   onTap: () {
+                                                          //     context.pop();
+                                                          //   },
+                                                          //   child: Container(
+                                                          //     child: Icon(
+                                                          //         Icons.close,
+                                                          //         size: 18,
+                                                          //         color: ThemeConstants
+                                                          //             .blackcolor),
+                                                          //   ),
+                                                          // )
+                                                        ],
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(10.0),
+                                                        child: CustomTextField(
+                                                            backgroundCOlour:
+                                                                ThemeConstants
+                                                                    .whitecolor,
+                                                            hint:
+                                                                "Enter your office email",
+                                                            validator:
+                                                                Validator.email,
+                                                            controller:
+                                                                emailController),
+                                                      ),
+                                                      if (controller
+                                                              .verifyEmail ==
+                                                          true)
+                                                        Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                  .all(10),
-                                                          width: 40,
-                                                          height: 40,
-                                                          child:
-                                                              CircularProgressIndicator(
-                                                            valueColor:
-                                                                AlwaysStoppedAnimation<
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      40,
+                                                                  vertical: 2),
+                                                          child: LoadingButton(
+                                                            height: 35,
+                                                            borderRadius: 8,
+                                                            animate: true,
+                                                            color:
+                                                                ThemeConstants
+                                                                    .bluecolor,
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.44,
+                                                            loader: Container(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(10),
+                                                              width: 40,
+                                                              height: 40,
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                                valueColor: AlwaysStoppedAnimation<
                                                                         Color>(
                                                                     ThemeConstants
                                                                         .bluecolor),
-                                                          ),
-                                                        ),
-                                                        child:
-                                                            CustomAutoSizeTextMontserrat(
-                                                          text: 'get OTP',
-                                                          textColor:
-                                                              ThemeConstants
-                                                                  .whitecolor,
-                                                        ),
-                                                        onTap: (startLoading,
-                                                            stopLoading,
-                                                            buttonState) async {
-                                                          // print(widget.path);
-                                                          if (buttonState ==
-                                                              ButtonState
-                                                                  .idle) {
-                                                            startLoading();
-                                                            if (emailController
-                                                                .text
-                                                                .isNotEmpty) {
-                                                              await controller
-                                                                  .forgetPaasword(
+                                                              ),
+                                                            ),
+                                                            child:
+                                                                CustomAutoSizeTextMontserrat(
+                                                              text: 'Get OTP',
+                                                              fontSize:
+                                                                  ThemeConstants
+                                                                      .fontSizeSmall,
+                                                              textColor:
+                                                                  ThemeConstants
+                                                                      .whitecolor,
+                                                            ),
+                                                            onTap: (startLoading,
+                                                                stopLoading,
+                                                                buttonState) async {
+                                                              // print(widget.path);
+                                                              if (buttonState ==
+                                                                  ButtonState
+                                                                      .idle) {
+                                                                startLoading();
+                                                                if (emailController
+                                                                    .text
+                                                                    .isNotEmpty) {
+                                                                  var res = await controller.forgetPaasword(
                                                                       emailController
                                                                           .text,
                                                                       context);
-                                                            } else {
-                                                              getToast(
-                                                                  "Kindly check your email address");
-                                                            }
 
-                                                            // var res = await controller.logIn(
-                                                            //     emailController.value.text,
-                                                            //     password.value.text);
+                                                                  if (res) {
+                                                                    context
+                                                                        .pop();
+                                                                    controller.getDailogForForget(
+                                                                        context,
+                                                                        emailController
+                                                                            .text);
+                                                                  }
+                                                                } else {
+                                                                  getToast(
+                                                                      "Kindly check your email address");
+                                                                }
 
-                                                            // if (res) {
-                                                            //   controllerBase.user.value = res;
-                                                            // }
-                                                            // await download(widget.path);
-                                                            // await Future.delayed(const Duration(seconds: 5))
-                                                            stopLoading();
-                                                          }
-                                                        },
-                                                      ),
-                                                    ),
-                                                ]),
+                                                                // var res = await controller.logIn(
+                                                                //     emailController.value.text,
+                                                                //     password.value.text);
+
+                                                                // if (res) {
+                                                                //   controllerBase.user.value = res;
+                                                                // }
+                                                                // await download(widget.path);
+                                                                // await Future.delayed(const Duration(seconds: 5))
+                                                                stopLoading();
+                                                              }
+                                                            },
+                                                          ),
+                                                        ),
+                                                    ]),
+                                              ),
+                                            ),
                                           ),
-                                        ),
+                                          Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 30),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  context.pop();
+                                                  // Get.back();
+                                                },
+                                                child: Container(
+                                                  width: 50,
+                                                  height: 50,
+                                                  decoration: BoxDecoration(
+                                                      color: ThemeConstants
+                                                          .bluecolor,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              200)),
+                                                  child: Icon(
+                                                    Icons.close_rounded,
+                                                    color: ThemeConstants
+                                                        .whitecolor,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        ]),
                                       );
                                     },
                                     child: Container(
@@ -264,9 +352,9 @@ class _SignInViewState extends State<SignInView> {
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 5, horizontal: 30),
                                         child: Text(
-                                          "Forg\ot password",
-                                          style: TextStyle(
-                                              color: ThemeConstants.whitecolor),
+                                          "Forg\ot password?",
+                                          style: ThemeConstants
+                                              .montserratTextStyleSmall,
                                         ),
                                       ),
                                     ),
@@ -306,6 +394,7 @@ class _SignInViewState extends State<SignInView> {
                                     ),
                                     child: CustomAutoSizeTextMontserrat(
                                       text: 'Sign in',
+                                      fontSize: ThemeConstants.fontSizeMedium,
                                       textColor: ThemeConstants.whitecolor,
                                     ),
                                     onTap: (startLoading, stopLoading,
@@ -317,12 +406,14 @@ class _SignInViewState extends State<SignInView> {
                                           var res = await controller.logIn(
                                               emailController.value.text,
                                               password.value.text);
+
                                           //todo
 
                                           if (res != false) {
-                                            controllerBase.user.value = res;
+                                            // controllerBase.user.value = res;
 
                                             context.go(DashBoard.routeNamed);
+                                            controllerBase.update();
                                           }
                                           // await download(widget.path);
                                           // await Future.delayed(const Duration(seconds: 5))
@@ -349,7 +440,7 @@ class _SignInViewState extends State<SignInView> {
                                   // ),
 
                                   const SizedBox(
-                                    height: 5,
+                                    height: 10,
                                   ),
                                   GestureDetector(
                                     onTap: () {
@@ -362,9 +453,9 @@ class _SignInViewState extends State<SignInView> {
                                         width: double.infinity,
                                         alignment: Alignment.center,
                                         child: Text(
-                                          "Not registered? Click here",
-                                          style: TextStyle(
-                                              color: ThemeConstants.blackcolor),
+                                          "Don't have account? Register now",
+                                          style: ThemeConstants
+                                              .montserratTextStyleSmall,
                                         ),
                                       ),
                                     ),

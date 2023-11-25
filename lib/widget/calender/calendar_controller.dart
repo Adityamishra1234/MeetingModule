@@ -32,10 +32,18 @@ class CalendarController extends GetxController with StateMixin {
   @override
   void onInit() async {
     var date = DateTime.now();
+
+    print(Get.find<BaseController>().id);
     await getMonthMeetingDates(
         Get.find<BaseController>().id, date.month, date.year);
     // TODO: implement onInit
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    super.onReady();
   }
 
   ApiServices api = ApiServices();
@@ -56,9 +64,8 @@ class CalendarController extends GetxController with StateMixin {
   void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(selectedDayGlobal, selectedDay)) {
       selectedDayGlobal = selectedDay;
-      focusedDayGlobal = focusedDay;
-
       Get.find<DashBoardController>().getMeetingOfThatDate(selectedDay);
+      focusedDayGlobal = focusedDay;
 
       update();
       // _focusedDay = focusedDay;
@@ -91,7 +98,6 @@ class CalendarController extends GetxController with StateMixin {
   }
 
   getMonthMeetingDates(int id, int month, int year) async {
-    loading = true;
     update();
 
     // var endpoint = await datesOfCalendarMeetingEndpoint(id, month, year);
@@ -119,7 +125,6 @@ class CalendarController extends GetxController with StateMixin {
 
     // List dub = await api.getMonthMeetingDates(endpoint);
     res.add(await api.getMonthMeetingDates(endpoint1));
-
     res.add(await api.getMonthMeetingDates(endpoint2));
     res.add(await api.getMonthMeetingDates(endpoint3));
 
@@ -142,6 +147,7 @@ class CalendarController extends GetxController with StateMixin {
     }
 
     loading = false;
+    update();
   }
 
   bool getEventsForDay(DateTime day) {

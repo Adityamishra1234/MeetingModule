@@ -1,4 +1,6 @@
-class RepresentativeModel {
+import 'package:equatable/equatable.dart';
+
+class RepresentativeModel extends Equatable {
   int? id;
   String? representativeType;
   String? personName;
@@ -69,4 +71,7 @@ class RepresentativeModel {
     data['updated_at'] = this.updatedAt;
     return data;
   }
+
+  @override
+  List<Object> get props => [id!];
 }

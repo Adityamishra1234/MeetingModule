@@ -7,11 +7,13 @@ import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/models/userModal.dart';
+import 'package:meeting_module2/presentation/custom_widgets/meeting_status.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/services/endpoints.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/logincontroller.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
+import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/calender/calendar_controller.dart';
@@ -40,7 +42,7 @@ class DashBoardController extends GetxController with StateMixin {
 
   int indexOfTab = 0;
 
-  CalendarFormat calendarFormat = CalendarFormat.month;
+  CalendarFormat calendarFormat = CalendarFormat.twoWeeks;
 
   // RxList<AllMeetings> listToShowBackup = <AllMeetings>[].obs;
 
@@ -208,6 +210,7 @@ class DashBoardController extends GetxController with StateMixin {
   }
 
   dashboardInitialLoginForUserDetails() async {
+    change(null, status: RxStatus.loading());
     var email = await sharedPreferenceInstance.getString('email');
     var password = await sharedPreferenceInstance.getString('password');
 
@@ -218,6 +221,8 @@ class DashBoardController extends GetxController with StateMixin {
     // var data = json.decode(login);
 
     user.value = UserModel.fromJson(login);
+
+    change(null, status: RxStatus.success());
 
     update();
   }
@@ -487,7 +492,7 @@ class DashBoardController extends GetxController with StateMixin {
   //       .toList();
   // }
 
-  Future<bool> changeInFilter() async {
+  changeInFilter() async {
     if (indexOfTab == 0) {
       if (selectedFilter.value == "All Meetings") {
         // print('dcdcd');
@@ -548,11 +553,12 @@ class DashBoardController extends GetxController with StateMixin {
     }
 
     listToShow = allMeetingslist;
-    singleMeetingDetails();
+    await singleMeetingDetails();
     // singleMeetingDetails(con!);
-    update();
 
-    return true;
+    loadingMeetingSection = false;
+
+    update();
   }
 
   bool loadingMeetingSection = false;
@@ -562,12 +568,7 @@ class DashBoardController extends GetxController with StateMixin {
 
     // await Future.delayed(Duration(seconds: 10));
     // print('ddd');
-    var bool = await changeInFilter();
-
-    if (bool != null) {
-      loadingMeetingSection = false;
-    }
-    update();
+    var bool = changeInFilter();
   }
 
   // upcomingMeetings;
@@ -579,7 +580,7 @@ class DashBoardController extends GetxController with StateMixin {
   // }
 
   showDoneList() async {
-    changeInFilter();
+    await changeInFilter();
     loading.value = false;
     print('ddddd');
 
@@ -634,10 +635,11 @@ class DashBoardController extends GetxController with StateMixin {
 
   resheduleMeeting(data) async {
     var res = await api.resheduleMeeting(data);
-    Get.back();
     //todo
 
-    getMeetingData();
+    await getMeetingOfThatDate(DateTime.now());
+
+    return true;
   }
 
   List<Widget> meetingsToShowInDashboardWidgetList = [];
@@ -647,739 +649,36 @@ class DashBoardController extends GetxController with StateMixin {
     for (var i = 0; i < listToShow.length; i++) {
       var listOfattendes = getlist(i);
 
+      late bool showTheStartEndOptions;
+      listToShow[i].meetingCoordinator!.forEach((element) {
+        if (element.id == Get.find<BaseController>().id ||
+            listToShow[i].createdBy == Get.find<BaseController>().id) {
+          showTheStartEndOptions = true;
+        } else {
+          showTheStartEndOptions = false;
+        }
+      });
+
+      if (showTheStartEndOptions == true &&
+          listToShow[i].meetingStarted == false &&
+          listToShow[i].meetingEnded == false) {
+        showTheStartEndOptions = true;
+      } else {
+        showTheStartEndOptions = false;
+      }
+
       data.add(SingleMeetingWidget(
+        showReshedule: showTheStartEndOptions,
         getList: listOfattendes,
         i: i,
         listToShow: listToShow[i],
       ));
-      // data.add(InkWell(
-      //   onTap: () async {
-      //     Get.find<BaseController>().selectedMeeting(listToShow[i]);
-      //     // getNotes('${listToShow[i].id}', i);
-      //     // context.pushNamed('secondRoute');
-      //     context.push('/DashBoard/MeetingDetails');
-      //     // if (val == 'lol') {
-      //     //   // getMeetingOfThatDate(
-      //     //   //     Get.find<CalendarController>().selectedDayGlobal!);
-      //     // }
-
-      //     // Get.to(MeetingDetails());
-      //   },
-      //   child: Padding(
-      //     padding: const EdgeInsets.only(bottom: 12),
-      //     child: Container(
-      //       width: MediaQuery.of(context).size.width,
-      //       decoration: BoxDecoration(
-      //           gradient: LinearGradient(
-      //             begin: Alignment.centerLeft,
-      //             end: Alignment.centerRight,
-      //             colors: [
-      //               Color.fromARGB(255, 255, 225, 150),
-      //               Color.fromARGB(255, 255, 225, 150),
-      //               Color.fromARGB(255, 255, 255, 255)
-      //             ],
-      //             stops: [0.00, 0.05, 0.05],
-      //           ),
-      //           border: Border.all(color: const Color(0xff1940b3)),
-      //           borderRadius: BorderRadius.circular(15.0)),
-      //       child: Padding(
-      //         padding: const EdgeInsets.only(left: 30, top: 0),
-      //         child: Stack(
-      //           children: [
-      //             Column(
-      //               crossAxisAlignment: CrossAxisAlignment.start,
-      //               mainAxisAlignment: MainAxisAlignment.start,
-      //               children: [
-      //                 Container(
-      //                   width: MediaQuery.of(context).size.width - 20,
-      //                   child: Wrap(
-      //                     children: [
-      //                       Padding(
-      //                         padding: const EdgeInsets.only(top: 12),
-      //                         child: SizedBox(
-      //                           // width: 300,
-      //                           child: CustomAutoSizeTextMontserrat(
-      //                             text: "${listToShow[i].meetingAgenda}",
-      //                             fontWeight: FontWeight.w700,
-      //                           ),
-      //                         ),
-      //                       ),
-      //                       Row(
-      //                         mainAxisSize: MainAxisSize.min,
-      //                         children: [
-      //                           listToShow[i].meetingStarted! &&
-      //                                   !listToShow[i].meetingEnded!
-      //                               ? Row(
-      //                                   mainAxisSize: MainAxisSize.min,
-      //                                   children: [
-      //                                     Transform.scale(
-      //                                       scale: 0.8,
-      //                                       child: Radio(
-      //                                           activeColor: Colors.green,
-      //                                           value: true,
-      //                                           groupValue: true,
-      //                                           onChanged: (val) {}),
-      //                                     ),
-      //                                     CustomAutoSizeTextMontserrat(
-      //                                       fontSize: 12,
-      //                                       text: '(Started)',
-      //                                       textColor:
-      //                                           ThemeConstants.GreenColor,
-      //                                     )
-      //                                   ],
-      //                                 )
-      //                               : SizedBox.shrink(),
-      //                           listToShow[i].meetingStarted! &&
-      //                                   listToShow[i].meetingEnded!
-      //                               ? Row(
-      //                                   mainAxisSize: MainAxisSize.min,
-      //                                   children: [
-      //                                     Transform.scale(
-      //                                       scale: 0.8,
-      //                                       child: Radio(
-      //                                           activeColor: Colors.red,
-      //                                           value: true,
-      //                                           groupValue: true,
-      //                                           onChanged: (val) {}),
-      //                                     ),
-      //                                     CustomAutoSizeTextMontserrat(
-      //                                       text: '(Ended)',
-      //                                       fontSize: 12,
-      //                                       textColor: Colors.red,
-      //                                     )
-      //                                   ],
-      //                                 )
-      //                               : SizedBox.shrink(),
-      //                           !listToShow[i].meetingStarted! &&
-      //                                   !listToShow[i].meetingEnded!
-      //                               ? Row(
-      //                                   mainAxisSize: MainAxisSize.min,
-      //                                   children: [
-      //                                     Transform.scale(
-      //                                       scale: 0.8,
-      //                                       child: Radio(
-      //                                           activeColor:
-      //                                               const Color.fromARGB(
-      //                                                   255, 114, 114, 114),
-      //                                           value: true,
-      //                                           groupValue: true,
-      //                                           onChanged: (val) {}),
-      //                                     ),
-      //                                     CustomAutoSizeTextMontserrat(
-      //                                       text: 'Not Started',
-      //                                       fontSize: 14,
-      //                                       textColor: const Color.fromARGB(
-      //                                           255, 114, 114, 114),
-      //                                     )
-      //                                   ],
-      //                                 )
-      //                               : SizedBox.shrink()
-      //                         ],
-      //                       ),
-      //                     ],
-      //                   ),
-      //                 ),
-      //                 CustomAutoSizeTextMontserrat(
-      //                   text: "${listToShow[i].nameOfTheMeeting}",
-      //                   fontSize: 13,
-      //                   fontWeight: FontWeight.w600,
-      //                   textColor: ThemeConstants.TextColor,
-      //                 ),
-      //                 const SizedBox(
-      //                   height: 5,
-      //                 ),
-      //                 CustomAutoSizeTextMontserrat(
-      //                   text: "${listToShow[i].meetingType}",
-      //                   fontSize: 13,
-      //                   fontWeight: FontWeight.w600,
-      //                   textColor: ThemeConstants.TextColor,
-      //                 ),
-      //                 const SizedBox(
-      //                   height: 5,
-      //                 ),
-      //                 CustomAutoSizeTextMontserrat(
-      //                   text: "${listToShow[i].dateOfMeeting}",
-      //                   fontSize: 13,
-      //                   fontWeight: FontWeight.w600,
-      //                   textColor: ThemeConstants.TextColor,
-      //                 ),
-      //                 Row(
-      //                   children: [
-      //                     Padding(
-      //                       padding: const EdgeInsets.only(top: 20),
-      //                       child: SizedBox(
-      //                         // color: Colors.amber,
-      //                         height: 50,
-      //                         width: 150,
-      //                         child: Stack(
-      //                           //alignment:new Alignment(x, y)
-      //                           children: [
-      //                             // Expanded(
-      //                             //     child: ListView.builder(
-      //                             //         itemCount: itemcount(indexs),
-
-      //                             //         itemBuilder: (context, index) {
-      //                             //           return Positioned(
-      //                             //             left: 25.0,
-      //                             //             child: Container(
-      //                             //               height: 36.0,
-      //                             //               width: 36.0,
-      //                             //               decoration: BoxDecoration(
-      //                             //                 color: Color(0xFFFEF0F0),
-      //                             //                 shape: BoxShape.circle,
-      //                             //                 border: Border.all(
-      //                             //                     color: Color(0xFFFF7171)),
-      //                             //               ),
-      //                             //               child: Center(
-      //                             //                   child: CustomAutoSizeTextMontserrat(
-      //                             //                       text:
-      //                             //                           "${controller.listToShow[indexs].siecParticipants![index].name!.substring(0, 1)}")),
-      //                             //             ),
-      //                             //           );
-      //                             //         })),
-      //                             // Icon(Icons.monetization_on,
-      //                             //     size: 36.0,
-      //                             //     color: Color.fromRGBO(218, 165, 32, 1.0)),
-
-      //                             ...getlist(i),
-      //                           ],
-      //                         ),
-      //                       ),
-      //                     ),
-      //                     Spacer(),
-      //                     CustomButton(
-      //                         backgroundColor:
-      //                             Color.fromARGB(255, 255, 225, 150),
-      //                         text: 'Reschedule',
-      //                         textColor: ThemeConstants.blackcolor,
-      //                         onPressed: () async {
-      //                           late bool showTheStartEndOptions;
-      //                           listToShow[i]
-      //                               .meetingCoordinator!
-      //                               .forEach((element) {
-      //                             if (element.id ==
-      //                                     Get.find<BaseController>().id ||
-      //                                 listToShow[i].createdBy ==
-      //                                     Get.find<BaseController>().id) {
-      //                               showTheStartEndOptions = true;
-      //                             } else {
-      //                               print('${element.id}dddddddd');
-      //                               showTheStartEndOptions = false;
-      //                             }
-      //                           });
-      //                           if (showTheStartEndOptions == true) {
-      //                             if (listToShow[i].meetingStarted == false &&
-      //                                 listToShow[i].meetingEnded == false) {
-      //                               showAnimatedDialog(
-      //                                   animationType: DialogTransitionType
-      //                                       .slideFromBottomFade,
-      //                                   curve: Curves.easeInOutQuart,
-      //                                   // barrierDismissible: false,
-      //                                   context: context,
-      //                                   builder: (ctx) =>
-      //                                       ResheduleMeetingDialogue(
-      //                                         controller: Get.find<
-      //                                             DashBoardController>(),
-      //                                         indexz: i,
-      //                                         meetingData: listToShow[i],
-      //                                       ));
-      //                             } else {
-      //                               showAnimatedDialog(
-      //                                   barrierDismissible: true,
-      //                                   animationType: DialogTransitionType
-      //                                       .slideFromBottomFade,
-      //                                   curve: Curves.easeInOutQuart,
-      //                                   // barrierDismissible: false,
-      //                                   context: context,
-      //                                   builder: (ctx) => showPoPUp(
-      //                                       'Meeting already started',
-      //                                       Icon(
-      //                                         Icons.error,
-      //                                         size: 40,
-      //                                         color: ThemeConstants.bluecolor,
-      //                                       )));
-      //                             }
-      //                           } else {
-      //                             showAnimatedDialog(
-      //                                 barrierDismissible: true,
-      //                                 animationType: DialogTransitionType
-      //                                     .slideFromBottomFade,
-      //                                 curve: Curves.easeInOutQuart,
-      //                                 // barrierDismissible: false,
-      //                                 context: context,
-      //                                 builder: (ctx) => showPoPUp(
-      //                                     "Only Co-ordinator's and creator can reshedule the meeting",
-      //                                     Icon(
-      //                                       Icons.error,
-      //                                       size: 40,
-      //                                       color: ThemeConstants.bluecolor,
-      //                                     )));
-      //                           }
-      //                         }),
-      //                     // CustomButton(text: 'Delete', onPressed: () {})
-      //                   ],
-      //                 )
-      //               ],
-      //             ),
-      //             // if (menu == true)
-      //             //   Positioned(
-      //             //       right: 25,
-      //             //       top: -2,
-      //             //       child: SizedBox(
-      //             //         height: 70,
-      //             //         width: 155,
-      //             //         child: Opacity(
-      //             //           opacity: 1,
-      //             //           child: Card(
-      //             //             elevation: 2,
-      //             //             color: Colors.white,
-      //             //             child: Column(
-      //             //               mainAxisAlignment: MainAxisAlignment.start,
-      //             //               crossAxisAlignment: CrossAxisAlignment.start,
-      //             //               children: [
-      //             //                 const Spacer(),
-      //             //                 InkWell(
-      //             //                   onTap: () async {
-      //             //                     // if (controller.listToShow[indexs]
-      //             //                     //             .meetingStarted ==
-      //             //                     //         false &&
-      //             //                     //     controller.listToShow[indexs]
-      //             //                     //             .meetingEnded ==
-      //             //                     //         false) {
-      //             //                     showAnimatedDialog(
-      //             //                         animationType: DialogTransitionType
-      //             //                             .slideFromBottomFade,
-      //             //                         curve: Curves.easeInOutQuart,
-      //             //                         // barrierDismissible: false,
-      //             //                         context: context,
-      //             //                         builder: (ctx) =>
-      //             //                             ResheduleMeetingDialogue(
-      //             //                               controller: controller,
-      //             //                               indexz: indexs,
-      //             //                               meetingData:
-      //             //                                   controller.listToShow[indexs],
-      //             //                             ));
-      //             //                     // } else {
-      //             //                     // showAnimatedDialog(
-      //             //                     //     animationType: DialogTransitionType
-      //             //                     //         .slideFromBottomFade,
-      //             //                     //     curve: Curves.easeInOutQuart,
-      //             //                     //     // barrierDismissible: false,
-      //             //                     //     context: context,
-      //             //                     //     builder: (ctx) => AlertDialog(
-      //             //                     //           content: Container(
-      //             //                     //               width: 400,
-      //             //                     //               height: 400,
-      //             //                     //               child:
-      //             //                     //                   CustomAutoSizeTextMontserrat(
-      //             //                     //                 text:
-      //             //                     //                     'Meeting already started',
-      //             //                     //               )),
-      //             //                     //         ));
-      //             //                     // }
-
-      //             //                     // rescheduleMeetingDialogue(
-      //             //                     //     context: context,
-      //             //                     //     id: controller.listToShow[indexs].id!,
-      //             //                     //     timeCallback: (data2) {
-      //             //                     //       AllMeetings data =
-      //             //                     //           controller.listToShow[indexs];
-
-      //             //                     //       data.timeOfTheMeeting = data2;
-      //             //                     //       data.isReschedule = true;
-      //             //                     //       print(data.toJson());
-      //             //                     //       /
-      //             //                     //     });
-      //             //                   },
-      //             //                   child: Padding(
-      //             //                     padding: const EdgeInsets.only(left: 10),
-      //             //                     child: CustomAutoSizeTextMontserrat(
-      //             //                       text: "Reschedule Meeting",
-      //             //                       fontSize: 10,
-      //             //                       fontWeight: FontWeight.w600,
-      //             //                       textColor: ThemeConstants.TextColor,
-      //             //                     ),
-      //             //                   ),
-      //             //                 ),
-      //             //                 InkWell(
-      //             //                   onTap: () async {
-      //             //                     showAnimatedDialog(
-      //             //                         animationType: DialogTransitionType
-      //             //                             .slideFromBottomFade,
-      //             //                         curve: Curves.easeInOutQuart,
-      //             //                         // barrierDismissible: false,
-      //             //                         context: context,
-      //             //                         builder: (ctx) => AlertDialog(
-      //             //                               content: Container(
-      //             //                                 width: 300,
-      //             //                                 height: 100,
-      //             //                                 child: Column(
-      //             //                                     mainAxisAlignment:
-      //             //                                         MainAxisAlignment
-      //             //                                             .center,
-      //             //                                     crossAxisAlignment:
-      //             //                                         CrossAxisAlignment
-      //             //                                             .center,
-      //             //                                     children: [
-      //             //                                       CustomAutoSizeTextMontserrat(
-      //             //                                         text: 'Please Confirm',
-      //             //                                         fontSize: 25,
-      //             //                                       ),
-      //             //                                       InkWell(
-      //             //                                         onTap: () {},
-      //             //                                         child: CustomButton(
-      //             //                                           backgroundColor:
-      //             //                                               ThemeConstants
-      //             //                                                   .bluecolor,
-      //             //                                           onPressed: () {},
-      //             //                                           text: 'Delete',
-      //             //                                         ),
-      //             //                                       )
-      //             //                                     ]),
-      //             //                               ),
-      //             //                             ));
-      //             //                   },
-      //             //                   child: Padding(
-      //             //                     padding: const EdgeInsets.only(left: 10),
-      //             //                     child: CustomAutoSizeTextMontserrat(
-      //             //                       text: "Delete Meeting",
-      //             //                       fontSize: 10,
-      //             //                       fontWeight: FontWeight.w600,
-      //             //                       textColor: ThemeConstants.TextColor,
-      //             //                     ),
-      //             //                   ),
-      //             //                 ),
-      //             //                 const Spacer(),
-      //             //               ],
-      //             //             ),
-      //             //           ),
-      //             //         ),
-      //             //       )),
-      //           ],
-      //         ),
-      //       ),
-      //     ),
-      //   ),
-      // )
-
-      // );
     }
 
     meetingsToShowInDashboardWidgetList = data;
     update();
     change(null, status: RxStatus.success());
     return data;
-    // // Padding(
-    //   padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-    //   child: Container(
-    //     width: MediaQuery.of(context).size.width,
-    //     decoration: BoxDecoration(
-    //         gradient: LinearGradient(
-    //           begin: Alignment.centerLeft,
-    //           end: Alignment.centerRight,
-    //           colors: [
-    //             Color.fromARGB(255, 255, 225, 150),
-    //             Color.fromARGB(255, 255, 225, 150),
-    //             Color.fromARGB(255, 255, 255, 255)
-    //           ],
-    //           stops: [0.00, 0.05, 0.05],
-    //         ),
-    //         border: Border.all(color: const Color(0xff1940b3)),
-    //         borderRadius: BorderRadius.circular(10.0)),
-    //     child: Padding(
-    //       padding: const EdgeInsets.only(left: 25, top: 8),
-    //       child: Stack(
-    //         children: [
-    //           Column(
-    //             crossAxisAlignment: CrossAxisAlignment.start,
-    //             mainAxisAlignment: MainAxisAlignment.start,
-    //             children: [
-    //               Row(
-    //                 children: [
-    //                   InkWell(
-    //                     onTap: () {
-    //                       controller.getNotes(
-    //                           '${controller.listToShow[indexs].id}', indexs);
-    //                       Get.to(MeetingDetails());
-    //                       // Get.toNamed(MeetingDetails.routeNamed,
-    //                       //     arguments: controller.listToShow[indexs]);
-    //                     },
-    //                     child: SizedBox(
-    //                       width: 300,
-    //                       child: CustomAutoSizeTextMontserrat(
-    //                         text:
-    //                             "${controller.listToShow[indexs].meetingAgenda}",
-    //                         fontWeight: FontWeight.w700,
-    //                       ),
-    //                     ),
-    //                   ),
-    //                   const Spacer(),
-
-    //                   // InkWell(
-    //                   //     onTap: () {
-    //                   //       innerSetState(() {
-    //                   //         if (menu == false) {
-    //                   //           menu = true;
-    //                   //         } else {
-    //                   //           menu = false;
-    //                   //         }
-    //                   //       });
-    //                   //     },
-    //                   //     child: Container(
-    //                   //         width: 40,
-    //                   //         child: const Icon(Icons.more_vert_rounded)))
-    //                 ],
-    //               ),
-    //               CustomAutoSizeTextMontserrat(
-    //                 text: "${controller.listToShow[indexs].nameOfTheMeeting}",
-    //                 fontSize: 13,
-    //                 fontWeight: FontWeight.w600,
-    //                 textColor: ThemeConstants.TextColor,
-    //               ),
-    //               const SizedBox(
-    //                 height: 5,
-    //               ),
-    //               CustomAutoSizeTextMontserrat(
-    //                 text: "${controller.listToShow[indexs].meetingType}",
-    //                 fontSize: 13,
-    //                 fontWeight: FontWeight.w600,
-    //                 textColor: ThemeConstants.TextColor,
-    //               ),
-    //               const SizedBox(
-    //                 height: 5,
-    //               ),
-    //               CustomAutoSizeTextMontserrat(
-    //                 text: "${controller.listToShow[indexs].dateOfMeeting}",
-    //                 fontSize: 13,
-    //                 fontWeight: FontWeight.w600,
-    //                 textColor: ThemeConstants.TextColor,
-    //               ),
-    //               Row(
-    //                 children: [
-    //                   Padding(
-    //                     padding: const EdgeInsets.only(top: 20),
-    //                     child: SizedBox(
-    //                       // color: Colors.amber,
-    //                       height: 50,
-    //                       width: 150,
-    //                       child: Stack(
-    //                         //alignment:new Alignment(x, y)
-    //                         children: [
-    //                           // Expanded(
-    //                           //     child: ListView.builder(
-    //                           //         itemCount: itemcount(indexs),
-
-    //                           //         itemBuilder: (context, index) {
-    //                           //           return Positioned(
-    //                           //             left: 25.0,
-    //                           //             child: Container(
-    //                           //               height: 36.0,
-    //                           //               width: 36.0,
-    //                           //               decoration: BoxDecoration(
-    //                           //                 color: Color(0xFFFEF0F0),
-    //                           //                 shape: BoxShape.circle,
-    //                           //                 border: Border.all(
-    //                           //                     color: Color(0xFFFF7171)),
-    //                           //               ),
-    //                           //               child: Center(
-    //                           //                   child: CustomAutoSizeTextMontserrat(
-    //                           //                       text:
-    //                           //                           "${controller.listToShow[indexs].siecParticipants![index].name!.substring(0, 1)}")),
-    //                           //             ),
-    //                           //           );
-    //                           //         })),
-    //                           // Icon(Icons.monetization_on,
-    //                           //     size: 36.0,
-    //                           //     color: Color.fromRGBO(218, 165, 32, 1.0)),
-
-    //                           ...getlist(indexs),
-    //                         ],
-    //                       ),
-    //                     ),
-    //                   ),
-    //                   Spacer(),
-    //                   CustomButton(
-    //                       backgroundColor: Color.fromARGB(255, 255, 225, 150),
-    //                       text: 'Reshedule',
-    //                       textColor: ThemeConstants.blackcolor,
-    //                       onPressed: () {
-    //                         if (controller.listToShow[indexs].meetingStarted ==
-    //                                 false &&
-    //                             controller.listToShow[indexs].meetingEnded ==
-    //                                 false) {
-    //                           showAnimatedDialog(
-    //                               animationType:
-    //                                   DialogTransitionType.slideFromBottomFade,
-    //                               curve: Curves.easeInOutQuart,
-    //                               // barrierDismissible: false,
-    //                               context: context,
-    //                               builder: (ctx) => ResheduleMeetingDialogue(
-    //                                     controller: controller,
-    //                                     indexz: indexs,
-    //                                     meetingData:
-    //                                         controller.listToShow[indexs],
-    //                                   ));
-    //                         } else {
-    //                           showAnimatedDialog(
-    //                               animationType:
-    //                                   DialogTransitionType.slideFromBottomFade,
-    //                               curve: Curves.easeInOutQuart,
-    //                               // barrierDismissible: false,
-    //                               context: context,
-    //                               builder: (ctx) => AlertDialog(
-    //                                     content: Container(
-    //                                         width: 400,
-    //                                         height: 400,
-    //                                         child: CustomAutoSizeTextMontserrat(
-    //                                           text: 'Meeting already started',
-    //                                         )),
-    //                                   ));
-    //                         }
-    //                       }),
-    //                   // CustomButton(text: 'Delete', onPressed: () {})
-    //                 ],
-    //               )
-    //             ],
-    //           ),
-    //           // if (menu == true)
-    //           //   Positioned(
-    //           //       right: 25,
-    //           //       top: -2,
-    //           //       child: SizedBox(
-    //           //         height: 70,
-    //           //         width: 155,
-    //           //         child: Opacity(
-    //           //           opacity: 1,
-    //           //           child: Card(
-    //           //             elevation: 2,
-    //           //             color: Colors.white,
-    //           //             child: Column(
-    //           //               mainAxisAlignment: MainAxisAlignment.start,
-    //           //               crossAxisAlignment: CrossAxisAlignment.start,
-    //           //               children: [
-    //           //                 const Spacer(),
-    //           //                 InkWell(
-    //           //                   onTap: () async {
-    //           //                     // if (controller.listToShow[indexs]
-    //           //                     //             .meetingStarted ==
-    //           //                     //         false &&
-    //           //                     //     controller.listToShow[indexs]
-    //           //                     //             .meetingEnded ==
-    //           //                     //         false) {
-    //           //                     showAnimatedDialog(
-    //           //                         animationType: DialogTransitionType
-    //           //                             .slideFromBottomFade,
-    //           //                         curve: Curves.easeInOutQuart,
-    //           //                         // barrierDismissible: false,
-    //           //                         context: context,
-    //           //                         builder: (ctx) =>
-    //           //                             ResheduleMeetingDialogue(
-    //           //                               controller: controller,
-    //           //                               indexz: indexs,
-    //           //                               meetingData:
-    //           //                                   controller.listToShow[indexs],
-    //           //                             ));
-    //           //                     // } else {
-    //           //                     // showAnimatedDialog(
-    //           //                     //     animationType: DialogTransitionType
-    //           //                     //         .slideFromBottomFade,
-    //           //                     //     curve: Curves.easeInOutQuart,
-    //           //                     //     // barrierDismissible: false,
-    //           //                     //     context: context,
-    //           //                     //     builder: (ctx) => AlertDialog(
-    //           //                     //           content: Container(
-    //           //                     //               width: 400,
-    //           //                     //               height: 400,
-    //           //                     //               child:
-    //           //                     //                   CustomAutoSizeTextMontserrat(
-    //           //                     //                 text:
-    //           //                     //                     'Meeting already started',
-    //           //                     //               )),
-    //           //                     //         ));
-    //           //                     // }
-
-    //           //                     // rescheduleMeetingDialogue(
-    //           //                     //     context: context,
-    //           //                     //     id: controller.listToShow[indexs].id!,
-    //           //                     //     timeCallback: (data2) {
-    //           //                     //       AllMeetings data =
-    //           //                     //           controller.listToShow[indexs];
-
-    //           //                     //       data.timeOfTheMeeting = data2;
-    //           //                     //       data.isReschedule = true;
-    //           //                     //       print(data.toJson());
-    //           //                     //       /
-    //           //                     //     });
-    //           //                   },
-    //           //                   child: Padding(
-    //           //                     padding: const EdgeInsets.only(left: 10),
-    //           //                     child: CustomAutoSizeTextMontserrat(
-    //           //                       text: "Reschedule Meeting",
-    //           //                       fontSize: 10,
-    //           //                       fontWeight: FontWeight.w600,
-    //           //                       textColor: ThemeConstants.TextColor,
-    //           //                     ),
-    //           //                   ),
-    //           //                 ),
-    //           //                 InkWell(
-    //           //                   onTap: () async {
-    //           //                     showAnimatedDialog(
-    //           //                         animationType: DialogTransitionType
-    //           //                             .slideFromBottomFade,
-    //           //                         curve: Curves.easeInOutQuart,
-    //           //                         // barrierDismissible: false,
-    //           //                         context: context,
-    //           //                         builder: (ctx) => AlertDialog(
-    //           //                               content: Container(
-    //           //                                 width: 300,
-    //           //                                 height: 100,
-    //           //                                 child: Column(
-    //           //                                     mainAxisAlignment:
-    //           //                                         MainAxisAlignment
-    //           //                                             .center,
-    //           //                                     crossAxisAlignment:
-    //           //                                         CrossAxisAlignment
-    //           //                                             .center,
-    //           //                                     children: [
-    //           //                                       CustomAutoSizeTextMontserrat(
-    //           //                                         text: 'Please Confirm',
-    //           //                                         fontSize: 25,
-    //           //                                       ),
-    //           //                                       InkWell(
-    //           //                                         onTap: () {},
-    //           //                                         child: CustomButton(
-    //           //                                           backgroundColor:
-    //           //                                               ThemeConstants
-    //           //                                                   .bluecolor,
-    //           //                                           onPressed: () {},
-    //           //                                           text: 'Delete',
-    //           //                                         ),
-    //           //                                       )
-    //           //                                     ]),
-    //           //                               ),
-    //           //                             ));
-    //           //                   },
-    //           //                   child: Padding(
-    //           //                     padding: const EdgeInsets.only(left: 10),
-    //           //                     child: CustomAutoSizeTextMontserrat(
-    //           //                       text: "Delete Meeting",
-    //           //                       fontSize: 10,
-    //           //                       fontWeight: FontWeight.w600,
-    //           //                       textColor: ThemeConstants.TextColor,
-    //           //                     ),
-    //           //                   ),
-    //           //                 ),
-    //           //                 const Spacer(),
-    //           //               ],
-    //           //             ),
-    //           //           ),
-    //           //         ),
-    //           //       )),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 
   List<Widget> getlist(int indexs) {
@@ -1405,8 +704,8 @@ class DashBoardController extends GetxController with StateMixin {
         Widget uu = Positioned(
           left: 0 + x * i,
           child: Container(
-            height: 36.0,
-            width: 36.0,
+            height: 30.0,
+            width: 30.0,
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -1432,8 +731,8 @@ class DashBoardController extends GetxController with StateMixin {
         Widget uu = Positioned(
           left: 0 + x * i,
           child: Container(
-            height: 36.0,
-            width: 36.0,
+            height: 30.0,
+            width: 30.0,
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -1523,27 +822,30 @@ class DashBoardController extends GetxController with StateMixin {
 class SingleMeetingWidget extends StatelessWidget {
   AllMeetings listToShow;
   int i;
-
+  bool showReshedule;
   List<Widget> getList;
 
   SingleMeetingWidget(
       {super.key,
+      required this.showReshedule,
       required this.listToShow,
       required this.i,
       required this.getList});
 
   @override
   Widget build(BuildContext context) {
+    var mediaQueryWidth = MediaQuery.of(context).size.width;
+
     return InkWell(
       onTap: () async {
         Get.find<BaseController>().selectedMeeting(listToShow);
         // getNotes('${listToShow[i].id}', i);
         // context.pushNamed('secondRoute');
-        context.push('/DashBoard/MeetingDetails');
-        // if (val == 'lol') {
-        //   // getMeetingOfThatDate(
-        //   //     Get.find<CalendarController>().selectedDayGlobal!);
-        // }
+        var res = await context.push('/DashBoard/MeetingDetails');
+        if (res == 'true') {
+          Get.find<CalendarController>().onInit();
+          Get.find<DashBoardController>().onInit();
+        }
 
         // Get.to(MeetingDetails());
       },
@@ -1560,7 +862,7 @@ class SingleMeetingWidget extends StatelessWidget {
                   Color.fromARGB(255, 255, 225, 150),
                   Color.fromARGB(255, 255, 255, 255)
                 ],
-                stops: [0.00, 0.05, 0.05],
+                stops: [0.00, 0.04, 0.04],
               ),
               border: Border.all(color: const Color(0xff1940b3)),
               borderRadius: BorderRadius.circular(15.0)),
@@ -1572,92 +874,61 @@ class SingleMeetingWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.watch_later_outlined,
+                          color: ThemeConstants.TextColor,
+                          size: 18,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        CustomAutoSizeTextMontserrat(
+                          text: '${listToShow.timeOfTheMeeting}',
+                          fontSize: ThemeConstants.fontSizeMedium,
+                          textColor: ThemeConstants.TextColor,
+                        ),
+                        Spacer(),
+                        MeetingStatus(listToShow: listToShow),
+                        SizedBox(
+                          width: 10,
+                        ),
+                      ],
+                    ),
                     Container(
+                      height: 30,
                       width: MediaQuery.of(context).size.width - 20,
-                      child: Wrap(
+                      child: Row(
+                        // runAlignment: WrapAlignment.end,
+                        // crossAxisAlignment: WrapCrossAlignment.end,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 12),
-                            child: SizedBox(
-                              // width: 300,
-                              child: CustomAutoSizeTextMontserrat(
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * .7,
+                            child: Wrap(children: [
+                              CustomAutoSizeTextMontserrat(
                                 text: "${listToShow.meetingAgenda}",
-                                fontWeight: FontWeight.w700,
+                                fontWeight: FontWeight.w600,
+                                fontSize: ThemeConstants.fontSizeMedium,
                               ),
-                            ),
+                            ]),
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              listToShow.meetingStarted! &&
-                                      !listToShow.meetingEnded!
-                                  ? Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Transform.scale(
-                                          scale: 0.8,
-                                          child: Radio(
-                                              activeColor: Colors.green,
-                                              value: true,
-                                              groupValue: true,
-                                              onChanged: (val) {}),
-                                        ),
-                                        CustomAutoSizeTextMontserrat(
-                                          fontSize: 12,
-                                          text: '(Started)',
-                                          textColor: ThemeConstants.GreenColor,
-                                        )
-                                      ],
-                                    )
-                                  : SizedBox.shrink(),
-                              listToShow.meetingStarted! &&
-                                      listToShow.meetingEnded!
-                                  ? Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Transform.scale(
-                                          scale: 0.8,
-                                          child: Radio(
-                                              activeColor: Colors.red,
-                                              value: true,
-                                              groupValue: true,
-                                              onChanged: (val) {}),
-                                        ),
-                                        CustomAutoSizeTextMontserrat(
-                                          text: '(Ended)',
-                                          fontSize: 12,
-                                          textColor: Colors.red,
-                                        )
-                                      ],
-                                    )
-                                  : SizedBox.shrink(),
-                              !listToShow.meetingStarted! &&
-                                      !listToShow.meetingEnded!
-                                  ? Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Transform.scale(
-                                          scale: 0.8,
-                                          child: Radio(
-                                              activeColor: const Color.fromARGB(
-                                                  255, 114, 114, 114),
-                                              value: true,
-                                              groupValue: true,
-                                              onChanged: (val) {}),
-                                        ),
-                                        CustomAutoSizeTextMontserrat(
-                                          text: 'Not Started',
-                                          fontSize: 14,
-                                          textColor: const Color.fromARGB(
-                                              255, 114, 114, 114),
-                                        )
-                                      ],
-                                    )
-                                  : SizedBox.shrink()
-                            ],
+                          SizedBox(
+                            width: 10,
                           ),
+                          Spacer(),
                         ],
                       ),
+                    ),
+                    // const SizedBox(
+                    //   height: 5,
+                    // ),
+
+                    SizedBox(
+                      height: 2,
                     ),
                     CustomAutoSizeTextMontserrat(
                       text: "${listToShow.nameOfTheMeeting}",
@@ -1665,24 +936,24 @@ class SingleMeetingWidget extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       textColor: ThemeConstants.TextColor,
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    CustomAutoSizeTextMontserrat(
-                      text: "${listToShow.meetingType}",
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      textColor: ThemeConstants.TextColor,
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    CustomAutoSizeTextMontserrat(
-                      text: "${listToShow.dateOfMeeting}",
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      textColor: ThemeConstants.TextColor,
-                    ),
+                    // const SizedBox(
+                    //   height: 5,
+                    // ),
+                    // CustomAutoSizeTextMontserrat(
+                    //   text: "${listToShow.meetingType}",
+                    //   fontSize: 13,
+                    //   fontWeight: FontWeight.w600,
+                    //   textColor: ThemeConstants.TextColor,
+                    // ),
+                    // const SizedBox(
+                    //   height: 5,
+                    // ),
+                    // CustomAutoSizeTextMontserrat(
+                    //   text: "${listToShow.dateOfMeeting}",
+                    //   fontSize: 13,
+                    //   fontWeight: FontWeight.w600,
+                    //   textColor: ThemeConstants.TextColor,
+                    // ),
                     Row(
                       children: [
                         Padding(
@@ -1690,7 +961,7 @@ class SingleMeetingWidget extends StatelessWidget {
                           child: SizedBox(
                             // color: Colors.amber,
                             height: 50,
-                            width: 150,
+                            width: 120,
                             child: Stack(
                               //alignment:new Alignment(x, y)
                               children: [
@@ -1727,72 +998,118 @@ class SingleMeetingWidget extends StatelessWidget {
                           ),
                         ),
                         Spacer(),
-                        CustomButton(
-                            backgroundColor: Color.fromARGB(255, 255, 225, 150),
-                            text: 'Reschedule',
-                            textColor: ThemeConstants.blackcolor,
-                            onPressed: () async {
-                              late bool showTheStartEndOptions;
-                              listToShow.meetingCoordinator!.forEach((element) {
-                                if (element.id ==
-                                        Get.find<BaseController>().id ||
-                                    listToShow.createdBy ==
-                                        Get.find<BaseController>().id) {
-                                  showTheStartEndOptions = true;
+                        if (showReshedule)
+                          CustomButton(
+                              backgroundColor:
+                                  Color.fromARGB(255, 255, 225, 150),
+                              text: 'Reschedule',
+                              textColor: ThemeConstants.blackcolor,
+                              onPressed: () async {
+                                late bool showTheStartEndOptions;
+                                listToShow.meetingCoordinator!
+                                    .forEach((element) {
+                                  if (element.id ==
+                                          Get.find<BaseController>().id ||
+                                      listToShow.createdBy ==
+                                          Get.find<BaseController>().id) {
+                                    showTheStartEndOptions = true;
+                                  } else {
+                                    showTheStartEndOptions = false;
+                                  }
+                                });
+                                if (showTheStartEndOptions == true) {
+                                  if (listToShow.meetingStarted == false &&
+                                      listToShow.meetingEnded == false) {
+                                    showAnimatedDialog(
+                                        animationType: DialogTransitionType
+                                            .slideFromBottomFade,
+                                        curve: Curves.easeInOutQuart,
+                                        // barrierDismissible: false,
+                                        context: context,
+                                        builder: (ctx) => Stack(
+                                              children: [
+                                                Center(
+                                                  child:
+                                                      ResheduleMeetingDialogue(
+                                                    controller: Get.find<
+                                                        DashBoardController>(),
+                                                    indexz: i,
+                                                    meetingData: listToShow,
+                                                  ),
+                                                ),
+                                                Align(
+                                                  alignment:
+                                                      Alignment.bottomCenter,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 30),
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        context.pop();
+                                                        // Get.back();
+                                                      },
+                                                      child: Container(
+                                                        width: 50,
+                                                        height: 50,
+                                                        decoration: BoxDecoration(
+                                                            color:
+                                                                ThemeConstants
+                                                                    .bluecolor,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        200)),
+                                                        child: Icon(
+                                                          Icons.close_rounded,
+                                                          color: ThemeConstants
+                                                              .whitecolor,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ));
+                                  } else {
+                                    getToast('Meeting already started');
+                                    // showAnimatedDialog(
+                                    //     barrierDismissible: true,
+                                    //     animationType: DialogTransitionType
+                                    //         .slideFromBottomFade,
+                                    //     curve: Curves.easeInOutQuart,
+                                    //     // barrierDismissible: false,
+                                    //     context: context,
+                                    //     builder: (ctx) => showPoPUp(
+                                    //         'Meeting already started',
+                                    //         Icon(
+                                    //           Icons.error,
+                                    //           size: 40,
+                                    //           color: ThemeConstants.bluecolor,
+                                    //         ),
+                                    //         ctx));
+                                  }
                                 } else {
-                                  print('${element.id}dddddddd');
-                                  showTheStartEndOptions = false;
+                                  getToast(
+                                      "Only Co-ordinator's and creator can reshedule the meeting");
+
+                                  // showAnimatedDialog(
+                                  //     barrierDismissible: true,
+                                  //     animationType: DialogTransitionType
+                                  //         .slideFromBottomFade,
+                                  //     curve: Curves.easeInOutQuart,
+                                  //     // barrierDismissible: false,
+                                  //     context: context,
+                                  //     builder: (ctx) => showPoPUp(
+                                  //         "Only Co-ordinator's and creator can reshedule the meeting",
+                                  //         Icon(
+                                  //           Icons.error,
+                                  //           size: 40,
+                                  //           color: ThemeConstants.bluecolor,
+                                  //         ),
+                                  //         ctx));
                                 }
-                              });
-                              if (showTheStartEndOptions == true) {
-                                if (listToShow.meetingStarted == false &&
-                                    listToShow.meetingEnded == false) {
-                                  showAnimatedDialog(
-                                      animationType: DialogTransitionType
-                                          .slideFromBottomFade,
-                                      curve: Curves.easeInOutQuart,
-                                      // barrierDismissible: false,
-                                      context: context,
-                                      builder: (ctx) =>
-                                          ResheduleMeetingDialogue(
-                                            controller:
-                                                Get.find<DashBoardController>(),
-                                            indexz: i,
-                                            meetingData: listToShow,
-                                          ));
-                                } else {
-                                  showAnimatedDialog(
-                                      barrierDismissible: true,
-                                      animationType: DialogTransitionType
-                                          .slideFromBottomFade,
-                                      curve: Curves.easeInOutQuart,
-                                      // barrierDismissible: false,
-                                      context: context,
-                                      builder: (ctx) => showPoPUp(
-                                          'Meeting already started',
-                                          Icon(
-                                            Icons.error,
-                                            size: 40,
-                                            color: ThemeConstants.bluecolor,
-                                          )));
-                                }
-                              } else {
-                                showAnimatedDialog(
-                                    barrierDismissible: true,
-                                    animationType: DialogTransitionType
-                                        .slideFromBottomFade,
-                                    curve: Curves.easeInOutQuart,
-                                    // barrierDismissible: false,
-                                    context: context,
-                                    builder: (ctx) => showPoPUp(
-                                        "Only Co-ordinator's and creator can reshedule the meeting",
-                                        Icon(
-                                          Icons.error,
-                                          size: 40,
-                                          color: ThemeConstants.bluecolor,
-                                        )));
-                              }
-                            }),
+                              }),
                         // CustomButton(text: 'Delete', onPressed: () {})
                       ],
                     )

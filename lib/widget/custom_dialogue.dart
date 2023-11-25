@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/utils/theme.dart';
+import 'package:meeting_module2/widget/calender/calendar_controller.dart';
 import 'package:meeting_module2/widget/custom_button.dart';
 import 'package:meeting_module2/widget/custom_date_picker/custom_time_picker_only.dart';
 import 'package:meeting_module2/widget/custom_date_picker/custom_timer_widget.dart';
@@ -100,7 +102,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                 children: [
                   Container(
                       width: 240,
-                      alignment: Alignment.centerLeft,
+                      alignment: Alignment.topLeft,
                       child: CustomAutoSizeTextMontserrat(
                         text: "Reschedule Meeting",
                         fontSize: 20,
@@ -108,25 +110,6 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                         textColor: ThemeConstants.bluecolor,
                       )),
                   Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: Container(
-                      width: 25,
-                      height: 25,
-                      alignment: Alignment.centerRight,
-                      child: CircleAvatar(
-                        radius: 25,
-                        backgroundColor: ThemeConstants.bluecolor,
-                        child: Icon(
-                          Icons.close,
-                          color: ThemeConstants.whitecolor,
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -506,6 +489,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                     "updatedBY": 44
                                   };
 
+                                  Get.find<CalendarController>().onInit();
                                   print(data);
                                   // var data2 = json.encode(data);
 
@@ -520,23 +504,29 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                   //todo
 
                                   // print(data.toJson());
-                                  await widget.controller
+                                  var res = await widget.controller
                                       .resheduleMeeting(data);
-                                  showAnimatedDialog(
-                                      barrierDismissible: true,
-                                      context: context,
-                                      animationType: DialogTransitionType
-                                          .slideFromBottomFade,
-                                      curve: Curves.easeInOutQuart,
-                                      // barrierDismissible: false,
 
-                                      builder: (_) => showPoPUp(
-                                          'Reschedule Meeting',
-                                          Icon(
-                                            Icons.error,
-                                            size: 40,
-                                            color: ThemeConstants.bluecolor,
-                                          )));
+                                  if (res) {
+                                    context.pop();
+                                  }
+
+                                  // showAnimatedDialog(
+                                  //     barrierDismissible: true,
+                                  //     context: context,
+                                  //     animationType: DialogTransitionType
+                                  //         .slideFromBottomFade,
+                                  //     curve: Curves.easeInOutQuart,
+                                  //     // barrierDismissible: false,
+
+                                  //     builder: (_) => showPoPUp(
+                                  //         'Reschedule Meeting',
+                                  //         Icon(
+                                  //           Icons.error,
+                                  //           size: 40,
+                                  //           color: ThemeConstants.bluecolor,
+                                  //         ),
+                                  //         context));
                                 }
                               }),
                           SizedBox(

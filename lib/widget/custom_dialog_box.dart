@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 // import 'package:studentpanel/ui/screen/Profile_Module/contactinformation.dart';
@@ -39,25 +40,26 @@ class CustomProfileDialogue extends StatelessWidget {
                     CustomAutoSizeTextMontserrat(
                       text: title,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: Container(
-                        width: 25,
-                        height: 25,
-                        alignment: Alignment.centerRight,
-                        child: CircleAvatar(
-                          radius: 25,
-                          backgroundColor: ThemeConstants.bluecolor,
-                          child: Icon(
-                            Icons.close,
-                            color: ThemeConstants.whitecolor,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                    ),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     context.pop();
+                    //     // Get.back();
+                    //   },
+                    //   child: Container(
+                    //     width: 25,
+                    //     height: 25,
+                    //     alignment: Alignment.centerRight,
+                    //     child: CircleAvatar(
+                    //       radius: 25,
+                    //       backgroundColor: ThemeConstants.bluecolor,
+                    //       child: Icon(
+                    //         Icons.close,
+                    //         color: ThemeConstants.whitecolor,
+                    //         size: 20,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
 
                     // CustomAutoSizeTextMontserrat(
                     //   textColor: ThemeConstants.bluecolor,
@@ -85,7 +87,8 @@ class CustomProfileDialogue extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: () {
-                          Get.back();
+                          context.pop();
+                          // Get.back();
                         },
                         child: CustomAutoSizeTextMontserrat(
                           textColor: ThemeConstants.bluecolor,

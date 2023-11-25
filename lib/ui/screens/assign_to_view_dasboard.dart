@@ -14,7 +14,8 @@ import 'package:meeting_module2/widget/customtextfield.dart';
 import 'package:meeting_module2/widget/dropdown_multi_select/custom_dropDown_allUsers.dart';
 
 class AssignToView2 extends StatefulWidget {
-  AssignToView2({super.key});
+  FindNotesModel argu;
+  AssignToView2({super.key, required this.argu});
 
   @override
   State<AssignToView2> createState() => _AssignToView2State();
@@ -27,8 +28,8 @@ class _AssignToView2State extends State<AssignToView2> {
   late FindNotesModel data;
   @override
   void initState() {
-    FindNotesModel argu = Get.arguments;
-    data = argu;
+    // FindNotesModel argu = Get.arguments;
+    data = widget.argu;
     getController.taskOwner = Get.find<BaseController>().allSiecMembersList[0];
     // TODO: implement initState
     super.initState();
@@ -36,8 +37,6 @@ class _AssignToView2State extends State<AssignToView2> {
 
   @override
   Widget build(BuildContext context) {
-    print('${getController.taskOwner.name}dddd');
-
     return Scaffold(
       body: getController.obx(
           (state) => SafeArea(
@@ -158,11 +157,11 @@ class _AssignToView2State extends State<AssignToView2> {
                                 onPressed: () {
                                   if (getController.key.currentState!
                                       .validate()) {
-                                    print(getController.taskOwner.name);
+                                    // print(getController.taskOwner.name);
                                     getController.assign(data, controller.text);
                                   }
                                   // getController.key.currentState!.save();
-                                  print(getController.taskOwner.name);
+                                  // print(getController.taskOwner.name);
                                 },
                               ),
                             ),

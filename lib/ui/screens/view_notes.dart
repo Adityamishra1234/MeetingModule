@@ -78,59 +78,61 @@ class ViewNotesDetails extends StatelessWidget {
                 // ),
                 if (controller.viewNotesSection == 0 &&
                     controller.notesList.length > 0) ...[
-                  Container(
-                    padding: EdgeInsets.only(left: 5),
-                    alignment: Alignment.centerLeft,
-                    child: DropdownButton2(
-                      underline: Container(),
-                      buttonStyleData: ButtonStyleData(
-                          elevation: 0,
-                          height: 40,
-                          decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                  width: 1, color: ThemeConstants.blackcolor))),
-                      dropdownStyleData: DropdownStyleData(elevation: 1),
-                      hint: Text(
-                        '${controller.selectedDropDown}',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context).hintColor,
+                  if (controller.selectedDropDown != "")
+                    Container(
+                      padding: EdgeInsets.only(left: 5),
+                      alignment: Alignment.centerLeft,
+                      child: DropdownButton2(
+                        underline: Container(),
+                        buttonStyleData: ButtonStyleData(
+                            elevation: 0,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                    width: 1,
+                                    color: ThemeConstants.blackcolor))),
+                        dropdownStyleData: DropdownStyleData(elevation: 1),
+                        hint: Text(
+                          '${controller.selectedDropDown}',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).hintColor,
+                          ),
                         ),
-                      ),
 
-                      items: controller.notesTypeToShowInDropDown
-                          .map((item) => DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(
-                                  item,
-                                  style: const TextStyle(
-                                    fontSize: 14,
+                        items: controller.notesTypeToShowInDropDown
+                            .map((item) => DropdownMenuItem<String>(
+                                  value: item,
+                                  child: Text(
+                                    item,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                ),
-                              ))
-                          .toList(),
-                      // value: controller.selectedDropDown == null
-                      //     ?
-                      //     : controller.selectedFilter.value,
-                      onChanged: (value) {
-                        // controller.frfr(value);
+                                ))
+                            .toList(),
+                        // value: controller.selectedDropDown == null
+                        //     ?
+                        //     : controller.selectedFilter.value,
+                        onChanged: (value) {
+                          // controller.frfr(value);
 
-                        controller.selectedDropDown = value.toString();
+                          controller.selectedDropDown = value.toString();
 
-                        controller.showThisNote();
+                          controller.showThisNote(context);
 
-                        controller.update();
+                          controller.update();
 
-                        // controller.showSpecificMeeting(value);
-                      },
-                      // buttonHeight: 40,
-                      // buttonWidth: 140,
-                      // itemHeight: 40,
-                      // itemWidth: 140,
+                          // controller.showSpecificMeeting(value);
+                        },
+                        // buttonHeight: 40,
+                        // buttonWidth: 140,
+                        // itemHeight: 40,
+                        // itemWidth: 140,
+                      ),
                     ),
-                  ),
                 ],
                 Expanded(
                   child: ListView(

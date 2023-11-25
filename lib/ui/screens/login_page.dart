@@ -34,20 +34,9 @@ class LoginPage extends StatelessWidget {
                 fit: StackFit.expand,
                 alignment: Alignment.bottomCenter,
                 children: [
-                  Positioned(
-                      width: MediaQuery.of(context).size.width * 1,
-                      height: MediaQuery.of(context).size.height * 0.7,
-                      // bottom: 0,
-                      top: MediaQuery.of(context).size.height * 0.3,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: ThemeConstants.midVioltetColor,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(180),
-                              topRight: Radius.circular(180),
-                            )),
-                      )),
-                  BackgroundAuthView(),
+                  BackgroundAuthView(
+                    text: "Let's Register you ",
+                  ),
                   // Positioned(
                   //     width: MediaQuery.of(context).size.width * 1,
                   //     height: MediaQuery.of(context).size.height * 0.7,

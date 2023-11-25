@@ -11,12 +11,19 @@ class CustomTextField extends StatelessWidget {
   bool? readOrEdit = false;
   Color? backgroundCOlour;
   bool? forDropDown;
+  bool? isPassword = false;
+  VoidCallback? callbackForPasswordShow;
+  int? fontSize;
+
   CustomTextField({
     Key? key,
+    this.callbackForPasswordShow,
+    this.fontSize,
     this.forDropDown = true,
     this.backgroundCOlour,
     required this.hint,
     required this.controller,
+    this.isPassword,
     this.obscureText,
     this.readOrEdit,
     this.validator,
@@ -32,12 +39,19 @@ class CustomTextField extends StatelessWidget {
         controller: controller,
         scrollPadding: EdgeInsets.symmetric(
             vertical: MediaQuery.of(context).viewInsets.bottom + 30),
-        style: ThemeConstants.montserrattextstyle2,
+        style: ThemeConstants.montserratTextStyleSmall,
         readOnly: readOrEdit == null ? false : readOrEdit!,
         decoration: InputDecoration(
+          errorMaxLines: 2,
+          suffixIcon: isPassword == true
+              ? IconButton(
+                  icon: Icon(Icons.visibility),
+                  onPressed: callbackForPasswordShow!,
+                )
+              : SizedBox.shrink(),
           contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
           hintText: hint,
-          hintStyle: TextStyle(color: ThemeConstants.blackcolor),
+          hintStyle: ThemeConstants.montserratTextStyleSmall,
           filled: true,
           fillColor: backgroundCOlour ?? Colors.transparent,
           errorBorder: OutlineInputBorder(

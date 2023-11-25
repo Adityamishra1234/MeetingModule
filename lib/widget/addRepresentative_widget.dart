@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/ui/controller/create_new_meeting_controller2.dart';
+import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/widget/custom_dialog_box.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/customtextfield.dart';
@@ -18,14 +20,15 @@ class AddRepresentativeWidget extends StatelessWidget {
     return controller.obx((state) => CustomProfileDialogue(
         tap: (val) async {
           if (key2.currentState!.validate()) {
-            print(val);
-
             await controller.addANewRepresentative();
-            Get.back();
-            Get.defaultDialog(
-                content: Container(
-              child: Text('Representative Added'),
-            ));
+            // await controller.getUniversities(val);
+            // controller.selectedUniversity = controller.allUniversityList[0];
+            // await controller.getRepresentativesByUniversity();
+            // await controller.fetchParticipantData();
+            await controller.getRepresentativeDropDownData();
+
+            getToast('Representative Added');
+            context.pop();
           }
         },
         child: Container(

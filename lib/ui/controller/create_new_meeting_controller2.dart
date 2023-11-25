@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -14,8 +13,10 @@ import 'package:meeting_module2/models/selectedAudienceTypeModel.dart';
 import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
+import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
+import 'package:meeting_module2/widget/popups/custom_error_popup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateNewMeetingController2 extends GetxController with StateMixin {
@@ -53,7 +54,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
   }
 //////Common in Both
 
-  RxString agendaPurposeOfMeeting = 'All Meetings'.obs;
+  RxString agendaPurposeOfMeeting = 'Accountability and Strategy Meetings'.obs;
 
   Rx<TextEditingController> meetingNameController = TextEditingController().obs;
 
@@ -77,7 +78,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
   RxBool MeetingType = true.obs; //true online
 
-  String meetingLocation = true.toString(); //
+  String? meetingLocation; //
 
   // Rx<AllUserModel> selectMeetingBranch = AllUserModel().obs;
 
@@ -88,6 +89,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
       TextEditingController().obs;
 
   Rx<TextEditingController> meetingLink = TextEditingController().obs;
+
+  Rx<TextEditingController> registrationLink = TextEditingController().obs;
 
   bool selectedOption = false;
   // Drop down list
@@ -159,6 +162,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
   Rx<AllMeetings> meetingModel = AllMeetings().obs;
   ApiServices api = ApiServices();
 
+  bool existingRepresentative = false;
+
   // RxString proposedDuration = ''.obs;
 
   ///External Meeting
@@ -221,7 +226,6 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     print(repModel.value.toJson());
     var res = await api.addRepresentative(repModel.value);
 
-    await fetchParticipantData();
     return res;
   }
 
@@ -266,8 +270,6 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     var data = meetingWith.value.split(' ')[0];
     // substring(0, meetingWith.value.length - 9);
 
-    print(data);
-
     var res = await api.findRepresentativeForDropDown(data);
 
     listOfParticipantData =
@@ -283,7 +285,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
   ///
   ///
   Rx<AllUserModel> participantID = AllUserModel().obs;
-  Rx<RepresentativeModel> participantData = RepresentativeModel().obs;
+  RepresentativeModel participantData = RepresentativeModel();
 
   fetchParticipantData() async {
     print(participantID.value.id);
@@ -291,24 +293,24 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
         ? listOfParticipantData[0].id!
         : participantID.value.id!);
 
-    participantData.value = RepresentativeModel.fromJson(res);
+    participantData = RepresentativeModel.fromJson(res);
 
     update();
 
-    print(participantData.value.toJson());
+    print(participantData.toJson());
   }
 
   makeParticipantDataClear() {
-    participantData.value.bankName = null;
-    participantData.value.country = null;
-    participantData.value.createdAt = null;
-    participantData.value.createdBy = null;
-    participantData.value.designation = '';
-    participantData.value.email = '';
-    participantData.value.id = 0;
-    participantData.value.isActive = null;
-    participantData.value.personName = '';
-    participantData.value.phone = null;
+    participantData.bankName = null;
+    participantData.country = null;
+    participantData.createdAt = null;
+    participantData.createdBy = null;
+    participantData.designation = '';
+    participantData.email = '';
+    participantData.id = 0;
+    participantData.isActive = null;
+    participantData.personName = '';
+    participantData.phone = null;
     update();
   }
 
@@ -363,7 +365,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     }
   }
 
-  RxList<RepresentativeModel> listOfParticipants = <RepresentativeModel>[].obs;
+  List<RepresentativeModel> listOfParticipants = <RepresentativeModel>[];
 
   List<Widget> allParticipants(CreateNewMeetingController2 controller) {
     List<Widget> data = [];
@@ -480,8 +482,10 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
   ///
   ///
 
+  meetingTypeChanged(bool type) {}
+
   RxList<AllBranchModel> allBranchList = <AllBranchModel>[].obs;
-  createNewMeeting() async {
+  createNewMeeting(BuildContext context) async {
     meetingModel.value.meetingWith = '';
 
     meetingModel.value.meetingType = 'Internal Meeting';
@@ -510,7 +514,14 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     ///
     ///
     ///
-    meetingModel.value.locationOfTheMeeting = meetingLocation;
+    ///
+    ///
+    if (meetingLocation != null) {
+      meetingModel.value.locationOfTheMeeting =
+          meetingLocation == 'true' ? '1' : '2';
+    } else {
+      meetingModel.value.locationOfTheMeeting = '';
+    }
 
     meetingModel.value.specificLocationOfTheMeeting =
         specifyMeetingLocation.value.text;
@@ -545,40 +556,77 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     // print(res);
 
     // meetingModel.value.timeOfTheMeeting = meetingNameController.value.text;
-    await api.addMeeting(meetingModel.value);
+
+    meetingModel.value.registrationLink = registrationLink.value.text;
+
+    print(meetingModel.value);
+//todoImpo
+    var res = await api.addMeeting(meetingModel.value);
+
+    for (var i = 0; i < selectedUsersList.length; i++) {
+      print(id);
+      var data = {
+        "id": 1,
+        "meeting_id": res['id'],
+        "meeting_notes_id": 0,
+        "task_type": 'Meeting Notes Task',
+        "deadline_date": "${meetingModel.value.dateOfMeeting}",
+        "task_owner_id": selectedUsersList[i].id,
+        "is_active": true,
+        "closed_at": "0000-00-00 00:00:00",
+        "closed_by": 0,
+        "meeting_attented": false,
+        "reason_of_not_attended": "",
+        "created_by": id,
+        "updated_by": id,
+        "created_at": "2023-04-07T09:48:35.000Z",
+        "updated_at": "2023-04-07T09:48:35.000Z",
+        // "notes": ''
+      };
+
+      var assignToRes = await api.assignTo(data);
+    }
 
     change(null, status: RxStatus.loading());
 
-    Get.delete<CreateNewMeetingController2>();
-    Get.put(CreateNewMeetingController2());
+    // Get.delete<CreateNewMeetingController2>();
+    // Get.put(CreateNewMeetingController2());
     change(null, status: RxStatus.success());
-    Get.defaultDialog(
-        title: '',
-        titlePadding: EdgeInsets.all(0),
-        content: Container(
-          width: 200,
-          height: 200,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Meeting Added Successfully',
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Icon(
-                  Icons.check_circle_rounded,
-                  color: ThemeConstants.GreenColor,
-                  size: 60,
-                ),
-              ]),
-        ));
+
+    await generateTheNotifications();
+
+    getToast('Meeting Added Successfully');
+    // showPoPUp(
+    //     'Meeting Added Successfully',
+    //     Icon(
+    //       Icons.check_circle_rounded,
+    //       color: ThemeConstants.GreenColor,
+    //       size: 60,
+    //     ),
+    //     context);
+    // Get.defaultDialog(
+    //     title: '',
+    //     titlePadding: EdgeInsets.all(0),
+    //     content: Container(
+    //       width: 200,
+    //       height: 200,
+    //       child: Column(
+    //           mainAxisAlignment: MainAxisAlignment.center,
+    //           crossAxisAlignment: CrossAxisAlignment.center,
+    //           children: [
+    //             Text(
+    //               'Meeting Added Successfully',
+    //               textAlign: TextAlign.center,
+    //             ),
+    //             SizedBox(
+    //               height: 10,
+    //             ),
+
+    //           ]),
+    //     ));
   }
 
-  createExternalNewMeeting() async {
+  createExternalNewMeeting(BuildContext context) async {
     if (listOfParticipants.length < 1) {
       Get.defaultDialog(
           content: Container(
@@ -608,7 +656,14 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     meetingModel.value.durationOfMeeting = proposedDurationController.value;
 
-    meetingModel.value.meetingMode = MeetingType.value == true ? '1' : '0';
+    meetingModel.value.meetingMode = MeetingType.value == true ? '1' : '2';
+
+    if (meetingLocation != null) {
+      meetingModel.value.locationOfTheMeeting =
+          meetingLocation == 'true' ? '1' : '2';
+    } else {
+      meetingModel.value.locationOfTheMeeting = '';
+    }
 
     /// online
     meetingModel.value.meetingModeType = modeOfMeeting.value;
@@ -652,6 +707,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     var id = await prefs.getInt('id');
     meetingModel.value.createdBy = id;
 
+    meetingModel.value.registrationLink = registrationLink.value.text;
+
     var res = await api.addMeeting(meetingModel.value);
 
     // var resDecoded = json.decode(res);
@@ -677,35 +734,83 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     var kd = await api.addParticipants(ko);
     print(kd.toString());
 
+    for (var i = 0; i < selectedUsersList.length; i++) {
+      print(id);
+      var data = {
+        "id": 1,
+        "meeting_id": res['id'],
+        "meeting_notes_id": 0,
+        "task_type": 'Training',
+        "deadline_date": "${meetingModel.value.dateOfMeeting}",
+        "task_owner_id": selectedUsersList[i].id,
+        "is_active": true,
+        "closed_at": "0000-00-00 00:00:00",
+        "closed_by": 0,
+        "meeting_attented": false,
+        "reason_of_not_attended": "",
+        "created_by": id,
+        "updated_by": id,
+        "created_at": "2023-04-07T09:48:35.000Z",
+        "updated_at": "2023-04-07T09:48:35.000Z",
+        // "notes": ''
+      };
+
+      var assignToRes = await api.assignTo(data);
+    }
+
     change(null, status: RxStatus.loading());
 
     Get.delete<CreateNewMeetingController2>();
     Get.put(CreateNewMeetingController2());
     change(null, status: RxStatus.success());
-    Get.defaultDialog(
-        title: '',
-        titlePadding: EdgeInsets.all(0),
-        content: Container(
-          width: 200,
-          height: 200,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Meeting Added Successfully',
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Icon(
-                  Icons.check_circle_rounded,
-                  color: ThemeConstants.GreenColor,
-                  size: 60,
-                ),
-              ]),
-        ));
+
+    await generateTheNotifications();
+    getToast('Meeting Added Successfully');
+    // showPoPUp(
+    //     'Meeting Added Successfully',
+    //     Icon(
+    //       Icons.check_circle_rounded,
+    //       color: ThemeConstants.GreenColor,
+    //       size: 60,
+    //     ),
+    //     context);
+  }
+
+  generateTheNotifications() async {
+    List<int> idList = [];
+
+    for (var i = 0; i < meetingModel.value.siecParticipants!.length; i++) {
+      idList.add(meetingModel.value.siecParticipants![i].id!);
+    }
+
+    for (var i = 0; i < meetingModel.value.meetingCoordinator!.length; i++) {
+      idList.add(meetingModel.value.meetingCoordinator![i].id!);
+    }
+
+    var title = 'Scheduled a Meeting ';
+    var body = "You have a meeting with SIEC Family, scheduled at " "";
+
+    var res = await api.generateMultiNotifications(
+        title: title, body: body, id: idList);
+  }
+
+  generateTheNotificationsExternal() async {
+    List<int> idList = [];
+
+    for (var i = 0; i < meetingModel.value.siecParticipants!.length; i++) {
+      idList.add(meetingModel.value.siecParticipants![i].id!);
+    }
+
+    for (var i = 0; i < meetingModel.value.meetingCoordinator!.length; i++) {
+      idList.add(meetingModel.value.meetingCoordinator![i].id!);
+    }
+
+//todoImpo
+    var title = 'Scheduled a Meeting';
+    var body = "You have a meeting with SIEC Family, scheduled at ";
+
+    var res = await api.generateMultiNotifications(
+        title: title, body: body, id: idList);
   }
 
   getGroupData() async {
