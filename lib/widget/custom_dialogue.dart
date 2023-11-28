@@ -4,7 +4,9 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
+import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
+import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/calender/calendar_controller.dart';
 import 'package:meeting_module2/widget/custom_button.dart';
@@ -605,66 +607,49 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                   }
                                   // ofline => location , Siec branch => selected Branch
 
-                                  var data = {
-                                    "meetingId": widget
-                                        .controller.listToShow[widget.indexz].id
-                                        .toString(),
-                                    "reasonOfReshedule":
-                                        reasonOfReshedule.value.text,
-                                    "rescheduleDate": date,
-                                    "rescheduleTime": time,
-                                    "rescheduleDuration": proposedDuration,
-                                    "meetingType": meetingType,
-                                    "modeOfMeeting": modeOfMeeting,
-                                    "meetingLink": meetingLink.text,
-                                    "updatedBY": 44,
-                                    "siec_branch": selectedBranchForUserList,
-                                    "specific_location_of_the_meeting":
-                                        specifyLocation.text,
-                                  };
-                                  Get.find<CalendarController>().onInit();
-                                  print(data);
-                                  // var data2 = json.encode(data);
+                                  if (meetingType == 2) {
+                                    if (meetingLocation == true.toString()) {
+                                      if (selectedBranchForUserList == 0) {
+                                        getToast(
+                                            "Kindly select location field");
+                                      }
+                                      ;
+                                    } else {
+                                      if (specifyLocation.text.isEmpty) {
+                                        getToast(
+                                            "Kindly enter specify location field");
+                                      }
+                                      ;
+                                    }
+                                  } else {
+                                    var data = {
+                                      "meetingId": widget.controller
+                                          .listToShow[widget.indexz].id
+                                          .toString(),
+                                      "reasonOfReshedule":
+                                          reasonOfReshedule.value.text,
+                                      "rescheduleDate": date,
+                                      "rescheduleTime": time,
+                                      "rescheduleDuration": proposedDuration,
+                                      "meetingType": meetingType,
+                                      "modeOfMeeting": modeOfMeeting,
+                                      "meetingLink": meetingLink.text,
+                                      "updatedBY":
+                                          Get.find<BaseController>().id,
+                                      "siec_branch": selectedBranchForUserList,
+                                      "specific_location_of_the_meeting":
+                                          specifyLocation.text,
+                                    };
+                                    Get.find<CalendarController>().onInit();
+                                    print(data);
 
-                                  // data.timeOfTheMeeting = time;
-                                  // data.isReschedule = true;
-                                  // data.dateOfMeeting = date;
-                                  // data.durationOfMeeting = proposedDuration;
-                                  // data.meetingType =
-                                  //     meetingType == true ? 'Online' : 'Offline';
-                                  // data.meetingMode = modeOfMeeting;
-                                  // data.meetingLink = meetingLink.value.text;
-                                  //todo
+                                    var res = await widget.controller
+                                        .resheduleMeeting(data);
 
-                                  // print(data.toJson());
-
-                                  //TODO
-                                  // modeofmeeting 1=> online 2=> offline
-                                  // 1=> mode of meeting , Meeting link,
-
-                                  var res = await widget.controller
-                                      .resheduleMeeting(data);
-
-                                  if (res) {
-                                    context.pop();
+                                    if (res) {
+                                      context.pop();
+                                    }
                                   }
-
-                                  // showAnimatedDialog(
-                                  //     barrierDismissible: true,
-                                  //     context: context,
-                                  //     animationType: DialogTransitionType
-                                  //         .slideFromBottomFade,
-                                  //     curve: Curves.easeInOutQuart,
-                                  //     // barrierDismissible: false,
-
-                                  //     builder: (_) => showPoPUp(
-                                  //         'Reschedule Meeting',
-                                  //         Icon(
-                                  //           Icons.error,
-                                  //           size: 40,
-                                  //           color: ThemeConstants.bluecolor,
-                                  //         ),
-                                  //         context));
                                 }
                               }),
                           SizedBox(
