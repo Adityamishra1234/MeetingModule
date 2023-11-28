@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:get/get.dart';
@@ -40,15 +41,18 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
   String modeOfMeeting = 'Zoom';
   TextEditingController meetingLink = TextEditingController();
   TextEditingController reasonOfReshedule = TextEditingController();
-
+  TextEditingController specifyLocation = TextEditingController();
+  String? meetingLocation;
   GlobalKey<FormState> key = GlobalKey<FormState>();
+  int selectedBranchForUserList = 0;
 
   @override
   void initState() {
     date = widget.meetingData.dateOfMeeting!;
     time = widget.meetingData.timeOfTheMeeting!;
     meetingLink.text = widget.meetingData.meetingLink!;
-
+    proposedDuration =
+        widget.controller.listToShow[widget.indexz].durationOfMeeting!;
     meetingType = widget.meetingData.meetingMode!;
 
     if (widget.meetingData.meetingType! == '1')
@@ -254,9 +258,10 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                       onChanged: (value) {
                                         // controller.MeetingType.value = false;
                                         // controller.update();
-                                        setState(() {});
 
                                         meetingType = '1';
+                                        meetingLocation = "";
+                                        setState(() {});
 
                                         // controller.MeetingType.value = true;
                                         // controller.update();
@@ -273,6 +278,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                       groupValue: meetingType,
                                       onChanged: (value) {
                                         meetingType = '2';
+
                                         setState(() {});
                                       }),
                                   CustomAutoSizeTextMontserrat(
@@ -315,6 +321,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                       ),
                     ),
                   ),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -383,6 +390,137 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                         ),
                     ],
                   ),
+
+                  // Modde of the Meeting Offline
+                  if (meetingType == '2')
+                    CustomAutoSizeTextMontserrat(
+                      text: "Location",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  if (meetingType == '2')
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Radio(
+                            value: true.toString(),
+                            groupValue: meetingLocation,
+                            onChanged: (value) {
+                              meetingLocation = true.toString();
+                              setState(() {});
+                            }),
+                        if (meetingType == '2')
+                          CustomAutoSizeTextMontserrat(
+                            text: 'Siec Branch',
+                            fontSize: 10,
+                          ),
+                        SizedBox(
+                          width: 50,
+                        ),
+                        Radio(
+                            value: false.toString(),
+                            groupValue: meetingLocation,
+                            onChanged: (value) {
+                              meetingLocation = false.toString();
+                              setState(() {});
+                            }),
+                        CustomAutoSizeTextMontserrat(
+                          text: 'Others',
+                          fontSize: 10,
+                        ),
+                      ],
+                    ),
+
+                  if (meetingLocation == false.toString())
+                    CustomAutoSizeTextMontserrat(
+                      text: "Specify location",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  if (meetingLocation == false.toString())
+                    CustomTextField(hint: "", controller: specifyLocation),
+
+                  if (meetingLocation == true.toString())
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Align(
+                        alignment: AlignmentDirectional.topStart,
+                        child: CustomAutoSizeTextMontserrat(
+                          text: "Select Branch",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  if (meetingLocation == true.toString())
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 5),
+                      width: MediaQuery.of(context).size.width,
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      height: 110,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount:
+                              widget.controller.branchListwithFlag.length,
+                          itemBuilder: (context, index) => InkWell(
+                                onTap: () {
+                                  selectedBranchForUserList = widget
+                                      .controller.branchListwithFlag[index].id!;
+                                  setState(() {});
+                                  // controller.branchSelected(
+                                  //     controller.branchListwithFlag[index].id!);
+                                  // selectMeetingBranch.value = widget
+                                  //     .controller.branchListwithFlag[index].id!;
+                                  // controller.update();
+                                },
+                                child: Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  width: 140,
+                                  decoration: BoxDecoration(
+                                      color: selectedBranchForUserList ==
+                                              widget.controller
+                                                  .branchListwithFlag[index].id
+                                          ? ThemeConstants.lightblueColor2
+                                          : ThemeConstants.whitecolor,
+                                      borderRadius: BorderRadius.circular(15),
+                                      border: Border.all(
+                                          width: 1,
+                                          color: ThemeConstants.bluecolor)),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: 50,
+                                          height: 50,
+                                          child: CachedNetworkImage(
+                                            imageUrl: widget
+                                                .controller
+                                                .branchListwithFlag[index]
+                                                .imageLink!,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text(
+                                          '${widget.controller.branchListwithFlag[index].name}',
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        )
+                                      ]),
+                                ),
+                              )),
+                    ),
+
                   SizedBox(
                     height: 10,
                   ),
@@ -449,46 +587,41 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
 
                                 if (key.currentState!.validate() == true) {
                                   String link = meetingLink.value.text;
+
+                                  // online => mode of the meeting,meeting link
+                                  if (meetingType == 1) {
+                                    meetingLocation = "";
+                                    selectedBranchForUserList = 0;
+                                    specifyLocation.text = "";
+                                  } else {
+                                    modeOfMeeting = "";
+                                    meetingLink.text = "";
+                                    // Siec Branches
+                                    if (meetingLocation == true.toString()) {
+                                      specifyLocation.text = "";
+                                    } else {
+                                      selectedBranchForUserList = 0;
+                                    }
+                                  }
+                                  // ofline => location , Siec branch => selected Branch
+
                                   var data = {
                                     "meetingId": widget
                                         .controller.listToShow[widget.indexz].id
                                         .toString(),
                                     "reasonOfReshedule":
                                         reasonOfReshedule.value.text,
-                                    "rescheduleDate": date == ''
-                                        ? widget
-                                            .controller
-                                            .listToShow[widget.indexz]
-                                            .dateOfMeeting
-                                        : date,
-                                    "rescheduleTime": time == ''
-                                        ? widget
-                                            .controller
-                                            .listToShow[widget.indexz]
-                                            .timeOfTheMeeting
-                                        : time,
-                                    "rescheduleDuration": proposedDuration == ''
-                                        ? widget
-                                            .controller
-                                            .listToShow[widget.indexz]
-                                            .durationOfMeeting
-                                        : proposedDuration,
-                                    "meetingType": modeOfMeeting == ''
-                                        ? widget
-                                            .controller
-                                            .listToShow[widget.indexz]
-                                            .meetingModeType
-                                        : modeOfMeeting,
-                                    "modeOfMeeting": meetingType == ''
-                                        ? widget
-                                            .controller
-                                            .listToShow[widget.indexz]
-                                            .meetingMode
-                                        : meetingType,
-                                    "meetingLink": link,
-                                    "updatedBY": 44
+                                    "rescheduleDate": date,
+                                    "rescheduleTime": time,
+                                    "rescheduleDuration": proposedDuration,
+                                    "meetingType": meetingType,
+                                    "modeOfMeeting": modeOfMeeting,
+                                    "meetingLink": meetingLink.text,
+                                    "updatedBY": 44,
+                                    "siec_branch": selectedBranchForUserList,
+                                    "specific_location_of_the_meeting":
+                                        specifyLocation.text,
                                   };
-
                                   Get.find<CalendarController>().onInit();
                                   print(data);
                                   // var data2 = json.encode(data);
@@ -504,6 +637,11 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                   //todo
 
                                   // print(data.toJson());
+
+                                  //TODO
+                                  // modeofmeeting 1=> online 2=> offline
+                                  // 1=> mode of meeting , Meeting link,
+
                                   var res = await widget.controller
                                       .resheduleMeeting(data);
 
