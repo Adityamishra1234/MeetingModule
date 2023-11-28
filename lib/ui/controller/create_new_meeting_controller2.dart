@@ -517,13 +517,15 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     ///
     ///
     ///
+    ///
+    ///
 
-    if (meetingLocation != null) {
-      meetingModel.value.locationOfTheMeeting =
-          meetingLocation == 'true' ? '1' : '2';
-    } else {
-      meetingModel.value.locationOfTheMeeting = '';
-    }
+    // if (meetingLocation != null) {
+    //   meetingModel.value.locationOfTheMeeting =
+    //       meetingLocation == 'true' ? '1' : '2';
+    // } else {
+    //   meetingModel.value.locationOfTheMeeting = '';
+    // }
 
     meetingModel.value.specificLocationOfTheMeeting =
         specifyMeetingLocation.value.text;
@@ -566,13 +568,35 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     print(meetingModel.value);
 
-    if (meetingModel.value.meetingMode == '2') {
+    // if (meetingModel.value.meetingMode == '2') {
+    //   meetingModel.value.meetingModeType = '';
+    //   meetingModel.value.meetingLink = '';
+    //   meetingModel.value.registrationLink = '';
+    //   meetingModel.value.siecBranch = 0;
+    // } else {}
+
+//todoImpo
+
+    if (meetingModel.value.meetingMode == '1') {
+      meetingModel.value.locationOfTheMeeting = '';
+      meetingModel.value.specificLocationOfTheMeeting = '';
+      meetingModel.value.siecBranch = 0;
+    } else {
+      meetingModel.value.locationOfTheMeeting =
+          meetingLocation == 'true' ? '1' : '2';
       meetingModel.value.meetingModeType = '';
       meetingModel.value.meetingLink = '';
-    } else {
+      meetingModel.value.registrationLink = '';
+    }
+
+    if (meetingModel.value.meetingMode == '2' &&
+        meetingModel.value.locationOfTheMeeting == '1') {
+      meetingModel.value.specificLocationOfTheMeeting = '';
+    } else if (meetingModel.value.meetingMode == '2' &&
+        meetingModel.value.locationOfTheMeeting == '2') {
       meetingModel.value.siecBranch = 0;
     }
-//todoImpo
+
     var res = await api.addMeeting(meetingModel.value);
 
     for (var i = 0; i < selectedUsersList.length; i++) {
@@ -601,8 +625,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     change(null, status: RxStatus.loading());
 
-    // Get.delete<CreateNewMeetingController2>();
-    // Get.put(CreateNewMeetingController2());
+    Get.delete<CreateNewMeetingController2>();
+    Get.put(CreateNewMeetingController2());
     change(null, status: RxStatus.success());
 
     await generateTheNotifications();

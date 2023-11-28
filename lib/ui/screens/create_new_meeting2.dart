@@ -2644,6 +2644,19 @@ class CreateNewMeeting2 extends StatelessWidget {
                   model: Get.find<BaseController>().allSiecMembersList,
                   initialSelectedValue: '',
                   inititalSelectedList: controller.preFilledUsers,
+                  field: Container(
+                    height: 22,
+                    child: CustomTextField(
+                      forDropDown: false,
+                      backgroundCOlour: Colors.transparent,
+                      readOrEdit: true,
+                      hint: '',
+                      controller: TextEditingController(),
+                      validator: controller.selectedUsersList.length == 0
+                          ? Validator.plzSelectOne
+                          : null,
+                    ),
+                  ),
 
                   // callbackFunctionSingle: (val) {
                   //   // controller.selectedBranch.value = val;
