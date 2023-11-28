@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/models/userModal.dart';
@@ -25,6 +26,8 @@ class SigninController extends GetxController with StateMixin {
   var otpController = TextEditingController();
   var passwordController = TextEditingController();
 
+  bool passwordValidatted = false;
+
   bool showPassword = false;
 
   startResend() async {
@@ -43,9 +46,9 @@ class SigninController extends GetxController with StateMixin {
       forOtp.value = 2;
 
       update();
-      // var res2 = await api.getOTP(email);
+      var res2 = await api.getOTP(email);
       startTimer();
-      var res2 = true;
+      // var res2 = true;
 
       update();
     }
@@ -225,9 +228,28 @@ class SigninController extends GetxController with StateMixin {
                     child: CustomTextField(
                         backgroundCOlour: ThemeConstants.whitecolor,
                         hint: "Enter your password",
-                        validator: Validator.passwordWithSpecial,
+                        // validator: Validator.passwordWithSpecial,
                         controller: passwordController),
                   ),
+                  FlutterPwValidator(
+                      controller: passwordController,
+                      minLength: 8,
+                      uppercaseCharCount: 1,
+                      lowercaseCharCount: 1,
+                      numericCharCount: 1,
+                      specialCharCount: 1,
+                      width: 300,
+                      height: 150,
+                      onSuccess: () {
+                        passwordValidatted = true;
+                        print('object');
+                        update();
+                      },
+                      onFail: () {
+                        print('object');
+                        passwordValidatted = false;
+                        update();
+                      }),
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 40, vertical: 2),
@@ -256,7 +278,8 @@ class SigninController extends GetxController with StateMixin {
 
                         startLoading();
                         if (passwordController.text.isNotEmpty &&
-                            otpController.text.isNotEmpty) {
+                            otpController.text.isNotEmpty &&
+                            passwordValidatted == true) {
                           var res = await updatePasswordForget(email,
                               passwordController.text, otpController.text);
 

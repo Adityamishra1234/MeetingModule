@@ -694,17 +694,17 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     meetingModel.value.meetingMode = MeetingType.value == true ? '1' : '2';
 
-    if (meetingModel.value.meetingMode == '2') {
-      meetingModel.value.meetingModeType = '';
-      meetingModel.value.meetingLink = '';
-    }
+    // if (meetingModel.value.meetingMode == '2') {
+    //   meetingModel.value.meetingModeType = '';
+    //   meetingModel.value.meetingLink = '';
+    // }
 
-    if (meetingLocation != null) {
-      meetingModel.value.locationOfTheMeeting =
-          meetingLocation == 'true' ? '1' : '2';
-    } else {
-      meetingModel.value.locationOfTheMeeting = '';
-    }
+    // if (meetingLocation != null) {
+    //   meetingModel.value.locationOfTheMeeting =
+    //       meetingLocation == 'true' ? '1' : '2';
+    // } else {
+    //   meetingModel.value.locationOfTheMeeting = '';
+    // }
 
     /// online
     meetingModel.value.meetingModeType = modeOfMeeting.value;
@@ -753,10 +753,30 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     meetingModel.value.createdBy = id;
     meetingModel.value.updatedBy = id;
 
-    if (meetingModel.value.meetingMode == '2') {
+    // if (meetingModel.value.meetingMode == '2') {
+    //   meetingModel.value.meetingModeType = '';
+    //   meetingModel.value.meetingLink = '';
+    // } else {
+    //   meetingModel.value.siecBranch = 0;
+    // }
+
+    if (meetingModel.value.meetingMode == '1') {
+      meetingModel.value.locationOfTheMeeting = '';
+      meetingModel.value.specificLocationOfTheMeeting = '';
+      meetingModel.value.siecBranch = 0;
+    } else {
+      meetingModel.value.locationOfTheMeeting =
+          meetingLocation == 'true' ? '1' : '2';
       meetingModel.value.meetingModeType = '';
       meetingModel.value.meetingLink = '';
-    } else {
+      meetingModel.value.registrationLink = '';
+    }
+
+    if (meetingModel.value.meetingMode == '2' &&
+        meetingModel.value.locationOfTheMeeting == '1') {
+      meetingModel.value.specificLocationOfTheMeeting = '';
+    } else if (meetingModel.value.meetingMode == '2' &&
+        meetingModel.value.locationOfTheMeeting == '2') {
       meetingModel.value.siecBranch = 0;
     }
 

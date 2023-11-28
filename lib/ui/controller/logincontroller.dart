@@ -20,6 +20,8 @@ class LoginController extends GetxController with StateMixin {
 
   bool showPassword = false;
 
+  bool passwordValidated = false;
+
   GlobalKey<FormState> key = GlobalKey<FormState>();
 
   @override
@@ -33,10 +35,10 @@ class LoginController extends GetxController with StateMixin {
     var res = await api.getEmailverification(email);
 
     if (res['success'] == true) {
-      // var res2 = await api.getOTP(email);
+      var res2 = await api.getOTP(email);
 
-      // if (res2['success'] == true) {
-      if (true) {
+      if (res2['success'] == true) {
+        // if (true) {
         verifyEmail = false;
         forOtp = 2;
 
@@ -76,8 +78,8 @@ class LoginController extends GetxController with StateMixin {
 
   otpcheck(String email, String otp) async {
     change(null, status: RxStatus.loading());
-    // var res = await api.otpMatch(email, otp);
-    var res = true;
+    var res = await api.otpMatch(email, otp);
+    // var res = true;
 
     if (res != null) {
       // if (res['success'] == true) {

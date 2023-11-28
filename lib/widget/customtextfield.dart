@@ -107,6 +107,8 @@ class CustomTextField extends StatelessWidget {
             return getEmptyDropDownValidation(value);
           } else if (Validator.passwordWithSpecial == validator) {
             return getPasswordWithSpecialCharacterValidator(value);
+          } else if (Validator.passwordMatchValidation == validator) {
+            return getPasswordWithSpecialCharacterValidator(value);
           }
           return null;
         });
@@ -120,5 +122,7 @@ enum Validator {
   passwordWithSpecial,
   notEmpty,
   otp,
-  plzSelectOne
+  plzSelectOne,
+
+  passwordMatchValidation
 }
