@@ -664,10 +664,12 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
   createExternalNewMeeting(BuildContext context) async {
     if (listOfParticipants.length < 1) {
-      Get.defaultDialog(
-          content: Container(
-        child: Text('Please add atleast one participant'),
-      ));
+      getToast('Please add atleast one participant');
+
+      // Get.defaultDialog(
+      //     content: Container(
+      //   child: Text('Please add atleast one participant'),
+      // ));
 
       return true;
     }
@@ -796,8 +798,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
               "meeting_id": dd.id,
               "participant_id": element.id,
               "is_active": true,
-              "created_by": 136,
-              "updated_by": 136,
+              "created_by": id,
+              "updated_by": id,
               "created_at": null,
               "updated_at": null
             })));
@@ -831,8 +833,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     change(null, status: RxStatus.loading());
 
-    Get.delete<CreateNewMeetingController2>();
-    Get.put(CreateNewMeetingController2());
+    // Get.delete<CreateNewMeetingController2>();
+    // Get.put(CreateNewMeetingController2());
     change(null, status: RxStatus.success());
 
     await generateTheNotifications();

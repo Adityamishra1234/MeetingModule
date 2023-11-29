@@ -1559,21 +1559,31 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                             controller.showLoading = true;
                                             controller.update();
                                             //  Future.delayed(
-                                            //         Duration(seconds: 5));
 
-                                            await controller.meetingStarted(
-                                                meetingData.id!, true);
-                                            controller.meetingStartedValue =
-                                                true;
-                                            controller.showLoading = false;
-                                            controller.update();
-                                            // showDialog(
-                                            //     context: context,
-                                            //     builder: (_) => CustomErrorPopup(
-                                            //         text: 'sss',
-                                            //         showLoading: false));
+                                            var stillWantToStart = await controller
+                                                .checkIfTheyAreStaringMeetingBefore(
+                                                    meetingData
+                                                        .timeOfTheMeeting,
+                                                    meetingData.dateOfMeeting,
+                                                    context); //         Duration(seconds: 5));
+                                            if (stillWantToStart) {
+                                              await controller.meetingStarted(
+                                                  meetingData.id!, true);
+                                              controller.meetingStartedValue =
+                                                  true;
+                                              controller.showLoading = false;
+                                              controller.update();
+                                              // showDialog(
+                                              //     context: context,
+                                              //     builder: (_) => CustomErrorPopup(
+                                              //         text: 'sss',
+                                              //         showLoading: false));
 
-                                            controller.update();
+                                              controller.update();
+                                            } else {
+                                              controller.showLoading = false;
+                                              controller.update();
+                                            }
                                           } else if (controller
                                                       .meetingStartedValue ==
                                                   true &&
@@ -1763,94 +1773,322 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                                         : SizedBox.shrink()),
                                       )
                                     : InkWell(
-                                        onTap: () {
+                                        onTap: () async {
                                           getToast(
-                                              'Only Co-ordinator or meeting creator can start and end the meeting');
+                                              'Onyl co-ordinator and creator can start the meeting');
+                                          // if (controller.meetingStartedValue ==
+                                          //         false &&
+                                          //     controller.meetingEndedValue ==
+                                          //         false) {
+                                          //   print('ddddd');
+
+                                          //   controller.showLoading = true;
+                                          //   controller.update();
+                                          //   //  Future.delayed(
+                                          //   //         Duration(seconds: 5));
+
+                                          //   await controller.meetingStarted(
+                                          //       meetingData.id!, true);
+                                          //   controller.meetingStartedValue =
+                                          //       true;
+                                          //   controller.showLoading = false;
+                                          //   controller.update();
+                                          //   // showDialog(
+                                          //   //     context: context,
+                                          //   //     builder: (_) => CustomErrorPopup(
+                                          //   //         text: 'sss',
+                                          //   //         showLoading: false));
+
+                                          //   controller.update();
+                                          // } else if (controller
+                                          //             .meetingStartedValue ==
+                                          //         true &&
+                                          //     controller.meetingEndedValue ==
+                                          //         false) {
+                                          //   print('ddddd');
+                                          //   // showLoading = true;
+                                          //   // setState(() {});
+                                          //   controller.showLoading = true;
+                                          //   // Future.delayed(Duration(seconds: 5));
+                                          //   controller.update();
+                                          //   await controller.meetingEnded(
+                                          //       meetingData.id!, true);
+                                          //   // controller.showLoading = false;
+                                          //   controller.meetingEndedValue = true;
+                                          //   controller.showLoading = false;
+                                          //   // showDialog(
+                                          //   //     context: context,
+                                          //   //     builder: (_) => CustomErrorPopup(
+                                          //   //         text: 'sss',
+                                          //   //         showLoading: false));
+                                          //   controller.update();
+                                          //   setState(() {});
+                                          // } else if (controller
+                                          //             .meetingStartedValue ==
+                                          //         true &&
+                                          //     controller.meetingEndedValue ==
+                                          //         true) {
+                                          //   getToast('Meeting Already Ended');
+
+                                          //   // showDialog(
+                                          //   //     barrierDismissible: true,
+                                          //   //     context: context,
+                                          //   //     builder: (_) => showPoPUp(
+                                          //   //         'Meeting Already Ended',
+                                          //   //         Icon(
+                                          //   //           Icons.error,
+                                          //   //           size: 40,
+                                          //   //           color: ThemeConstants
+                                          //   //               .bluecolor,
+                                          //   //         ),
+                                          //   //         context));
+                                          // }
                                           // showDialog(
-                                          //     barrierDismissible: true,
                                           //     context: context,
-                                          //     builder: (_) => showPoPUp(
-                                          //         'Only Co-ordinator or meeting creator can start and end the meeting',
-                                          //         Icon(
-                                          //           Icons.error,
-                                          //           size: 40,
-                                          //           color: ThemeConstants
-                                          //               .bluecolor,
-                                          //         ),
-                                          //         context));
+                                          //     builder: (_) => AlertDialog(
+                                          //           content: Container(
+                                          //             child: Column(
+                                          //               mainAxisAlignment:
+                                          //                   MainAxisAlignment
+                                          //                       .center,
+                                          //               mainAxisSize:
+                                          //                   MainAxisSize.min,
+                                          //               children: [
+                                          //                 Icon(
+                                          //                     Icons.mark_email_read)
+                                          //               ],
+                                          //             ),
+                                          //           ),
+                                          //         ));
                                         },
                                         child: IgnorePointer(
                                           ignoring: true,
                                           child: Opacity(
                                             opacity: 0.5,
-                                            child: InkWell(
-                                              onTap: () {
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (_) => AlertDialog(
-                                                          content: Container(
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              children: [
-                                                                Icon(Icons
-                                                                    .mark_email_read)
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ));
-                                              },
-                                              child: Container(
-                                                  width: 100,
-                                                  height: 90,
-                                                  // padding: EdgeInsets.only(
-                                                  //     top: 5, left: 5, bottom: 5, right: 20),
-                                                  // margin: EdgeInsets.symmetric(
-                                                  //     vertical: 15, horizontal: 12),
-                                                  decoration: BoxDecoration(
-                                                    boxShadow: [
-                                                      const BoxShadow(
-                                                          blurRadius: 0.5,
-                                                          spreadRadius: 0.1,
-                                                          color: Color.fromARGB(
-                                                              40, 0, 0, 0))
-                                                    ],
-                                                    color: ThemeConstants
-                                                        .whitecolor,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            13),
-                                                  ),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(Icons.video_call,
-                                                          color: ThemeConstants
-                                                              .bluecolor,
-                                                          size: 30),
-                                                      CustomAutoSizeTextMontserrat(
-                                                        align: TextAlign.center,
-                                                        text:
-                                                            'Meeting Started Ended',
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        textColor:
-                                                            ThemeConstants
-                                                                .bluecolor,
+                                            child: Container(
+                                                width: 100,
+                                                height: 90,
+
+                                                // padding: EdgeInsets.only(
+                                                //     top: 5, left: 5, bottom: 5, right: 20),
+                                                // margin: EdgeInsets.symmetric(
+                                                //     vertical: 15, horizontal: 12),
+                                                decoration: BoxDecoration(
+                                                  // boxShadow: [
+                                                  //   const BoxShadow(
+                                                  //       blurRadius: 0.5,
+                                                  //       spreadRadius: 0.1,
+                                                  //       color: Color.fromARGB(
+                                                  //           40, 0, 0, 0))
+                                                  // ],
+                                                  color:
+                                                      ThemeConstants.whitecolor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(13),
+                                                ),
+                                                child: controller
+                                                                .meetingStartedValue ==
+                                                            false &&
+                                                        controller
+                                                                .meetingEndedValue ==
+                                                            false
+                                                    ? Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          if (controller
+                                                                  .showLoading ==
+                                                              false) ...[
+                                                            Icon(
+                                                                Icons
+                                                                    .video_call,
+                                                                color: ThemeConstants
+                                                                    .bluecolor,
+                                                                size: 30),
+                                                            CustomAutoSizeTextMontserrat(
+                                                              align: TextAlign
+                                                                  .center,
+                                                              text:
+                                                                  'Start Meeting',
+                                                              fontSize: 10,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              textColor:
+                                                                  ThemeConstants
+                                                                      .bluecolor,
+                                                            )
+                                                          ] else if (controller
+                                                                  .showLoading ==
+                                                              true) ...[
+                                                            CircularProgressIndicator()
+                                                          ]
+                                                        ],
                                                       )
-                                                    ],
-                                                  )),
-                                            ),
+                                                    : controller.meetingStartedValue ==
+                                                                true &&
+                                                            controller
+                                                                    .meetingEndedValue ==
+                                                                false
+                                                        ? Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              if (controller
+                                                                      .showLoading ==
+                                                                  false) ...[
+                                                                Icon(
+                                                                    Icons
+                                                                        .video_call,
+                                                                    color: ThemeConstants
+                                                                        .bluecolor,
+                                                                    size: 30),
+                                                                CustomAutoSizeTextMontserrat(
+                                                                  align: TextAlign
+                                                                      .center,
+                                                                  text:
+                                                                      'End Meeting',
+                                                                  fontSize: 10,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  textColor:
+                                                                      ThemeConstants
+                                                                          .bluecolor,
+                                                                )
+                                                              ] else ...[
+                                                                CircularProgressIndicator()
+                                                              ]
+                                                            ],
+                                                          )
+                                                        : controller.meetingStartedValue ==
+                                                                    true &&
+                                                                controller
+                                                                        .meetingEndedValue ==
+                                                                    true
+                                                            ? Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Icon(
+                                                                      Icons
+                                                                          .video_call,
+                                                                      color: ThemeConstants
+                                                                          .bluecolor,
+                                                                      size: 30),
+                                                                  CustomAutoSizeTextMontserrat(
+                                                                    align: TextAlign
+                                                                        .center,
+                                                                    text:
+                                                                        'Meeting Ended',
+                                                                    fontSize:
+                                                                        10,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    textColor:
+                                                                        ThemeConstants
+                                                                            .bluecolor,
+                                                                  )
+                                                                ],
+                                                              )
+                                                            : SizedBox
+                                                                .shrink()),
                                           ),
                                         ),
                                       ),
+                                // : InkWell(
+                                //     onTap: () {
+                                //       getToast(
+                                //           'Only Co-ordinator or meeting creator can start and end the meeting');
+                                //       // showDialog(
+                                //       //     barrierDismissible: true,
+                                //       //     context: context,
+                                //       //     builder: (_) => showPoPUp(
+                                //       //         'Only Co-ordinator or meeting creator can start and end the meeting',
+                                //       //         Icon(
+                                //       //           Icons.error,
+                                //       //           size: 40,
+                                //       //           color: ThemeConstants
+                                //       //               .bluecolor,
+                                //       //         ),
+                                //       //         context));
+                                //     },
+                                //     child: IgnorePointer(
+                                //       ignoring: true,
+                                //       child: Opacity(
+                                //         opacity: 0.5,
+                                //         child: InkWell(
+                                //           onTap: () {
+                                //             showDialog(
+                                //                 context: context,
+                                //                 builder: (_) => AlertDialog(
+                                //                       content: Container(
+                                //                         child: Column(
+                                //                           mainAxisAlignment:
+                                //                               MainAxisAlignment
+                                //                                   .center,
+                                //                           mainAxisSize:
+                                //                               MainAxisSize
+                                //                                   .min,
+                                //                           children: [
+                                //                             Icon(Icons
+                                //                                 .mark_email_read)
+                                //                           ],
+                                //                         ),
+                                //                       ),
+                                //                     ));
+                                //           },
+                                //           child: Container(
+                                //               width: 100,
+                                //               height: 90,
+                                //               // padding: EdgeInsets.only(
+                                //               //     top: 5, left: 5, bottom: 5, right: 20),
+                                //               // margin: EdgeInsets.symmetric(
+                                //               //     vertical: 15, horizontal: 12),
+                                //               decoration: BoxDecoration(
+                                //                 boxShadow: [
+                                //                   const BoxShadow(
+                                //                       blurRadius: 0.5,
+                                //                       spreadRadius: 0.1,
+                                //                       color: Color.fromARGB(
+                                //                           40, 0, 0, 0))
+                                //                 ],
+                                //                 color: ThemeConstants
+                                //                     .whitecolor,
+                                //                 borderRadius:
+                                //                     BorderRadius.circular(
+                                //                         13),
+                                //               ),
+                                //               child: Column(
+                                //                 mainAxisAlignment:
+                                //                     MainAxisAlignment
+                                //                         .center,
+                                //                 children: [
+                                //                   Icon(Icons.video_call,
+                                //                       color: ThemeConstants
+                                //                           .bluecolor,
+                                //                       size: 30),
+                                //                   CustomAutoSizeTextMontserrat(
+                                //                     align: TextAlign.center,
+                                //                     text:
+                                //                         'Meeting Started Ended',
+                                //                     fontSize: 10,
+                                //                     fontWeight:
+                                //                         FontWeight.w500,
+                                //                     textColor:
+                                //                         ThemeConstants
+                                //                             .bluecolor,
+                                //                   )
+                                //                 ],
+                                //               )),
+                                //         ),
+                                //       ),
+                                //     ),
+                                //   ),
                                 // InkWell(
                                 //   onTap: () {
                                 //     showDialog(

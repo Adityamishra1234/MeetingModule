@@ -298,6 +298,8 @@ class _LoginPageState extends State<LoginPage> {
                                     Padding(
                                       padding: const EdgeInsets.all(10.0),
                                       child: CustomTextField(
+                                          originalPasswordToMatch:
+                                              password.value.text,
                                           backgroundCOlour:
                                               ThemeConstants.whitecolor,
                                           obscureText: controller.showPassword,
@@ -324,10 +326,11 @@ class _LoginPageState extends State<LoginPage> {
 
                                         //todo
                                         if (password.text ==
-                                            confirmpassword
-                                                .text) if (controller
-                                            .key.currentState!
-                                            .validate()) {
+                                            confirmpassword.text) if (controller
+                                                .key.currentState!
+                                                .validate() &&
+                                            controller.passwordValidated ==
+                                                true) {
                                           var res =
                                               await controller.updatePassword(
                                                   texfield.value.text,
@@ -337,12 +340,21 @@ class _LoginPageState extends State<LoginPage> {
                                             var prefs = await SharedPreferences
                                                 .getInstance();
                                             await prefs.clear();
+
+                                            controller.otpSuccessful = 0;
+                                            controller.forOtp = 0;
+                                            controller.verifyEmail = true;
+
+                                            controller.update();
+
                                             context.go(Routes.signin);
                                             // controller.onDelete();
                                             // Get.put(LoginController());
                                           }
+                                        } else {
+                                          getToast(
+                                              'Please fill the fields correctly');
                                         }
-                                        {}
                                       },
                                       child: Container(
                                         height: 40,
@@ -363,6 +375,10 @@ class _LoginPageState extends State<LoginPage> {
                                   ],
                                   GestureDetector(
                                     onTap: () {
+                                      controller.otpSuccessful = 0;
+                                      controller.forOtp = 0;
+                                      controller.verifyEmail = true;
+                                      controller.update();
                                       context.pop();
                                       // Get.offNamed(SignInView.route);
                                     },

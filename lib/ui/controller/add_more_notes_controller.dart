@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:meeting_module2/extensions/siecMemberNamefromId.dart';
 import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
@@ -770,6 +772,74 @@ class AddMoreNotesController extends GetxController with StateMixin {
   meetingId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     id = await prefs.getInt('id')!;
+  }
+
+  checkIfTheyAreStaringMeetingBefore(time, date, BuildContext context) async {
+    var currentTime = Jiffy.now();
+    var databaseime = Jiffy.parse(time, pattern: 'HH:mm');
+    var databaseDate = Jiffy.parse(date);
+
+    if (currentTime.date == databaseDate.date) {
+      if (currentTime.hour < databaseime.hour) {
+        bool selected = true;
+
+        var res = await AlertDialog(
+          content: CustomDialogWidget(
+            content: Container(
+              width: 400,
+              height: 100,
+              child: Column(children: [
+                Text('You are starting the meeting late'),
+                InkWell(
+                    onTap: () {
+                      selected = true;
+                    },
+                    child: Container(
+                        width: 20,
+                        child: CustomAutoSizeTextMontserrat(text: 'Start'))),
+                InkWell(
+                    onTap: () {
+                      selected = false;
+                    },
+                    child: Container(
+                        width: 20,
+                        child: CustomAutoSizeTextMontserrat(text: 'Start')))
+              ]),
+            ),
+          ),
+        );
+
+        return selected;
+      } else {
+        return true;
+      }
+    } else {
+      var selected = false;
+
+      await showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                  content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('You are starting the meeting late'),
+                  InkWell(
+                      onTap: () {
+                        selected = true;
+                      },
+                      child: Container(
+                          child: CustomAutoSizeTextMontserrat(text: 'Start'))),
+                  InkWell(
+                      onTap: () {
+                        selected = false;
+                      },
+                      child: CustomAutoSizeTextMontserrat(text: 'Start'))
+                ],
+              )));
+      return selected;
+    }
+// var todayDate = Jiffy.parse( date , pattern:  )
+//     if( date ==  )
   }
 
   meetingStarted(int meetingId, bool val) async {

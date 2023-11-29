@@ -14,9 +14,11 @@ class CustomTextField extends StatelessWidget {
   bool? isPassword = false;
   VoidCallback? callbackForPasswordShow;
   int? fontSize;
+  String? originalPasswordToMatch;
 
   CustomTextField({
     Key? key,
+    this.originalPasswordToMatch,
     this.callbackForPasswordShow,
     this.fontSize,
     this.forDropDown = true,
@@ -108,7 +110,8 @@ class CustomTextField extends StatelessWidget {
           } else if (Validator.passwordWithSpecial == validator) {
             return getPasswordWithSpecialCharacterValidator(value);
           } else if (Validator.passwordMatchValidation == validator) {
-            return getPasswordWithSpecialCharacterValidator(value);
+            return validatePasswordMatchedOrNot(
+                value, originalPasswordToMatch!);
           }
           return null;
         });

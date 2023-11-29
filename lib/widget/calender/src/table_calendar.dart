@@ -895,6 +895,7 @@ class _AnimatedIconState extends State<AnimatedIcon>
             widget.format == CalendarFormat.month
                 ? Icons.keyboard_arrow_up_rounded
                 : Icons.keyboard_arrow_down_rounded,
+            weight: 30,
             color: Colors.white,
           )),
     );

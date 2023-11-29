@@ -182,29 +182,14 @@ getPasswordWithSpecialCharacterValidator(String? value) {
   return null;
 }
 
-validatePasswordMatchedOrNot(String? value) {
+validatePasswordMatchedOrNot(String? value, String prevPassword) {
   var map = new Map();
 
-  if (value!.isEmpty) {
-    return '*Password is required \n *Password must contain at least one uppercase letter \n *Password must contain at least one lowercase letter \n *Password must contain at least one special character \n *Password must be 6 character long \n *Password must contain at least one digit ';
+  if (value != prevPassword) {
+    return 'Password didt matches properly';
+  } else {
+    return null;
   }
-  if (!containsUppercase(value)) {
-    return '*Password must contain at least one uppercase letter \n *Password must contain at least one lowercase letter \n *Password must contain at least one special character \n *Password must be 6 character long \n *Password must contain at least one digit ';
-  }
-  if (!containsLowercase(value)) {
-    return 'Password must contain at least one lowercase letter';
-  }
-  if (!containsSpecialCharacter(value)) {
-    return 'Password must contain at least one special character';
-  }
-  if (value.length < 8) {
-    return 'Password must be 6 character long';
-  }
-
-  if (!containsDigit(value)) {
-    return 'Password must contain at least one digit';
-  }
-  return null;
 }
 
 bool containsDigit(String value) {
