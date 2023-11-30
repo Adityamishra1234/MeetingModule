@@ -42,6 +42,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
   String meetingType = '';
   String modeOfMeeting = 'Zoom';
   TextEditingController meetingLink = TextEditingController();
+  TextEditingController registrationLink = TextEditingController();
   TextEditingController reasonOfReshedule = TextEditingController();
   TextEditingController specifyLocation = TextEditingController();
   String? meetingLocation;
@@ -382,8 +383,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                           child: CustomMultiDownSingle(
                             enableMultiSelect: false,
                             model: ['Zoom', 'Meet', 'Teams'],
-                            initialSelectedValue:
-                                widget.meetingData.meetingModeType,
+                            initialSelectedValue: modeOfMeeting,
                             callbackFunctionSingle: (val) {
                               modeOfMeeting = val;
                               // controller.modeOfMeeting.value = val;
@@ -553,6 +553,35 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                   SizedBox(
                     height: 10,
                   ),
+
+                  if (meetingType == '1')
+                    Padding(
+                      padding: const EdgeInsets.only(left: 0, bottom: 8),
+                      child: Align(
+                        alignment: AlignmentDirectional.topStart,
+                        child: CustomAutoSizeTextMontserrat(
+                          text: "registration Link",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  if (meetingType == '1')
+                    Container(
+                      height: 45,
+                      width: MediaQuery.of(context).size.width - 40,
+                      child: CustomTextField(
+                        // validator: controller.MeetingType.value == true
+                        //     ? Validator.notEmpty
+                        //     : null,
+                        hint: '',
+                        controller: registrationLink,
+                      ),
+                    ),
+                  SizedBox(
+                    height: 10,
+                  ),
+
                   Padding(
                     padding: const EdgeInsets.only(left: 0, bottom: 8),
                     child: Align(
@@ -598,6 +627,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                   } else {
                                     modeOfMeeting = "";
                                     meetingLink.text = "";
+                                    registrationLink.text = "";
                                     // Siec Branches
                                     if (meetingLocation == true.toString()) {
                                       specifyLocation.text = "";
@@ -606,49 +636,29 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                     }
                                   }
                                   // ofline => location , Siec branch => selected Branch
-
-                                  if (meetingType == 2) {
-                                    if (meetingLocation == true.toString()) {
-                                      if (selectedBranchForUserList == 0) {
-                                        getToast(
-                                            "Kindly select location field");
-                                      }
-                                      ;
+                                  print(meetingLocation ?? "" + "   test");
+                                  if (meetingType.toString() == "2") {
+                                    if (meetingLocation == null) {
+                                      getToast(
+                                          "Kindly select your location field");
                                     } else {
-                                      if (specifyLocation.text.isEmpty) {
-                                        getToast(
-                                            "Kindly enter specify location field");
+                                      if (meetingLocation == true.toString()) {
+                                        if (selectedBranchForUserList == 0) {
+                                          getToast("Kindly select your branch");
+                                        } else {
+                                          await updateData();
+                                        }
+                                      } else {
+                                        if (specifyLocation.text.isEmpty) {
+                                          getToast(
+                                              "Kindly enter your specify location");
+                                        } else {
+                                          await updateData();
+                                        }
                                       }
-                                      ;
                                     }
                                   } else {
-                                    var data = {
-                                      "meetingId": widget.controller
-                                          .listToShow[widget.indexz].id
-                                          .toString(),
-                                      "reasonOfReshedule":
-                                          reasonOfReshedule.value.text,
-                                      "rescheduleDate": date,
-                                      "rescheduleTime": time,
-                                      "rescheduleDuration": proposedDuration,
-                                      "meetingType": meetingType,
-                                      "modeOfMeeting": modeOfMeeting,
-                                      "meetingLink": meetingLink.text,
-                                      "updatedBY":
-                                          Get.find<BaseController>().id,
-                                      "siec_branch": selectedBranchForUserList,
-                                      "specific_location_of_the_meeting":
-                                          specifyLocation.text,
-                                    };
-                                    Get.find<CalendarController>().onInit();
-                                    print(data);
-
-                                    var res = await widget.controller
-                                        .resheduleMeeting(data);
-
-                                    if (res) {
-                                      context.pop();
-                                    }
+                                    await updateData();
                                   }
                                 }
                               }),
@@ -1111,4 +1121,29 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
 //     throw 'Could not launch $url';
 //   }
 // }
+
+  updateData() async {
+    var data = {
+      "meetingId": widget.controller.listToShow[widget.indexz].id.toString(),
+      "reasonOfReshedule": reasonOfReshedule.value.text,
+      "rescheduleDate": date,
+      "rescheduleTime": time,
+      "rescheduleDuration": proposedDuration,
+      "meetingType": meetingType,
+      "modeOfMeeting": modeOfMeeting,
+      "meetingLink": meetingLink.text,
+      "updatedBY": Get.find<BaseController>().id,
+      "siec_branch": selectedBranchForUserList,
+      "specific_location_of_the_meeting": specifyLocation.text,
+      "registration_link_of_the_meeting": registrationLink.text
+    };
+    Get.find<CalendarController>().onInit();
+    print(data);
+
+    var res = await widget.controller.resheduleMeeting(data);
+
+    if (res) {
+      context.pop();
+    }
+  }
 }
