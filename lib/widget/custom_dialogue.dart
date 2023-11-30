@@ -1135,7 +1135,8 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
       "updatedBY": Get.find<BaseController>().id,
       "siec_branch": selectedBranchForUserList,
       "specific_location_of_the_meeting": specifyLocation.text,
-      "registration_link_of_the_meeting": registrationLink.text
+      "registration_link_of_the_meeting": registrationLink.text,
+      "location_of_the_meeting": getMeetingLocation(meetingLocation ?? "")
     };
     Get.find<CalendarController>().onInit();
     print(data);
@@ -1144,6 +1145,16 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
 
     if (res) {
       context.pop();
+    }
+  }
+
+  getMeetingLocation(String meetingLocation) {
+    if (meetingLocation.toString() == true) {
+      return "1";
+    } else if (meetingLocation.toString() == true) {
+      return "2";
+    } else {
+      return "";
     }
   }
 }
