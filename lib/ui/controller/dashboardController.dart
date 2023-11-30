@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/di/get_it.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
+import 'package:meeting_module2/models/branchesWithImagesModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/presentation/custom_widgets/meeting_status.dart';
@@ -67,6 +68,10 @@ class DashBoardController extends GetxController with StateMixin {
   RxBool loading1 = false.obs;
   var helo = 0.obs;
 
+  // reschedule Meeting modification
+  String? meetingLocation;
+  List<BranchWithImagesModel> branchListwithFlag = <BranchWithImagesModel>[];
+
   @override
   void onReady() async {
     // todo
@@ -88,6 +93,7 @@ class DashBoardController extends GetxController with StateMixin {
     //todo
     //todo
     await getMeetingOfThatDate(DateTime.now());
+    await getBranchData2();
 
     // getNotes('1', null);
 
@@ -100,6 +106,25 @@ class DashBoardController extends GetxController with StateMixin {
     // await token();
     // helo.value = 2;
     // await getMeetingData();
+  }
+
+  // Reschedule modification
+  getBranchData2() async {
+    // print('fvffg');
+    var res = await api.allBranch2();
+
+    // var data =
+    //     List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)));
+
+    var data = List<BranchWithImagesModel>.from(
+        res.map((e) => BranchWithImagesModel.fromJson(e)));
+    print(data.toString());
+
+    branchListwithFlag = data;
+
+    // allBranchList.value = data;
+
+    update();
   }
 
   // @override
