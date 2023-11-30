@@ -19,6 +19,7 @@ import 'package:meeting_module2/utils/check_user_connection.dart';
 import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/custom_no_data_widget.dart';
+import 'package:meeting_module2/widget/custom_tab_widget_2.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quil;
 import 'package:meeting_module2/widget/customtextfield.dart';
@@ -77,7 +78,7 @@ class _MeetingNotesTaskViewBlocState extends State<MeetingNotesTaskViewBloc> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(
-                              left: 15, top: 20, bottom: 5),
+                              left: 15, top: 20, bottom: 0),
                           child: CustomAutoSizeTextMontserrat(
                             text: "Notes Task",
                             fontSize: 24,
@@ -86,84 +87,105 @@ class _MeetingNotesTaskViewBlocState extends State<MeetingNotesTaskViewBloc> {
                           ),
                         ),
                         SizedBox(
-                          height: 5,
+                          height: 2,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 10),
-                          child: Row(
-                            children: [
-                              InkWell(
-                                onTap: () async {
+                              horizontal: 12, vertical: 2),
+                          child: CustomTabWidget2(
+                              title0: 'Open',
+                              title1: 'Close',
+                              callback: (v) {
+                                if (v == 0) {
                                   notesTaskBloc
                                       .add(NotesTaskChangeOpenCloseAllEvent(0));
-                                  // controller.selectedOpenOrClose = 0;
-                                  // await controller
-                                  //     .getMeetingNotesTaskListForUser(
-                                  //         Get.find<BaseController>()
-                                  //             .id
-                                  //             .toString());
-
-                                  // controller.update();
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 20),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(200),
-                                      border: Border.all(
-                                          width: 1,
-                                          color: state.selectedOpenOrClose == 0
-                                              ? ThemeConstants.paleYellow
-                                              : ThemeConstants.whitecolor)),
-                                  child: CustomAutoSizeTextMontserrat(
-                                    text: 'Open',
-                                    fontWeight: ThemeConstants.fontWeightBold,
-                                    textColor: state.selectedOpenOrClose == 0
-                                        ? ThemeConstants.paleYellow
-                                        : ThemeConstants.whitecolor,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              InkWell(
-                                onTap: () async {
+                                } else {
                                   notesTaskBloc
                                       .add(NotesTaskChangeOpenCloseAllEvent(1));
-                                  // controller.selectedOpenOrClose = 1;
-
-                                  // await controller
-                                  //     .getMeetingNotesTaskListForUser(
-                                  //         Get.find<BaseController>()
-                                  //             .id
-                                  //             .toString());
-
-                                  // controller.update();
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 20),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(200),
-                                      border: Border.all(
-                                          width: 1,
-                                          color: state.selectedOpenOrClose == 1
-                                              ? ThemeConstants.paleYellow
-                                              : ThemeConstants.whitecolor)),
-                                  child: CustomAutoSizeTextMontserrat(
-                                    text: 'Close',
-                                    fontWeight: ThemeConstants.fontWeightBold,
-                                    textColor: state.selectedOpenOrClose == 1
-                                        ? ThemeConstants.paleYellow
-                                        : ThemeConstants.whitecolor,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
+                                }
+                              }),
                         ),
+
+                        SizedBox(
+                          height: 10,
+                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(
+                        //       vertical: 10, horizontal: 10),
+                        //   child: Row(
+                        //     children: [
+                        //       InkWell(
+                        //         onTap: () async {
+                        //           notesTaskBloc
+                        //               .add(NotesTaskChangeOpenCloseAllEvent(0));
+                        //           // controller.selectedOpenOrClose = 0;
+                        //           // await controller
+                        //           //     .getMeetingNotesTaskListForUser(
+                        //           //         Get.find<BaseController>()
+                        //           //             .id
+                        //           //             .toString());
+
+                        //           // controller.update();
+                        //         },
+                        //         child: Container(
+                        //           padding: EdgeInsets.symmetric(
+                        //               vertical: 10, horizontal: 20),
+                        //           decoration: BoxDecoration(
+                        //               borderRadius: BorderRadius.circular(200),
+                        //               border: Border.all(
+                        //                   width: 1,
+                        //                   color: state.selectedOpenOrClose == 0
+                        //                       ? ThemeConstants.paleYellow
+                        //                       : ThemeConstants.whitecolor)),
+                        //           child: CustomAutoSizeTextMontserrat(
+                        //             text: 'Open',
+                        //             fontWeight: ThemeConstants.fontWeightBold,
+                        //             textColor: state.selectedOpenOrClose == 0
+                        //                 ? ThemeConstants.paleYellow
+                        //                 : ThemeConstants.whitecolor,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //       SizedBox(
+                        //         width: 10,
+                        //       ),
+                        //       InkWell(
+                        //         onTap: () async {
+                        //           notesTaskBloc
+                        //               .add(NotesTaskChangeOpenCloseAllEvent(1));
+                        //           // controller.selectedOpenOrClose = 1;
+
+                        //           // await controller
+                        //           //     .getMeetingNotesTaskListForUser(
+                        //           //         Get.find<BaseController>()
+                        //           //             .id
+                        //           //             .toString());
+
+                        //           // controller.update();
+                        //         },
+                        //         child: Container(
+                        //           padding: EdgeInsets.symmetric(
+                        //               vertical: 10, horizontal: 20),
+                        //           decoration: BoxDecoration(
+                        //               borderRadius: BorderRadius.circular(200),
+                        //               border: Border.all(
+                        //                   width: 1,
+                        //                   color: state.selectedOpenOrClose == 1
+                        //                       ? ThemeConstants.paleYellow
+                        //                       : ThemeConstants.whitecolor)),
+                        //           child: CustomAutoSizeTextMontserrat(
+                        //             text: 'Close',
+                        //             fontWeight: ThemeConstants.fontWeightBold,
+                        //             textColor: state.selectedOpenOrClose == 1
+                        //                 ? ThemeConstants.paleYellow
+                        //                 : ThemeConstants.whitecolor,
+                        //           ),
+                        //         ),
+                        //       )
+                        //     ],
+                        //   ),
+                        // ),
+
                         SizedBox(
                           height: 5,
                         ),
