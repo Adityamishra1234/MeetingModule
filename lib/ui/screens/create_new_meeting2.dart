@@ -245,7 +245,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                                                       .value
                                                       .text ==
                                                   '') {
-                                                getToast('Please Fill');
+                                                getToast('Add a valid agenda');
                                               } else {
                                                 var data = await controller
                                                     .addNewAgenda(
@@ -477,6 +477,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                                 ),
                               ),
                               callback: (val) {
+                                print(val);
                                 // print(val);
                                 controller.timeController.value = val;
 
@@ -1310,7 +1311,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                                     width: 2,
                                   ),
                                   CustomAutoSizeTextMontserrat(
-                                    text: "Add New Representative",
+                                    text: "Add New",
                                     textColor: ThemeConstants.whitecolor,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
@@ -1365,12 +1366,12 @@ class CreateNewMeeting2 extends StatelessWidget {
                           //                   'Please add a representative')),
                           //         ));
 
-                          getToast('Please add a representative');
+                          getToast('Kindly add a representative');
                         } else {
                           controller.listOfParticipants
                               .add(controllers.participantData);
                           controller.update();
-                          getToast('Participant Added Successfully');
+                          getToast('Participant updated');
                           // showDialog(
                           //     context: context,
                           //     builder: (_) => AlertDialog(
@@ -1547,7 +1548,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                                     color: ThemeConstants.whitecolor,
                                   ),
                                   CustomAutoSizeTextMontserrat(
-                                    text: "Add New Vendor",
+                                    text: "Add New",
                                     textColor: ThemeConstants.whitecolor,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
@@ -1587,7 +1588,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                           }
 
                           if (contains) {
-                            getToast('Already added');
+                            getToast('Already updated');
                             // showDialog(
                             //     context: context,
                             //     builder: (_) => AlertDialog(
@@ -1603,12 +1604,12 @@ class CreateNewMeeting2 extends StatelessWidget {
                             //                   'Please add a representative')),
                             //         ));
 
-                            getToast('Please add a representative');
+                            getToast('Kindly add a representative');
                           } else {
                             controller.listOfParticipants
                                 .add(controllers.participantData);
                             controller.update();
-                            getToast('Participant Added Successfully');
+                            getToast('Participant updated');
                             // showDialog(
                             //     context: context,
                             //     builder: (_) => AlertDialog(
@@ -1730,7 +1731,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                                     color: ThemeConstants.whitecolor,
                                   ),
                                   CustomAutoSizeTextMontserrat(
-                                    text: "Add New Bank",
+                                    text: "Add New",
                                     textColor: ThemeConstants.whitecolor,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
@@ -1784,12 +1785,12 @@ class CreateNewMeeting2 extends StatelessWidget {
                             //                   'Please add a representative')),
                             //         ));
 
-                            getToast('Please add a representative');
+                            getToast('Kindly add a representative ');
                           } else {
                             controller.listOfParticipants
                                 .add(controllers.participantData);
                             controller.update();
-                            getToast('Participant Added Successfully');
+                            getToast('Participant updated');
                             // showDialog(
                             //     context: context,
                             //     builder: (_) => AlertDialog(

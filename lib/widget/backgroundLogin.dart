@@ -20,6 +20,9 @@ class BackgroundAuthView extends StatelessWidget {
             textColor: ThemeConstants.paleYellow,
             fontSize: 30,
           ),
+          SizedBox(
+            height: 5,
+          ),
           CustomAutoSizeTextMontserrat(
             text: "$text",
             textColor: ThemeConstants.paleYellow,

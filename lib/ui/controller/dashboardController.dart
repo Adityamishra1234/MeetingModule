@@ -255,7 +255,7 @@ class DashBoardController extends GetxController with StateMixin {
     } else {
       meetingsToShowInDashboardWidgetList = [];
       meetingsToShowInDashboardWidgetList.add(CustomNoDataWidget(
-        text: 'No Meeting',
+        text: 'No data found',
       ));
     }
 
@@ -1091,7 +1091,7 @@ class SingleMeetingWidget extends StatelessWidget {
                                   }
                                 } else {
                                   getToast(
-                                      "Only Co-ordinator's and creator can reshedule the meeting");
+                                      "Only Co-ordinator and creator can reshedule the meeting");
 
                                   // showAnimatedDialog(
                                   //     barrierDismissible: true,

@@ -69,7 +69,7 @@ class _SignInViewState extends State<SignInView> {
                       //           )),
                       //     )),
                       BackgroundAuthView(
-                        text: "Let's Sign you in",
+                        text: "Let's organize your work...",
                       ),
                       SingleChildScrollView(
                         child: Container(
@@ -150,6 +150,9 @@ class _SignInViewState extends State<SignInView> {
                                   ),
                                   InkWell(
                                     onTap: () {
+                                      // controller.getDailogForForget(
+                                      //     context, emailController.text);
+
                                       showDialog(
                                         context: context,
                                         builder: (_) => Stack(children: [
@@ -293,7 +296,7 @@ class _SignInViewState extends State<SignInView> {
                                                                   }
                                                                 } else {
                                                                   getToast(
-                                                                      "Kindly check your email address");
+                                                                      "Enter a vaild email");
                                                                 }
 
                                                                 // var res = await controller.logIn(

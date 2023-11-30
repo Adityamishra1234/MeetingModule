@@ -277,6 +277,7 @@ class _LoginPageState extends State<LoginPage> {
                                           controller: password),
                                     ),
                                     FlutterPwValidator(
+                                        successColor: ThemeConstants.GreenColor,
                                         controller: password,
                                         minLength: 8,
                                         uppercaseCharCount: 1,
@@ -352,8 +353,7 @@ class _LoginPageState extends State<LoginPage> {
                                             // Get.put(LoginController());
                                           }
                                         } else {
-                                          getToast(
-                                              'Please fill the fields correctly');
+                                          getToast('Enter a valid OTP');
                                         }
                                       },
                                       child: Container(

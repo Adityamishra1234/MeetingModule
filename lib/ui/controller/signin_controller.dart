@@ -231,25 +231,34 @@ class SigninController extends GetxController with StateMixin {
                         // validator: Validator.passwordWithSpecial,
                         controller: passwordController),
                   ),
-                  FlutterPwValidator(
-                      controller: passwordController,
-                      minLength: 8,
-                      uppercaseCharCount: 1,
-                      lowercaseCharCount: 1,
-                      numericCharCount: 1,
-                      specialCharCount: 1,
-                      width: 300,
-                      height: 150,
-                      onSuccess: () {
-                        passwordValidatted = true;
-                        print('object');
-                        update();
-                      },
-                      onFail: () {
-                        print('object');
-                        passwordValidatted = false;
-                        update();
-                      }),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: FlutterPwValidator(
+                        controller: passwordController,
+                        minLength: 8,
+                        uppercaseCharCount: 1,
+                        lowercaseCharCount: 1,
+                        numericCharCount: 1,
+                        specialCharCount: 1,
+                        width: 300,
+                        height: 150,
+                        onSuccess: () {
+                          passwordValidatted = true;
+                          print('object');
+                          update();
+                        },
+                        onFail: () {
+                          print('object');
+                          passwordValidatted = false;
+                          update();
+                        }),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 40, vertical: 2),
@@ -257,10 +266,12 @@ class SigninController extends GetxController with StateMixin {
                       height: 35,
                       borderRadius: 8,
                       animate: true,
+                      width: MediaQuery.of(context).size.width * 0.55,
                       color: ThemeConstants.bluecolor,
-                      width: MediaQuery.of(context).size.width * 0.44,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                       loader: Container(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(5),
                         width: 40,
                         height: 40,
                         child: CircularProgressIndicator(
@@ -303,6 +314,8 @@ class SigninController extends GetxController with StateMixin {
               child: GestureDetector(
                 onTap: () {
                   context.pop();
+                  otpController.clear();
+                  passwordController.clear();
                   // Get.back();
                 },
                 child: Container(
@@ -321,6 +334,9 @@ class SigninController extends GetxController with StateMixin {
           )
         ],
       ),
-    );
+    ).whenComplete(() {
+      otpController.clear();
+      passwordController.clear();
+    });
   }
 }

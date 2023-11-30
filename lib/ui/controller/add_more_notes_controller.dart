@@ -27,6 +27,7 @@ import 'package:meeting_module2/utils/custom_doc_viewer.dart';
 import 'package:meeting_module2/utils/custom_image_viewer.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
 import 'package:meeting_module2/utils/routes/router_config.dart';
+import 'package:meeting_module2/utils/snackbarconstants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customExpansionTile.dart';
 import 'package:meeting_module2/widget/custom_no_data_widget.dart';
@@ -196,8 +197,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     }
 
     if (data.length == 0) {
-      reasonofNotAtteding.add(
-          CustomNoDataWidget(text: 'No Reason of Not attending Available'));
+      reasonofNotAtteding.add(CustomNoDataWidget(text: 'No data found'));
 
       return false;
     }
@@ -303,7 +303,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     // List<FindNotesModel> data = List<FindNotesModel>.from(
     //     json.decode(res).map((x) => FindNotesModel.fromJson(x)));
     if (res == null) {
-      documentlist.add(CustomNoDataWidget(text: 'No Notes Available'));
+      documentlist.add(CustomNoDataWidget(text: 'No data found'));
       return;
     }
 
@@ -313,7 +313,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     notesList = await data;
 
     if (notesList.length == 0) {
-      documentlist.add(CustomNoDataWidget(text: 'No Notes Available'));
+      documentlist.add(CustomNoDataWidget(text: 'No data found'));
       return false;
     }
 
@@ -781,34 +781,96 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
     if (currentTime.date == databaseDate.date) {
       if (currentTime.hour < databaseime.hour) {
-        bool selected = true;
+        var selected = false;
 
-        var res = await AlertDialog(
-          content: CustomDialogWidget(
-            content: Container(
-              width: 400,
-              height: 100,
-              child: Column(children: [
-                Text('You are starting the meeting late'),
-                InkWell(
-                    onTap: () {
-                      selected = true;
-                    },
-                    child: Container(
-                        width: 20,
-                        child: CustomAutoSizeTextMontserrat(text: 'Start'))),
-                InkWell(
-                    onTap: () {
-                      selected = false;
-                    },
-                    child: Container(
-                        width: 20,
-                        child: CustomAutoSizeTextMontserrat(text: 'Start')))
-              ]),
-            ),
-          ),
-        );
-
+        await showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                    content: Container(
+                  width: 400,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomAutoSizeTextMontserrat(
+                            text: 'You are starting the \nmeeting before.',
+                            textColor: ThemeConstants.bluecolor,
+                            fontSize: ThemeConstants.fontSizeMedium,
+                          ),
+                          Spacer(),
+                          IconButton(
+                              onPressed: () {
+                                context.pop();
+                              },
+                              icon: Icon(
+                                Icons.close,
+                                size: 15,
+                              ))
+                        ],
+                      ),
+                      CustomAutoSizeTextMontserrat(
+                        text: 'Still start the meeting.',
+                        textColor: ThemeConstants.bluecolor,
+                        fontSize: ThemeConstants.fontSizeSmall,
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              selected = true;
+                              context.pop();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 20),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                      width: 0.5,
+                                      color: ThemeConstants.bluecolor)),
+                              child: CustomAutoSizeTextMontserrat(
+                                  fontWeight: ThemeConstants.fontWeightThin,
+                                  fontSize: ThemeConstants.fontSizeSmall,
+                                  text: 'Yes'),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              selected = false;
+                              context.pop();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 20),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                      width: 0.5,
+                                      color: ThemeConstants.bluecolor)),
+                              child: CustomAutoSizeTextMontserrat(
+                                  fontWeight: ThemeConstants.fontWeightThin,
+                                  fontSize: ThemeConstants.fontSizeSmall,
+                                  text: 'No'),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                )));
         return selected;
       } else {
         return true;
@@ -819,22 +881,90 @@ class AddMoreNotesController extends GetxController with StateMixin {
       await showDialog(
           context: context,
           builder: (_) => AlertDialog(
-                  content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('You are starting the meeting late'),
-                  InkWell(
-                      onTap: () {
-                        selected = true;
-                      },
-                      child: Container(
-                          child: CustomAutoSizeTextMontserrat(text: 'Start'))),
-                  InkWell(
-                      onTap: () {
-                        selected = false;
-                      },
-                      child: CustomAutoSizeTextMontserrat(text: 'Start'))
-                ],
+                  content: Container(
+                width: 400,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomAutoSizeTextMontserrat(
+                          text: 'You are starting the \nmeeting before.',
+                          textColor: ThemeConstants.bluecolor,
+                          fontSize: ThemeConstants.fontSizeMedium,
+                        ),
+                        Spacer(),
+                        IconButton(
+                            onPressed: () {
+                              context.pop();
+                            },
+                            icon: Icon(
+                              Icons.close,
+                              size: 15,
+                            ))
+                      ],
+                    ),
+                    CustomAutoSizeTextMontserrat(
+                      text: 'Still start the meeting.',
+                      textColor: ThemeConstants.bluecolor,
+                      fontSize: ThemeConstants.fontSizeSmall,
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            selected = true;
+                            context.pop();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                    width: 0.5,
+                                    color: ThemeConstants.bluecolor)),
+                            child: CustomAutoSizeTextMontserrat(
+                                fontWeight: ThemeConstants.fontWeightThin,
+                                fontSize: ThemeConstants.fontSizeSmall,
+                                text: 'Yes'),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            selected = false;
+                            context.pop();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                    width: 0.5,
+                                    color: ThemeConstants.bluecolor)),
+                            child: CustomAutoSizeTextMontserrat(
+                                fontWeight: ThemeConstants.fontWeightThin,
+                                fontSize: ThemeConstants.fontSizeSmall,
+                                text: 'No'),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               )));
       return selected;
     }
@@ -1022,7 +1152,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
           int sizeInBytes = f.lengthSync();
           double sizeInMb = sizeInBytes / (1024 * 1024);
           if (sizeInMb > 5) {
-            getToast('Maximum 5MB upload size');
+            getToast('${SnackBarConstants.toastForUploadFile}');
           } else {
             // var res = await api.uploadDocumentCommon(
             //   ,
@@ -1058,7 +1188,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
         }
       }
     } catch (e) {
-      await getToast('Please give Storage Permission');
+      await getToast('Allow the app to access storage');
       // await ApiServices(). (
       //   Get.find<BaseController>().model1.id.toString(),
       //   e.toString(),

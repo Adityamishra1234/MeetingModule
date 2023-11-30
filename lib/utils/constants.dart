@@ -186,7 +186,7 @@ validatePasswordMatchedOrNot(String? value, String prevPassword) {
   var map = new Map();
 
   if (value != prevPassword) {
-    return 'Password didt matches properly';
+    return 'Password not matches properly';
   } else {
     return null;
   }

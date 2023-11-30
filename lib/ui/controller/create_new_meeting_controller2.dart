@@ -631,7 +631,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     await generateTheNotifications();
 
-    getToast('Meeting Added Successfully');
+    getToast('Meeting updated');
     // showPoPUp(
     //     'Meeting Added Successfully',
     //     Icon(
@@ -664,7 +664,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
   createExternalNewMeeting(BuildContext context) async {
     if (listOfParticipants.length < 1) {
-      getToast('Please add atleast one participant');
+      getToast('Add atleast one participant');
 
       // Get.defaultDialog(
       //     content: Container(
@@ -833,12 +833,12 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     change(null, status: RxStatus.loading());
 
-    // Get.delete<CreateNewMeetingController2>();
-    // Get.put(CreateNewMeetingController2());
+    Get.delete<CreateNewMeetingController2>();
+    Get.put(CreateNewMeetingController2());
     change(null, status: RxStatus.success());
 
     await generateTheNotifications();
-    getToast('Meeting Added Successfully');
+    getToast('Meeting updated');
     // showPoPUp(
     //     'Meeting Added Successfully',
     //     Icon(

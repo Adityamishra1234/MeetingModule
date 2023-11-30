@@ -430,6 +430,9 @@ class _CustomizableDropdownAllUserState
                                   selectedItemsList.add(items[index]);
                                   widget
                                       .onMultiSelectedItem!(selectedItemsList);
+
+                                  editingController.clear();
+                                  filterSearchResults('');
                                   setState(() {
                                     // isSelected = false;
                                   });

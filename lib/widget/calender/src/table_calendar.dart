@@ -892,7 +892,8 @@ class _AnimatedIconState extends State<AnimatedIcon>
       child: GestureDetector(
           onTap: widget.onTap,
           child: Icon(
-            widget.format == CalendarFormat.month
+            widget.format == CalendarFormat.month ||
+                    widget.format == CalendarFormat.twoWeeks
                 ? Icons.keyboard_arrow_up_rounded
                 : Icons.keyboard_arrow_down_rounded,
             weight: 30,

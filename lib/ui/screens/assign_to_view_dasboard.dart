@@ -36,6 +36,13 @@ class _AssignToView2State extends State<AssignToView2> {
   }
 
   @override
+  void dispose() {
+    Get.delete<AssignToController>();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: getController.obx(
@@ -158,7 +165,8 @@ class _AssignToView2State extends State<AssignToView2> {
                                   if (getController.key.currentState!
                                       .validate()) {
                                     // print(getController.taskOwner.name);
-                                    getController.assign(data, controller.text);
+                                    getController.assign(
+                                        data, controller.text, context);
                                   }
                                   // getController.key.currentState!.save();
                                   // print(getController.taskOwner.name);

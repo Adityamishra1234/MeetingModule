@@ -195,7 +195,7 @@ class _DashBoardState extends State<DashBoard> {
                                   fontSize: 16,
                                 ),
                                 SizedBox(
-                                  height: 4,
+                                  height: 6,
                                 ),
                                 CustomAutoSizeTextMontserrat(
                                   text: "${controller.user.value.name}",

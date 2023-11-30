@@ -59,7 +59,7 @@ class DashboardNotesController extends GetxController with StateMixin {
     print(data);
 
     if (data.length == 0) {
-      toshow.add(CustomNoDataWidget(text: 'No Notes Available'));
+      toshow.add(CustomNoDataWidget(text: 'No data found'));
       return;
     }
 
@@ -203,6 +203,9 @@ class DashboardNotesController extends GetxController with StateMixin {
                 ),
                 InkWell(
                   onTap: () {
+                    context.push(
+                        '${Routes.dashboard}/${Routes.viewDashboardNotes}/${Routes.assignDashboardNotes}',
+                        extra: data[i]);
                     // Get.to(AssignToView(), arguments: widget.dataList![i]);
                   },
                   child: Padding(

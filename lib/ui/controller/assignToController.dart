@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/dashboardNotesModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/services/apiServices.dart';
+import 'package:meeting_module2/utils/constants.dart';
+import 'package:meeting_module2/utils/snackbarconstants.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,7 +26,7 @@ class AssignToController extends GetxController with StateMixin {
 
   AllUserModel taskOwner = AllUserModel();
 
-  assign(FindNotesModel argu, task) async {
+  assign(FindNotesModel argu, task, BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     var id = prefs.getInt('id');
@@ -50,6 +53,8 @@ class AssignToController extends GetxController with StateMixin {
 
     var res = await api.assignTo(data);
     if (res == true) {
+      getToast('${SnackBarConstants.addTask}');
+      context.pop();
       // Get.defaultDialog(
       //     content: Container(
       //   child: CustomAutoSizeTextMontserrat(text: 'Task Assigned Successfully'),

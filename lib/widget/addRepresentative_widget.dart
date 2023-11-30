@@ -27,7 +27,7 @@ class AddRepresentativeWidget extends StatelessWidget {
             // await controller.fetchParticipantData();
             await controller.getRepresentativeDropDownData();
 
-            getToast('Representative Added');
+            getToast('Representative updated');
             context.pop();
           }
         },

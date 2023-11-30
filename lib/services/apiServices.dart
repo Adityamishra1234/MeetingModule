@@ -844,7 +844,7 @@ class ApiServices extends BaseServices implements API {
         // return status;
       }
     } catch (e) {
-      getToast('Upload Document error');
+      getToast('Something went wrong');
     }
     return null;
   }
@@ -870,7 +870,7 @@ class ApiServices extends BaseServices implements API {
 
       return res['model'];
     } catch (e) {
-      getToast('Upload Document error');
+      getToast('Something went wrong');
     }
   }
 

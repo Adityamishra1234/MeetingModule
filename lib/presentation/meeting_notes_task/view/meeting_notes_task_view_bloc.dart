@@ -16,7 +16,9 @@ import 'package:meeting_module2/ui/controller/add_more_notes_controller.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/meetingDetailController.dart';
 import 'package:meeting_module2/utils/check_user_connection.dart';
+import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/theme.dart';
+import 'package:meeting_module2/widget/custom_no_data_widget.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quil;
 import 'package:meeting_module2/widget/customtextfield.dart';
@@ -178,16 +180,27 @@ class _MeetingNotesTaskViewBlocState extends State<MeetingNotesTaskViewBloc> {
                               child: state.statusOnlySpecificRegion ==
                                       Status.loaded
                                   ? ListView.builder(
-                                      itemCount: state
-                                          .meetingNotesTaskModelList.length,
+                                      itemCount: state.meetingNotesTaskModelList
+                                                  .length ==
+                                              0
+                                          ? 1
+                                          : state
+                                              .meetingNotesTaskModelList.length,
                                       itemBuilder: (context, index) {
-                                        return NotesTaskWidget(
-                                            controller: notesTaskBloc,
-                                            idToNameDataString: state
-                                                .meetingIdStringData[index],
-                                            data:
-                                                state.meetingNotesTaskModelList[
-                                                    index]);
+                                        if (state.meetingNotesTaskModelList
+                                                .length ==
+                                            0) {
+                                          return CustomNoDataWidget(
+                                              text: 'No data found');
+                                        } else {
+                                          return NotesTaskWidget(
+                                              controller: notesTaskBloc,
+                                              idToNameDataString: state
+                                                  .meetingIdStringData[index],
+                                              data: state
+                                                      .meetingNotesTaskModelList[
+                                                  index]);
+                                        }
                                       },
                                     )
                                   : getLoading(context)),
@@ -352,7 +365,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                           // ),
                           CustomAutoSizeTextMontserrat(
                             text: '${widget.data.taskType}',
-                            fontSize: ThemeConstants.fontSizelarge,
+                            fontSize: ThemeConstants.fontSizeMedium,
                             textColor: ThemeConstants.TextColor,
                           ),
                         ],
@@ -376,7 +389,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                           CustomAutoSizeTextMontserrat(
                             text:
                                 '${widget.data.meetingName!.nameOfTheMeeting}',
-                            fontSize: ThemeConstants.fontSizeMedium,
+                            fontSize: ThemeConstants.fontSizeSmall,
                             textColor: ThemeConstants.TextColor,
                           ),
                         ],
@@ -385,224 +398,241 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                         height: 5,
                       ),
 
-                      Row(
-                        children: [
-                          CustomAutoSizeTextMontserrat(
-                            text: 'All Details',
-                            fontSize: ThemeConstants.fontSizeMedium,
-                            textColor: ThemeConstants.TextColor,
-                          ),
-                          Spacer(),
-                          // MeetingStat (listToShow: listToShow),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          if (widget.data.closedBy == 0)
+                      InkWell(
+                        onTap: () {
+                          isExpanded
+                              ? _controller.reverse(from: 0.5)
+                              : _controller.forward(from: 0.25);
+                          isExpanded = !isExpanded;
+
+                          setState(() {});
+                        },
+                        child: Row(
+                          children: [
+                            CustomAutoSizeTextMontserrat(
+                              text: 'All Details',
+                              fontSize: ThemeConstants.fontSizeSmall,
+                              textColor: ThemeConstants.TextColor,
+                            ),
+                            Spacer(),
+                            // MeetingStat (listToShow: listToShow),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            if (widget.data.closedBy == 0)
+                              InkWell(
+                                onTap: () {
+                                  showAnimatedDialog(
+                                    animationType: DialogTransitionType
+                                        .slideFromBottomFade,
+                                    curve: Curves.easeInOutQuart,
+                                    context: context,
+                                    builder: (_) {
+                                      return AlertDialog(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 15),
+                                        backgroundColor:
+                                            ThemeConstants.whitecolor,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        content: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.7,
+                                          // height: 200,
+                                          child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    CustomAutoSizeTextMontserrat(
+                                                      text: 'Task Close',
+                                                      textColor: ThemeConstants
+                                                          .bluecolor,
+                                                      fontSize: ThemeConstants
+                                                          .fontSizelarge,
+                                                    ),
+                                                    Spacer(),
+                                                    IconButton(
+                                                        onPressed: () {
+                                                          context.pop();
+                                                        },
+                                                        icon: Icon(
+                                                          Icons.close,
+                                                          size: 20,
+                                                        ))
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                CustomAutoSizeTextMontserrat(
+                                                    fontSize: ThemeConstants
+                                                        .fontSizeMedium,
+                                                    text:
+                                                        'Did you attend the Meeting?'),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: () async {
+                                                        context.pop();
+                                                        await showAnimatedDialog(
+                                                            animationType:
+                                                                DialogTransitionType
+                                                                    .slideFromBottomFade,
+                                                            context: context,
+                                                            builder: (_) =>
+                                                                MeetingAttendedAddNoteTask(
+                                                                  notesTaskBloc:
+                                                                      widget
+                                                                          .controller,
+                                                                  taskID: widget
+                                                                      .data.id!,
+                                                                  meetingId:
+                                                                      widget
+                                                                          .data
+                                                                          .id!,
+                                                                ));
+
+                                                        // widget.controller
+                                                        //     .getMeetingNotesTaskListForUser(
+                                                        //         Get.find<
+                                                        //                 BaseController>()
+                                                        //             .id
+                                                        //             .toString());
+                                                      },
+                                                      child: Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 10,
+                                                                horizontal: 20),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                            border: Border.all(
+                                                                width: 0.5,
+                                                                color: ThemeConstants
+                                                                    .bluecolor)),
+                                                        child: CustomAutoSizeTextMontserrat(
+                                                            fontWeight:
+                                                                ThemeConstants
+                                                                    .fontWeightThin,
+                                                            fontSize:
+                                                                ThemeConstants
+                                                                    .fontSizeSmall,
+                                                            text: 'Yes'),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () async {
+                                                        context.pop();
+
+                                                        await showAnimatedDialog(
+                                                            animationType:
+                                                                DialogTransitionType
+                                                                    .slideFromBottomFade,
+                                                            context: context,
+                                                            builder: (_) =>
+                                                                MeetingTaskNoClose(
+                                                                  notesTaskBloc:
+                                                                      widget
+                                                                          .controller,
+                                                                  taskId: widget
+                                                                      .data.id!,
+                                                                  meetingId: widget
+                                                                      .data
+                                                                      .meetingId!,
+                                                                ));
+
+                                                        // widget.controller
+                                                        //     .getMeetingNotesTaskListForUser(
+                                                        //         Get.find<
+                                                        //                 BaseController>()
+                                                        //             .id
+                                                        //             .toString());
+                                                      },
+                                                      child: Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 10,
+                                                                horizontal: 20),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                            border: Border.all(
+                                                                width: 0.5,
+                                                                color: ThemeConstants
+                                                                    .bluecolor)),
+                                                        child: CustomAutoSizeTextMontserrat(
+                                                            fontWeight:
+                                                                ThemeConstants
+                                                                    .fontWeightThin,
+                                                            fontSize:
+                                                                ThemeConstants
+                                                                    .fontSizeSmall,
+                                                            text: 'No'),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              ]),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: ThemeConstants.bluecolor,
+                                      borderRadius: BorderRadius.circular(200)),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 10),
+                                  child: CustomAutoSizeTextMontserrat(
+                                      text: 'Close Task',
+                                      fontWeight: ThemeConstants.fontWeightBold,
+                                      textColor: ThemeConstants.whitecolor),
+                                ),
+                              ),
                             InkWell(
                               onTap: () {
-                                showAnimatedDialog(
-                                  animationType:
-                                      DialogTransitionType.slideFromBottomFade,
-                                  curve: Curves.easeInOutQuart,
-                                  context: context,
-                                  builder: (_) {
-                                    return AlertDialog(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 15),
-                                      backgroundColor:
-                                          ThemeConstants.whitecolor,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      content: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.7,
-                                        // height: 200,
-                                        child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  CustomAutoSizeTextMontserrat(
-                                                    text: 'Task Close',
-                                                    textColor: ThemeConstants
-                                                        .bluecolor,
-                                                    fontSize: ThemeConstants
-                                                        .fontSizelarge,
-                                                  ),
-                                                  Spacer(),
-                                                  IconButton(
-                                                      onPressed: () {
-                                                        context.pop();
-                                                      },
-                                                      icon: Icon(
-                                                        Icons.close,
-                                                        size: 20,
-                                                      ))
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              CustomAutoSizeTextMontserrat(
-                                                  fontSize: ThemeConstants
-                                                      .fontSizeMedium,
-                                                  text:
-                                                      'Did you attend the Meeting?'),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  InkWell(
-                                                    onTap: () async {
-                                                      context.pop();
-                                                      await showAnimatedDialog(
-                                                          animationType:
-                                                              DialogTransitionType
-                                                                  .slideFromBottomFade,
-                                                          context: context,
-                                                          builder: (_) =>
-                                                              MeetingAttendedAddNoteTask(
-                                                                notesTaskBloc:
-                                                                    widget
-                                                                        .controller,
-                                                                taskID: widget
-                                                                    .data.id!,
-                                                                meetingId:
-                                                                    widget.data
-                                                                        .id!,
-                                                              ));
+                                isExpanded
+                                    ? _controller.reverse(from: 0.5)
+                                    : _controller.forward(from: 0.25);
+                                isExpanded = !isExpanded;
 
-                                                      // widget.controller
-                                                      //     .getMeetingNotesTaskListForUser(
-                                                      //         Get.find<
-                                                      //                 BaseController>()
-                                                      //             .id
-                                                      //             .toString());
-                                                    },
-                                                    child: Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 10,
-                                                              horizontal: 20),
-                                                      alignment:
-                                                          Alignment.center,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(20),
-                                                          border: Border.all(
-                                                              width: 0.5,
-                                                              color: ThemeConstants
-                                                                  .bluecolor)),
-                                                      child: CustomAutoSizeTextMontserrat(
-                                                          fontWeight:
-                                                              ThemeConstants
-                                                                  .fontWeightThin,
-                                                          fontSize:
-                                                              ThemeConstants
-                                                                  .fontSizeSmall,
-                                                          text: 'Yes'),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  InkWell(
-                                                    onTap: () async {
-                                                      context.pop();
-
-                                                      await showAnimatedDialog(
-                                                          animationType:
-                                                              DialogTransitionType
-                                                                  .slideFromBottomFade,
-                                                          context: context,
-                                                          builder: (_) =>
-                                                              MeetingTaskNoClose(
-                                                                notesTaskBloc:
-                                                                    widget
-                                                                        .controller,
-                                                                taskId: widget
-                                                                    .data.id!,
-                                                                meetingId: widget
-                                                                    .data
-                                                                    .meetingId!,
-                                                              ));
-
-                                                      // widget.controller
-                                                      //     .getMeetingNotesTaskListForUser(
-                                                      //         Get.find<
-                                                      //                 BaseController>()
-                                                      //             .id
-                                                      //             .toString());
-                                                    },
-                                                    child: Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 10,
-                                                              horizontal: 20),
-                                                      alignment:
-                                                          Alignment.center,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(20),
-                                                          border: Border.all(
-                                                              width: 0.5,
-                                                              color: ThemeConstants
-                                                                  .bluecolor)),
-                                                      child: CustomAutoSizeTextMontserrat(
-                                                          fontWeight:
-                                                              ThemeConstants
-                                                                  .fontWeightThin,
-                                                          fontSize:
-                                                              ThemeConstants
-                                                                  .fontSizeSmall,
-                                                          text: 'No'),
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            ]),
-                                      ),
-                                    );
-                                  },
-                                );
+                                setState(() {});
                               },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: ThemeConstants.bluecolor,
-                                    borderRadius: BorderRadius.circular(200)),
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 10),
-                                child: CustomAutoSizeTextMontserrat(
-                                    text: 'Close Task',
-                                    fontWeight: ThemeConstants.fontWeightBold,
-                                    textColor: ThemeConstants.whitecolor),
+                              child: SizedBox(
+                                width: 30,
+                                child: RotationTransition(
+                                    turns: Tween(begin: 1.25, end: 2.25)
+                                        .animate(_controller),
+                                    child: Icon(
+                                      Icons.arrow_back,
+                                      size: 20,
+                                    )),
                               ),
                             ),
-                          InkWell(
-                            onTap: () {
-                              isExpanded
-                                  ? _controller.reverse(from: 0.5)
-                                  : _controller.forward(from: 0.25);
-                              isExpanded = !isExpanded;
-
-                              setState(() {});
-                            },
-                            child: SizedBox(
-                              width: 30,
-                              child: RotationTransition(
-                                  turns: Tween(begin: 1.25, end: 2.25)
-                                      .animate(_controller),
-                                  child: Icon(Icons.arrow_back)),
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
 
                       if (isExpanded == true) ...[
@@ -610,8 +640,9 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                           children: [
                             CustomAutoSizeTextMontserrat(
                               text: 'Notes',
-                              fontSize: ThemeConstants.fontSizeMedium,
+                              fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
+                              fontWeight: ThemeConstants.fontWeightBold,
                             ),
                             Spacer(),
                             // MeetingStat (listToShow: listToShow),
@@ -620,8 +651,9 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                             ),
                             CustomAutoSizeTextMontserrat(
                               text: '${widget.data.notes}',
-                              fontSize: ThemeConstants.fontSizeMedium,
+                              fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
+                              fontWeight: ThemeConstants.fontWeightBold,
                             ),
                           ],
                         ),
@@ -629,8 +661,9 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                           children: [
                             CustomAutoSizeTextMontserrat(
                               text: 'Deadline',
-                              fontSize: ThemeConstants.fontSizeMedium,
+                              fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
+                              fontWeight: ThemeConstants.fontWeightBold,
                             ),
                             Spacer(),
                             // MeetingStat (listToShow: listToShow),
@@ -639,8 +672,9 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                             ),
                             CustomAutoSizeTextMontserrat(
                               text: '${widget.data.deadlineDate}',
-                              fontSize: ThemeConstants.fontSizeMedium,
+                              fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
+                              fontWeight: ThemeConstants.fontWeightBold,
                             ),
                           ],
                         ),
@@ -648,8 +682,9 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                           children: [
                             CustomAutoSizeTextMontserrat(
                               text: 'Owner',
-                              fontSize: ThemeConstants.fontSizeMedium,
+                              fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
+                              fontWeight: ThemeConstants.fontWeightBold,
                             ),
                             Spacer(),
                             // MeetingStat (listToShow: listToShow),
@@ -658,8 +693,9 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                             ),
                             CustomAutoSizeTextMontserrat(
                               text: '${widget.idToNameDataString.owner}',
-                              fontSize: ThemeConstants.fontSizeMedium,
+                              fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
+                              fontWeight: ThemeConstants.fontWeightBold,
                             ),
                           ],
                         ),
@@ -667,8 +703,9 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                           children: [
                             CustomAutoSizeTextMontserrat(
                               text: 'Created By',
-                              fontSize: ThemeConstants.fontSizeMedium,
+                              fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
+                              fontWeight: ThemeConstants.fontWeightBold,
                             ),
                             Spacer(),
                             // MeetingStat (listToShow: listToShow),
@@ -677,8 +714,9 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                             ),
                             CustomAutoSizeTextMontserrat(
                               text: '${widget.idToNameDataString.createdBy}',
-                              fontSize: ThemeConstants.fontSizeMedium,
+                              fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
+                              fontWeight: ThemeConstants.fontWeightBold,
                             ),
                           ],
                         ),
@@ -686,8 +724,9 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                           children: [
                             CustomAutoSizeTextMontserrat(
                               text: 'Created By',
-                              fontSize: ThemeConstants.fontSizeMedium,
+                              fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
+                              fontWeight: ThemeConstants.fontWeightBold,
                             ),
                             Spacer(),
                             // MeetingStat (listToShow: listToShow),
@@ -696,8 +735,9 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                             ),
                             CustomAutoSizeTextMontserrat(
                               text: '${widget.data.createdBy}',
-                              fontSize: ThemeConstants.fontSizeMedium,
+                              fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
+                              fontWeight: ThemeConstants.fontWeightBold,
                             ),
                           ],
                         ),
@@ -705,8 +745,9 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                           children: [
                             CustomAutoSizeTextMontserrat(
                               text: 'Created at',
-                              fontSize: ThemeConstants.fontSizeMedium,
+                              fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
+                              fontWeight: ThemeConstants.fontWeightBold,
                             ),
                             Spacer(),
                             // MeetingStat (listToShow: listToShow),
@@ -714,9 +755,10 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                               width: 10,
                             ),
                             CustomAutoSizeTextMontserrat(
-                              text: '${widget.data.createdAt}',
-                              fontSize: ThemeConstants.fontSizeMedium,
+                              text: '${widget.data.createdAt!.split('T')[1]}',
+                              fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
+                              fontWeight: ThemeConstants.fontWeightBold,
                             ),
                           ],
                         ),
@@ -724,8 +766,9 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                           children: [
                             CustomAutoSizeTextMontserrat(
                               text: 'Closed By',
-                              fontSize: ThemeConstants.fontSizeMedium,
+                              fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
+                              fontWeight: ThemeConstants.fontWeightBold,
                             ),
                             Spacer(),
                             // MeetingStat (listToShow: listToShow),
@@ -734,8 +777,9 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                             ),
                             CustomAutoSizeTextMontserrat(
                               text: '${widget.data.closedBy}',
-                              fontSize: ThemeConstants.fontSizeMedium,
+                              fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
+                              fontWeight: ThemeConstants.fontWeightBold,
                             ),
                           ],
                         ),
@@ -743,8 +787,9 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                           children: [
                             CustomAutoSizeTextMontserrat(
                               text: 'Closed At',
-                              fontSize: ThemeConstants.fontSizeMedium,
+                              fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
+                              fontWeight: ThemeConstants.fontWeightBold,
                             ),
                             Spacer(),
                             // MeetingStat (listToShow: listToShow),
@@ -752,9 +797,10 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                               width: 10,
                             ),
                             CustomAutoSizeTextMontserrat(
-                              text: '${widget.data.closedAt}',
-                              fontSize: ThemeConstants.fontSizeMedium,
+                              text: '${widget.data.closedAt!.split('T')[1]}',
+                              fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
+                              fontWeight: ThemeConstants.fontWeightBold,
                             ),
                           ],
                         ),
@@ -762,8 +808,9 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                           children: [
                             CustomAutoSizeTextMontserrat(
                               text: 'Due From',
-                              fontSize: ThemeConstants.fontSizeMedium,
+                              fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
+                              fontWeight: ThemeConstants.fontWeightBold,
                             ),
                             Spacer(),
                             // MeetingStat (listToShow: listToShow),
@@ -771,9 +818,10 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                               width: 10,
                             ),
                             CustomAutoSizeTextMontserrat(
-                              text: '${widget.data.closedAt}',
-                              fontSize: ThemeConstants.fontSizeMedium,
+                              text: '${widget.data.closedAt!.split('T')[1]}',
+                              fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
+                              fontWeight: ThemeConstants.fontWeightBold,
                             ),
                           ],
                         ),
@@ -781,8 +829,9 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                           children: [
                             CustomAutoSizeTextMontserrat(
                               text: 'Time Taken',
-                              fontSize: ThemeConstants.fontSizeMedium,
+                              fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
+                              fontWeight: ThemeConstants.fontWeightBold,
                             ),
                             Spacer(),
                             // MeetingStat (listToShow: listToShow),
@@ -1133,10 +1182,17 @@ class MeetingAttendedAddNoteTask extends StatelessWidget {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 10,
+              ),
               InkWell(
                 onTap: () async {
                   var data = await noteText.getPlainText();
                   print(noteText.document.toDelta().toString());
+                  if (noteText.document.toDelta().toString() == 'insert⟨ ⏎ ⟩') {
+                    getToast('Kindly add a note');
+                    return;
+                  }
 
                   await Get.put<AddMoreNotesController>(
                           AddMoreNotesController())
@@ -1410,7 +1466,6 @@ class MeetingTaskNoClose extends StatelessWidget {
                 height: 10,
               ),
               Form(
-                // key: _keyForReasonOfNotAttending,
                 child: CustomTextField(
                     validator: Validator.notEmpty,
                     hint: 'Enter',
@@ -1423,6 +1478,11 @@ class MeetingTaskNoClose extends StatelessWidget {
                     ApiServices api = ApiServices();
 
                     // reasonOfNotAttendance(meetingID, String text) async {
+
+                    if (reasonOfNotAttending.value.text == '') {
+                      getToast('Kindly specify reason of absence');
+                      return;
+                    }
                     var res = await api.reasonOfNotAttending(
                         taskId,
                         meetingId,
