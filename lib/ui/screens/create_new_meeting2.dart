@@ -114,7 +114,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                                     topLeft: Radius.circular(35),
                                     topRight: Radius.circular(35))),
                             padding: const EdgeInsets.only(
-                                top: 30, left: 25, right: 25),
+                                top: 20, left: 25, right: 25),
                             child: ListView(
                               children: [
                                 ...getListInternalmeeting(context, controller),

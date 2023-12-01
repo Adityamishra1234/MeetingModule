@@ -54,11 +54,12 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
     date = widget.meetingData.dateOfMeeting!;
     time = widget.meetingData.timeOfTheMeeting!;
     meetingLink.text = widget.meetingData.meetingLink!;
+    registrationLink.text = widget.meetingData.registrationLink!;
     proposedDuration =
         widget.controller.listToShow[widget.indexz].durationOfMeeting!;
     meetingType = widget.meetingData.meetingMode!;
 
-    if (widget.meetingData.meetingType! == '1')
+    if (widget.meetingData.meetingMode! == '1')
       modeOfMeeting = widget.meetingData.meetingModeType!;
 
     // TODO: implement initState
@@ -623,7 +624,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                   String link = meetingLink.value.text;
 
                                   // online => mode of the meeting,meeting link
-                                  if (meetingType == 1) {
+                                  if (meetingType == '1') {
                                     meetingLocation = "";
                                     selectedBranchForUserList = 0;
                                     specifyLocation.text = "";
