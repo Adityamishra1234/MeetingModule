@@ -205,67 +205,100 @@ class CreateNewMeeting2 extends StatelessWidget {
                     child: IconButton(
                       iconSize: 15,
                       onPressed: () {
-                        showDialog(
+                        showAnimatedDialog(
+                            duration: Duration(milliseconds: 350),
+                            animationType:
+                                DialogTransitionType.slideFromBottomFade,
                             context: context,
-                            builder: (_) => AlertDialog(
-                                  contentPadding: EdgeInsets.all(20),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  content: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        CustomAutoSizeTextMontserrat(
-                                            text: 'Add new Agenda'),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Container(
-                                          // height: 45,
+                            builder: (_) => Stack(children: [
+                                  Center(
+                                      child: AlertDialog(
+                                    contentPadding: EdgeInsets.all(20),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    content: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          CustomAutoSizeTextMontserrat(
+                                              text: 'Add new Agenda'),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            // height: 45,
 
-                                          child: CustomTextField(
-                                              validator: Validator.notEmpty,
-                                              hint: '',
-                                              controller: controller
-                                                  .addNewAgendaController
-                                                  .value),
-                                        ),
-                                        CustomButton(
-                                            backgroundColor:
-                                                ThemeConstants.bluecolor,
-                                            text: 'Add',
-                                            onPressed: () async {
-                                              if (controller
-                                                      .addNewAgendaController
-                                                      .value
-                                                      .text ==
-                                                  '') {
-                                                getToast('Add a valid agenda');
-                                              } else {
-                                                var data = await controller
-                                                    .addNewAgenda(
-                                                        agenda: controller
-                                                            .addNewAgendaController
-                                                            .value
-                                                            .text,
-                                                        userId: Get.find<
-                                                                BaseController>()
-                                                            .id);
+                                            child: CustomTextField(
+                                                validator: Validator.notEmpty,
+                                                hint: '',
+                                                controller: controller
+                                                    .addNewAgendaController
+                                                    .value),
+                                          ),
+                                          CustomButton(
+                                              backgroundColor:
+                                                  ThemeConstants.bluecolor,
+                                              text: 'Add',
+                                              onPressed: () async {
+                                                if (controller
+                                                        .addNewAgendaController
+                                                        .value
+                                                        .text ==
+                                                    '') {
+                                                  getToast(
+                                                      'Add a valid agenda');
+                                                } else {
+                                                  var data = await controller
+                                                      .addNewAgenda(
+                                                          agenda: controller
+                                                              .addNewAgendaController
+                                                              .value
+                                                              .text,
+                                                          userId: Get.find<
+                                                                  BaseController>()
+                                                              .id);
 
-                                                if (data) {
-                                                  context.pop();
+                                                  if (data) {
+                                                    context.pop();
+                                                  }
                                                 }
-                                              }
-                                            })
-                                      ],
+                                              })
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ));
+                                  )),
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 20),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          context.pop();
+                                          // Get.back();
+                                        },
+                                        child: Container(
+                                          width: 50,
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                              color: ThemeConstants.bluecolor,
+                                              borderRadius:
+                                                  BorderRadius.circular(200)),
+                                          child: Icon(
+                                            Icons.close_rounded,
+                                            color: ThemeConstants.whitecolor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ]));
                       },
                       icon: Icon(
                         Icons.add,
@@ -422,7 +455,8 @@ class CreateNewMeeting2 extends StatelessWidget {
                                           : null,
                                 ),
                               ),
-                              startingDate: DateTime.now(),
+                              startingDate:
+                                  DateTime.now().subtract(Duration(days: 30)),
                               isBlank: true,
                               callback: (val) {
                                 controller.dateController.value = val;

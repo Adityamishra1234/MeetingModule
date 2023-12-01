@@ -33,6 +33,8 @@ class CalendarController extends GetxController with StateMixin {
   void onInit() async {
     var date = DateTime.now();
 
+    selectedDayGlobal = date;
+
     print(Get.find<BaseController>().id);
     await getMonthMeetingDates(
         Get.find<BaseController>().id, date.month, date.year);

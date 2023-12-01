@@ -49,7 +49,9 @@ class DashboardNotesController extends GetxController with StateMixin {
   List<Widget> beta = [];
 
   List<FindNotesModel> data = [];
+
   getNotesData(BuildContext context) async {
+    change(null, status: RxStatus.loading());
     var res = await apiServices.findNoteByUser(Get.find<BaseController>().id);
     List<dynamic> data2 = res;
 
@@ -379,6 +381,8 @@ class DashboardNotesController extends GetxController with StateMixin {
             ),
           ),
         ));
+
+        change(null, status: RxStatus.success());
       }
     }
 

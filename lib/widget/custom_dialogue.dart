@@ -434,10 +434,13 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                     ),
 
                   if (meetingLocation == false.toString())
-                    CustomAutoSizeTextMontserrat(
-                      text: "Specify location",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 0, bottom: 8),
+                      child: CustomAutoSizeTextMontserrat(
+                        text: "Specify location",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   if (meetingLocation == false.toString())
                     CustomTextField(hint: "", controller: specifyLocation),
@@ -587,7 +590,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                     child: Align(
                       alignment: AlignmentDirectional.topStart,
                       child: CustomAutoSizeTextMontserrat(
-                        text: "Reason of Reshedule",
+                        text: "Reason of Reschedule",
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
