@@ -1087,4 +1087,44 @@ class ApiServices extends BaseServices implements API {
       throw UnimplementedError();
     }
   }
+
+  @override
+  generateNotificationOnNoteCreation(
+      {String? university,
+      required String meetingName,
+      required String meetingDate,
+      required String meetingTime,
+      required String internalOrExternal}) async {
+    // TODO: implement generateNotificationOnNoteCreation
+
+    try {
+      var url =
+          '${Endpoints.baseUrl}${Endpoints.generateNotificationsOnNoteCreation}';
+
+      // String idString = String.fromCharCodes(id);
+      // print(idString);
+
+//todoImpo
+      // idString = '103,105';
+
+      var jsonData = {
+        "university": "$university",
+        "meetingName": "$meetingName",
+        "meetingDate ": "$meetingDate",
+        "meetingTime": "$meetingTime",
+        "internal": internalOrExternal
+      };
+
+      var data = json.encode(jsonData);
+
+      var res = await httpPostHeader(url, data);
+
+      if (res != null) {
+        getToast(res["message"]);
+        return true;
+      }
+    } catch (e) {
+      throw UnimplementedError();
+    }
+  }
 }

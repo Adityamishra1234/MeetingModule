@@ -166,12 +166,18 @@ class CreateNewMeeting2 extends StatelessWidget {
                     ),
                   ),
                 ),
+
+                //current
                 CustomMultiDownSingle(
                     enableMultiSelect: false,
                     callbackFunctionSingle: (val) {
                       controller.meetingWith.value = val;
 
                       controller.getRepresentativeDropDownData();
+                      print(val);
+                      if (val != "University Meetings") {
+                        controller.fetchParticipantData();
+                      }
                       // controller.inItGetRepresentative();
                     },
                     model: controller.meetingWithList,
@@ -1363,7 +1369,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                       ],
                     ),
                   ),
-
+//current
                   CustomMultiDownSingleAllUser(
                       model: controller.listOfParticipantData,
                       initialSelectedValue: '',
@@ -1608,6 +1614,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                         // inititalSelectedList: ,
                         callbackFunctionSingle: (val) async {
                           controller.participantID.value = val;
+
                           await controller.fetchParticipantData();
 
                           var contains = false;
@@ -2026,6 +2033,83 @@ class CreateNewMeeting2 extends StatelessWidget {
                         ),
                       ),
                     ),
+
+                    ///current
+                    ///
+                    ///
+                    CustomMultiDownSingleAllUser(
+                        model: controller.listOfParticipantData,
+                        initialSelectedValue: '',
+                        // inititalSelectedList: ,
+                        callbackFunctionSingle: (val) async {
+                          controller.participantID.value = val;
+                          await controller.fetchParticipantData();
+                          var contains = false;
+
+                          for (var i = 0;
+                              i < controller.listOfParticipants.length;
+                              i++) {
+                            contains = false;
+                            if (controller.listOfParticipants[i].id ==
+                                controller.participantData.id) {
+                              contains = true;
+                            }
+                          }
+
+                          if (contains) {
+                            getToast('Already added');
+                            // showDialog(
+                            //     context: context,
+                            //     builder: (_) => AlertDialog(
+                            //           content: Container(
+                            //               child: Text('Already added')),
+                            //         ));
+                          } else if (controllers.participantData.id == 0) {
+                            // showDialog(
+                            //     context: context,
+                            //     builder: (_) => AlertDialog(
+                            //           content: Container(
+                            //               child: Text(
+                            //                   'Please add a representative')),
+                            //         ));
+
+                            getToast('Kindly add a representative');
+                          } else {
+                            controller.listOfParticipants
+                                .add(controllers.participantData);
+                            controller.update();
+                            getToast('Participant updated');
+                            // showDialog(
+                            //     context: context,
+                            //     builder: (_) => AlertDialog(
+                            //           shape: RoundedRectangleBorder(
+                            //               borderRadius:
+                            //                   BorderRadius.circular(20)),
+                            //           content: Container(
+                            //             child: Column(
+                            //                 mainAxisSize: MainAxisSize.min,
+                            //                 children: [
+                            //                   Text(
+                            //                       'Participant Added Successfully'),
+                            //                   Icon(Icons.check_circle,
+                            //                       size: 30,
+                            //                       color: ThemeConstants
+                            //                           .GreenColor)
+                            //                 ]),
+                            //           ),
+                            //         ));
+                          }
+
+                          // controller.selectedBranch.value = val;
+                          // controller.update();
+                        },
+                        callbackFunctionMulti: (List<AllUserModel> val) {
+                          print(val);
+                          // controller.selectedUsersList.value = val;
+                          // controller.update();
+                        },
+                        enableMultiSelect: false),
+
                     Container(
                       padding:
                           EdgeInsets.symmetric(vertical: 9, horizontal: 10),

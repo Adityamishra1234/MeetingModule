@@ -135,17 +135,17 @@ class AddMoreNotesController extends GetxController with StateMixin {
   int meetingUniversityID = 0;
   var meetingCountryID = 0;
 
-  // getMeetingCountryAndUniversity() async {
-  //   if (baseController.selectedMeetingData.meetingWith == 'university') {
-  //     var res = await api.findUniversityCountryByMeetingId(
-  //         baseController.selectedMeetingData.id);
+  getMeetingCountryAndUniversity() async {
+    if (baseController.selectedMeetingData.meetingWith == 'university') {
+      var res = await api.findUniversityCountryByMeetingId(
+          baseController.selectedMeetingData.id);
 
-  //     meetingCountryID = res['country'];
-  //     meetingUniversityID = res['university'];
+      meetingCountryID = res['country'];
+      meetingUniversityID = res['university'];
 
-  //     // print('${res} dddddd  ddd');
-  //   }
-  // }
+      // print('${res} dddddd  ddd');
+    }
+  }
 
   String nameFromid(id) {
     var data = Get.find<BaseController>().allSiecMembersList;
@@ -679,7 +679,24 @@ class AddMoreNotesController extends GetxController with StateMixin {
       // change(null, status: RxStatus.success());
     }
 
-    // await getNotesOfMeeting(context);
+    var selectedMeeting = baseController.selectedMeetingData;
+
+    if (selectedMeeting.meetingType == 'Internal Meeting') {
+      await api.generateNotificationOnNoteCreation(
+          university: '',
+          meetingName: selectedMeeting.nameOfTheMeeting!,
+          meetingDate: selectedMeeting.dateOfMeeting!,
+          meetingTime: selectedMeeting.timeOfTheMeeting!,
+          internalOrExternal: selectedMeeting.meetingType!);
+    } else {
+      await api.generateNotificationOnNoteCreation(
+          university: '',
+          meetingName: selectedMeeting.nameOfTheMeeting!,
+          meetingDate: selectedMeeting.dateOfMeeting!,
+          meetingTime: selectedMeeting.timeOfTheMeeting!,
+          internalOrExternal: selectedMeeting.meetingType!);
+    }
+    // await getNotesOfMeeting(context)
 
     update();
     change(null, status: RxStatus.success());

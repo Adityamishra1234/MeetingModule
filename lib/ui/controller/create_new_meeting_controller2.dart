@@ -264,6 +264,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     // var res = await api.findRepresentative(meetingWith.value.split('').toString() );
   }
 
+  ///current
   List<AllUserModel> listOfParticipantData = <AllUserModel>[];
   getRepresentativeDropDownData() async {
     print(meetingWith.value.substring(0, meetingWith.value.length - 8));

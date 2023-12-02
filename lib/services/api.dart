@@ -114,4 +114,11 @@ abstract class API {
     required String body,
     required List<int> id,
   });
+
+  generateNotificationOnNoteCreation(
+      {String? university,
+      required String meetingName,
+      required String meetingDate,
+      required String meetingTime,
+      required String internalOrExternal});
 }
