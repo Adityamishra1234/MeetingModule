@@ -80,6 +80,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_pw_validator: ^1.6.0
   password_field_validator: ^0.0.1
+  sqflite: ^2.3.0
 
 dev_dependencies:
   flutter_test:

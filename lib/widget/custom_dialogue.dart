@@ -1152,6 +1152,24 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
     }
   }
 
+  generateResheduleNotification() async {
+    List<int> idList = [];
+
+    for (var i = 0; i < widget.meetingData.siecParticipants!.length; i++) {
+      idList.add(widget.meetingData.siecParticipants![i].id!);
+    }
+
+    for (var i = 0; i < widget.meetingData.meetingCoordinator!.length; i++) {
+      idList.add(widget.meetingData.meetingCoordinator![i].id!);
+    }
+
+//todoImpo
+    // var title = 'Scheduled a Meeting';
+    // var body = "You have a meeting with SIEC Family, scheduled at ";
+
+    var res = await widget.controller.generateRescheduleNotification(idList);
+  }
+
   getMeetingLocation(String meetingLocation) {
     if (meetingLocation.toString() == true) {
       return "1";

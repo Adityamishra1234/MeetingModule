@@ -1059,21 +1059,18 @@ class ApiServices extends BaseServices implements API {
   }
 
   @override
-  generateMultiNotifications(
-      {required String title,
-      required String body,
-      required List<int> id}) async {
+  generateMultiNotifications({required List<int> id, required int type}) async {
     // TODO: implement generateMultiNotifications
     try {
       var url = '${Endpoints.baseUrl}${Endpoints.generateNotifications}';
 
-      String idString = String.fromCharCodes(id);
+      String idString = id.join(",");
       print(idString);
 
 //todoImpo
-      idString = '103,105';
+      // idString = '103,105';
 
-      var jsonData = {"title": title, "body": body, "ids": idString};
+      var jsonData = {"ids": idString, type: '0'};
 
       var data = json.encode(jsonData);
 

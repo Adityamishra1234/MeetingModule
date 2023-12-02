@@ -658,6 +658,10 @@ class DashBoardController extends GetxController with StateMixin {
 
   bool hitResheduleAPI = false;
 
+  generateRescheduleNotification(List<int> idList) async {
+    var res = await api.generateMultiNotifications(type: 2, id: idList);
+  }
+
   resheduleMeeting(data) async {
     var res = await api.resheduleMeeting(data);
     //todo

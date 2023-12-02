@@ -626,8 +626,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     change(null, status: RxStatus.loading());
 
-    Get.delete<CreateNewMeetingController2>();
-    Get.put(CreateNewMeetingController2());
+    // Get.delete<CreateNewMeetingController2>();
+    // Get.put(CreateNewMeetingController2());
     change(null, status: RxStatus.success());
 
     await generateTheNotifications();
@@ -861,11 +861,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
       idList.add(meetingModel.value.meetingCoordinator![i].id!);
     }
 
-    var title = 'Scheduled a Meeting ';
-    var body = "You have a meeting with SIEC Family, scheduled at " "";
-
-    var res = await api.generateMultiNotifications(
-        title: title, body: body, id: idList);
+    var res = await api.generateMultiNotifications(id: idList, type: 0);
   }
 
   generateTheNotificationsExternal() async {
@@ -880,11 +876,10 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     }
 
 //todoImpo
-    var title = 'Scheduled a Meeting';
-    var body = "You have a meeting with SIEC Family, scheduled at ";
+    // var title = 'Scheduled a Meeting';
+    // var body = "You have a meeting with SIEC Family, scheduled at ";
 
-    var res = await api.generateMultiNotifications(
-        title: title, body: body, id: idList);
+    var res = await api.generateMultiNotifications(type: 1, id: idList);
   }
 
   getGroupData() async {

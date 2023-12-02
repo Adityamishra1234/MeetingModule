@@ -3,6 +3,7 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:meeting_module2/data/data_sources.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
 import 'package:meeting_module2/presentation/constants/loading.dart';
 import 'package:meeting_module2/ui/controller/add_more_notes_controller.dart';
@@ -55,6 +56,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
   @override
   void initState() {
     controller.getNotesOfMeeting(context);
+
     meetingData = controllerbase.selectedMeetingData;
 
     meetingStarted = meetingData.meetingStarted!;

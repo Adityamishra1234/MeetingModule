@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meeting_module2/data/data_sources.dart';
 import 'package:meeting_module2/presentation/dashboard/bloc/dashboard_bloc.dart';
 import 'package:meeting_module2/presentation/meeting_notes_task/bloc/notes_task_bloc.dart';
 import 'package:meeting_module2/presentation/meeting_notes_task/view/meeting_notes_taskk_view.dart';
@@ -11,6 +12,8 @@ final locator = GetIt.instance;
 
 setupDI() async {
   final sharedPreferences = await SharedPreferences.getInstance();
+  // final db = await SqfliteDBClass().initializedDB();
+
   locator.registerSingleton<SharedPreferences>(sharedPreferences);
   locator.registerSingleton<ApiServices>(ApiServices());
   locator.registerFactory<NotesTaskBloc>(
