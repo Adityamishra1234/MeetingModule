@@ -120,4 +120,6 @@ abstract class API {
       required String meetingDate,
       required String meetingTime,
       required String internalOrExternal});
+
+  findRepresentativeForDropDownFromBankVendor(String type, String groupName);
 }

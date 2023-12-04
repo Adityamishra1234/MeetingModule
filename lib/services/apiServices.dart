@@ -425,6 +425,40 @@ class ApiServices extends BaseServices implements API {
   }
 
   @override
+  findRepresentativeForDropDownFromBankVendor(
+      String type, String groupName) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.getVendorBankRepNameDropdown}';
+
+    try {
+      var jsonData;
+      if (type == '0') {
+        jsonData = {"vendor_name": "$groupName"};
+      } else {
+        jsonData = {"bank": "Bank", "bank_name": "$groupName"};
+      }
+
+      // var data = {"representative_type": representaiveType};
+
+      var data2 = json.encode(jsonData);
+
+      var res = await httpPostHeader(url, data2);
+
+      if (res != null) {
+        if (res['tempUser'] == []) {
+          return {"name": "No person", "id": 0};
+        } else {
+          return res['tempUser'];
+        }
+      }
+      ;
+    } catch (e) {
+      throw UnimplementedError();
+    }
+  }
+
+  // TODO: implement findRepresentativeForDropDown
+
+  @override
   getRepresentativeAllData(int id) async {
     var url = '${Endpoints.baseUrl}${Endpoints.findRepresentativeByID}';
 

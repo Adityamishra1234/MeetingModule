@@ -277,6 +277,13 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
         List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)))
             .toList();
 
+    if (data == 'Vendor') {
+      await fetchReprenestativeDropDownDataFromVendorBankGroup(
+          "0", '${listOfParticipantData[0].name}');
+    } else if (data == 'Bank') {
+      await fetchReprenestativeDropDownDataFromVendorBankGroup(
+          "1", '${listOfParticipantData[0].name}');
+    }
     update();
 
     // print(listOfParticipantData.value[0].toJson());
@@ -998,6 +1005,24 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     agendaList = List<String>.from(res as List);
     change(null, status: RxStatus.success());
+
+    update();
+  }
+
+  List<AllUserModel> bankVendorPersonNameDropDownList = [];
+
+  fetchReprenestativeDropDownDataFromVendorBankGroup(
+      String repType, String nameOfGroup) async {
+    // print(meetingWith.value.substring(0, meetingWith.value.length - 8));
+    // var data = meetingWith.value.split(' ')[0];
+    // substring(0, meetingWith.value.length - 9);
+
+    var res = await api.findRepresentativeForDropDownFromBankVendor(
+        "$repType", nameOfGroup);
+
+    bankVendorPersonNameDropDownList =
+        List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)))
+            .toList();
 
     update();
   }

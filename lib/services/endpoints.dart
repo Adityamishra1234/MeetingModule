@@ -105,6 +105,8 @@ class Endpoints {
   static String generateNotifications = 'fcmMultiUser';
 
   static String generateNotificationsOnNoteCreation = 'noteForFCM';
+
+  static String getVendorBankRepNameDropdown = 'sc_contact_person_vendor';
 }
 
 datesOfCalendarMeetingEndpoint(int id, int month, int year) {

@@ -1612,10 +1612,13 @@ class CreateNewMeeting2 extends StatelessWidget {
                         model: controller.listOfParticipantData,
                         initialSelectedValue: '',
                         // inititalSelectedList: ,
-                        callbackFunctionSingle: (val) async {
+                        callbackFunctionSingle: (AllUserModel val) async {
                           controller.participantID.value = val;
 
-                          await controller.fetchParticipantData();
+                          await controller
+                              .fetchReprenestativeDropDownDataFromVendorBankGroup(
+                                  "0", '${val.name}');
+                          // await controller.fetchParticipantData();
 
                           var contains = false;
                           for (var i = 0;
@@ -1795,8 +1798,13 @@ class CreateNewMeeting2 extends StatelessWidget {
                         model: controller.listOfParticipantData,
                         initialSelectedValue: '',
                         // inititalSelectedList: ,
-                        callbackFunctionSingle: (val) {
+                        callbackFunctionSingle: (val) async {
                           controller.participantID.value = val;
+
+                          await controller
+                              .fetchReprenestativeDropDownDataFromVendorBankGroup(
+                                  "1", '${val.name}');
+
                           controller.fetchParticipantData();
                           var contains = false;
                           for (var i = 0;
@@ -2038,7 +2046,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                     ///
                     ///
                     CustomMultiDownSingleAllUser(
-                        model: controller.listOfParticipantData,
+                        model: controller.bankVendorPersonNameDropDownList,
                         initialSelectedValue: '',
                         // inititalSelectedList: ,
                         callbackFunctionSingle: (val) async {
@@ -2110,22 +2118,22 @@ class CreateNewMeeting2 extends StatelessWidget {
                         },
                         enableMultiSelect: false),
 //current
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 9, horizontal: 10),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: ThemeConstants.bluecolor, width: 1),
-                          color: ThemeConstants.lightVioletColor,
-                          borderRadius: BorderRadius.circular(500)),
-                      width: double.infinity,
-                      height: 40,
-                      child: CustomAutoSizeTextMontserrat(
-                        text: '${controller.participantData.personName}',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    // Container(
+                    //   padding:
+                    //       EdgeInsets.symmetric(vertical: 9, horizontal: 10),
+                    //   decoration: BoxDecoration(
+                    //       border: Border.all(
+                    //           color: ThemeConstants.bluecolor, width: 1),
+                    //       color: ThemeConstants.lightVioletColor,
+                    //       borderRadius: BorderRadius.circular(500)),
+                    //   width: double.infinity,
+                    //   height: 40,
+                    //   child: CustomAutoSizeTextMontserrat(
+                    //     text: '${controller.participantData.personName}',
+                    //     fontSize: 12,
+                    //     fontWeight: FontWeight.w500,
+                    //   ),
+                    // ),
                     SizedBox(
                       height: 10,
                     ),
