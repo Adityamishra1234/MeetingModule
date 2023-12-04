@@ -1052,37 +1052,51 @@ class MeetingAttendedAddNoteTask extends StatelessWidget {
                     ],
                     borderRadius: BorderRadius.circular(10),
                     color: ThemeConstants.whitecolor),
-                child: Column(
-                  children: [
-                    quil.QuillToolbar.basic(
-                      controller: noteText,
-                      showAlignmentButtons: true,
+                child: quil.QuillProvider(
+                  configurations: quil.QuillConfigurations(
+                    controller: noteText,
+                    sharedConfigurations: const quil.QuillSharedConfigurations(
+                      locale: Locale('de'),
                     ),
-                    SizedBox(height: 15),
-                    GestureDetector(
-                      onTap: () {
-                        // _focusNode.requestFocus();
-                      },
-                      child: Container(
-                        constraints: BoxConstraints(minHeight: 200),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                                width: 1, color: ThemeConstants.bluecolor)),
-                        child: quil.QuillEditor(
-                          autoFocus: false,
-                          padding: EdgeInsets.all(10),
-                          expands: false,
-                          focusNode: FocusNode(),
-                          scrollable: false,
-                          scrollController: ScrollController(),
-                          controller: noteText,
-
-                          readOnly: false, // true for view only mode
+                  ),
+                  child: Column(
+                    children: [
+                      quil.QuillToolbar(
+                        configurations: quil.QuillToolbarConfigurations(
+                          // controller: noteText,
+                          showAlignmentButtons: true,
                         ),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 15),
+                      GestureDetector(
+                        onTap: () {
+                          // _focusNode.requestFocus();
+                        },
+                        child: Container(
+                          constraints: BoxConstraints(minHeight: 200),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                  width: 1, color: ThemeConstants.bluecolor)),
+                          child: quil.QuillEditor(
+                            configurations: quil.QuillEditorConfigurations(
+                              scrollable: false,
+                              padding: EdgeInsets.all(10),
+                              expands: false,
+                              readOnly: false,
+                            ),
+                            // autoFocus: false,
+
+                            focusNode: FocusNode(),
+
+                            scrollController: ScrollController(),
+
+                            // true for view only mode
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               InkWell(

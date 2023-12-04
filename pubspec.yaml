@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0'
+  sdk: '>=3.1.6'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -60,7 +60,7 @@ dependencies:
   quill_markdown: ^0.1.0
   html_unescape: ^2.0.0
   vsc_quill_delta_to_html: ^1.0.3
-  flutter_quill: ^7.2.6
+  flutter_quill:  ^8.6.4
   quill_json_to_html: ^1.0.1
   flutter_splash_screen: ^2.0.1+1
   local_auth: ^2.1.6
