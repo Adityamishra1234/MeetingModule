@@ -278,9 +278,14 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
+    // data();
     // TODO: implement initState
     super.initState();
   }
+
+  // data() async {
+  //   var data = await Future.delayed(Duration(seconds: 2));
+  // }
 
   var controllerBase = Get.put(BaseController(), permanent: true);
 

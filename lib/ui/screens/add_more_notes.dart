@@ -1,9 +1,8 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quil;
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
+import 'package:meeting_module2/data/data_sources.dart';
 import 'package:meeting_module2/functions/uploadDoucment.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/presentation/constants/loading.dart';
@@ -37,18 +36,24 @@ class AddMoreNotesView extends StatefulWidget {
 
 class _AddMoreNotesViewState extends State<AddMoreNotesView> {
   bool _isTextFieldFocused = false;
+  late final AppLifecycleListener _listener;
   // dynamic argumentData = Get.arguments;
   final _focusNode = FocusNode();
+  final _keyFocusNode = FocusNode();
+
   var controller = Get.put(AddMoreNotesController());
   @override
   void initState() {
     print(widget.meetingID);
+    SqfliteDBClass().initializedDB();
     super.initState();
     if (widget.tab == '0') {
       controller.addNotes = true;
     } else {
       controller.addNotes = false;
     }
+
+    _focusNode.addListener(() {});
   }
 
   // TextEditingController fff = TextEditingController();
@@ -70,6 +75,25 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                             SizedBox(
                               height: 10,
                             ),
+                            InkWell(
+                                onTap: () {
+                                  SqfliteDBClass().createNote(
+                                      note: 'dededededdee',
+                                      user_id: Get.find<BaseController>().id,
+                                      meeting_id: Get.find<BaseController>()
+                                          .selectedMeetingData
+                                          .id!);
+                                },
+                                child: Text('dd')),
+                            InkWell(
+                                onTap: () {
+                                  SqfliteDBClass().getNote(
+                                      Get.find<BaseController>().id,
+                                      Get.find<BaseController>()
+                                          .selectedMeetingData
+                                          .id!);
+                                },
+                                child: Text('dd')),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 16),
@@ -255,32 +279,42 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                                             showAlignmentButtons: true,
                                           ),
                                           SizedBox(height: 15),
-                                          GestureDetector(
-                                            onTap: () {
-                                              _focusNode.requestFocus();
+                                          KeyboardListener(
+                                            focusNode: _keyFocusNode,
+                                            onKeyEvent: (value) {
+                                              print(value);
+                                              print(
+                                                  'ddddddddddddddddddddddddddddddddd');
                                             },
-                                            child: Container(
-                                              constraints: BoxConstraints(
-                                                  minHeight: 200),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  border: Border.all(
-                                                      width: 1,
-                                                      color: ThemeConstants
-                                                          .bluecolor)),
-                                              child: quil.QuillEditor(
-                                                autoFocus: false,
-                                                padding: EdgeInsets.all(10),
-                                                expands: false,
-                                                focusNode: _focusNode,
-                                                scrollable: false,
-                                                scrollController:
-                                                    ScrollController(),
-                                                controller: controller.noteText,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                _focusNode.requestFocus();
+                                              },
+                                              child: Container(
+                                                constraints: BoxConstraints(
+                                                    minHeight: 200),
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    border: Border.all(
+                                                        width: 1,
+                                                        color: ThemeConstants
+                                                            .bluecolor)),
+                                                child: quil.QuillEditor(
+                                                  autoFocus: false,
+                                                  padding: EdgeInsets.all(10),
+                                                  expands: false,
+                                                  focusNode: _focusNode,
+                                                  scrollable: false,
+                                                  scrollController:
+                                                      ScrollController(),
+                                                  controller:
+                                                      controller.noteText,
 
-                                                readOnly:
-                                                    false, // true for view only mode
+                                                  readOnly:
+                                                      false, // true for view only mode
+                                                ),
                                               ),
                                             ),
                                           ),

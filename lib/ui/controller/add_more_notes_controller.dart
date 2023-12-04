@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:meeting_module2/extensions/siecMemberNamefromId.dart';
 import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
@@ -25,6 +27,7 @@ import 'package:meeting_module2/utils/custom_doc_viewer.dart';
 import 'package:meeting_module2/utils/custom_image_viewer.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
 import 'package:meeting_module2/utils/routes/router_config.dart';
+import 'package:meeting_module2/utils/snackbarconstants.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/customExpansionTile.dart';
 import 'package:meeting_module2/widget/custom_no_data_widget.dart';
@@ -132,17 +135,17 @@ class AddMoreNotesController extends GetxController with StateMixin {
   int meetingUniversityID = 0;
   var meetingCountryID = 0;
 
-  // getMeetingCountryAndUniversity() async {
-  //   if (baseController.selectedMeetingData.meetingWith == 'university') {
-  //     var res = await api.findUniversityCountryByMeetingId(
-  //         baseController.selectedMeetingData.id);
+  getMeetingCountryAndUniversity() async {
+    if (baseController.selectedMeetingData.meetingWith == 'university') {
+      var res = await api.findUniversityCountryByMeetingId(
+          baseController.selectedMeetingData.id);
 
-  //     meetingCountryID = res['country'];
-  //     meetingUniversityID = res['university'];
+      meetingCountryID = res['country'];
+      meetingUniversityID = res['university'];
 
-  //     // print('${res} dddddd  ddd');
-  //   }
-  // }
+      // print('${res} dddddd  ddd');
+    }
+  }
 
   String nameFromid(id) {
     var data = Get.find<BaseController>().allSiecMembersList;
@@ -194,8 +197,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     }
 
     if (data.length == 0) {
-      reasonofNotAtteding.add(
-          CustomNoDataWidget(text: 'No Reason of Not attending Available'));
+      reasonofNotAtteding.add(CustomNoDataWidget(text: 'No data found'));
 
       return false;
     }
@@ -301,7 +303,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     // List<FindNotesModel> data = List<FindNotesModel>.from(
     //     json.decode(res).map((x) => FindNotesModel.fromJson(x)));
     if (res == null) {
-      documentlist.add(CustomNoDataWidget(text: 'No Notes Available'));
+      documentlist.add(CustomNoDataWidget(text: 'No data found'));
       return;
     }
 
@@ -311,7 +313,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     notesList = await data;
 
     if (notesList.length == 0) {
-      documentlist.add(CustomNoDataWidget(text: 'No Notes Available'));
+      documentlist.add(CustomNoDataWidget(text: 'No data found'));
       return false;
     }
 
@@ -677,7 +679,24 @@ class AddMoreNotesController extends GetxController with StateMixin {
       // change(null, status: RxStatus.success());
     }
 
-    // await getNotesOfMeeting(context);
+    var selectedMeeting = baseController.selectedMeetingData;
+
+    if (selectedMeeting.meetingType == 'Internal Meeting') {
+      await api.generateNotificationOnNoteCreation(
+          university: '',
+          meetingName: selectedMeeting.nameOfTheMeeting!,
+          meetingDate: selectedMeeting.dateOfMeeting!,
+          meetingTime: selectedMeeting.timeOfTheMeeting!,
+          internalOrExternal: selectedMeeting.meetingType!);
+    } else {
+      await api.generateNotificationOnNoteCreation(
+          university: '',
+          meetingName: selectedMeeting.nameOfTheMeeting!,
+          meetingDate: selectedMeeting.dateOfMeeting!,
+          meetingTime: selectedMeeting.timeOfTheMeeting!,
+          internalOrExternal: selectedMeeting.meetingType!);
+    }
+    // await getNotesOfMeeting(context)
 
     update();
     change(null, status: RxStatus.success());
@@ -770,6 +789,204 @@ class AddMoreNotesController extends GetxController with StateMixin {
   meetingId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     id = await prefs.getInt('id')!;
+  }
+
+  checkIfTheyAreStaringMeetingBefore(time, date, BuildContext context) async {
+    var currentTime = Jiffy.now();
+    var databaseime = Jiffy.parse(time, pattern: 'HH:mm');
+    var databaseDate = Jiffy.parse(date);
+
+    if (currentTime.date == databaseDate.date) {
+      if (currentTime.hour < databaseime.hour) {
+        var selected = false;
+
+        await showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                    content: Container(
+                  width: 400,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomAutoSizeTextMontserrat(
+                            text: 'You are starting the \nmeeting before.',
+                            textColor: ThemeConstants.bluecolor,
+                            fontSize: ThemeConstants.fontSizeMedium,
+                          ),
+                          Spacer(),
+                          IconButton(
+                              onPressed: () {
+                                context.pop();
+                              },
+                              icon: Icon(
+                                Icons.close,
+                                size: 15,
+                              ))
+                        ],
+                      ),
+                      CustomAutoSizeTextMontserrat(
+                        text: 'Still start the meeting.',
+                        textColor: ThemeConstants.bluecolor,
+                        fontSize: ThemeConstants.fontSizeSmall,
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              selected = true;
+                              context.pop();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 20),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                      width: 0.5,
+                                      color: ThemeConstants.bluecolor)),
+                              child: CustomAutoSizeTextMontserrat(
+                                  fontWeight: ThemeConstants.fontWeightThin,
+                                  fontSize: ThemeConstants.fontSizeSmall,
+                                  text: 'Yes'),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              selected = false;
+                              context.pop();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 20),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                      width: 0.5,
+                                      color: ThemeConstants.bluecolor)),
+                              child: CustomAutoSizeTextMontserrat(
+                                  fontWeight: ThemeConstants.fontWeightThin,
+                                  fontSize: ThemeConstants.fontSizeSmall,
+                                  text: 'No'),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                )));
+        return selected;
+      } else {
+        return true;
+      }
+    } else {
+      var selected = false;
+
+      await showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                  content: Container(
+                width: 400,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomAutoSizeTextMontserrat(
+                          text: 'You are starting the \nmeeting before.',
+                          textColor: ThemeConstants.bluecolor,
+                          fontSize: ThemeConstants.fontSizeMedium,
+                        ),
+                        Spacer(),
+                        IconButton(
+                            onPressed: () {
+                              context.pop();
+                            },
+                            icon: Icon(
+                              Icons.close,
+                              size: 15,
+                            ))
+                      ],
+                    ),
+                    CustomAutoSizeTextMontserrat(
+                      text: 'Still start the meeting.',
+                      textColor: ThemeConstants.bluecolor,
+                      fontSize: ThemeConstants.fontSizeSmall,
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            selected = true;
+                            context.pop();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                    width: 0.5,
+                                    color: ThemeConstants.bluecolor)),
+                            child: CustomAutoSizeTextMontserrat(
+                                fontWeight: ThemeConstants.fontWeightThin,
+                                fontSize: ThemeConstants.fontSizeSmall,
+                                text: 'Yes'),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            selected = false;
+                            context.pop();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                    width: 0.5,
+                                    color: ThemeConstants.bluecolor)),
+                            child: CustomAutoSizeTextMontserrat(
+                                fontWeight: ThemeConstants.fontWeightThin,
+                                fontSize: ThemeConstants.fontSizeSmall,
+                                text: 'No'),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              )));
+      return selected;
+    }
+// var todayDate = Jiffy.parse( date , pattern:  )
+//     if( date ==  )
   }
 
   meetingStarted(int meetingId, bool val) async {
@@ -952,7 +1169,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
           int sizeInBytes = f.lengthSync();
           double sizeInMb = sizeInBytes / (1024 * 1024);
           if (sizeInMb > 5) {
-            getToast('Maximum 5MB upload size');
+            getToast('${SnackBarConstants.toastForUploadFile}');
           } else {
             // var res = await api.uploadDocumentCommon(
             //   ,
@@ -988,7 +1205,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
         }
       }
     } catch (e) {
-      await getToast('Please give Storage Permission');
+      await getToast('Allow the app to access storage');
       // await ApiServices(). (
       //   Get.find<BaseController>().model1.id.toString(),
       //   e.toString(),

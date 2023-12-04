@@ -39,22 +39,29 @@ class _DashboardNotesViewState extends State<DashboardNotesView> {
         body: controller.obx(
             (state) => SafeArea(
                   child: Container(
-                    padding: EdgeInsets.only(top: 20, left: 8, right: 8),
+                    decoration: BoxDecoration(
+                        gradient: ThemeConstants.backgroundGradient),
+                    padding: EdgeInsets.only(
+                      top: 20,
+                    ),
                     height: MediaQuery.of(context).size.height,
                     child: Column(
                       children: [
+                        SizedBox(
+                          height: 10,
+                        ),
                         Container(
                           width: MediaQuery.of(context).size.width,
                           child: Wrap(
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
                               Padding(
-                                padding:
-                                    const EdgeInsets.only(right: 10, bottom: 5),
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, bottom: 5),
                                 child: CustomAutoSizeTextMontserrat(
                                   text: "View Notes",
-                                  fontSize: 22,
-                                  textColor: ThemeConstants.bluecolor,
+                                  fontSize: 24,
+                                  textColor: ThemeConstants.paleYellow,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -62,6 +69,9 @@ class _DashboardNotesViewState extends State<DashboardNotesView> {
                                 width: 10,
                               ),
                               DropdownButton2(
+                                iconStyleData: IconStyleData(
+                                    iconEnabledColor:
+                                        ThemeConstants.whitecolor),
                                 underline: Container(),
                                 buttonStyleData: ButtonStyleData(
                                     elevation: 0,
@@ -71,14 +81,14 @@ class _DashboardNotesViewState extends State<DashboardNotesView> {
                                         borderRadius: BorderRadius.circular(20),
                                         border: Border.all(
                                             width: 1,
-                                            color: ThemeConstants.blackcolor))),
+                                            color: ThemeConstants.whitecolor))),
                                 dropdownStyleData:
                                     DropdownStyleData(elevation: 1),
                                 hint: Text(
                                   '${controller.selectedDropDown}',
                                   style: TextStyle(
                                     fontSize: 14,
-                                    color: Theme.of(context).hintColor,
+                                    color: ThemeConstants.whitecolor,
                                   ),
                                 ),
 
@@ -117,11 +127,20 @@ class _DashboardNotesViewState extends State<DashboardNotesView> {
                           ),
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 30,
                         ),
                         Expanded(
-                          child: ListView(
-                            children: [...controller.toshow],
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: ThemeConstants.whitecolor,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(35),
+                                    topRight: Radius.circular(35))),
+                            padding: const EdgeInsets.only(
+                                top: 30, left: 25, right: 25),
+                            child: ListView(
+                              children: [...controller.toshow],
+                            ),
                           ),
                         ),
                       ],

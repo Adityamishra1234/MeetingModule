@@ -49,7 +49,9 @@ class DashboardNotesController extends GetxController with StateMixin {
   List<Widget> beta = [];
 
   List<FindNotesModel> data = [];
+
   getNotesData(BuildContext context) async {
+    change(null, status: RxStatus.loading());
     var res = await apiServices.findNoteByUser(Get.find<BaseController>().id);
     List<dynamic> data2 = res;
 
@@ -59,7 +61,7 @@ class DashboardNotesController extends GetxController with StateMixin {
     print(data);
 
     if (data.length == 0) {
-      toshow.add(CustomNoDataWidget(text: 'No Notes Available'));
+      toshow.add(CustomNoDataWidget(text: 'No data found'));
       return;
     }
 
@@ -203,6 +205,9 @@ class DashboardNotesController extends GetxController with StateMixin {
                 ),
                 InkWell(
                   onTap: () {
+                    context.push(
+                        '${Routes.dashboard}/${Routes.viewDashboardNotes}/${Routes.assignDashboardNotes}',
+                        extra: data[i]);
                     // Get.to(AssignToView(), arguments: widget.dataList![i]);
                   },
                   child: Padding(
@@ -376,6 +381,8 @@ class DashboardNotesController extends GetxController with StateMixin {
             ),
           ),
         ));
+
+        change(null, status: RxStatus.success());
       }
     }
 

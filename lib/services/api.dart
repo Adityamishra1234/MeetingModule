@@ -110,8 +110,16 @@ abstract class API {
       required bool meeting_attended});
 
   generateMultiNotifications({
-    required String title,
-    required String body,
+    required int type,
     required List<int> id,
   });
+
+  generateNotificationOnNoteCreation(
+      {String? university,
+      required String meetingName,
+      required String meetingDate,
+      required String meetingTime,
+      required String internalOrExternal});
+
+  findRepresentativeForDropDownFromBankVendor(String type, String groupName);
 }

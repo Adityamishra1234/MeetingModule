@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/presentation/constants/loading.dart';
@@ -15,18 +16,26 @@ import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/customtextfield.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
   static const routeNamed = '/LoginPage';
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   TextEditingController texfield = TextEditingController();
+
   TextEditingController otpfield = TextEditingController();
 
   TextEditingController password = TextEditingController();
+
   TextEditingController confirmpassword = TextEditingController();
 
   var controllerBase = Get.put(BaseController(), permanent: true);
+
   var controller = Get.put(LoginController());
 
   @override
@@ -260,16 +269,38 @@ class LoginPage extends StatelessWidget {
                                                 !controller.showPassword;
                                             controller.update();
                                           },
-                                          validator:
-                                              Validator.passwordWithSpecial,
+                                          // validator:
+                                          //     Validator.passwordWithSpecial,
                                           isPassword: true,
                                           hint: "Please enter your password",
                                           // validator: Validator.email,
                                           controller: password),
                                     ),
+                                    FlutterPwValidator(
+                                        successColor: ThemeConstants.GreenColor,
+                                        controller: password,
+                                        minLength: 8,
+                                        uppercaseCharCount: 1,
+                                        lowercaseCharCount: 1,
+                                        numericCharCount: 1,
+                                        specialCharCount: 1,
+                                        width: 300,
+                                        height: 150,
+                                        onSuccess: () {
+                                          controller.passwordValidated = true;
+                                          print('object');
+                                          controller.update();
+                                        },
+                                        onFail: () {
+                                          print('object');
+                                          controller.passwordValidated = false;
+                                          controller.update();
+                                        }),
                                     Padding(
                                       padding: const EdgeInsets.all(10.0),
                                       child: CustomTextField(
+                                          originalPasswordToMatch:
+                                              password.value.text,
                                           backgroundCOlour:
                                               ThemeConstants.whitecolor,
                                           obscureText: controller.showPassword,
@@ -280,7 +311,7 @@ class LoginPage extends StatelessWidget {
                                           },
                                           isPassword: true,
                                           validator:
-                                              Validator.passwordWithSpecial,
+                                              Validator.passwordMatchValidation,
                                           hint:
                                               "Please enter your confirm password",
                                           // validator: Validator.email,
@@ -296,10 +327,11 @@ class LoginPage extends StatelessWidget {
 
                                         //todo
                                         if (password.text ==
-                                            confirmpassword
-                                                .text) if (controller
-                                            .key.currentState!
-                                            .validate()) {
+                                            confirmpassword.text) if (controller
+                                                .key.currentState!
+                                                .validate() &&
+                                            controller.passwordValidated ==
+                                                true) {
                                           var res =
                                               await controller.updatePassword(
                                                   texfield.value.text,
@@ -309,12 +341,20 @@ class LoginPage extends StatelessWidget {
                                             var prefs = await SharedPreferences
                                                 .getInstance();
                                             await prefs.clear();
+
+                                            controller.otpSuccessful = 0;
+                                            controller.forOtp = 0;
+                                            controller.verifyEmail = true;
+
+                                            controller.update();
+
                                             context.go(Routes.signin);
                                             // controller.onDelete();
                                             // Get.put(LoginController());
                                           }
+                                        } else {
+                                          getToast('Enter a valid OTP');
                                         }
-                                        {}
                                       },
                                       child: Container(
                                         height: 40,
@@ -335,6 +375,10 @@ class LoginPage extends StatelessWidget {
                                   ],
                                   GestureDetector(
                                     onTap: () {
+                                      controller.otpSuccessful = 0;
+                                      controller.forOtp = 0;
+                                      controller.verifyEmail = true;
+                                      controller.update();
                                       context.pop();
                                       // Get.offNamed(SignInView.route);
                                     },

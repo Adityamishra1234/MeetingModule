@@ -117,7 +117,7 @@ class AssignToView extends StatelessWidget {
                       backgroundColor: ThemeConstants.bluecolor,
                       text: "Add Task",
                       onPressed: () {
-                        getController.assign(argu, controller.text);
+                        getController.assign(argu, controller.text, context);
                       },
                     ),
                   ),

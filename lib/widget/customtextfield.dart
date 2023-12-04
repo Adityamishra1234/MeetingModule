@@ -14,9 +14,11 @@ class CustomTextField extends StatelessWidget {
   bool? isPassword = false;
   VoidCallback? callbackForPasswordShow;
   int? fontSize;
+  String? originalPasswordToMatch;
 
   CustomTextField({
     Key? key,
+    this.originalPasswordToMatch,
     this.callbackForPasswordShow,
     this.fontSize,
     this.forDropDown = true,
@@ -42,7 +44,7 @@ class CustomTextField extends StatelessWidget {
         style: ThemeConstants.montserratTextStyleSmall,
         readOnly: readOrEdit == null ? false : readOrEdit!,
         decoration: InputDecoration(
-          errorMaxLines: 2,
+          errorMaxLines: 20,
           suffixIcon: isPassword == true
               ? IconButton(
                   icon: Icon(Icons.visibility),
@@ -107,6 +109,9 @@ class CustomTextField extends StatelessWidget {
             return getEmptyDropDownValidation(value);
           } else if (Validator.passwordWithSpecial == validator) {
             return getPasswordWithSpecialCharacterValidator(value);
+          } else if (Validator.passwordMatchValidation == validator) {
+            return validatePasswordMatchedOrNot(
+                value, originalPasswordToMatch!);
           }
           return null;
         });
@@ -120,5 +125,7 @@ enum Validator {
   passwordWithSpecial,
   notEmpty,
   otp,
-  plzSelectOne
+  plzSelectOne,
+
+  passwordMatchValidation
 }

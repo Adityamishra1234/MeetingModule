@@ -114,7 +114,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                                     topLeft: Radius.circular(35),
                                     topRight: Radius.circular(35))),
                             padding: const EdgeInsets.only(
-                                top: 30, left: 25, right: 25),
+                                top: 20, left: 25, right: 25),
                             child: ListView(
                               children: [
                                 ...getListInternalmeeting(context, controller),
@@ -166,12 +166,18 @@ class CreateNewMeeting2 extends StatelessWidget {
                     ),
                   ),
                 ),
+
+                //current
                 CustomMultiDownSingle(
                     enableMultiSelect: false,
                     callbackFunctionSingle: (val) {
                       controller.meetingWith.value = val;
 
                       controller.getRepresentativeDropDownData();
+                      print(val);
+                      if (val != "University Meetings") {
+                        controller.fetchParticipantData();
+                      }
                       // controller.inItGetRepresentative();
                     },
                     model: controller.meetingWithList,
@@ -205,67 +211,100 @@ class CreateNewMeeting2 extends StatelessWidget {
                     child: IconButton(
                       iconSize: 15,
                       onPressed: () {
-                        showDialog(
+                        showAnimatedDialog(
+                            duration: Duration(milliseconds: 350),
+                            animationType:
+                                DialogTransitionType.slideFromBottomFade,
                             context: context,
-                            builder: (_) => AlertDialog(
-                                  contentPadding: EdgeInsets.all(20),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  content: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        CustomAutoSizeTextMontserrat(
-                                            text: 'Add new Agenda'),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Container(
-                                          // height: 45,
+                            builder: (_) => Stack(children: [
+                                  Center(
+                                      child: AlertDialog(
+                                    contentPadding: EdgeInsets.all(20),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    content: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          CustomAutoSizeTextMontserrat(
+                                              text: 'Add new Agenda'),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            // height: 45,
 
-                                          child: CustomTextField(
-                                              validator: Validator.notEmpty,
-                                              hint: '',
-                                              controller: controller
-                                                  .addNewAgendaController
-                                                  .value),
-                                        ),
-                                        CustomButton(
-                                            backgroundColor:
-                                                ThemeConstants.bluecolor,
-                                            text: 'Add',
-                                            onPressed: () async {
-                                              if (controller
-                                                      .addNewAgendaController
-                                                      .value
-                                                      .text ==
-                                                  '') {
-                                                getToast('Please Fill');
-                                              } else {
-                                                var data = await controller
-                                                    .addNewAgenda(
-                                                        agenda: controller
-                                                            .addNewAgendaController
-                                                            .value
-                                                            .text,
-                                                        userId: Get.find<
-                                                                BaseController>()
-                                                            .id);
+                                            child: CustomTextField(
+                                                validator: Validator.notEmpty,
+                                                hint: '',
+                                                controller: controller
+                                                    .addNewAgendaController
+                                                    .value),
+                                          ),
+                                          CustomButton(
+                                              backgroundColor:
+                                                  ThemeConstants.bluecolor,
+                                              text: 'Add',
+                                              onPressed: () async {
+                                                if (controller
+                                                        .addNewAgendaController
+                                                        .value
+                                                        .text ==
+                                                    '') {
+                                                  getToast(
+                                                      'Add a valid agenda');
+                                                } else {
+                                                  var data = await controller
+                                                      .addNewAgenda(
+                                                          agenda: controller
+                                                              .addNewAgendaController
+                                                              .value
+                                                              .text,
+                                                          userId: Get.find<
+                                                                  BaseController>()
+                                                              .id);
 
-                                                if (data) {
-                                                  context.pop();
+                                                  if (data) {
+                                                    context.pop();
+                                                  }
                                                 }
-                                              }
-                                            })
-                                      ],
+                                              })
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ));
+                                  )),
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 20),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          context.pop();
+                                          // Get.back();
+                                        },
+                                        child: Container(
+                                          width: 50,
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                              color: ThemeConstants.bluecolor,
+                                              borderRadius:
+                                                  BorderRadius.circular(200)),
+                                          child: Icon(
+                                            Icons.close_rounded,
+                                            color: ThemeConstants.whitecolor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ]));
                       },
                       icon: Icon(
                         Icons.add,
@@ -422,7 +461,8 @@ class CreateNewMeeting2 extends StatelessWidget {
                                           : null,
                                 ),
                               ),
-                              startingDate: DateTime.now(),
+                              startingDate:
+                                  DateTime.now().subtract(Duration(days: 30)),
                               isBlank: true,
                               callback: (val) {
                                 controller.dateController.value = val;
@@ -477,6 +517,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                                 ),
                               ),
                               callback: (val) {
+                                print(val);
                                 // print(val);
                                 controller.timeController.value = val;
 
@@ -1310,7 +1351,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                                     width: 2,
                                   ),
                                   CustomAutoSizeTextMontserrat(
-                                    text: "Add New Representative",
+                                    text: "Add New",
                                     textColor: ThemeConstants.whitecolor,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
@@ -1328,7 +1369,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                       ],
                     ),
                   ),
-
+//current
                   CustomMultiDownSingleAllUser(
                       model: controller.listOfParticipantData,
                       initialSelectedValue: '',
@@ -1365,12 +1406,12 @@ class CreateNewMeeting2 extends StatelessWidget {
                           //                   'Please add a representative')),
                           //         ));
 
-                          getToast('Please add a representative');
+                          getToast('Kindly add a representative');
                         } else {
                           controller.listOfParticipants
                               .add(controllers.participantData);
                           controller.update();
-                          getToast('Participant Added Successfully');
+                          getToast('Participant updated');
                           // showDialog(
                           //     context: context,
                           //     builder: (_) => AlertDialog(
@@ -1547,7 +1588,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                                     color: ThemeConstants.whitecolor,
                                   ),
                                   CustomAutoSizeTextMontserrat(
-                                    text: "Add New Vendor",
+                                    text: "Add New",
                                     textColor: ThemeConstants.whitecolor,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
@@ -1571,9 +1612,13 @@ class CreateNewMeeting2 extends StatelessWidget {
                         model: controller.listOfParticipantData,
                         initialSelectedValue: '',
                         // inititalSelectedList: ,
-                        callbackFunctionSingle: (val) async {
+                        callbackFunctionSingle: (AllUserModel val) async {
                           controller.participantID.value = val;
-                          await controller.fetchParticipantData();
+
+                          await controller
+                              .fetchReprenestativeDropDownDataFromVendorBankGroup(
+                                  "0", '${val.name}');
+                          // await controller.fetchParticipantData();
 
                           var contains = false;
                           for (var i = 0;
@@ -1587,7 +1632,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                           }
 
                           if (contains) {
-                            getToast('Already added');
+                            getToast('Already updated');
                             // showDialog(
                             //     context: context,
                             //     builder: (_) => AlertDialog(
@@ -1603,12 +1648,12 @@ class CreateNewMeeting2 extends StatelessWidget {
                             //                   'Please add a representative')),
                             //         ));
 
-                            getToast('Please add a representative');
+                            getToast('Kindly add a representative');
                           } else {
                             controller.listOfParticipants
                                 .add(controllers.participantData);
                             controller.update();
-                            getToast('Participant Added Successfully');
+                            getToast('Participant updated');
                             // showDialog(
                             //     context: context,
                             //     builder: (_) => AlertDialog(
@@ -1730,7 +1775,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                                     color: ThemeConstants.whitecolor,
                                   ),
                                   CustomAutoSizeTextMontserrat(
-                                    text: "Add New Bank",
+                                    text: "Add New",
                                     textColor: ThemeConstants.whitecolor,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
@@ -1753,8 +1798,13 @@ class CreateNewMeeting2 extends StatelessWidget {
                         model: controller.listOfParticipantData,
                         initialSelectedValue: '',
                         // inititalSelectedList: ,
-                        callbackFunctionSingle: (val) {
+                        callbackFunctionSingle: (val) async {
                           controller.participantID.value = val;
+
+                          await controller
+                              .fetchReprenestativeDropDownDataFromVendorBankGroup(
+                                  "1", '${val.name}');
+
                           controller.fetchParticipantData();
                           var contains = false;
                           for (var i = 0;
@@ -1784,12 +1834,12 @@ class CreateNewMeeting2 extends StatelessWidget {
                             //                   'Please add a representative')),
                             //         ));
 
-                            getToast('Please add a representative');
+                            getToast('Kindly add a representative ');
                           } else {
                             controller.listOfParticipants
                                 .add(controllers.participantData);
                             controller.update();
-                            getToast('Participant Added Successfully');
+                            getToast('Participant updated');
                             // showDialog(
                             //     context: context,
                             //     builder: (_) => AlertDialog(
@@ -1991,22 +2041,99 @@ class CreateNewMeeting2 extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 9, horizontal: 10),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: ThemeConstants.bluecolor, width: 1),
-                          color: ThemeConstants.lightVioletColor,
-                          borderRadius: BorderRadius.circular(500)),
-                      width: double.infinity,
-                      height: 40,
-                      child: CustomAutoSizeTextMontserrat(
-                        text: '${controller.participantData.personName}',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+
+                    ///current
+                    ///
+                    ///
+                    CustomMultiDownSingleAllUser(
+                        model: controller.bankVendorPersonNameDropDownList,
+                        initialSelectedValue: '',
+                        // inititalSelectedList: ,
+                        callbackFunctionSingle: (val) async {
+                          controller.participantID.value = val;
+                          await controller.fetchParticipantData();
+                          var contains = false;
+
+                          for (var i = 0;
+                              i < controller.listOfParticipants.length;
+                              i++) {
+                            contains = false;
+                            if (controller.listOfParticipants[i].id ==
+                                controller.participantData.id) {
+                              contains = true;
+                            }
+                          }
+
+                          if (contains) {
+                            getToast('Already added');
+                            // showDialog(
+                            //     context: context,
+                            //     builder: (_) => AlertDialog(
+                            //           content: Container(
+                            //               child: Text('Already added')),
+                            //         ));
+                          } else if (controllers.participantData.id == 0) {
+                            // showDialog(
+                            //     context: context,
+                            //     builder: (_) => AlertDialog(
+                            //           content: Container(
+                            //               child: Text(
+                            //                   'Please add a representative')),
+                            //         ));
+
+                            getToast('Kindly add a representative');
+                          } else {
+                            controller.listOfParticipants
+                                .add(controllers.participantData);
+                            controller.update();
+                            getToast('Participant updated');
+                            // showDialog(
+                            //     context: context,
+                            //     builder: (_) => AlertDialog(
+                            //           shape: RoundedRectangleBorder(
+                            //               borderRadius:
+                            //                   BorderRadius.circular(20)),
+                            //           content: Container(
+                            //             child: Column(
+                            //                 mainAxisSize: MainAxisSize.min,
+                            //                 children: [
+                            //                   Text(
+                            //                       'Participant Added Successfully'),
+                            //                   Icon(Icons.check_circle,
+                            //                       size: 30,
+                            //                       color: ThemeConstants
+                            //                           .GreenColor)
+                            //                 ]),
+                            //           ),
+                            //         ));
+                          }
+
+                          // controller.selectedBranch.value = val;
+                          // controller.update();
+                        },
+                        callbackFunctionMulti: (List<AllUserModel> val) {
+                          print(val);
+                          // controller.selectedUsersList.value = val;
+                          // controller.update();
+                        },
+                        enableMultiSelect: false),
+//current
+                    // Container(
+                    //   padding:
+                    //       EdgeInsets.symmetric(vertical: 9, horizontal: 10),
+                    //   decoration: BoxDecoration(
+                    //       border: Border.all(
+                    //           color: ThemeConstants.bluecolor, width: 1),
+                    //       color: ThemeConstants.lightVioletColor,
+                    //       borderRadius: BorderRadius.circular(500)),
+                    //   width: double.infinity,
+                    //   height: 40,
+                    //   child: CustomAutoSizeTextMontserrat(
+                    //     text: '${controller.participantData.personName}',
+                    //     fontSize: 12,
+                    //     fontWeight: FontWeight.w500,
+                    //   ),
+                    // ),
                     SizedBox(
                       height: 10,
                     ),
@@ -2580,6 +2707,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                             ),
                           )),
                 ),
+
                 // Padding(
                 //   padding: const EdgeInsets.only(left: 0),
                 //   child: Align(
@@ -2644,6 +2772,19 @@ class CreateNewMeeting2 extends StatelessWidget {
                   model: Get.find<BaseController>().allSiecMembersList,
                   initialSelectedValue: '',
                   inititalSelectedList: controller.preFilledUsers,
+                  field: Container(
+                    height: 22,
+                    child: CustomTextField(
+                      forDropDown: false,
+                      backgroundCOlour: Colors.transparent,
+                      readOrEdit: true,
+                      hint: '',
+                      controller: TextEditingController(),
+                      validator: controller.selectedUsersList.length == 0
+                          ? Validator.plzSelectOne
+                          : null,
+                    ),
+                  ),
 
                   // callbackFunctionSingle: (val) {
                   //   // controller.selectedBranch.value = val;

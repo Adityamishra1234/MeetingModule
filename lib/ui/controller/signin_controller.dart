@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/models/userModal.dart';
@@ -25,6 +26,8 @@ class SigninController extends GetxController with StateMixin {
   var otpController = TextEditingController();
   var passwordController = TextEditingController();
 
+  bool passwordValidatted = false;
+
   bool showPassword = false;
 
   startResend() async {
@@ -43,9 +46,9 @@ class SigninController extends GetxController with StateMixin {
       forOtp.value = 2;
 
       update();
-      // var res2 = await api.getOTP(email);
+      var res2 = await api.getOTP(email);
       startTimer();
-      var res2 = true;
+      // var res2 = true;
 
       update();
     }
@@ -153,8 +156,8 @@ class SigninController extends GetxController with StateMixin {
   }
 
   forgetPaasword(String email, BuildContext context) async {
-    // var res = await api.forgetpassword(email);
-    if (true) {
+    var res = await api.forgetpassword(email);
+    if (res) {
       return true;
     }
   }
@@ -171,102 +174,169 @@ class SigninController extends GetxController with StateMixin {
     emailController.text = email;
     return showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        content: Container(
-          width: MediaQuery.of(context).size.width * 0.7,
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0, top: 5),
-                  child: CustomAutoSizeTextMontserrat(
-                    text: 'Reset password',
-                    fontSize: ThemeConstants.fontSizeMedium,
+      builder: (_) => Stack(
+        children: [
+          Center(
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              content: Container(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0, top: 5),
+                        child: CustomAutoSizeTextMontserrat(
+                          text: 'Reset password',
+                          fontSize: ThemeConstants.fontSizeMedium,
+                        ),
+                      ),
+                      Spacer(),
+                      // InkWell(
+                      //   onTap: () {
+                      //     context.pop();
+                      //   },
+                      //   child: Icon(
+                      //     Icons.close,
+                      //     color: ThemeConstants.bluecolor,
+                      //     size: 16,
+                      //   ),
+                      // )
+                    ],
                   ),
-                ),
-                Spacer(),
-                // InkWell(
-                //   onTap: () {
-                //     context.pop();
-                //   },
-                //   child: Icon(
-                //     Icons.close,
-                //     color: ThemeConstants.bluecolor,
-                //     size: 16,
-                //   ),
-                // )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: CustomTextField(
-                  backgroundCOlour: ThemeConstants.whitecolor,
-                  hint: "Enter your office email",
-                  validator: Validator.email,
-                  readOrEdit: true,
-                  controller: emailController),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: CustomTextField(
-                  keybord: TextInputType.number,
-                  backgroundCOlour: ThemeConstants.whitecolor,
-                  hint: "Enter your OTP",
-                  validator: Validator.otp,
-                  controller: otpController),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: CustomTextField(
-                  backgroundCOlour: ThemeConstants.whitecolor,
-                  hint: "Enter your password",
-                  validator: Validator.passwordWithSpecial,
-                  controller: passwordController),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 2),
-              child: LoadingButton(
-                height: 35,
-                borderRadius: 8,
-                animate: true,
-                color: ThemeConstants.bluecolor,
-                width: MediaQuery.of(context).size.width * 0.44,
-                loader: Container(
-                  padding: const EdgeInsets.all(10),
-                  width: 40,
-                  height: 40,
-                  child: CircularProgressIndicator(
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(ThemeConstants.bluecolor),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: CustomTextField(
+                        backgroundCOlour: ThemeConstants.whitecolor,
+                        hint: "Enter your office email",
+                        validator: Validator.email,
+                        readOrEdit: true,
+                        controller: emailController),
                   ),
-                ),
-                child: CustomAutoSizeTextMontserrat(
-                  text: 'Update Password',
-                  textColor: ThemeConstants.whitecolor,
-                  fontSize: ThemeConstants.fontSizeMedium,
-                ),
-                onTap: (startLoading, stopLoading, buttonState) async {
-                  // print(widget.path);
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: CustomTextField(
+                        keybord: TextInputType.number,
+                        backgroundCOlour: ThemeConstants.whitecolor,
+                        hint: "Enter your OTP",
+                        validator: Validator.otp,
+                        controller: otpController),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: CustomTextField(
+                        backgroundCOlour: ThemeConstants.whitecolor,
+                        hint: "Enter your password",
+                        // validator: Validator.passwordWithSpecial,
+                        controller: passwordController),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: FlutterPwValidator(
+                        controller: passwordController,
+                        minLength: 8,
+                        uppercaseCharCount: 1,
+                        lowercaseCharCount: 1,
+                        numericCharCount: 1,
+                        specialCharCount: 1,
+                        width: 300,
+                        height: 150,
+                        onSuccess: () {
+                          passwordValidatted = true;
+                          print('object');
+                          update();
+                        },
+                        onFail: () {
+                          print('object');
+                          passwordValidatted = false;
+                          update();
+                        }),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 40, vertical: 2),
+                    child: LoadingButton(
+                      height: 35,
+                      borderRadius: 8,
+                      animate: true,
+                      width: MediaQuery.of(context).size.width * 0.55,
+                      color: ThemeConstants.bluecolor,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                      loader: Container(
+                        padding: const EdgeInsets.all(5),
+                        width: 40,
+                        height: 40,
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              ThemeConstants.bluecolor),
+                        ),
+                      ),
+                      child: CustomAutoSizeTextMontserrat(
+                        text: 'Update Password',
+                        textColor: ThemeConstants.whitecolor,
+                        fontSize: ThemeConstants.fontSizeMedium,
+                      ),
+                      onTap: (startLoading, stopLoading, buttonState) async {
+                        // print(widget.path);
 
-                  startLoading();
-                  if (passwordController.text.isNotEmpty &&
-                      otpController.text.isNotEmpty) {
-                    var res = await updatePasswordForget(
-                        email, passwordController.text, otpController.text);
+                        startLoading();
+                        if (passwordController.text.isNotEmpty &&
+                            otpController.text.isNotEmpty &&
+                            passwordValidatted == true) {
+                          var res = await updatePasswordForget(email,
+                              passwordController.text, otpController.text);
 
-                    if (res == true) context.pop();
-                  } else {
-                    getToast("Kindly check your fields");
-                  }
+                          if (res == true) context.pop();
+                        } else {
+                          getToast("Kindly check your fields");
+                        }
 
-                  stopLoading();
-                },
+                        stopLoading();
+                      },
+                    ),
+                  ),
+                ]),
               ),
             ),
-          ]),
-        ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: GestureDetector(
+                onTap: () {
+                  context.pop();
+                  otpController.clear();
+                  passwordController.clear();
+                  // Get.back();
+                },
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      color: ThemeConstants.bluecolor,
+                      borderRadius: BorderRadius.circular(200)),
+                  child: Icon(
+                    Icons.close_rounded,
+                    color: ThemeConstants.whitecolor,
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
       ),
-    );
+    ).whenComplete(() {
+      otpController.clear();
+      passwordController.clear();
+    });
   }
 }

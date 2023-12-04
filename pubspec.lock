@@ -574,6 +574,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.16"
+  flutter_pw_validator:
+    dependency: "direct main"
+    description:
+      name: flutter_pw_validator
+      sha256: "01960d4d701f6b972f3a2f324e202d840ecfe1b84e00522f92dece874b1c9b30"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.6.0"
   flutter_quill:
     dependency: "direct main"
     description:
@@ -968,6 +976,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  password_field_validator:
+    dependency: "direct main"
+    description:
+      name: password_field_validator
+      sha256: d1f727e1cd3cc9fc18522d417e5be5a9079a2b4760067948efd84ce2045f2188
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   pasteboard:
     dependency: transitive
     description:
@@ -1278,7 +1294,7 @@ packages:
     source: hosted
     version: "7.0.0"
   sqflite:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: sqflite
       sha256: "591f1602816e9c31377d5f008c2d9ef7b8aca8941c3f89cc5fd9d84da0c38a9a"

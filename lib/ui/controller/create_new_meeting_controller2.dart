@@ -264,6 +264,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     // var res = await api.findRepresentative(meetingWith.value.split('').toString() );
   }
 
+  ///current
   List<AllUserModel> listOfParticipantData = <AllUserModel>[];
   getRepresentativeDropDownData() async {
     print(meetingWith.value.substring(0, meetingWith.value.length - 8));
@@ -276,6 +277,13 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
         List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)))
             .toList();
 
+    if (data == 'Vendor') {
+      await fetchReprenestativeDropDownDataFromVendorBankGroup(
+          "0", '${listOfParticipantData[0].name}');
+    } else if (data == 'Bank') {
+      await fetchReprenestativeDropDownDataFromVendorBankGroup(
+          "1", '${listOfParticipantData[0].name}');
+    }
     update();
 
     // print(listOfParticipantData.value[0].toJson());
@@ -516,12 +524,16 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     ///
     ///
     ///
-    if (meetingLocation != null) {
-      meetingModel.value.locationOfTheMeeting =
-          meetingLocation == 'true' ? '1' : '2';
-    } else {
-      meetingModel.value.locationOfTheMeeting = '';
-    }
+    ///
+    ///
+    ///
+
+    // if (meetingLocation != null) {
+    //   meetingModel.value.locationOfTheMeeting =
+    //       meetingLocation == 'true' ? '1' : '2';
+    // } else {
+    //   meetingModel.value.locationOfTheMeeting = '';
+    // }
 
     meetingModel.value.specificLocationOfTheMeeting =
         specifyMeetingLocation.value.text;
@@ -559,8 +571,40 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     meetingModel.value.registrationLink = registrationLink.value.text;
 
+    meetingModel.value.createdBy = id;
+    meetingModel.value.updatedBy = id;
+
     print(meetingModel.value);
+
+    // if (meetingModel.value.meetingMode == '2') {
+    //   meetingModel.value.meetingModeType = '';
+    //   meetingModel.value.meetingLink = '';
+    //   meetingModel.value.registrationLink = '';
+    //   meetingModel.value.siecBranch = 0;
+    // } else {}
+
 //todoImpo
+
+    if (meetingModel.value.meetingMode == '1') {
+      meetingModel.value.locationOfTheMeeting = '';
+      meetingModel.value.specificLocationOfTheMeeting = '';
+      meetingModel.value.siecBranch = 0;
+    } else {
+      meetingModel.value.locationOfTheMeeting =
+          meetingLocation == 'true' ? '1' : '2';
+      meetingModel.value.meetingModeType = '';
+      meetingModel.value.meetingLink = '';
+      meetingModel.value.registrationLink = '';
+    }
+
+    if (meetingModel.value.meetingMode == '2' &&
+        meetingModel.value.locationOfTheMeeting == '1') {
+      meetingModel.value.specificLocationOfTheMeeting = '';
+    } else if (meetingModel.value.meetingMode == '2' &&
+        meetingModel.value.locationOfTheMeeting == '2') {
+      meetingModel.value.siecBranch = 0;
+    }
+
     var res = await api.addMeeting(meetingModel.value);
 
     for (var i = 0; i < selectedUsersList.length; i++) {
@@ -595,7 +639,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     await generateTheNotifications();
 
-    getToast('Meeting Added Successfully');
+    getToast('Meeting updated');
     // showPoPUp(
     //     'Meeting Added Successfully',
     //     Icon(
@@ -628,10 +672,12 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
   createExternalNewMeeting(BuildContext context) async {
     if (listOfParticipants.length < 1) {
-      Get.defaultDialog(
-          content: Container(
-        child: Text('Please add atleast one participant'),
-      ));
+      getToast('Add atleast one participant');
+
+      // Get.defaultDialog(
+      //     content: Container(
+      //   child: Text('Please add atleast one participant'),
+      // ));
 
       return true;
     }
@@ -658,12 +704,17 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     meetingModel.value.meetingMode = MeetingType.value == true ? '1' : '2';
 
-    if (meetingLocation != null) {
-      meetingModel.value.locationOfTheMeeting =
-          meetingLocation == 'true' ? '1' : '2';
-    } else {
-      meetingModel.value.locationOfTheMeeting = '';
-    }
+    // if (meetingModel.value.meetingMode == '2') {
+    //   meetingModel.value.meetingModeType = '';
+    //   meetingModel.value.meetingLink = '';
+    // }
+
+    // if (meetingLocation != null) {
+    //   meetingModel.value.locationOfTheMeeting =
+    //       meetingLocation == 'true' ? '1' : '2';
+    // } else {
+    //   meetingModel.value.locationOfTheMeeting = '';
+    // }
 
     /// online
     meetingModel.value.meetingModeType = modeOfMeeting.value;
@@ -709,6 +760,36 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     meetingModel.value.registrationLink = registrationLink.value.text;
 
+    meetingModel.value.createdBy = id;
+    meetingModel.value.updatedBy = id;
+
+    // if (meetingModel.value.meetingMode == '2') {
+    //   meetingModel.value.meetingModeType = '';
+    //   meetingModel.value.meetingLink = '';
+    // } else {
+    //   meetingModel.value.siecBranch = 0;
+    // }
+
+    if (meetingModel.value.meetingMode == '1') {
+      meetingModel.value.locationOfTheMeeting = '';
+      meetingModel.value.specificLocationOfTheMeeting = '';
+      meetingModel.value.siecBranch = 0;
+    } else {
+      meetingModel.value.locationOfTheMeeting =
+          meetingLocation == 'true' ? '1' : '2';
+      meetingModel.value.meetingModeType = '';
+      meetingModel.value.meetingLink = '';
+      meetingModel.value.registrationLink = '';
+    }
+
+    if (meetingModel.value.meetingMode == '2' &&
+        meetingModel.value.locationOfTheMeeting == '1') {
+      meetingModel.value.specificLocationOfTheMeeting = '';
+    } else if (meetingModel.value.meetingMode == '2' &&
+        meetingModel.value.locationOfTheMeeting == '2') {
+      meetingModel.value.siecBranch = 0;
+    }
+
     var res = await api.addMeeting(meetingModel.value);
 
     // var resDecoded = json.decode(res);
@@ -725,8 +806,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
               "meeting_id": dd.id,
               "participant_id": element.id,
               "is_active": true,
-              "created_by": 136,
-              "updated_by": 136,
+              "created_by": id,
+              "updated_by": id,
               "created_at": null,
               "updated_at": null
             })));
@@ -765,7 +846,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
 
     await generateTheNotifications();
-    getToast('Meeting Added Successfully');
+    getToast('Meeting updated');
     // showPoPUp(
     //     'Meeting Added Successfully',
     //     Icon(
@@ -787,11 +868,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
       idList.add(meetingModel.value.meetingCoordinator![i].id!);
     }
 
-    var title = 'Scheduled a Meeting ';
-    var body = "You have a meeting with SIEC Family, scheduled at " "";
-
-    var res = await api.generateMultiNotifications(
-        title: title, body: body, id: idList);
+    var res = await api.generateMultiNotifications(id: idList, type: 0);
   }
 
   generateTheNotificationsExternal() async {
@@ -806,11 +883,10 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     }
 
 //todoImpo
-    var title = 'Scheduled a Meeting';
-    var body = "You have a meeting with SIEC Family, scheduled at ";
+    // var title = 'Scheduled a Meeting';
+    // var body = "You have a meeting with SIEC Family, scheduled at ";
 
-    var res = await api.generateMultiNotifications(
-        title: title, body: body, id: idList);
+    var res = await api.generateMultiNotifications(type: 1, id: idList);
   }
 
   getGroupData() async {
@@ -929,6 +1005,24 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     agendaList = List<String>.from(res as List);
     change(null, status: RxStatus.success());
+
+    update();
+  }
+
+  List<AllUserModel> bankVendorPersonNameDropDownList = [];
+
+  fetchReprenestativeDropDownDataFromVendorBankGroup(
+      String repType, String nameOfGroup) async {
+    // print(meetingWith.value.substring(0, meetingWith.value.length - 8));
+    // var data = meetingWith.value.split(' ')[0];
+    // substring(0, meetingWith.value.length - 9);
+
+    var res = await api.findRepresentativeForDropDownFromBankVendor(
+        "$repType", nameOfGroup);
+
+    bankVendorPersonNameDropDownList =
+        List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)))
+            .toList();
 
     update();
   }

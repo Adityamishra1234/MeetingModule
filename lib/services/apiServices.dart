@@ -425,6 +425,40 @@ class ApiServices extends BaseServices implements API {
   }
 
   @override
+  findRepresentativeForDropDownFromBankVendor(
+      String type, String groupName) async {
+    var url = '${Endpoints.baseUrl}${Endpoints.getVendorBankRepNameDropdown}';
+
+    try {
+      var jsonData;
+      if (type == '0') {
+        jsonData = {"vendor_name": "$groupName"};
+      } else {
+        jsonData = {"bank": "Bank", "bank_name": "$groupName"};
+      }
+
+      // var data = {"representative_type": representaiveType};
+
+      var data2 = json.encode(jsonData);
+
+      var res = await httpPostHeader(url, data2);
+
+      if (res != null) {
+        if (res['tempUser'] == []) {
+          return {"name": "No person", "id": 0};
+        } else {
+          return res['tempUser'];
+        }
+      }
+      ;
+    } catch (e) {
+      throw UnimplementedError();
+    }
+  }
+
+  // TODO: implement findRepresentativeForDropDown
+
+  @override
   getRepresentativeAllData(int id) async {
     var url = '${Endpoints.baseUrl}${Endpoints.findRepresentativeByID}';
 
@@ -844,7 +878,7 @@ class ApiServices extends BaseServices implements API {
         // return status;
       }
     } catch (e) {
-      getToast('Upload Document error');
+      getToast('Something went wrong');
     }
     return null;
   }
@@ -870,7 +904,7 @@ class ApiServices extends BaseServices implements API {
 
       return res['model'];
     } catch (e) {
-      getToast('Upload Document error');
+      getToast('Something went wrong');
     }
   }
 
@@ -1059,21 +1093,58 @@ class ApiServices extends BaseServices implements API {
   }
 
   @override
-  generateMultiNotifications(
-      {required String title,
-      required String body,
-      required List<int> id}) async {
+  generateMultiNotifications({required List<int> id, required int type}) async {
     // TODO: implement generateMultiNotifications
     try {
       var url = '${Endpoints.baseUrl}${Endpoints.generateNotifications}';
 
-      String idString = String.fromCharCodes(id);
+      String idString = id.join(",");
       print(idString);
 
 //todoImpo
-      idString = '103,105';
+      // idString = '103,105';
 
-      var jsonData = {"title": title, "body": body, "ids": idString};
+      var jsonData = {"ids": idString, type: '0'};
+
+      var data = json.encode(jsonData);
+
+      var res = await httpPostHeader(url, data);
+
+      if (res != null) {
+        getToast(res["message"]);
+        return true;
+      }
+    } catch (e) {
+      throw UnimplementedError();
+    }
+  }
+
+  @override
+  generateNotificationOnNoteCreation(
+      {String? university,
+      required String meetingName,
+      required String meetingDate,
+      required String meetingTime,
+      required String internalOrExternal}) async {
+    // TODO: implement generateNotificationOnNoteCreation
+
+    try {
+      var url =
+          '${Endpoints.baseUrl}${Endpoints.generateNotificationsOnNoteCreation}';
+
+      // String idString = String.fromCharCodes(id);
+      // print(idString);
+
+//todoImpo
+      // idString = '103,105';
+
+      var jsonData = {
+        "university": "$university",
+        "meetingName": "$meetingName",
+        "meetingDate ": "$meetingDate",
+        "meetingTime": "$meetingTime",
+        "internal": internalOrExternal
+      };
 
       var data = json.encode(jsonData);
 

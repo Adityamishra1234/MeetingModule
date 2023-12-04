@@ -3,6 +3,7 @@
 
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_gesture_detector/simple_gesture_detector.dart';
@@ -356,6 +357,28 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
     }
   }
 
+  void _swipeCalendarFormat2(SwipeDirection direction) {
+    if (widget.onFormatChanged != null) {
+      final formats = widget.availableCalendarFormats.keys.toList();
+
+      final isSwipeUp = direction == SwipeDirection.up;
+      int id = formats.indexOf(widget.calendarFormat);
+
+      // Order of CalendarFormats must be from biggest to smallest,
+      // e.g.: [month, twoWeeks, week]
+
+      if (isSwipeUp) {
+        id = min(formats.length - 1, id + 1);
+      } else {
+        id = max(0, id - 2);
+      }
+
+      formatGlobalVal = formats[id];
+
+      widget.onFormatChanged!(formats[id]);
+    }
+  }
+
   void _onDayTapped(DateTime day) {
     final isOutside = day.month != _focusedDay.value.month;
     if (isOutside && _shouldBlockOutsideDays) {
@@ -595,6 +618,22 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
             },
           ),
         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AnimatedIcon(
+              format: formatGlobalVal,
+              onTap: () async {
+                int count = 0;
+                if (formatGlobalVal == CalendarFormat.week) {
+                  _swipeCalendarFormat2(SwipeDirection.down);
+                } else {
+                  _swipeCalendarFormat(SwipeDirection.up);
+                }
+              },
+            )
+          ],
+        )
       ],
     );
   }
@@ -810,5 +849,56 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
     List<int> weekendDays = const [DateTime.saturday, DateTime.sunday],
   }) {
     return weekendDays.contains(day.weekday);
+  }
+}
+
+class AnimatedIcon extends StatefulWidget {
+  VoidCallback onTap;
+  CalendarFormat format;
+  AnimatedIcon({super.key, required this.onTap, required this.format});
+
+  @override
+  State<AnimatedIcon> createState() => _AnimatedIconState();
+}
+
+class _AnimatedIconState extends State<AnimatedIcon>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant AnimatedIcon oldWidget) {
+    if (oldWidget.format != widget.format) {
+      setState(() {});
+    }
+
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RotationTransition(
+      turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
+      child: GestureDetector(
+          onTap: widget.onTap,
+          child: Icon(
+            widget.format == CalendarFormat.month ||
+                    widget.format == CalendarFormat.twoWeeks
+                ? Icons.keyboard_arrow_up_rounded
+                : Icons.keyboard_arrow_down_rounded,
+            weight: 30,
+            color: Colors.white,
+          )),
+    );
   }
 }
