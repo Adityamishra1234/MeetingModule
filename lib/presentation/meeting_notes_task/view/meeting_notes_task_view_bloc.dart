@@ -1173,9 +1173,11 @@ class MeetingAttendedAddNoteTask extends StatelessWidget {
                     color: ThemeConstants.whitecolor),
                 child: Column(
                   children: [
-                    quil.QuillToolbar.basic(
-                      controller: noteText,
-                      showAlignmentButtons: true,
+                    quil.QuillToolbar(
+                      configurations: quil.QuillToolbarConfigurations(
+                        // controller: noteText,
+                        showAlignmentButtons: true,
+                      ),
                     ),
                     SizedBox(height: 15),
                     GestureDetector(
@@ -1189,15 +1191,19 @@ class MeetingAttendedAddNoteTask extends StatelessWidget {
                             border: Border.all(
                                 width: 1, color: ThemeConstants.bluecolor)),
                         child: quil.QuillEditor(
-                          autoFocus: false,
-                          padding: EdgeInsets.all(10),
-                          expands: false,
-                          focusNode: FocusNode(),
-                          scrollable: false,
-                          scrollController: ScrollController(),
-                          controller: noteText,
+                          configurations: quil.QuillEditorConfigurations(
+                            scrollable: false,
+                            padding: EdgeInsets.all(10),
+                            expands: false,
+                            readOnly: false,
+                          ),
+                          // autoFocus: false,
 
-                          readOnly: false, // true for view only mode
+                          focusNode: FocusNode(),
+
+                          scrollController: ScrollController(),
+
+                          // true for view only mode
                         ),
                       ),
                     ),

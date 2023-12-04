@@ -258,69 +258,85 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                                     // ),
                                     SizedBox(height: 5),
                                     Container(
-                                      padding: EdgeInsets.all(10),
-                                      width: double.infinity,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color:
-                                                    Color.fromARGB(28, 0, 0, 0),
-                                                blurRadius: 2,
-                                                spreadRadius: 0.2)
-                                          ],
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: ThemeConstants.whitecolor),
-                                      child: Column(
-                                        children: [
-                                          quil.QuillToolbar.basic(
+                                        padding: EdgeInsets.all(10),
+                                        width: double.infinity,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Color.fromARGB(
+                                                      28, 0, 0, 0),
+                                                  blurRadius: 2,
+                                                  spreadRadius: 0.2)
+                                            ],
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: ThemeConstants.whitecolor),
+                                        child: quil.QuillProvider(
+                                          configurations:
+                                              quil.QuillConfigurations(
                                             controller: controller.noteText,
-                                            showAlignmentButtons: true,
-                                          ),
-                                          SizedBox(height: 15),
-                                          KeyboardListener(
-                                            focusNode: _keyFocusNode,
-                                            onKeyEvent: (value) {
-                                              print(value);
-                                              print(
-                                                  'ddddddddddddddddddddddddddddddddd');
-                                            },
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                _focusNode.requestFocus();
-                                              },
-                                              child: Container(
-                                                constraints: BoxConstraints(
-                                                    minHeight: 200),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    border: Border.all(
-                                                        width: 1,
-                                                        color: ThemeConstants
-                                                            .bluecolor)),
-                                                child: quil.QuillEditor(
-                                                  autoFocus: false,
-                                                  padding: EdgeInsets.all(10),
-                                                  expands: false,
-                                                  focusNode: _focusNode,
-                                                  scrollable: false,
-                                                  scrollController:
-                                                      ScrollController(),
-                                                  controller:
-                                                      controller.noteText,
-
-                                                  readOnly:
-                                                      false, // true for view only mode
-                                                ),
-                                              ),
+                                            sharedConfigurations: const quil
+                                                .QuillSharedConfigurations(
+                                              locale: Locale('de'),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ),
+                                          child: Column(
+                                            children: [
+                                              quil.QuillToolbar(
+                                                configurations: quil
+                                                    .QuillToolbarConfigurations(
+                                                  // controller: noteText,
+                                                  showAlignmentButtons: true,
+                                                ),
+                                              ),
+                                              SizedBox(height: 15),
+                                              KeyboardListener(
+                                                focusNode: _keyFocusNode,
+                                                onKeyEvent: (value) {
+                                                  print(value);
+                                                  print(
+                                                      'ddddddddddddddddddddddddddddddddd');
+                                                },
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    _focusNode.requestFocus();
+                                                  },
+                                                  child: Container(
+                                                    constraints: BoxConstraints(
+                                                        minHeight: 200),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        border: Border.all(
+                                                            width: 1,
+                                                            color: ThemeConstants
+                                                                .bluecolor)),
+                                                    child: quil.QuillEditor(
+                                                      configurations: quil
+                                                          .QuillEditorConfigurations(
+                                                        scrollable: false,
+                                                        padding:
+                                                            EdgeInsets.all(10),
+                                                        expands: false,
+                                                        readOnly: false,
+                                                      ),
+                                                      // autoFocus: false,
+
+                                                      focusNode: FocusNode(),
+
+                                                      scrollController:
+                                                          ScrollController(),
+
+                                                      // true for view only mode
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )),
 
                                     // Padding(
                                     //   padding: const EdgeInsets.only(top: 10),

@@ -293,10 +293,10 @@ packages:
     dependency: transitive
     description:
       name: device_info_plus
-      sha256: "86add5ef97215562d2e090535b0a16f197902b10c369c558a100e74ea06e8659"
+      sha256: "0042cb3b2a76413ea5f8a2b40cec2a33e01d0c937e91f0f7c211fde4f7739ba6"
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.3"
+    version: "9.1.1"
   device_info_plus_platform_interface:
     dependency: transitive
     description:
@@ -438,6 +438,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_animate:
+    dependency: transitive
+    description:
+      name: flutter_animate
+      sha256: "1dbc1aabfb8ec1e9d9feed2b675c21fb6b0a11f99be53ec3bc0f1901af6a8eb7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.3.0"
   flutter_animated_dialog:
     dependency: "direct main"
     description:
@@ -566,6 +574,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.0+1"
+  flutter_localizations:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -586,10 +599,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_quill
-      sha256: a06604f1fc9b7a023090d8fd86043a63599ab12c4207323869793d2db9ce3df6
+      sha256: "9028fdec46e80ff513418ef151ffc236f4adfd306028476161b0909e36631104"
       url: "https://pub.dev"
     source: hosted
-    version: "7.4.9"
+    version: "8.6.4"
   flutter_screenutil:
     dependency: "direct main"
     description:
@@ -744,14 +757,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
-  i18n_extension:
-    dependency: transitive
-    description:
-      name: i18n_extension
-      sha256: db45cd88cf3114f5b9368d975aebebe4ac37fa634fbc5643634289cdfd4d3631
-      url: "https://pub.dev"
-    source: hosted
-    version: "9.0.2"
   image:
     dependency: transitive
     description:
@@ -1615,4 +1620,4 @@ packages:
     version: "3.1.2"
 sdks:
   dart: ">=3.2.0-194.0.dev <4.0.0"
-  flutter: ">=3.13.0"
+  flutter: ">=3.16.0"
