@@ -1369,7 +1369,22 @@ class CreateNewMeeting2 extends StatelessWidget {
                       ],
                     ),
                   ),
-//current
+//current   if (controller.meetingWith.value == 'University Meetings') ...[
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Align(
+                      alignment: AlignmentDirectional.topStart,
+                      child: CustomAutoSizeTextMontserrat(
+                        text: "Name of the Person",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  // ],
                   CustomMultiDownSingleAllUser(
                       model: controller.listOfParticipantData,
                       initialSelectedValue: '',
