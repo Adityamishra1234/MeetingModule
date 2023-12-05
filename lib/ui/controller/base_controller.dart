@@ -118,11 +118,11 @@ class BaseController extends GetxController {
   }
 
   token2() async {
-    print(token + 'ddddd');
-    if (token != '') {
-      var data = await api.updateFCMToken(id, token);
-      await sendPushMessage(token);
-    }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = await prefs.getString("token");
+    var data = await api.updateFCMToken(id, token);
+    //TODO sendPushmessage
+    // await sendPushMessage(token);
   }
 
   getAllSiecMembersList() async {
