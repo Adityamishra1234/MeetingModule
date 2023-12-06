@@ -109,10 +109,12 @@ abstract class API {
       required int created_by,
       required bool meeting_attended});
 
-  generateMultiNotifications({
-    required int type,
-    required List<int> id,
-  });
+  generateMultiNotifications(
+      {required List<int> id,
+      required int type,
+      required String meeting_name,
+      required String meeting_date,
+      required String meeting_time});
 
   generateNotificationOnNoteCreation(
       {String? university,

@@ -13,9 +13,11 @@ import 'package:meeting_module2/services/apiServices.dart';
 import 'package:meeting_module2/services/endpoints.dart';
 import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/logincontroller.dart';
+import 'package:meeting_module2/ui/screens/logintemp.dart';
 import 'package:meeting_module2/ui/screens/meeting_details.dart';
 import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
+import 'package:meeting_module2/utils/routes/router_config.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/calender/calendar_controller.dart';
 import 'package:meeting_module2/widget/calender/src/shared/utils.dart';
@@ -88,7 +90,7 @@ class DashBoardController extends GetxController with StateMixin {
 
   @override
   void onInit() async {
-    await dashboardInitialLoginForUserDetails();
+    // await dashboardInitialLoginForUserDetails();
 
     //todo
     //todo
@@ -234,7 +236,7 @@ class DashBoardController extends GetxController with StateMixin {
     // update();
   }
 
-  dashboardInitialLoginForUserDetails() async {
+  dashboardInitialLoginForUserDetails(BuildContext context) async {
     change(null, status: RxStatus.loading());
     var email = await sharedPreferenceInstance.getString('email');
     var password = await sharedPreferenceInstance.getString('password');
@@ -246,6 +248,11 @@ class DashBoardController extends GetxController with StateMixin {
     // var data = json.decode(login);
 
     user.value = UserModel.fromJson(login);
+
+    if (user.value.isUserActive != 1) {
+      sharedPreferenceInstance.clear();
+      context.go(Routes.loginPage);
+    }
 
     change(null, status: RxStatus.success());
 
@@ -659,7 +666,12 @@ class DashBoardController extends GetxController with StateMixin {
   bool hitResheduleAPI = false;
 
   generateRescheduleNotification(List<int> idList) async {
-    var res = await api.generateMultiNotifications(type: 2, id: idList);
+    var res = await api.generateMultiNotifications(
+        type: 2,
+        id: idList,
+        meeting_date: selectedMeetingdata.value.dateOfMeeting!,
+        meeting_name: selectedMeetingdata.value.nameOfTheMeeting!,
+        meeting_time: selectedMeetingdata.value.timeOfTheMeeting!);
   }
 
   resheduleMeeting(data) async {

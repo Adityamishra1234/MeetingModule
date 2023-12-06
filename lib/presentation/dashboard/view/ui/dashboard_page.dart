@@ -100,6 +100,7 @@ class _DashBoardState extends State<DashBoard> {
   @override
   void initState() {
     controllerBase.getId;
+
     print(context);
 
     caleCon = Get.put(CalendarController());
@@ -116,7 +117,7 @@ class _DashBoardState extends State<DashBoard> {
 
     controllerBase.getId();
     controllerBase.token2();
-    controller.dashboardInitialLoginForUserDetails();
+    controller.dashboardInitialLoginForUserDetails(context);
 
     // controller.user.value = controllerBase.user.value;
 

@@ -1071,7 +1071,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
               borderRadius: BorderRadius.circular(5),
               border: Border.all(width: 1, color: ThemeConstants.whitecolor)),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

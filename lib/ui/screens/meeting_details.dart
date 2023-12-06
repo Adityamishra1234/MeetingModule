@@ -1013,7 +1013,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                               0
                                       ? Container(
                                           width: double.infinity,
-                                          height: 130,
+                                          height: 150,
                                           padding: EdgeInsets.only(
                                               top: 5,
                                               left: 5,
@@ -2210,8 +2210,14 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                 if (controller.meetingEndedValue != true)
                                   InkWell(
                                     onTap: () {
-                                      controller
-                                          .markAttendance(meetingData.id!);
+                                      if (controller.meetingStartedValue ==
+                                          true) {
+                                        controller
+                                            .markAttendance(meetingData.id!);
+                                      } else {
+                                        getToast('Meeting not started yet');
+                                      }
+
                                       // showAnimatedDialog(
                                       //     barrierDismissible: true,
                                       //     duration: Duration(milliseconds: 350),

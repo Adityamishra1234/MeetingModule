@@ -1093,7 +1093,12 @@ class ApiServices extends BaseServices implements API {
   }
 
   @override
-  generateMultiNotifications({required List<int> id, required int type}) async {
+  generateMultiNotifications(
+      {required List<int> id,
+      required int type,
+      required String meeting_name,
+      required String meeting_date,
+      required String meeting_time}) async {
     // TODO: implement generateMultiNotifications
     try {
       var url = '${Endpoints.baseUrl}${Endpoints.generateNotifications}';
@@ -1104,9 +1109,15 @@ class ApiServices extends BaseServices implements API {
 //todoImpo
       // idString = '103,105';
 
-      var jsonData = {"ids": idString, type: '0'};
+      var jsonData = {
+        "ids": idString,
+        "type": type.toString(),
+        "meetingName": meeting_name,
+        "meetingDate": meeting_date,
+        "meetingTime": meeting_time
+      };
 
-      var data = json.encode(jsonData);
+      var data = await json.encode(jsonData);
 
       var res = await httpPostHeader(url, data);
 

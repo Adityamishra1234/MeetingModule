@@ -233,6 +233,11 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     var res = await api.getAllCountries();
     allCountriesList =
         List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)));
+
+    allCountriesList.insert(
+        0, AllUserModel.fromJson({'name': "Kindly select", "id": 0}));
+
+    print(allCountriesList);
     update();
     // print(allCountriesList.toString());
   }
@@ -242,6 +247,11 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     allUniversityList =
         await List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)));
+
+    allUniversityList.insert(
+        0, AllUserModel.fromJson({'name': "Kindly select", "id": 0}));
+
+    print(allCountriesList);
 
     update();
     print(allUniversityList.toString());
@@ -368,6 +378,11 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
       listOfParticipantData = await List<AllUserModel>.from(
           res.map((e) => AllUserModel.fromJson(e))).toList();
+
+      listOfParticipantData.insert(
+          0, AllUserModel.fromJson({'name': "Kindly select", "id": 0}));
+
+      print(listOfParticipantData);
       update();
       print(res);
     }
@@ -632,14 +647,15 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     }
 
     change(null, status: RxStatus.loading());
-
-    // Get.delete<CreateNewMeetingController2>();
-    // Get.put(CreateNewMeetingController2());
-    change(null, status: RxStatus.success());
-
+    getToast('Meeting updated');
     await generateTheNotifications();
 
-    getToast('Meeting updated');
+    Get.delete<CreateNewMeetingController2>();
+    Get.put(CreateNewMeetingController2());
+    change(null, status: RxStatus.success());
+
+    context.pop();
+
     // showPoPUp(
     //     'Meeting Added Successfully',
     //     Icon(
@@ -840,13 +856,17 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     }
 
     change(null, status: RxStatus.loading());
+    getToast('Meeting updated');
+
+    await generateTheNotifications();
 
     Get.delete<CreateNewMeetingController2>();
     Get.put(CreateNewMeetingController2());
     change(null, status: RxStatus.success());
 
-    await generateTheNotifications();
     getToast('Meeting updated');
+
+    context.pop();
     // showPoPUp(
     //     'Meeting Added Successfully',
     //     Icon(
@@ -868,7 +888,12 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
       idList.add(meetingModel.value.meetingCoordinator![i].id!);
     }
 
-    var res = await api.generateMultiNotifications(id: idList, type: 0);
+    var res = await api.generateMultiNotifications(
+        id: idList,
+        type: 0,
+        meeting_date: meetingModel.value.dateOfMeeting!,
+        meeting_name: meetingModel.value.nameOfTheMeeting!,
+        meeting_time: meetingModel.value.timeOfTheMeeting!);
   }
 
   generateTheNotificationsExternal() async {
@@ -886,7 +911,12 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     // var title = 'Scheduled a Meeting';
     // var body = "You have a meeting with SIEC Family, scheduled at ";
 
-    var res = await api.generateMultiNotifications(type: 1, id: idList);
+    var res = await api.generateMultiNotifications(
+        type: 1,
+        id: idList,
+        meeting_date: meetingModel.value.dateOfMeeting!,
+        meeting_name: meetingModel.value.nameOfTheMeeting!,
+        meeting_time: meetingModel.value.timeOfTheMeeting!);
   }
 
   getGroupData() async {
