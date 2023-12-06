@@ -51,10 +51,10 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
 
   @override
   void initState() {
-    date = widget.meetingData.dateOfMeeting!;
-    time = widget.meetingData.timeOfTheMeeting!;
-    meetingLink.text = widget.meetingData.meetingLink!;
-    registrationLink.text = widget.meetingData.registrationLink!;
+    date = widget.meetingData.dateOfMeeting ?? "";
+    time = widget.meetingData.timeOfTheMeeting ?? "";
+    meetingLink.text = widget.meetingData.meetingLink ?? "";
+    registrationLink.text = widget.meetingData.registrationLink ?? "";
     proposedDuration =
         widget.controller.listToShow[widget.indexz].durationOfMeeting!;
     meetingType = widget.meetingData.meetingMode!;
