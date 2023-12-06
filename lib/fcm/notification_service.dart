@@ -151,7 +151,9 @@ class NotificationServices {
         {
           if (defaultTargetPlatform == TargetPlatform.iOS ||
               defaultTargetPlatform == TargetPlatform.macOS) {
+            print("APNS token function here)");
             print('FlutterFire Messaging Example: Getting APNs token...');
+
             String? token = await messaging.getAPNSToken();
             print('FlutterFire Messaging Example: Got APNs token: $token');
           } else {
@@ -162,6 +164,7 @@ class NotificationServices {
         }
         break;
       default:
+        print("deafult here");
         break;
     }
   }
@@ -170,7 +173,9 @@ class NotificationServices {
   Future<String> getDeviceToken() async {
     await onActionSelected;
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
     String? token = await messaging.getToken();
+    print(token);
     await prefs.setString('token', '$token');
     return token!;
   }
