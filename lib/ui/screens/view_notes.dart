@@ -37,7 +37,7 @@ class ViewNotesDetails extends StatelessWidget {
                       child: CustomTabWidget(
                         title0: "All notes",
                         defaultIndex: 0,
-                        title1: "Reason of attending",
+                        title1: "Reason of not attending",
                         callback: (val) {
                           controller.viewNotesSection = val;
                           controller.update();

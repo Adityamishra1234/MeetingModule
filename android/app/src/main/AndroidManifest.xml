@@ -10,10 +10,14 @@
         android:icon="@mipmap/ic_launcher_round"
        android:enableOnBackInvokedCallback="false"
         >
+       
+<meta-data
+    android:name="com.google.firebase.messaging.default_notification_color"
+    android:resource="@color/colorPrimary" />
 
     <meta-data
         android:name="com.google.firebase.messaging.default_notification_icon"
-android:resource="@mipmap/ic_launcher_round" />
+android:resource="@mipmap/splash_icon_adaptive_fore" />
 
         <activity
    

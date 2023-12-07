@@ -588,6 +588,7 @@ class _CustomizableDropdownAllUserState
                           child: Icon(
                             Icons.close,
                             size: 17,
+                            color: ThemeConstants.whitecolor,
                           )),
                     ),
                   )

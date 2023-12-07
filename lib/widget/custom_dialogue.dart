@@ -51,10 +51,10 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
 
   @override
   void initState() {
-    date = widget.meetingData.dateOfMeeting!;
-    time = widget.meetingData.timeOfTheMeeting!;
-    meetingLink.text = widget.meetingData.meetingLink!;
-    registrationLink.text = widget.meetingData.registrationLink!;
+    date = widget.meetingData.dateOfMeeting ?? "";
+    time = widget.meetingData.timeOfTheMeeting ?? "";
+    meetingLink.text = widget.meetingData.meetingLink ?? "";
+    registrationLink.text = widget.meetingData.registrationLink ?? "";
     proposedDuration =
         widget.controller.listToShow[widget.indexz].durationOfMeeting!;
     meetingType = widget.meetingData.meetingMode!;
@@ -379,18 +379,94 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                       //                 ? 'Online'
                       //                 : 'Offline')),
                       if (meetingType == '1')
-                        Container(
-                          width: (MediaQuery.of(context).size.width - 40) / 2.7,
-                          child: CustomMultiDownSingle(
-                            enableMultiSelect: false,
-                            model: ['Zoom', 'Meet', 'Teams'],
-                            initialSelectedValue: modeOfMeeting,
-                            callbackFunctionSingle: (val) {
-                              modeOfMeeting = val;
-                              // controller.modeOfMeeting.value = val;
-                            },
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 5),
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            height: 110,
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: 3,
+                                itemBuilder: (context, index) {
+                                  List<String> modeOfMeetingList = [
+                                    'Zoom',
+                                    'Meet',
+                                    'Teams'
+                                  ];
+
+                                  List<String> modeOfMeetingIcon = [
+                                    'assets/images/zoom.png',
+                                    'assets/images/Google_Meet.png',
+                                    'assets/images/teams.png'
+                                  ];
+
+                                  return InkWell(
+                                    onTap: () {
+                                      modeOfMeeting = modeOfMeetingList[index];
+
+                                      print(modeOfMeeting);
+
+                                      setState(() {});
+                                      // controller.selectMeetingBranch.value =
+                                      //     controller.branchListwithFlag[index].id!;
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5),
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      width: 140,
+                                      decoration: BoxDecoration(
+                                          color: modeOfMeeting ==
+                                                  modeOfMeetingList[index]
+                                              ? ThemeConstants.lightblueColor2
+                                              : ThemeConstants.whitecolor,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          border: Border.all(
+                                              width: 1,
+                                              color: ThemeConstants.bluecolor)),
+                                      child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 50,
+                                              height: 50,
+                                              child: Image.asset(
+                                                  modeOfMeetingIcon[index]),
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              '${modeOfMeetingList[index]}',
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            )
+                                          ]),
+                                    ),
+                                  );
+                                }),
                           ),
                         ),
+                      //   Container(
+                      //     width: (MediaQuery.of(context).size.width - 40) / 2.7,
+                      //     child: CustomMultiDownSingle(
+                      //       enableMultiSelect: false,
+                      //       model: ['Zoom', 'Meet', 'Teams'],
+                      //       initialSelectedValue: modeOfMeeting,
+                      //       callbackFunctionSingle: (val) {
+                      //         modeOfMeeting = val;
+                      //         // controller.modeOfMeeting.value = val;
+                      //       },
+                      //     ),
+                      //   ),
                     ],
                   ),
 
@@ -564,7 +640,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                       child: Align(
                         alignment: AlignmentDirectional.topStart,
                         child: CustomAutoSizeTextMontserrat(
-                          text: "registration Link",
+                          text: "Registration Link",
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
