@@ -24,6 +24,7 @@ import 'package:meeting_module2/ui/screens/participants_details.dart';
 import 'package:meeting_module2/ui/screens/reschedule_meeting.dart';
 import 'package:meeting_module2/ui/screens/signin_view.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
+import 'package:meeting_module2/utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 import 'message.dart';
@@ -303,6 +304,8 @@ class _MyAppState extends State<MyApp> {
       routeInformationProvider: router.routeInformationProvider,
       routerDelegate: router.routerDelegate,
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+          primaryColor: ThemeConstants.bluecolor, primarySwatch: Colors.blue),
       // routerConfig: GoRouterConfig().router,
       //         routerDelegate: routerDelegate,
 // routeInformationParser: BeamerParser(),

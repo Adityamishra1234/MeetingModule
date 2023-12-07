@@ -606,77 +606,72 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                   SizedBox(
                     height: 10,
                   ),
-                  if (meetingType == '1')
-                    Padding(
-                      padding: const EdgeInsets.only(left: 0, bottom: 8),
-                      child: Align(
-                        alignment: AlignmentDirectional.topStart,
-                        child: CustomAutoSizeTextMontserrat(
-                          text: "Meeting Link",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  if (meetingType == '1')
-                    Container(
-                      height: 45,
-                      width: MediaQuery.of(context).size.width - 40,
-                      child: CustomTextField(
-                        // validator: controller.MeetingType.value == true
-                        //     ? Validator.notEmpty
-                        //     : null,
-                        hint: '',
-                        controller: meetingLink,
-                      ),
-                    ),
-                  SizedBox(
-                    height: 10,
-                  ),
 
-                  if (meetingType == '1')
-                    Padding(
-                      padding: const EdgeInsets.only(left: 0, bottom: 8),
-                      child: Align(
-                        alignment: AlignmentDirectional.topStart,
-                        child: CustomAutoSizeTextMontserrat(
-                          text: "Registration Link",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  if (meetingType == '1')
-                    Container(
-                      height: 45,
-                      width: MediaQuery.of(context).size.width - 40,
-                      child: CustomTextField(
-                        // validator: controller.MeetingType.value == true
-                        //     ? Validator.notEmpty
-                        //     : null,
-                        hint: '',
-                        controller: registrationLink,
-                      ),
-                    ),
-                  SizedBox(
-                    height: 10,
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(left: 0, bottom: 8),
-                    child: Align(
-                      alignment: AlignmentDirectional.topStart,
-                      child: CustomAutoSizeTextMontserrat(
-                        text: "Reason of Reschedule",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
                   Form(
                       key: key,
                       child: Column(
                         children: [
+                          if (meetingType == '1')
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 0, bottom: 8),
+                              child: Align(
+                                alignment: AlignmentDirectional.topStart,
+                                child: CustomAutoSizeTextMontserrat(
+                                  text: "Meeting Link",
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          if (meetingType == '1')
+                            Container(
+                              width: MediaQuery.of(context).size.width - 40,
+                              child: CustomTextField(
+                                validator: Validator.notEmpty,
+                                hint: '',
+                                controller: meetingLink,
+                              ),
+                            ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          if (meetingType == '1')
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 0, bottom: 8),
+                              child: Align(
+                                alignment: AlignmentDirectional.topStart,
+                                child: CustomAutoSizeTextMontserrat(
+                                  text: "Registration Link",
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          if (meetingType == '1')
+                            Container(
+                              width: MediaQuery.of(context).size.width - 40,
+                              child: CustomTextField(
+                                validator: Validator.notEmpty,
+                                hint: '',
+                                controller: registrationLink,
+                              ),
+                            ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0, bottom: 8),
+                            child: Align(
+                              alignment: AlignmentDirectional.topStart,
+                              child: CustomAutoSizeTextMontserrat(
+                                text: "Reason of Reschedule",
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
                           Container(
                             width: MediaQuery.of(context).size.width - 40,
                             child: CustomTextField(

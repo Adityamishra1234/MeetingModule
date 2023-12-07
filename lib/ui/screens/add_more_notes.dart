@@ -75,25 +75,6 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                             SizedBox(
                               height: 10,
                             ),
-                            InkWell(
-                                onTap: () {
-                                  SqfliteDBClass().createNote(
-                                      note: 'dededededdee',
-                                      user_id: Get.find<BaseController>().id,
-                                      meeting_id: Get.find<BaseController>()
-                                          .selectedMeetingData
-                                          .id!);
-                                },
-                                child: Text('dd')),
-                            InkWell(
-                                onTap: () {
-                                  SqfliteDBClass().getNote(
-                                      Get.find<BaseController>().id,
-                                      Get.find<BaseController>()
-                                          .selectedMeetingData
-                                          .id!);
-                                },
-                                child: Text('dd')),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 16),
