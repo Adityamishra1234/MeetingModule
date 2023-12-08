@@ -1156,9 +1156,9 @@ class CreateNewMeeting2 extends StatelessWidget {
                       // height: 45,
 
                       child: CustomTextField(
-                        validator: controller.MeetingType.value == true
-                            ? Validator.notEmpty
-                            : null,
+                        // validator: controller.MeetingType.value == true
+                        //     ? Validator.notEmpty
+                        //     : null,
                         hint: '',
                         controller: controller.meetingLink.value,
                       ),
@@ -1182,9 +1182,9 @@ class CreateNewMeeting2 extends StatelessWidget {
                       // height: 45,
 
                       child: CustomTextField(
-                        validator: controller.MeetingType.value == true
-                            ? Validator.notEmpty
-                            : null,
+                        // validator: controller.MeetingType.value == true
+                        //     ? Validator.notEmpty
+                        //     : null,
                         hint: '',
                         controller: controller.registrationLink.value,
                       ),

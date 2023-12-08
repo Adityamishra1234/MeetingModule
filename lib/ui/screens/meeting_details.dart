@@ -1440,142 +1440,172 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 InkWell(
-                                  onTap: () {
-                                    if (controller.meetingStartedValue ==
-                                        true) {
-                                      context.push(
-                                          '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.addMoreNotesView}/${meetingData.id}/0');
-                                      // Get.toNamed(AddMoreNotesView.routeName,
-                                      //     arguments: [meetingData.id, 0]);
-                                    } else {
-                                      getToast('Meeting not yet started');
-                                      // showDialog(
-                                      //     context: context,
-                                      //     builder: (_) => showPoPUp(
-                                      //         'Meeting not started yet',
-                                      //         Icon(
-                                      //           Icons.error,
-                                      //           size: 40,
-                                      //           color: ThemeConstants.bluecolor,
-                                      //         ),
-                                      //         context));
-                                    }
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width: 100,
-                                        alignment: Alignment.center,
-                                        child: SvgPicture.asset(
-                                          'assets/images/Add Note.svg',
-                                          color: ThemeConstants.bluecolor,
-                                          // color: index == 5
-                                          //     ? ThemeConstants.bluecolor
-                                          //     : const Color.fromARGB(
-                                          //         255, 31, 31, 31),
-                                          width: 30,
-                                        ),
-                                        // child: Icon(
-                                        //   Icons.add,
-                                        //   size: 30,
-                                        //   color: ThemeConstants.blackcolor,
-                                        // )
-                                      ),
-                                      CustomAutoSizeTextMontserrat(
-                                        text: 'Add Note',
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        textColor: ThemeConstants.bluecolor,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () async {
-                                    await controller.getNotesOfMeeting(context);
-                                    context.push(
-                                      '${Routes.dashboard}/${Routes.meetingDetails}/${ViewNotesDetails.routeNamed}/:${meetingData.id}',
-                                    );
-                                    // Get.to(ViewNotesDetails(),
-                                    //     arguments: meetingData.id);
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width: 100,
-                                        alignment: Alignment.center,
-                                        child: SvgPicture.asset(
-                                          'assets/images/View Note.svg',
-                                          color: ThemeConstants.bluecolor,
-                                          // color: index == 5
-                                          //     ? ThemeConstants.bluecolor
-                                          //     : const Color.fromARGB(
-                                          //         255, 31, 31, 31),
-                                          width: 30,
-                                        ),
-                                        // child: Icon(
-                                        //   Icons.add,
-                                        //   size: 30,
-                                        //   color: ThemeConstants.blackcolor,
-                                        // )
-                                      ),
-                                      CustomAutoSizeTextMontserrat(
-                                        text: 'View Note',
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        textColor: ThemeConstants.bluecolor,
-                                      )
-                                      // Container(
-                                      //     width: 100,
-                                      //     alignment: Alignment.center,
-                                      //     child: Icon(Icons.document_scanner,
-                                      //         size: 30)),
-                                      // CustomAutoSizeTextMontserrat(
-                                      //   text: 'View Note',
-                                      //   fontSize: 14,
-                                      //   fontWeight: FontWeight.w500,
-                                      //   textColor: ThemeConstants.blackcolor,
-                                      // )
-                                    ],
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    if (controller.meetingStartedValue ==
-                                        true) {
-                                      context.push(
-                                          '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.addMoreNotesView}/${meetingData.id}/1');
-                                    } else {
-                                      getToast('Meeting not yet started');
-                                    }
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width: 100,
-                                        alignment: Alignment.center,
-                                        child: SvgPicture.asset(
-                                          'assets/images/Upload File.svg',
-                                          color: ThemeConstants.bluecolor,
-                                          // color: index == 5
-                                          //     ? ThemeConstants.bluecolor
-                                          //     : const Color.fromARGB(
-                                          //         255, 31, 31, 31),
-                                          width: 30,
+                                    onTap: () {
+                                      if (controller.meetingStartedValue ==
+                                          true) {
+                                        context.push(
+                                            '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.addMoreNotesView}/${meetingData.id}/0');
+                                        // Get.toNamed(AddMoreNotesView.routeName,
+                                        //     arguments: [meetingData.id, 0]);
+                                      } else {
+                                        getToast('Meeting not yet started');
+                                        // showDialog(
+                                        //     context: context,
+                                        //     builder: (_) => showPoPUp(
+                                        //         'Meeting not started yet',
+                                        //         Icon(
+                                        //           Icons.error,
+                                        //           size: 40,
+                                        //           color: ThemeConstants.bluecolor,
+                                        //         ),
+                                        //         context));
+                                      }
+                                    },
+                                    child: IgnorePointer(
+                                        ignoring:
+                                            !controller.meetingStartedValue,
+                                        child: Opacity(
+                                          opacity:
+                                              controller.meetingStartedValue
+                                                  ? 1
+                                                  : 0.5,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 100,
+                                                alignment: Alignment.center,
+                                                child: SvgPicture.asset(
+                                                  'assets/images/Add Note.svg',
+                                                  color:
+                                                      ThemeConstants.bluecolor,
+                                                  // color: index == 5
+                                                  //     ? ThemeConstants.bluecolor
+                                                  //     : const Color.fromARGB(
+                                                  //         255, 31, 31, 31),
+                                                  width: 30,
+                                                ),
+                                                // child: Icon(
+                                                //   Icons.add,
+                                                //   size: 30,
+                                                //   color: ThemeConstants.blackcolor,
+                                                // )
+                                              ),
+                                              CustomAutoSizeTextMontserrat(
+                                                text: 'Add Note',
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                textColor:
+                                                    ThemeConstants.bluecolor,
+                                              )
+                                            ],
+                                          ),
+                                        ))),
+                                IgnorePointer(
+                                    ignoring: !controller.meetingStartedValue,
+                                    child: Opacity(
+                                      opacity: controller.meetingStartedValue
+                                          ? 1
+                                          : 0.5,
+                                      child: InkWell(
+                                        onTap: () async {
+                                          await controller
+                                              .getNotesOfMeeting(context);
+                                          context.push(
+                                            '${Routes.dashboard}/${Routes.meetingDetails}/${ViewNotesDetails.routeNamed}/:${meetingData.id}',
+                                          );
+                                          // Get.to(ViewNotesDetails(),
+                                          //     arguments: meetingData.id);
+                                        },
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 100,
+                                              alignment: Alignment.center,
+                                              child: SvgPicture.asset(
+                                                'assets/images/View Note.svg',
+                                                color: ThemeConstants.bluecolor,
+                                                // color: index == 5
+                                                //     ? ThemeConstants.bluecolor
+                                                //     : const Color.fromARGB(
+                                                //         255, 31, 31, 31),
+                                                width: 30,
+                                              ),
+                                              // child: Icon(
+                                              //   Icons.add,
+                                              //   size: 30,
+                                              //   color: ThemeConstants.blackcolor,
+                                              // )
+                                            ),
+                                            CustomAutoSizeTextMontserrat(
+                                              text: 'View Note',
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              textColor:
+                                                  ThemeConstants.bluecolor,
+                                            )
+                                            // Container(
+                                            //     width: 100,
+                                            //     alignment: Alignment.center,
+                                            //     child: Icon(Icons.document_scanner,
+                                            //         size: 30)),
+                                            // CustomAutoSizeTextMontserrat(
+                                            //   text: 'View Note',
+                                            //   fontSize: 14,
+                                            //   fontWeight: FontWeight.w500,
+                                            //   textColor: ThemeConstants.blackcolor,
+                                            // )
+                                          ],
                                         ),
                                       ),
-                                      CustomAutoSizeTextMontserrat(
-                                        text: 'Upload File',
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        textColor: ThemeConstants.bluecolor,
-                                      )
-                                    ],
-                                  ),
-                                ),
+                                    )),
+                                IgnorePointer(
+                                    ignoring: !controller.meetingStartedValue,
+                                    child: Opacity(
+                                      opacity: controller.meetingStartedValue
+                                          ? 1
+                                          : 0.5,
+                                      child: InkWell(
+                                        onTap: () {
+                                          if (controller.meetingStartedValue ==
+                                              true) {
+                                            context.push(
+                                                '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.addMoreNotesView}/${meetingData.id}/1');
+                                          } else {
+                                            getToast('Meeting not yet started');
+                                          }
+                                        },
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 100,
+                                              alignment: Alignment.center,
+                                              child: SvgPicture.asset(
+                                                'assets/images/Upload File.svg',
+                                                color: ThemeConstants.bluecolor,
+                                                // color: index == 5
+                                                //     ? ThemeConstants.bluecolor
+                                                //     : const Color.fromARGB(
+                                                //         255, 31, 31, 31),
+                                                width: 30,
+                                              ),
+                                            ),
+                                            CustomAutoSizeTextMontserrat(
+                                              text: 'Upload File',
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              textColor:
+                                                  ThemeConstants.bluecolor,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ))
                               ],
                             ),
                           ),
@@ -2208,313 +2238,335 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                 //     )),
 
                                 if (controller.meetingEndedValue != true)
-                                  InkWell(
-                                    onTap: () {
-                                      if (controller.meetingStartedValue ==
-                                          true) {
-                                        controller
-                                            .markAttendance(meetingData.id!);
-                                      } else {
-                                        getToast('Meeting not started yet');
-                                      }
+                                  IgnorePointer(
+                                      ignoring: !controller.meetingStartedValue,
+                                      child: Opacity(
+                                        opacity: controller.meetingStartedValue
+                                            ? 1
+                                            : 0.5,
+                                        child: InkWell(
+                                          onTap: () {
+                                            if (controller
+                                                    .meetingStartedValue ==
+                                                true) {
+                                              controller.markAttendance(
+                                                  meetingData.id!);
+                                            } else {
+                                              getToast(
+                                                  'Meeting not started yet');
+                                            }
 
-                                      // showAnimatedDialog(
-                                      //     barrierDismissible: true,
-                                      //     duration: Duration(milliseconds: 350),
-                                      //     animationType: DialogTransitionType
-                                      //         .slideFromBottomFade,
-                                      //     context: context,
-                                      //     builder: (_) => StatefulBuilder(
-                                      //         builder:
-                                      //             (context,
-                                      //                     StateSetter setState) =>
-                                      //                 SafeArea(
-                                      //                   child: Stack(
-                                      //                     // mainAxisAlignment:
-                                      //                     //     MainAxisAlignment
-                                      //                     //         .center,
-                                      //                     // crossAxisAlignment:
-                                      //                     //     CrossAxisAlignment
-                                      //                     //         .center,
-                                      //                     children: [
-                                      //                       Center(
-                                      //                         child: AlertDialog(
-                                      //                           shape: RoundedRectangleBorder(
-                                      //                               borderRadius:
-                                      //                                   BorderRadius
-                                      //                                       .circular(
-                                      //                                           20)),
-                                      //                           content:
-                                      //                               Container(
-                                      //                                   decoration: BoxDecoration(
-                                      //                                       borderRadius: BorderRadius.circular(
-                                      //                                           200)),
-                                      //                                   width:
-                                      //                                       350,
-                                      //                                   child:
-                                      //                                       Column(
-                                      //                                     mainAxisSize:
-                                      //                                         MainAxisSize.min,
-                                      //                                     children: [
-                                      //                                       Row(
-                                      //                                         mainAxisAlignment:
-                                      //                                             MainAxisAlignment.spaceBetween,
-                                      //                                         children: [
-                                      //                                           CustomAutoSizeTextMontserrat(textColor: ThemeConstants.bluecolor, text: "Mark Attendance"),
-                                      //                                           // InkWell(
-                                      //                                           //   onTap:
-                                      //                                           //       () {
-                                      //                                           //     context.pop();
-                                      //                                           //     // Get.back();
-                                      //                                           //   },
-                                      //                                           //   child:
-                                      //                                           //       CircleAvatar(
-                                      //                                           //     backgroundColor:
-                                      //                                           //         ThemeConstants.bluecolor,
-                                      //                                           //     radius:
-                                      //                                           //         10,
-                                      //                                           //     child:
-                                      //                                           //         Icon(
-                                      //                                           //       Icons.close,
-                                      //                                           //       size: 16,
-                                      //                                           //     ),
-                                      //                                           //   ),
-                                      //                                           // ),
-                                      //                                         ],
-                                      //                                       ),
-                                      //                                       InkWell(
-                                      //                                         onTap:
-                                      //                                             () {
-                                      //                                           setState(() {
-                                      //                                             daata = 1;
-                                      //                                           });
-                                      //                                         },
-                                      //                                         child:
-                                      //                                             Row(
-                                      //                                           children: [
-                                      //                                             Radio(
-                                      //                                                 value: 1,
-                                      //                                                 groupValue: daata,
-                                      //                                                 onChanged: (val) async {
-                                      //                                                   setState(() {
-                                      //                                                     daata = val!;
-                                      //                                                   });
-                                      //                                                 }),
-                                      //                                             CustomAutoSizeTextMontserrat(fontSize: 15, fontWeight: FontWeight.w500, text: "Present")
-                                      //                                           ],
-                                      //                                         ),
-                                      //                                       ),
-                                      //                                       InkWell(
-                                      //                                         onTap:
-                                      //                                             () {
-                                      //                                           setState(() {
-                                      //                                             daata = 2;
-                                      //                                           });
-                                      //                                         },
-                                      //                                         child:
-                                      //                                             Row(
-                                      //                                           children: [
-                                      //                                             Radio(
-                                      //                                                 value: 2,
-                                      //                                                 groupValue: daata,
-                                      //                                                 onChanged: (val) {
-                                      //                                                   print(daata);
-                                      //                                                   print(val);
-                                      //                                                   setState(() {
-                                      //                                                     daata = val!;
-                                      //                                                   });
+                                            // showAnimatedDialog(
+                                            //     barrierDismissible: true,
+                                            //     duration: Duration(milliseconds: 350),
+                                            //     animationType: DialogTransitionType
+                                            //         .slideFromBottomFade,
+                                            //     context: context,
+                                            //     builder: (_) => StatefulBuilder(
+                                            //         builder:
+                                            //             (context,
+                                            //                     StateSetter setState) =>
+                                            //                 SafeArea(
+                                            //                   child: Stack(
+                                            //                     // mainAxisAlignment:
+                                            //                     //     MainAxisAlignment
+                                            //                     //         .center,
+                                            //                     // crossAxisAlignment:
+                                            //                     //     CrossAxisAlignment
+                                            //                     //         .center,
+                                            //                     children: [
+                                            //                       Center(
+                                            //                         child: AlertDialog(
+                                            //                           shape: RoundedRectangleBorder(
+                                            //                               borderRadius:
+                                            //                                   BorderRadius
+                                            //                                       .circular(
+                                            //                                           20)),
+                                            //                           content:
+                                            //                               Container(
+                                            //                                   decoration: BoxDecoration(
+                                            //                                       borderRadius: BorderRadius.circular(
+                                            //                                           200)),
+                                            //                                   width:
+                                            //                                       350,
+                                            //                                   child:
+                                            //                                       Column(
+                                            //                                     mainAxisSize:
+                                            //                                         MainAxisSize.min,
+                                            //                                     children: [
+                                            //                                       Row(
+                                            //                                         mainAxisAlignment:
+                                            //                                             MainAxisAlignment.spaceBetween,
+                                            //                                         children: [
+                                            //                                           CustomAutoSizeTextMontserrat(textColor: ThemeConstants.bluecolor, text: "Mark Attendance"),
+                                            //                                           // InkWell(
+                                            //                                           //   onTap:
+                                            //                                           //       () {
+                                            //                                           //     context.pop();
+                                            //                                           //     // Get.back();
+                                            //                                           //   },
+                                            //                                           //   child:
+                                            //                                           //       CircleAvatar(
+                                            //                                           //     backgroundColor:
+                                            //                                           //         ThemeConstants.bluecolor,
+                                            //                                           //     radius:
+                                            //                                           //         10,
+                                            //                                           //     child:
+                                            //                                           //         Icon(
+                                            //                                           //       Icons.close,
+                                            //                                           //       size: 16,
+                                            //                                           //     ),
+                                            //                                           //   ),
+                                            //                                           // ),
+                                            //                                         ],
+                                            //                                       ),
+                                            //                                       InkWell(
+                                            //                                         onTap:
+                                            //                                             () {
+                                            //                                           setState(() {
+                                            //                                             daata = 1;
+                                            //                                           });
+                                            //                                         },
+                                            //                                         child:
+                                            //                                             Row(
+                                            //                                           children: [
+                                            //                                             Radio(
+                                            //                                                 value: 1,
+                                            //                                                 groupValue: daata,
+                                            //                                                 onChanged: (val) async {
+                                            //                                                   setState(() {
+                                            //                                                     daata = val!;
+                                            //                                                   });
+                                            //                                                 }),
+                                            //                                             CustomAutoSizeTextMontserrat(fontSize: 15, fontWeight: FontWeight.w500, text: "Present")
+                                            //                                           ],
+                                            //                                         ),
+                                            //                                       ),
+                                            //                                       InkWell(
+                                            //                                         onTap:
+                                            //                                             () {
+                                            //                                           setState(() {
+                                            //                                             daata = 2;
+                                            //                                           });
+                                            //                                         },
+                                            //                                         child:
+                                            //                                             Row(
+                                            //                                           children: [
+                                            //                                             Radio(
+                                            //                                                 value: 2,
+                                            //                                                 groupValue: daata,
+                                            //                                                 onChanged: (val) {
+                                            //                                                   print(daata);
+                                            //                                                   print(val);
+                                            //                                                   setState(() {
+                                            //                                                     daata = val!;
+                                            //                                                   });
 
-                                      //                                                   print(daata);
-                                      //                                                   ;
-                                      //                                                 }),
-                                      //                                             CustomAutoSizeTextMontserrat(fontSize: 15, fontWeight: FontWeight.w500, text: "Absent")
-                                      //                                           ],
-                                      //                                         ),
-                                      //                                       ),
-                                      //                                       SizedBox(
-                                      //                                         height:
-                                      //                                             5,
-                                      //                                       ),
-                                      //                                       if (daata ==
-                                      //                                           2) ...[
-                                      //                                         Container(
-                                      //                                           width: double.infinity,
-                                      //                                           alignment: Alignment.topLeft,
-                                      //                                           child: CustomAutoSizeTextMontserrat(fontSize: 14, fontWeight: FontWeight.w500, text: 'Please Specify reason of absent'),
-                                      //                                         ),
-                                      //                                         SizedBox(
-                                      //                                           height: 10,
-                                      //                                         ),
-                                      //                                         Form(
-                                      //                                           key: _keyForReasonOfNotAttending,
-                                      //                                           child: CustomTextField(validator: Validator.notEmpty, hint: 'Enter', controller: reasonOfNotAttending),
-                                      //                                         )
-                                      //                                       ],
-                                      //                                       CustomButton(
-                                      //                                           backgroundColor: ThemeConstants.bluecolor,
-                                      //                                           text: 'Submit',
-                                      //                                           onPressed: () {
-                                      //                                             if (daata == 1) {
-                                      //                                               controller.markAttendance(meetingData.id!);
-                                      //                                             } else {
-                                      //                                               if (_keyForReasonOfNotAttending.currentState!.validate()) {
-                                      //                                                 controller.reasonOfNotAttendance(meetingData.id!, reasonOfNotAttending.text);
-                                      //                                                 print('object');
-                                      //                                               }
-                                      //                                             }
-                                      //                                           })
-                                      //                                     ],
-                                      //                                   )),
-                                      //                         ),
-                                      //                       ),
-                                      //                       Align(
-                                      //                         alignment: Alignment
-                                      //                             .bottomCenter,
-                                      //                         child: Padding(
-                                      //                           padding:
-                                      //                               const EdgeInsets
-                                      //                                   .only(
-                                      //                                   bottom:
-                                      //                                       20),
-                                      //                           child:
-                                      //                               GestureDetector(
-                                      //                             onTap: () {
-                                      //                               context.pop();
-                                      //                               // Get.back();
-                                      //                             },
-                                      //                             child:
-                                      //                                 Container(
-                                      //                               width: 50,
-                                      //                               height: 50,
-                                      //                               decoration: BoxDecoration(
-                                      //                                   color: ThemeConstants
-                                      //                                       .bluecolor,
-                                      //                                   borderRadius:
-                                      //                                       BorderRadius.circular(
-                                      //                                           200)),
-                                      //                               child: Icon(
-                                      //                                 Icons
-                                      //                                     .close_rounded,
-                                      //                                 color: ThemeConstants
-                                      //                                     .whitecolor,
-                                      //                               ),
-                                      //                             ),
-                                      //                           ),
-                                      //                         ),
-                                      //                       )
-                                      //                     ],
-                                      //                   ),
-                                      //                 )));
-                                    },
-                                    child: Container(
-                                        width: 100,
-                                        height: 90,
-                                        // margin: EdgeInsets.only(left: 20),
-                                        // padding: EdgeInsets.only(
-                                        //     top: 5, left: 5, bottom: 5, right: 20),
-                                        // margin: EdgeInsets.symmetric(
-                                        //     vertical: 15, horizontal: 12),
-                                        decoration: BoxDecoration(
-                                          // boxShadow: [
-                                          //   const BoxShadow(
-                                          //       blurRadius: 0.5,
-                                          //       spreadRadius: 0.1,
-                                          //       color: Color.fromARGB(40, 0, 0, 0))
-                                          // ],
-                                          color: ThemeConstants.whitecolor,
-                                          borderRadius:
-                                              BorderRadius.circular(13),
-                                        ),
-                                        alignment: Alignment.center,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(
-                                              'assets/images/Mark Attendance.svg',
-                                              color: ThemeConstants.bluecolor,
-
-                                              // color: index == 5
-                                              //     ? ThemeConstants.bluecolor
-                                              //     : const Color.fromARGB(
-                                              //         255, 31, 31, 31),
-                                              width: 30,
-                                            ),
-                                            // Icon(Icons.calendar_month_rounded,
-                                            //     size: 30),
-                                            Container(
-                                              width: double.infinity,
-                                              alignment: Alignment.center,
-                                              child:
-                                                  CustomAutoSizeTextMontserrat(
-                                                text: 'Mark Attendance',
-                                                align: TextAlign.center,
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w500,
-                                                textColor:
-                                                    ThemeConstants.bluecolor,
+                                            //                                                   print(daata);
+                                            //                                                   ;
+                                            //                                                 }),
+                                            //                                             CustomAutoSizeTextMontserrat(fontSize: 15, fontWeight: FontWeight.w500, text: "Absent")
+                                            //                                           ],
+                                            //                                         ),
+                                            //                                       ),
+                                            //                                       SizedBox(
+                                            //                                         height:
+                                            //                                             5,
+                                            //                                       ),
+                                            //                                       if (daata ==
+                                            //                                           2) ...[
+                                            //                                         Container(
+                                            //                                           width: double.infinity,
+                                            //                                           alignment: Alignment.topLeft,
+                                            //                                           child: CustomAutoSizeTextMontserrat(fontSize: 14, fontWeight: FontWeight.w500, text: 'Please Specify reason of absent'),
+                                            //                                         ),
+                                            //                                         SizedBox(
+                                            //                                           height: 10,
+                                            //                                         ),
+                                            //                                         Form(
+                                            //                                           key: _keyForReasonOfNotAttending,
+                                            //                                           child: CustomTextField(validator: Validator.notEmpty, hint: 'Enter', controller: reasonOfNotAttending),
+                                            //                                         )
+                                            //                                       ],
+                                            //                                       CustomButton(
+                                            //                                           backgroundColor: ThemeConstants.bluecolor,
+                                            //                                           text: 'Submit',
+                                            //                                           onPressed: () {
+                                            //                                             if (daata == 1) {
+                                            //                                               controller.markAttendance(meetingData.id!);
+                                            //                                             } else {
+                                            //                                               if (_keyForReasonOfNotAttending.currentState!.validate()) {
+                                            //                                                 controller.reasonOfNotAttendance(meetingData.id!, reasonOfNotAttending.text);
+                                            //                                                 print('object');
+                                            //                                               }
+                                            //                                             }
+                                            //                                           })
+                                            //                                     ],
+                                            //                                   )),
+                                            //                         ),
+                                            //                       ),
+                                            //                       Align(
+                                            //                         alignment: Alignment
+                                            //                             .bottomCenter,
+                                            //                         child: Padding(
+                                            //                           padding:
+                                            //                               const EdgeInsets
+                                            //                                   .only(
+                                            //                                   bottom:
+                                            //                                       20),
+                                            //                           child:
+                                            //                               GestureDetector(
+                                            //                             onTap: () {
+                                            //                               context.pop();
+                                            //                               // Get.back();
+                                            //                             },
+                                            //                             child:
+                                            //                                 Container(
+                                            //                               width: 50,
+                                            //                               height: 50,
+                                            //                               decoration: BoxDecoration(
+                                            //                                   color: ThemeConstants
+                                            //                                       .bluecolor,
+                                            //                                   borderRadius:
+                                            //                                       BorderRadius.circular(
+                                            //                                           200)),
+                                            //                               child: Icon(
+                                            //                                 Icons
+                                            //                                     .close_rounded,
+                                            //                                 color: ThemeConstants
+                                            //                                     .whitecolor,
+                                            //                               ),
+                                            //                             ),
+                                            //                           ),
+                                            //                         ),
+                                            //                       )
+                                            //                     ],
+                                            //                   ),
+                                            //                 )));
+                                          },
+                                          child: Container(
+                                              width: 100,
+                                              height: 90,
+                                              // margin: EdgeInsets.only(left: 20),
+                                              // padding: EdgeInsets.only(
+                                              //     top: 5, left: 5, bottom: 5, right: 20),
+                                              // margin: EdgeInsets.symmetric(
+                                              //     vertical: 15, horizontal: 12),
+                                              decoration: BoxDecoration(
+                                                // boxShadow: [
+                                                //   const BoxShadow(
+                                                //       blurRadius: 0.5,
+                                                //       spreadRadius: 0.1,
+                                                //       color: Color.fromARGB(40, 0, 0, 0))
+                                                // ],
+                                                color:
+                                                    ThemeConstants.whitecolor,
+                                                borderRadius:
+                                                    BorderRadius.circular(13),
                                               ),
-                                            )
-                                          ],
-                                        )),
-                                  ),
+                                              alignment: Alignment.center,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    'assets/images/Mark Attendance.svg',
+                                                    color: ThemeConstants
+                                                        .bluecolor,
 
-                                InkWell(
-                                  onTap: () {
-                                    context.push(
-                                        '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.viewDocs}');
-                                  },
-                                  child: Container(
-                                      width: 100,
-                                      height: 90,
-                                      // margin: EdgeInsets.only(left: 20),
-                                      // padding: EdgeInsets.only(
-                                      //     top: 5, left: 5, bottom: 5, right: 20),
-                                      // margin: EdgeInsets.symmetric(
-                                      //     vertical: 15, horizontal: 12),
-                                      decoration: BoxDecoration(
-                                        // boxShadow: [
-                                        //   const BoxShadow(
-                                        //       blurRadius: 0.5,
-                                        //       spreadRadius: 0.1,
-                                        //       color: Color.fromARGB(40, 0, 0, 0))
-                                        // ],
-                                        color: ThemeConstants.whitecolor,
-                                        borderRadius: BorderRadius.circular(13),
-                                      ),
-                                      alignment: Alignment.center,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          SvgPicture.asset(
-                                            'assets/images/View Docs.svg',
-                                            color: ThemeConstants.bluecolor,
-                                            // color: index == 5
-                                            //     ? ThemeConstants.bluecolor
-                                            //     : const Color.fromARGB(
-                                            //         255, 31, 31, 31),
-                                            width: 30,
-                                          ),
-                                          Container(
-                                            width: double.infinity,
-                                            alignment: Alignment.center,
-                                            child: CustomAutoSizeTextMontserrat(
-                                              text: 'View Docs',
-                                              align: TextAlign.center,
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w500,
-                                              textColor:
-                                                  ThemeConstants.bluecolor,
-                                            ),
-                                          )
-                                        ],
+                                                    // color: index == 5
+                                                    //     ? ThemeConstants.bluecolor
+                                                    //     : const Color.fromARGB(
+                                                    //         255, 31, 31, 31),
+                                                    width: 30,
+                                                  ),
+                                                  // Icon(Icons.calendar_month_rounded,
+                                                  //     size: 30),
+                                                  Container(
+                                                    width: double.infinity,
+                                                    alignment: Alignment.center,
+                                                    child:
+                                                        CustomAutoSizeTextMontserrat(
+                                                      text: 'Mark Attendance',
+                                                      align: TextAlign.center,
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      textColor: ThemeConstants
+                                                          .bluecolor,
+                                                    ),
+                                                  )
+                                                ],
+                                              )),
+                                        ),
                                       )),
-                                )
+                                IgnorePointer(
+                                    ignoring: !controller.meetingStartedValue,
+                                    child: Opacity(
+                                        opacity: controller.meetingStartedValue
+                                            ? 1
+                                            : 0.5,
+                                        child: InkWell(
+                                          onTap: () {
+                                            context.push(
+                                                '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.viewDocs}');
+                                          },
+                                          child: Container(
+                                              width: 100,
+                                              height: 90,
+                                              // margin: EdgeInsets.only(left: 20),
+                                              // padding: EdgeInsets.only(
+                                              //     top: 5, left: 5, bottom: 5, right: 20),
+                                              // margin: EdgeInsets.symmetric(
+                                              //     vertical: 15, horizontal: 12),
+                                              decoration: BoxDecoration(
+                                                // boxShadow: [
+                                                //   const BoxShadow(
+                                                //       blurRadius: 0.5,
+                                                //       spreadRadius: 0.1,
+                                                //       color: Color.fromARGB(40, 0, 0, 0))
+                                                // ],
+                                                color:
+                                                    ThemeConstants.whitecolor,
+                                                borderRadius:
+                                                    BorderRadius.circular(13),
+                                              ),
+                                              alignment: Alignment.center,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    'assets/images/View Docs.svg',
+                                                    color: ThemeConstants
+                                                        .bluecolor,
+                                                    // color: index == 5
+                                                    //     ? ThemeConstants.bluecolor
+                                                    //     : const Color.fromARGB(
+                                                    //         255, 31, 31, 31),
+                                                    width: 30,
+                                                  ),
+                                                  Container(
+                                                    width: double.infinity,
+                                                    alignment: Alignment.center,
+                                                    child:
+                                                        CustomAutoSizeTextMontserrat(
+                                                      text: 'View Docs',
+                                                      align: TextAlign.center,
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      textColor: ThemeConstants
+                                                          .bluecolor,
+                                                    ),
+                                                  )
+                                                ],
+                                              )),
+                                        )))
                               ],
                             ),
                           ),

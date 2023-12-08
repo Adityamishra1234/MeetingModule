@@ -93,6 +93,22 @@ void showFlutterNotification(RemoteMessage message) {
   }
 }
 
+int id = 0;
+
+Future<void> _showNotification() async {
+  const AndroidNotificationDetails androidNotificationDetails =
+      AndroidNotificationDetails('your channel id', 'your channel name',
+          channelDescription: 'your channel description',
+          importance: Importance.max,
+          priority: Priority.high,
+          ticker: 'ticker');
+  const NotificationDetails notificationDetails =
+      NotificationDetails(android: androidNotificationDetails);
+  await flutterLocalNotificationsPlugin.show(
+      id++, 'plain title', 'plain body', notificationDetails,
+      payload: 'item x');
+}
+
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 Future<void> main() async {
@@ -115,6 +131,7 @@ Future<void> main() async {
 
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
     print('A new onMessageOpenedApp event was published!');
+
     Navigator.pushNamed(
       Get.context!,
       '/message',
@@ -130,6 +147,8 @@ Future<void> main() async {
   ]).then((value) => runApp(MyApp()));
 
   await setupDI();
+
+  await _showNotification();
   runApp(MyApp());
 }
 

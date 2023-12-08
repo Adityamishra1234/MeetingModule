@@ -12,6 +12,7 @@ import 'package:meeting_module2/models/participantsModel.dart';
 import 'package:meeting_module2/models/selectedAudienceTypeModel.dart';
 import 'package:meeting_module2/models/userModal.dart';
 import 'package:meeting_module2/services/apiServices.dart';
+import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/ui/controller/dashboardController.dart';
 import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/theme.dart';
@@ -889,6 +890,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     }
 
     var res = await api.generateMultiNotifications(
+        userID: Get.find<BaseController>().id.toString(),
         id: idList,
         type: 0,
         meeting_date: meetingModel.value.dateOfMeeting!,
@@ -912,6 +914,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     // var body = "You have a meeting with SIEC Family, scheduled at ";
 
     var res = await api.generateMultiNotifications(
+        userID: Get.find<BaseController>().id.toString(),
         type: 1,
         id: idList,
         meeting_date: meetingModel.value.dateOfMeeting!,

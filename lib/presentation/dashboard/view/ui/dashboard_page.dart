@@ -51,7 +51,7 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> {
-  final LocalAuthentication auth = LocalAuthentication();
+  LocalAuthentication auth = LocalAuthentication();
   _SupportState _supportState = _SupportState.unknown;
   bool? _canCheckBiometrics;
   List<BiometricType>? _availableBiometrics;
@@ -66,14 +66,14 @@ class _DashBoardState extends State<DashBoard> {
     return key.day * 1000000 + key.month * 10000 + key.year;
   }
 
-  Map<DateTime, List<Event>> map1 = {
-    DateTime(2023, 8, 15): [Event('ddd'), Event('ddd')],
-    DateTime(2023, 8, 30): [Event('ddd'), Event('ddd')],
-    DateTime(2023, 8, 12): [Event('ddd'), Event('ddd')],
-    DateTime(2023, 9, 20): [Event('ddd'), Event('ddd')],
-    DateTime(2023, 9, 21): [Event('ddd'), Event('ddd')],
-    DateTime.now(): [Event('ddd'), Event('ddd')]
-  };
+  // Map<DateTime, List<Event>> map1 = {
+  //   DateTime(2023, 8, 15): [Event('ddd'), Event('ddd')],
+  //   DateTime(2023, 8, 30): [Event('ddd'), Event('ddd')],
+  //   DateTime(2023, 8, 12): [Event('ddd'), Event('ddd')],
+  //   DateTime(2023, 9, 20): [Event('ddd'), Event('ddd')],
+  //   DateTime(2023, 9, 21): [Event('ddd'), Event('ddd')],
+  //   DateTime.now(): [Event('ddd'), Event('ddd')]
+  // };
   // var controller = Get.put(DashBoardController());
   var controllerBase = Get.find<BaseController>();
 

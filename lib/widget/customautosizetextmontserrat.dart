@@ -32,6 +32,7 @@ class CustomAutoSizeTextMontserrat extends StatelessWidget {
           const TextSpan(text: '*', style: TextStyle(color: Colors.red))
       ]),
       textAlign: align,
+
       maxLines: maxLines ?? 100000,
       minFontSize: 1,
       overflow: TextOverflow.ellipsis,

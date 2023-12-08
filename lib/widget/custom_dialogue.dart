@@ -628,7 +628,6 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                             Container(
                               width: MediaQuery.of(context).size.width - 40,
                               child: CustomTextField(
-                                validator: Validator.notEmpty,
                                 hint: '',
                                 controller: meetingLink,
                               ),
@@ -653,7 +652,6 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                             Container(
                               width: MediaQuery.of(context).size.width - 40,
                               child: CustomTextField(
-                                validator: Validator.notEmpty,
                                 hint: '',
                                 controller: registrationLink,
                               ),

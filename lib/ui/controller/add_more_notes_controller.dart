@@ -683,6 +683,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
     if (selectedMeeting.meetingType == 'Internal Meeting') {
       await api.generateNotificationOnNoteCreation(
+          userID: baseController.id.toString(),
           university: '',
           meetingName: selectedMeeting.nameOfTheMeeting!,
           meetingDate: selectedMeeting.dateOfMeeting!,
@@ -690,6 +691,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
           internalOrExternal: selectedMeeting.meetingType!);
     } else {
       await api.generateNotificationOnNoteCreation(
+          userID: baseController.id.toString(),
           university: '',
           meetingName: selectedMeeting.nameOfTheMeeting!,
           meetingDate: selectedMeeting.dateOfMeeting!,

@@ -111,6 +111,7 @@ abstract class API {
 
   generateMultiNotifications(
       {required List<int> id,
+      required String userID,
       required int type,
       required String meeting_name,
       required String meeting_date,
@@ -118,6 +119,7 @@ abstract class API {
 
   generateNotificationOnNoteCreation(
       {String? university,
+      required String userID,
       required String meetingName,
       required String meetingDate,
       required String meetingTime,
