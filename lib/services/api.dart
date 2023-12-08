@@ -124,4 +124,5 @@ abstract class API {
       required String internalOrExternal});
 
   findRepresentativeForDropDownFromBankVendor(String type, String groupName);
+  otpMatchForget(String email, String otp);
 }

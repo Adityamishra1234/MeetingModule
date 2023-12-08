@@ -11,7 +11,6 @@ import 'package:meeting_module2/ui/controller/base_controller.dart';
 import 'package:meeting_module2/utils/constants.dart';
 import 'package:meeting_module2/utils/idConstant.dart';
 import 'package:meeting_module2/utils/snackbarconstants.dart';
-
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/custom_tab_widget.dart';
 import 'package:meeting_module2/widget/custom_tab_widget_2.dart';
@@ -75,25 +74,6 @@ class _AddMoreNotesViewState extends State<AddMoreNotesView> {
                             SizedBox(
                               height: 10,
                             ),
-                            InkWell(
-                                onTap: () {
-                                  SqfliteDBClass().createNote(
-                                      note: 'dededededdee',
-                                      user_id: Get.find<BaseController>().id,
-                                      meeting_id: Get.find<BaseController>()
-                                          .selectedMeetingData
-                                          .id!);
-                                },
-                                child: Text('dd')),
-                            InkWell(
-                                onTap: () {
-                                  SqfliteDBClass().getNote(
-                                      Get.find<BaseController>().id,
-                                      Get.find<BaseController>()
-                                          .selectedMeetingData
-                                          .id!);
-                                },
-                                child: Text('dd')),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 16),

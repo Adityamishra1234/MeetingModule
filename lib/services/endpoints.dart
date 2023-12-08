@@ -92,6 +92,8 @@ class Endpoints {
   static String uploadMeetingDocument = 'meeting-attachment';
   static String forgetPassword = 'forgetPassword';
   static String passwordUpdateForgetCase = 'otpPasswordUpdate';
+  // static String passwordUpdateForgetCase = 'otpPasswordUpdate';
+  static String otpmatch = '/OtpMatch';
 
   static String universityIdByMeetingId = 'univeristyByMeetingID';
 

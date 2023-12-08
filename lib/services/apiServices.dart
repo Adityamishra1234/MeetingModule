@@ -967,6 +967,21 @@ class ApiServices extends BaseServices implements API {
   }
 
   @override
+  otpMatchForget(String email, String otp) async {
+    try {
+      var url =
+          '${Endpoints.baseUrl}${Endpoints.otpMatch + "/" + email + "/" + otp}';
+      var res = await httpPostNullBody(url);
+      if (res != null) {
+        return true;
+      }
+    } catch (e) {
+      throw UnimplementedError();
+    }
+    // TODO: implement findUniversityCountryByMeetingId
+  }
+
+  @override
   addAgenda({required agenda, userId}) async {
     // TODO: implement addAgenda
     try {
