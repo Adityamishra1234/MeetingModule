@@ -40,7 +40,6 @@ class CreateNewMeeting2 extends StatelessWidget {
         body: controller.obx(
             (state) => WillPopScope(
                   onWillPop: () async {
-                    context.pop('true');
                     return true;
                   },
                   child: SafeArea(

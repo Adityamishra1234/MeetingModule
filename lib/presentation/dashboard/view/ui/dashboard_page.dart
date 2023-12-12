@@ -772,16 +772,15 @@ class _DashBoardState extends State<DashBoard> {
                                         '/DashBoard/${Routes.createMeeting}');
                                     // print(
                                     //     '$result efdddeeeeeeeeeeeeee\f\e\ffefefeef');
-                                    if (result == 'true') {
-                                      Get.find<DashBoardController>().onInit();
-                                      calendarController.onInit();
 
-                                      calendarController.selectedDayGlobal =
-                                          DateTime.now();
+                                    Get.find<DashBoardController>().onInit();
+                                    calendarController.onInit();
 
-                                      calendarController.update();
-                                      setState(() {});
-                                    }
+                                    calendarController.selectedDayGlobal =
+                                        DateTime.now();
+
+                                    calendarController.update();
+                                    setState(() {});
 
                                     // Get.to(CreateNewMeeting2());
                                     print('ddd');
