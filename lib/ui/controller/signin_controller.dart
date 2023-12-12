@@ -169,9 +169,12 @@ class SigninController extends GetxController with StateMixin {
     }
   }
 
-  getDailogForForget(BuildContext context, String email) {
+  getDailogForForget(BuildContext context, String email,
+      [bool passwordUpdate1 = false, String otp = ""]) {
     var emailController = TextEditingController();
+    bool passwordUpdate = passwordUpdate1;
     emailController.text = email;
+    otpController.text = otp;
     return showDialog(
       context: context,
       builder: (_) => Stack(
@@ -181,130 +184,197 @@ class SigninController extends GetxController with StateMixin {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               content: Container(
-                width: MediaQuery.of(context).size.width * 0.7,
-                child: Column(mainAxisSize: MainAxisSize.min, children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0, top: 5),
-                        child: CustomAutoSizeTextMontserrat(
-                          text: 'Reset password',
-                          fontSize: ThemeConstants.fontSizeMedium,
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: Column(mainAxisSize: MainAxisSize.min, children: [
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0, top: 5),
+                          child: CustomAutoSizeTextMontserrat(
+                            text: 'Reset password',
+                            fontSize: ThemeConstants.fontSizeMedium,
+                          ),
                         ),
-                      ),
-                      Spacer(),
-                      // InkWell(
-                      //   onTap: () {
-                      //     context.pop();
-                      //   },
-                      //   child: Icon(
-                      //     Icons.close,
-                      //     color: ThemeConstants.bluecolor,
-                      //     size: 16,
-                      //   ),
-                      // )
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: CustomTextField(
-                        backgroundCOlour: ThemeConstants.whitecolor,
-                        hint: "Enter your office email",
-                        validator: Validator.email,
-                        readOrEdit: true,
-                        controller: emailController),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: CustomTextField(
-                        keybord: TextInputType.number,
-                        backgroundCOlour: ThemeConstants.whitecolor,
-                        hint: "Enter your OTP",
-                        validator: Validator.otp,
-                        controller: otpController),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: CustomTextField(
-                        backgroundCOlour: ThemeConstants.whitecolor,
-                        hint: "Enter your password",
-                        // validator: Validator.passwordWithSpecial,
-                        controller: passwordController),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: FlutterPwValidator(
-                        controller: passwordController,
-                        minLength: 8,
-                        uppercaseCharCount: 1,
-                        lowercaseCharCount: 1,
-                        numericCharCount: 1,
-                        specialCharCount: 1,
-                        width: 300,
-                        height: 150,
-                        onSuccess: () {
-                          passwordValidatted = true;
-                          print('object');
-                          update();
-                        },
-                        onFail: () {
-                          print('object');
-                          passwordValidatted = false;
-                          update();
-                        }),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 40, vertical: 2),
-                    child: LoadingButton(
-                      height: 35,
-                      borderRadius: 8,
-                      animate: true,
-                      width: MediaQuery.of(context).size.width * 0.55,
-                      color: ThemeConstants.bluecolor,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                      loader: Container(
-                        padding: const EdgeInsets.all(5),
-                        width: 40,
-                        height: 40,
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              ThemeConstants.bluecolor),
-                        ),
-                      ),
-                      child: CustomAutoSizeTextMontserrat(
-                        text: 'Update Password',
-                        textColor: ThemeConstants.whitecolor,
-                        fontSize: ThemeConstants.fontSizeMedium,
-                      ),
-                      onTap: (startLoading, stopLoading, buttonState) async {
-                        // print(widget.path);
-
-                        startLoading();
-                        if (passwordController.text.isNotEmpty &&
-                            otpController.text.isNotEmpty &&
-                            passwordValidatted == true) {
-                          var res = await updatePasswordForget(email,
-                              passwordController.text, otpController.text);
-
-                          if (res == true) context.pop();
-                        } else {
-                          getToast("Kindly check your fields");
-                        }
-
-                        stopLoading();
-                      },
+                        Spacer(),
+                        // InkWell(
+                        //   onTap: () {
+                        //     context.pop();
+                        //   },
+                        //   child: Icon(
+                        //     Icons.close,
+                        //     color: ThemeConstants.bluecolor,
+                        //     size: 16,
+                        //   ),
+                        // )
+                      ],
                     ),
-                  ),
-                ]),
-              ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: CustomTextField(
+                          backgroundCOlour: ThemeConstants.whitecolor,
+                          hint: "Enter your office email",
+                          validator: Validator.email,
+                          readOrEdit: true,
+                          controller: emailController),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: CustomTextField(
+                          readOrEdit: passwordUpdate,
+                          keybord: TextInputType.number,
+                          backgroundCOlour: ThemeConstants.whitecolor,
+                          hint: "Enter your OTP",
+                          validator: Validator.otp,
+                          controller: otpController),
+                    ),
+                    if (passwordUpdate == false)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 40, vertical: 2),
+                        child: LoadingButton(
+                          height: 35,
+                          borderRadius: 8,
+                          animate: true,
+                          width: MediaQuery.of(context).size.width * 0.55,
+                          color: ThemeConstants.bluecolor,
+                          padding:
+                              EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                          loader: Container(
+                            padding: const EdgeInsets.all(5),
+                            width: 40,
+                            height: 40,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  ThemeConstants.bluecolor),
+                            ),
+                          ),
+                          child: CustomAutoSizeTextMontserrat(
+                            text: 'Updated',
+                            textColor: ThemeConstants.whitecolor,
+                            fontSize: ThemeConstants.fontSizeMedium,
+                          ),
+                          onTap:
+                              (startLoading, stopLoading, buttonState) async {
+                            // print(widget.path);
+
+                            startLoading();
+
+                            if (otpController.text.isEmpty) {
+                              getToast("Kindly enter otp");
+                            } else {
+                              var res = await otpMatchForget(
+                                  email, otpController.text);
+                              if (res == true) {
+                                getDailogForForget(
+                                    context, email, true, otpController.text);
+                                // setInnerState(() {});
+                              }
+                            }
+                            // if (passwordController.text.isNotEmpty &&
+                            //     otpController.text.isNotEmpty &&
+                            //     passwordValidatted == true) {
+                            //   var res = await updatePasswordForget(email,
+                            //       passwordController.text, otpController.text);
+
+                            //   if (res == true) context.pop();
+                            // } else {
+                            //   getToast("Kindly check your fields");
+                            // }
+
+                            stopLoading();
+                          },
+                        ),
+                      ),
+                    if (passwordUpdate == true)
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: CustomTextField(
+                            backgroundCOlour: ThemeConstants.whitecolor,
+                            hint: "Enter your password",
+                            // validator: Validator.passwordWithSpecial,
+                            controller: passwordController),
+                      ),
+                    if (passwordUpdate == true)
+                      SizedBox(
+                        height: 15,
+                      ),
+                    if (passwordUpdate == true)
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: FlutterPwValidator(
+                            controller: passwordController,
+                            minLength: 8,
+                            uppercaseCharCount: 1,
+                            lowercaseCharCount: 1,
+                            numericCharCount: 1,
+                            specialCharCount: 1,
+                            width: 300,
+                            height: 150,
+                            onSuccess: () {
+                              passwordValidatted = true;
+                              print('object');
+                              update();
+                            },
+                            onFail: () {
+                              print('object');
+                              passwordValidatted = false;
+                              update();
+                            }),
+                      ),
+                    if (passwordUpdate == true)
+                      SizedBox(
+                        height: 15,
+                      ),
+                    if (passwordUpdate == true)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 40, vertical: 2),
+                        child: LoadingButton(
+                          height: 35,
+                          borderRadius: 8,
+                          animate: true,
+                          width: MediaQuery.of(context).size.width * 0.55,
+                          color: ThemeConstants.bluecolor,
+                          padding:
+                              EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                          loader: Container(
+                            padding: const EdgeInsets.all(5),
+                            width: 40,
+                            height: 40,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  ThemeConstants.bluecolor),
+                            ),
+                          ),
+                          child: CustomAutoSizeTextMontserrat(
+                            text: 'Update Password',
+                            textColor: ThemeConstants.whitecolor,
+                            fontSize: ThemeConstants.fontSizeMedium,
+                          ),
+                          onTap:
+                              (startLoading, stopLoading, buttonState) async {
+                            // print(widget.path);
+
+                            startLoading();
+                            if (passwordController.text.isNotEmpty &&
+                                otpController.text.isNotEmpty &&
+                                passwordValidatted == true) {
+                              var res = await updatePasswordForget(email,
+                                  passwordController.text, otpController.text);
+
+                              if (res == true) {
+                                context.pop();
+                                context.pop();
+                              }
+                            } else {
+                              getToast("Kindly check your fields");
+                            }
+
+                            stopLoading();
+                          },
+                        ),
+                      ),
+                  ])),
             ),
           ),
           Align(
@@ -338,5 +408,12 @@ class SigninController extends GetxController with StateMixin {
       otpController.clear();
       passwordController.clear();
     });
+  }
+
+  otpMatchForget(String email, String otp) async {
+    var res = await api.otpMatchForget(email, otp);
+    if (res != null) {
+      return true;
+    }
   }
 }

@@ -66,7 +66,7 @@ dependencies:
   local_auth: ^2.1.6
   webview_flutter: ^4.2.2
   cached_network_image: ^3.2.3
-  connectivity_plus: ^5.0.0
+  connectivity_plus: ^5.0.2
   simple_gesture_detector: ^0.2.0
   overlayment: ^0.2.1
   provider: ^6.0.5
@@ -94,6 +94,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+
+  flutter_launcher_icons:
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

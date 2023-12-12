@@ -10,6 +10,7 @@ import 'package:flutter_splash_screen/flutter_splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/bindings/dashboardBindings.dart';
+import 'package:meeting_module2/fcm/notification_service.dart';
 import 'package:meeting_module2/utils/routes/router_config.dart';
 import 'package:meeting_module2/di/get_it.dart';
 import 'package:meeting_module2/models/dashboardNotesModel.dart';
@@ -26,72 +27,71 @@ import 'package:meeting_module2/ui/screens/signin_view.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'firebase_options.dart';
-import 'message.dart';
+import 'fcm/firebase_options.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
 
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await setupFlutterNotifications();
-  showFlutterNotification(message);
+// @pragma('vm:entry-point')
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+//   await setupFlutterNotifications();
+//   showFlutterNotification(message);
 
-  print('Handling a background message ${message.messageId}');
-}
+//   print('Handling a background message ${message.messageId}');
+// }
 
-late AndroidNotificationChannel channel;
+// late AndroidNotificationChannel channel;
 
-bool isFlutterLocalNotificationsInitialized = false;
+// bool isFlutterLocalNotificationsInitialized = false;
 
-Future<void> setupFlutterNotifications() async {
-  if (isFlutterLocalNotificationsInitialized) {
-    return;
-  }
-  channel = const AndroidNotificationChannel(
-    'high_importance_channel', // id
-    'High Importance Notifications', // title
-    description:
-        'This channel is used for important notifications.', // description
-    importance: Importance.high,
-  );
+// Future<void> setupFlutterNotifications() async {
+//   if (isFlutterLocalNotificationsInitialized) {
+//     return;
+//   }
+//   channel = const AndroidNotificationChannel(
+//     'high_importance_channel', // id
+//     'High Importance Notifications', // title
+//     description:
+//         'This channel is used for important notifications.', // description
+//     importance: Importance.high,
+//   );
 
-  flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+//   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
+//   await flutterLocalNotificationsPlugin
+//       .resolvePlatformSpecificImplementation<
+//           AndroidFlutterLocalNotificationsPlugin>()
+//       ?.createNotificationChannel(channel);
 
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
-  isFlutterLocalNotificationsInitialized = true;
-}
+//   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+//     alert: true,
+//     badge: true,
+//     sound: true,
+//   );
+//   isFlutterLocalNotificationsInitialized = true;
+// }
 
-void showFlutterNotification(RemoteMessage message) {
-  RemoteNotification? notification = message.notification;
-  AndroidNotification? android = message.notification?.android;
-  if (notification != null && android != null && !kIsWeb) {
-    flutterLocalNotificationsPlugin.show(
-      notification.hashCode,
-      notification.title,
-      notification.body,
-      NotificationDetails(
-        android: AndroidNotificationDetails(
-          channel.id,
-          channel.name,
-          channelDescription: channel.description,
-          // TODO add a proper drawable resource to andrwoid, for now using
-          //      one that already exists in example app.
-          icon: 'launch_background',
-        ),
-      ),
-    );
-  }
-}
+// void showFlutterNotification(RemoteMessage message) {
+//   RemoteNotification? notification = message.notification;
+//   AndroidNotification? android = message.notification?.android;
+//   if (notification != null && android != null && !kIsWeb) {
+//     flutterLocalNotificationsPlugin.show(
+//       notification.hashCode,
+//       notification.title,
+//       notification.body,
+//       NotificationDetails(
+//         android: AndroidNotificationDetails(
+//           channel.id,
+//           channel.name,
+//           channelDescription: channel.description,
+//           // TODO add a proper drawable resource to andrwoid, for now using
+//           //      one that already exists in example app.
+//           icon: 'launch_background',
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 int id = 0;
 
@@ -109,42 +109,48 @@ Future<void> _showNotification() async {
       payload: 'item x');
 }
 
-late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 Future<void> main() async {
-  String? initialMessage;
-  bool _resolved = false;
+  // String? initialMessage;
+  // bool _resolved = false;
+  // WidgetsFlutterBinding.ensureInitialized();
+
+  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  // if (!kIsWeb) {
+  //   await setupFlutterNotifications();
+  // }
+  // FirebaseMessaging.instance.getInitialMessage().then((value) {
+  //   _resolved = true;
+  //   initialMessage = value?.data.toString();
+  // });
+
+  // FirebaseMessaging.onMessage.listen(showFlutterNotification);
+
+  // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+  //   print('A new onMessageOpenedApp event was published!');
+
+  //     Get.context!,
+  //     '/message',
+  //     arguments: MessageArguments(message, true),
+  //   );
+  // });
+  // await onActionSelected;
+  // await createtoken();
+
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  //   DeviceOrientation.portraitDown,
+  // ]).then((value) => runApp(MyApp()));
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(systemStatusBarContrastEnforced: true));
+  await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-  if (!kIsWeb) {
-    await setupFlutterNotifications();
-  }
-  FirebaseMessaging.instance.getInitialMessage().then((value) {
-    _resolved = true;
-    initialMessage = value?.data.toString();
-  });
-
-  FirebaseMessaging.onMessage.listen(showFlutterNotification);
-
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-    print('A new onMessageOpenedApp event was published!');
-
-    Navigator.pushNamed(
-      Get.context!,
-      '/message',
-      arguments: MessageArguments(message, true),
-    );
-  });
-  await onActionSelected;
-  await createtoken();
-
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]).then((value) => runApp(MyApp()));
 
   await setupDI();
 
@@ -152,98 +158,98 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-Future<void> onActionSelected(String value) async {
-  switch (value) {
-    case 'subscribe':
-      {
-        print(
-          'FlutterFire Messaging Example: Subscribing to topic "fcm_test".',
-        );
-        await FirebaseMessaging.instance.subscribeToTopic('fcm_test');
-        print(
-          'FlutterFire Messaging Example: Subscribing to topic "fcm_test" successful.',
-        );
-      }
-      break;
+// Future<void> onActionSelected(String value) async {
+//   switch (value) {
+//     case 'subscribe':
+//       {
+//         print(
+//           'FlutterFire Messaging Example: Subscribing to topic "fcm_test".',
+//         );
+//         await FirebaseMessaging.instance.subscribeToTopic('fcm_test');
+//         print(
+//           'FlutterFire Messaging Example: Subscribing to topic "fcm_test" successful.',
+//         );
+//       }
+//       break;
 
-    case 'unsubscribe':
-      {
-        print(
-          'FlutterFire Messaging Example: Unsubscribing from topic "fcm_test".',
-        );
-        await FirebaseMessaging.instance.unsubscribeFromTopic('fcm_test');
-        print(
-          'FlutterFire Messaging Example: Unsubscribing from topic "fcm_test" successful.',
-        );
-      }
-      break;
-    case 'get_apns_token':
-      {
-        if (defaultTargetPlatform == TargetPlatform.iOS ||
-            defaultTargetPlatform == TargetPlatform.macOS) {
-          print('FlutterFire Messaging Example: Getting APNs token...');
-          String? token = await FirebaseMessaging.instance.getAPNSToken();
-          print('FlutterFire Messaging Example: Got APNs token: $token');
-        } else {
-          print(
-            'FlutterFire Messaging Example: Getting an APNs token is only supported on iOS and macOS platforms.',
-          );
-        }
-      }
-      break;
-    default:
-      break;
-  }
-}
+//     case 'unsubscribe':
+//       {
+//         print(
+//           'FlutterFire Messaging Example: Unsubscribing from topic "fcm_test".',
+//         );
+//         await FirebaseMessaging.instance.unsubscribeFromTopic('fcm_test');
+//         print(
+//           'FlutterFire Messaging Example: Unsubscribing from topic "fcm_test" successful.',
+//         );
+//       }
+//       break;
+//     case 'get_apns_token':
+//       {
+//         if (defaultTargetPlatform == TargetPlatform.iOS ||
+//             defaultTargetPlatform == TargetPlatform.macOS) {
+//           print('FlutterFire Messaging Example: Getting APNs token...');
+//           String? token = await FirebaseMessaging.instance.getAPNSToken();
+//           print('FlutterFire Messaging Example: Got APNs token: $token');
+//         } else {
+//           print(
+//             'FlutterFire Messaging Example: Getting an APNs token is only supported on iOS and macOS platforms.',
+//           );
+//         }
+//       }
+//       break;
+//     default:
+//       break;
+//   }
+// }
 
-createtoken() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  // var id = await prefs.getInt('id')!;
+// createtoken() async {
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   // var id = await prefs.getInt('id')!;
 
-  var token = await FirebaseMessaging.instance.getToken(
-      vapidKey:
-          'BNKkaUWxyP_yC_lki1kYazgca0TNhuzt2drsOrL6WrgGbqnMnr8ZMLzg_rSPDm6HKphABS0KzjPfSqCXHXEd06Y');
+//   var token = await FirebaseMessaging.instance.getToken(
+//       vapidKey:
+//           'BNKkaUWxyP_yC_lki1kYazgca0TNhuzt2drsOrL6WrgGbqnMnr8ZMLzg_rSPDm6HKphABS0KzjPfSqCXHXEd06Y');
 
-  await prefs.setString('token', '$token');
-}
+//   await prefs.setString('token', '$token');
+// }
 
-// FCM send Notification using Token
-sendPushMessage(String token) async {
-  if (token == null) {
-    print('Unable to send FCM message, no token exists.');
-    return;
-  }
+// // FCM send Notification using Token
+// sendPushMessage(String token) async {
+//   if (token == null) {
+//     print('Unable to send FCM message, no token exists.');
+//     return;
+//   }
 
-  try {
-    await http.post(
-      Uri.parse('https://api.rnfirebase.io/messaging/send'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: constructFCMPayload(token),
-    );
-    print('FCM request for device sent!');
-  } catch (e) {
-    print(e);
-  }
-}
+//   try {
+//     await http.post(
+//       Uri.parse('https://api.rnfirebase.io/messaging/send'),
+//       headers: <String, String>{
+//         'Content-Type': 'application/json; charset=UTF-8',
+//       },
+//       body: constructFCMPayload(token),
+//     );
+//     print('FCM request for device sent!');
+//   } catch (e) {
+//     print(e);
+//   }
+// }
 
-int _messageCount = 0;
-String constructFCMPayload(String? token) {
-  print(token);
-  _messageCount++;
-  return jsonEncode({
-    'token': token,
-    'data': {
-      'via': 'FlutterFire Cloud Messaging!!!',
-      'count': _messageCount.toString(),
-    },
-    'notification': {
-      'title': 'Hello FlutterFire!',
-      'body': 'This notification (#$_messageCount) was created via FCM!',
-    },
-  });
-}
+// int _messageCount = 0;
+// String constructFCMPayload(String? token) {
+//   print(token);
+//   _messageCount++;
+//   return jsonEncode({
+//     'token': token,
+//     'data': {
+//       'via': 'FlutterFire Cloud Messaging!!!',
+//       'count': _messageCount.toString(),
+//     },
+//     'notification': {
+//       'title': 'Hello FlutterFire!',
+//       'body': 'This notification (#$_messageCount) was created via FCM!',
+//     },
+//   });
+// }
 
 // Future<void> onActionSelected(String value) async {
 //   switch (value) {
@@ -296,8 +302,22 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  NotificationServices notificationServices = NotificationServices();
   @override
   void initState() {
+    notificationServices.requestNotificationPermission();
+    notificationServices.forgroundMessage();
+    notificationServices.firebaseInit(context);
+    notificationServices.setupInteractMessage(context);
+    notificationServices.isTokenRefresh();
+
+    notificationServices.getDeviceToken().then((value) {
+      if (kDebugMode) {
+        print('device token');
+        print(value);
+      }
+    });
+
     // data();
     // TODO: implement initState
     super.initState();
