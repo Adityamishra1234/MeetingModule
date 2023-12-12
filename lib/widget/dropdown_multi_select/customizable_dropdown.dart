@@ -433,9 +433,19 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(items.elementAt(index),
-                                            textAlign: TextAlign.start,
-                                            style: widget.titleStyle),
+                                        SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              140,
+                                          child: Wrap(
+                                            children: [
+                                              Text(items.elementAt(index),
+                                                  textAlign: TextAlign.start,
+                                                  style: widget.titleStyle),
+                                            ],
+                                          ),
+                                        ),
                                         if (widget.multiSelectEnable ==
                                             true) ...[
                                           selectedItemsList

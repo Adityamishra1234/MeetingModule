@@ -667,6 +667,7 @@ class DashBoardController extends GetxController with StateMixin {
 
   generateRescheduleNotification(List<int> idList) async {
     var res = await api.generateMultiNotifications(
+        userID: Get.find<BaseController>().id.toString(),
         type: 2,
         id: idList,
         meeting_date: selectedMeetingdata.value.dateOfMeeting!,
@@ -941,7 +942,6 @@ class SingleMeetingWidget extends StatelessWidget {
                       ],
                     ),
                     Container(
-                      height: 30,
                       width: MediaQuery.of(context).size.width - 20,
                       child: Row(
                         // runAlignment: WrapAlignment.end,

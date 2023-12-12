@@ -40,7 +40,6 @@ class CreateNewMeeting2 extends StatelessWidget {
         body: controller.obx(
             (state) => WillPopScope(
                   onWillPop: () async {
-                    context.pop('true');
                     return true;
                   },
                   child: SafeArea(
@@ -1156,9 +1155,9 @@ class CreateNewMeeting2 extends StatelessWidget {
                       // height: 45,
 
                       child: CustomTextField(
-                        validator: controller.MeetingType.value == true
-                            ? Validator.notEmpty
-                            : null,
+                        // validator: controller.MeetingType.value == true
+                        //     ? Validator.notEmpty
+                        //     : null,
                         hint: '',
                         controller: controller.meetingLink.value,
                       ),
@@ -1182,9 +1181,9 @@ class CreateNewMeeting2 extends StatelessWidget {
                       // height: 45,
 
                       child: CustomTextField(
-                        validator: controller.MeetingType.value == true
-                            ? Validator.notEmpty
-                            : null,
+                        // validator: controller.MeetingType.value == true
+                        //     ? Validator.notEmpty
+                        //     : null,
                         hint: '',
                         controller: controller.registrationLink.value,
                       ),
@@ -1427,6 +1426,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                                 contains = true;
                               }
                             }
+                            print(controller.listOfParticipants);
 
                             if (contains) {
                               getToast('Already added');

@@ -1111,6 +1111,7 @@ class ApiServices extends BaseServices implements API {
   generateMultiNotifications(
       {required List<int> id,
       required int type,
+      required String userID,
       required String meeting_name,
       required String meeting_date,
       required String meeting_time}) async {
@@ -1125,6 +1126,7 @@ class ApiServices extends BaseServices implements API {
       // idString = '103,105';
 
       var jsonData = {
+        "userId": userID,
         "ids": idString,
         "type": type.toString(),
         "meetingName": meeting_name,
@@ -1150,6 +1152,7 @@ class ApiServices extends BaseServices implements API {
       {String? university,
       required String meetingName,
       required String meetingDate,
+      required String userID,
       required String meetingTime,
       required String internalOrExternal}) async {
     // TODO: implement generateNotificationOnNoteCreation
@@ -1169,7 +1172,8 @@ class ApiServices extends BaseServices implements API {
         "meetingName": "$meetingName",
         "meetingDate ": "$meetingDate",
         "meetingTime": "$meetingTime",
-        "internal": internalOrExternal
+        "internal": internalOrExternal,
+        "userId": userID,
       };
 
       var data = json.encode(jsonData);

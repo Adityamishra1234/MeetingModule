@@ -25,6 +25,7 @@ import 'package:meeting_module2/ui/screens/participants_details.dart';
 import 'package:meeting_module2/ui/screens/reschedule_meeting.dart';
 import 'package:meeting_module2/ui/screens/signin_view.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
+import 'package:meeting_module2/utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'fcm/firebase_options.dart';
 import 'package:http/http.dart' as http;
@@ -92,12 +93,22 @@ import 'package:flutter/services.dart';
 //   }
 // }
 
-// late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+int id = 0;
 
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
+Future<void> _showNotification() async {
+  const AndroidNotificationDetails androidNotificationDetails =
+      AndroidNotificationDetails('your channel id', 'your channel name',
+          channelDescription: 'your channel description',
+          importance: Importance.max,
+          priority: Priority.high,
+          ticker: 'ticker');
+  const NotificationDetails notificationDetails =
+      NotificationDetails(android: androidNotificationDetails);
+  await flutterLocalNotificationsPlugin.show(
+      id++, 'plain title', 'plain body', notificationDetails,
+      payload: 'item x');
 }
+
 
 Future<void> main() async {
   // String? initialMessage;
@@ -119,7 +130,7 @@ Future<void> main() async {
 
   // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
   //   print('A new onMessageOpenedApp event was published!');
-  //   Navigator.pushNamed(
+
   //     Get.context!,
   //     '/message',
   //     arguments: MessageArguments(message, true),
@@ -142,6 +153,8 @@ Future<void> main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   await setupDI();
+
+  await _showNotification();
   runApp(MyApp());
 }
 
@@ -330,6 +343,8 @@ class _MyAppState extends State<MyApp> {
       routeInformationProvider: router.routeInformationProvider,
       routerDelegate: router.routerDelegate,
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+          primaryColor: ThemeConstants.bluecolor, primarySwatch: Colors.blue),
       // routerConfig: GoRouterConfig().router,
       //         routerDelegate: routerDelegate,
 // routeInformationParser: BeamerParser(),
