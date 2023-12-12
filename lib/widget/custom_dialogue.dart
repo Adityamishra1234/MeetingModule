@@ -1242,7 +1242,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
   getMeetingLocation(String meetingLocation) {
     if (meetingLocation.toString() == true) {
       return "1";
-    } else if (meetingLocation.toString() == true) {
+    } else if (meetingLocation.toString() != true) {
       return "2";
     } else {
       return "";

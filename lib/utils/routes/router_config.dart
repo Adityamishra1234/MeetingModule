@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -13,7 +12,6 @@ import 'package:meeting_module2/ui/screens/add_more_notes.dart';
 import 'package:meeting_module2/ui/screens/assign_to_view.dart';
 import 'package:meeting_module2/ui/screens/assign_to_view_dasboard.dart';
 import 'package:meeting_module2/presentation/meeting_notes_task/view/meeting_notes_task_view_bloc.dart';
-
 import 'package:meeting_module2/ui/screens/create_new_meeting2.dart';
 import 'package:meeting_module2/ui/screens/dashboard_notes.dart';
 import 'package:meeting_module2/presentation/dashboard/view/ui/dashboard_page.dart';

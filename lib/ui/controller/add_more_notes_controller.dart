@@ -82,7 +82,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     // await meetingId();
 
     await checkUserIsCordinator();
-    await getMeetingParticipantsList();
+    // await getMeetingParticipantsList();
     await getReasonOfNotAttedingsAll(baseController.selectedMeetingData.id!);
     // getMeetingCountryAndUniversity();
     // await showPublishButtonOrNot();
@@ -120,7 +120,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
     // await meetingId();
 
     await checkUserIsCordinator();
-    await getMeetingParticipantsList();
+    // await getMeetingParticipantsList();
     await getReasonOfNotAttedingsAll(baseController.selectedMeetingData.id!);
     // getMeetingCountryAndUniversity();
     // await showPublishButtonOrNot();
@@ -681,23 +681,23 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
     var selectedMeeting = baseController.selectedMeetingData;
 
-    if (selectedMeeting.meetingType == 'Internal Meeting') {
-      await api.generateNotificationOnNoteCreation(
-          userID: baseController.id.toString(),
-          university: '',
-          meetingName: selectedMeeting.nameOfTheMeeting!,
-          meetingDate: selectedMeeting.dateOfMeeting!,
-          meetingTime: selectedMeeting.timeOfTheMeeting!,
-          internalOrExternal: selectedMeeting.meetingType!);
-    } else {
-      await api.generateNotificationOnNoteCreation(
-          userID: baseController.id.toString(),
-          university: '',
-          meetingName: selectedMeeting.nameOfTheMeeting!,
-          meetingDate: selectedMeeting.dateOfMeeting!,
-          meetingTime: selectedMeeting.timeOfTheMeeting!,
-          internalOrExternal: selectedMeeting.meetingType!);
-    }
+    // if (selectedMeeting.meetingType == 'Internal Meeting') {
+    //   await api.generateNotificationOnNoteCreation(
+    //       userID: baseController.id.toString(),
+    //       university: '',
+    //       meetingName: selectedMeeting.nameOfTheMeeting!,
+    //       meetingDate: selectedMeeting.dateOfMeeting!,
+    //       meetingTime: selectedMeeting.timeOfTheMeeting!,
+    //       internalOrExternal: selectedMeeting.meetingType!);
+    // } else {
+    //   await api.generateNotificationOnNoteCreation(
+    //       userID: baseController.id.toString(),
+    //       university: '',
+    //       meetingName: selectedMeeting.nameOfTheMeeting!,
+    //       meetingDate: selectedMeeting.dateOfMeeting!,
+    //       meetingTime: selectedMeeting.timeOfTheMeeting!,
+    //       internalOrExternal: selectedMeeting.meetingType!);
+    // }
     // await getNotesOfMeeting(context)
 
     update();
@@ -816,10 +816,18 @@ class AddMoreNotesController extends GetxController with StateMixin {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomAutoSizeTextMontserrat(
-                            text: 'You are starting the \nmeeting before.',
-                            textColor: ThemeConstants.bluecolor,
-                            fontSize: ThemeConstants.fontSizeMedium,
+                          Container(
+                            width: MediaQuery.of(context).size.width - 180,
+                            child: Wrap(
+                              children: [
+                                CustomAutoSizeTextMontserrat(
+                                  text:
+                                      'You are starting the \nmeeting before scheduled time.',
+                                  textColor: ThemeConstants.bluecolor,
+                                  fontSize: ThemeConstants.fontSizeMedium,
+                                ),
+                              ],
+                            ),
                           ),
                           Spacer(),
                           IconButton(
@@ -833,7 +841,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
                         ],
                       ),
                       CustomAutoSizeTextMontserrat(
-                        text: 'Still start the meeting.',
+                        text: 'Are you sure you want to proceed?',
                         textColor: ThemeConstants.bluecolor,
                         fontSize: ThemeConstants.fontSizeSmall,
                       ),
@@ -910,10 +918,18 @@ class AddMoreNotesController extends GetxController with StateMixin {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomAutoSizeTextMontserrat(
-                          text: 'You are starting the \nmeeting before.',
-                          textColor: ThemeConstants.bluecolor,
-                          fontSize: ThemeConstants.fontSizeMedium,
+                        Container(
+                          width: MediaQuery.of(context).size.width - 180,
+                          child: Wrap(
+                            children: [
+                              CustomAutoSizeTextMontserrat(
+                                text:
+                                    'You are starting the \nmeeting before scheduled \ntime.',
+                                textColor: ThemeConstants.bluecolor,
+                                fontSize: ThemeConstants.fontSizeMedium,
+                              ),
+                            ],
+                          ),
                         ),
                         Spacer(),
                         IconButton(
@@ -927,7 +943,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
                       ],
                     ),
                     CustomAutoSizeTextMontserrat(
-                      text: 'Still start the meeting.',
+                      text: 'Are you sure you want to proceed?',
                       textColor: ThemeConstants.bluecolor,
                       fontSize: ThemeConstants.fontSizeSmall,
                     ),
@@ -1155,7 +1171,10 @@ class AddMoreNotesController extends GetxController with StateMixin {
         }
       }
 
+      print(dataList);
+
       for (var i = 0; i < dataList.length; i++) {
+        print('object$i');
         participantDataList.add(Container(
           margin: EdgeInsets.all(5),
           padding: EdgeInsets.all(5),
@@ -1219,7 +1238,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
       // participantsList.forEach((element) {
 
       // });
-      print(participantList);
+      print(participantDataList);
     }
   }
 

@@ -629,6 +629,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                                       vertical: 10, horizontal: 10),
                                   child: CustomAutoSizeTextMontserrat(
                                       text: 'Close Task',
+                                      fontSize: 12,
                                       fontWeight: ThemeConstants.fontWeightBold,
                                       textColor: ThemeConstants.whitecolor),
                                 ),
@@ -1171,43 +1172,51 @@ class MeetingAttendedAddNoteTask extends StatelessWidget {
                     ],
                     borderRadius: BorderRadius.circular(10),
                     color: ThemeConstants.whitecolor),
-                child: Column(
-                  children: [
-                    quil.QuillToolbar(
-                      configurations: quil.QuillToolbarConfigurations(
-                        // controller: noteText,
-                        showAlignmentButtons: true,
-                      ),
+                child: quil.QuillProvider(
+                  configurations: quil.QuillConfigurations(
+                    controller: noteText,
+                    sharedConfigurations: const quil.QuillSharedConfigurations(
+                      locale: Locale('de'),
                     ),
-                    SizedBox(height: 15),
-                    GestureDetector(
-                      onTap: () {
-                        // _focusNode.requestFocus();
-                      },
-                      child: Container(
-                        constraints: BoxConstraints(minHeight: 200),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                                width: 1, color: ThemeConstants.bluecolor)),
-                        child: quil.QuillEditor(
-                          configurations: quil.QuillEditorConfigurations(
-                            scrollable: false,
-                            padding: EdgeInsets.all(10),
-                            expands: false,
-                            readOnly: false,
-                          ),
-                          // autoFocus: false,
-
-                          focusNode: FocusNode(),
-
-                          scrollController: ScrollController(),
-
-                          // true for view only mode
+                  ),
+                  child: Column(
+                    children: [
+                      quil.QuillToolbar(
+                        configurations: quil.QuillToolbarConfigurations(
+                          // controller: noteText,
+                          showAlignmentButtons: true,
                         ),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 15),
+                      GestureDetector(
+                        onTap: () {
+                          // _focusNode.requestFocus();
+                        },
+                        child: Container(
+                          constraints: BoxConstraints(minHeight: 200),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                  width: 1, color: ThemeConstants.bluecolor)),
+                          child: quil.QuillEditor(
+                            configurations: quil.QuillEditorConfigurations(
+                              scrollable: false,
+                              padding: EdgeInsets.all(10),
+                              expands: false,
+                              readOnly: false,
+                            ),
+                            // autoFocus: false,
+
+                            focusNode: FocusNode(),
+
+                            scrollController: ScrollController(),
+
+                            // true for view only mode
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
@@ -1285,7 +1294,7 @@ class MeetingTaskNoClose extends StatelessWidget {
                 children: [
                   CustomAutoSizeTextMontserrat(
                       textColor: ThemeConstants.bluecolor,
-                      text: "Reason of Not Attending"),
+                      text: "Reason of Not \nAttending"),
                   // InkWell(
                   //   onTap:
                   //       () {
@@ -1321,9 +1330,9 @@ class MeetingTaskNoClose extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomAutoSizeTextMontserrat(
-                      textColor: ThemeConstants.bluecolor,
-                      text: "Mark Attendance"),
+                  // CustomAutoSizeTextMontserrat(
+                  //     textColor: ThemeConstants.bluecolor,
+                  //     text: "Mark Attendance"),
                   // InkWell(
                   //   onTap:
                   //       () {
@@ -1561,7 +1570,7 @@ class MeetingTaskClose extends StatelessWidget {
                 children: [
                   CustomAutoSizeTextMontserrat(
                       textColor: ThemeConstants.bluecolor,
-                      text: "Reason of Not Attending"),
+                      text: "Reason of Not \nAttending"),
                   // InkWell(
                   //   onTap:
                   //       () {

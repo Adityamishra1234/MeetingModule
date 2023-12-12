@@ -647,13 +647,13 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
       var assignToRes = await api.assignTo(data);
     }
 
-    change(null, status: RxStatus.loading());
-    getToast('Meeting updated');
-    await generateTheNotifications();
+    // change(null, status: RxStatus.loading());
+    // getToast('Meeting updated');
+    // await generateTheNotifications();
 
-    Get.delete<CreateNewMeetingController2>();
-    Get.put(CreateNewMeetingController2());
-    change(null, status: RxStatus.success());
+    // Get.delete<CreateNewMeetingController2>();
+    // Get.put(CreateNewMeetingController2());
+    // change(null, status: RxStatus.success());
 
     context.pop();
 

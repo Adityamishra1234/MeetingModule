@@ -537,6 +537,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                                     vertical: 10, horizontal: 10),
                                 child: CustomAutoSizeTextMontserrat(
                                     text: 'Close Task',
+                                    fontSize: 12,
                                     fontWeight: ThemeConstants.fontWeightBold,
                                     textColor: ThemeConstants.whitecolor),
                               ),
@@ -1161,7 +1162,7 @@ class MeetingTaskNoClose extends StatelessWidget {
                 children: [
                   CustomAutoSizeTextMontserrat(
                       textColor: ThemeConstants.bluecolor,
-                      text: "Reason of Not Attending"),
+                      text: "Reason of Not \nAttending"),
                   // InkWell(
                   //   onTap:
                   //       () {
@@ -1197,9 +1198,9 @@ class MeetingTaskNoClose extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomAutoSizeTextMontserrat(
-                      textColor: ThemeConstants.bluecolor,
-                      text: "Mark Attendance"),
+                  // CustomAutoSizeTextMontserrat(
+                  //     textColor: ThemeConstants.bluecolor,
+                  //     text: "Mark Attendance"),
                   // InkWell(
                   //   onTap:
                   //       () {
@@ -1430,7 +1431,7 @@ class MeetingTaskClose extends StatelessWidget {
                 children: [
                   CustomAutoSizeTextMontserrat(
                       textColor: ThemeConstants.bluecolor,
-                      text: "Reason of Not Attending"),
+                      text: "Reason of Not \nAttending"),
                   // InkWell(
                   //   onTap:
                   //       () {

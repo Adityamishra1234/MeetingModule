@@ -1427,6 +1427,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                                 contains = true;
                               }
                             }
+                            print(controller.listOfParticipants);
 
                             if (contains) {
                               getToast('Already added');
