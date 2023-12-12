@@ -362,7 +362,10 @@ class SigninController extends GetxController with StateMixin {
                               var res = await updatePasswordForget(email,
                                   passwordController.text, otpController.text);
 
-                              if (res == true) context.pop();
+                              if (res == true) {
+                                context.pop();
+                                context.pop();
+                              }
                             } else {
                               getToast("Kindly check your fields");
                             }
