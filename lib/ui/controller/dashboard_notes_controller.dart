@@ -131,7 +131,7 @@ class DashboardNotesController extends GetxController with StateMixin {
                 Align(
                   alignment: AlignmentDirectional.topStart,
                   child: CustomAutoSizeTextMontserrat(
-                    text: "${data[i].createdAt}",
+                    text: "${data[i].createdAt!.split('T')[0]}",
                     textColor: ThemeConstants.TextColor,
                     fontSize: 12,
                   ),

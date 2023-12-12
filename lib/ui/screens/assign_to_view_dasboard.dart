@@ -88,7 +88,6 @@ class _AssignToView2State extends State<AssignToView2> {
                           padding: const EdgeInsets.only(bottom: 8),
                           child: CustomAutoSizeTextMontserrat(
                             text: "Task Owner",
-                            mandatory: true,
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
@@ -108,19 +107,6 @@ class _AssignToView2State extends State<AssignToView2> {
                                       .allSiecMembersList[0];
                               getController.update();
                             },
-                            field: Container(
-                              height: 22,
-                              child: CustomTextField(
-                                forDropDown: false,
-                                backgroundCOlour: Colors.transparent,
-                                hint: '',
-                                readOrEdit: true,
-                                controller: TextEditingController(),
-                                validator: getController.taskOwner.name == null
-                                    ? Validator.plzSelectOne
-                                    : null,
-                              ),
-                            ),
                             enableMultiSelect: false,
                             choosefieldtype: false,
                             initialSelectedValue: "1"),

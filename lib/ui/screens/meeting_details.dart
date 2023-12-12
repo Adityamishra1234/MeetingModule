@@ -81,7 +81,6 @@ class _MeetingDetailsState extends State<MeetingDetails> {
 
     return WillPopScope(
       onWillPop: () async {
-        context.pop('true');
         return true;
       },
       child: Scaffold(
