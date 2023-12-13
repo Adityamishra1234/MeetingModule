@@ -164,10 +164,12 @@ class _DashBoardState extends State<DashBoard> {
             // TODO: implement listener
             // }, builder: (context, state) {
             SafeArea(
-          child: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
             child: Container(
-              width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
               decoration:
                   BoxDecoration(gradient: ThemeConstants.backgroundGradient),
               child: SizedBox(
@@ -976,7 +978,7 @@ class _DashBoardState extends State<DashBoard> {
                                 topLeft: Radius.circular(35),
                                 topRight: Radius.circular(35))),
                         padding: const EdgeInsets.only(
-                            top: 30, left: 25, right: 25, bottom: 60),
+                            top: 30, left: 25, right: 25, bottom: 30),
                         child: ListView(children: [
                           if (controller.loadingMeetingSection == false) ...[
                             ...controller.meetingsToShowInDashboardWidgetList
