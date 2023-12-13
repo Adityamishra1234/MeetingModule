@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:meeting_module2/utils/theme.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,7 +22,7 @@ class NotificationServices {
   void initLocalNotifications(
       BuildContext context, RemoteMessage message) async {
     var androidInitializationSettings =
-        const AndroidInitializationSettings('assets/images/29.png');
+        const AndroidInitializationSettings('drawable/transparent');
     var iosInitializationSettings = const DarwinInitializationSettings();
 
     var initializationSetting = InitializationSettings(
@@ -106,8 +107,10 @@ class NotificationServices {
             playSound: true,
             ticker: 'ticker',
             sound: channel.sound,
+            color: ThemeConstants.bluecolor,
+            // ledColor: ThemeConstants.GreenColor,
             //     sound: RawResourceAndroidNotificationSound('jetsons_doorbell')
-            icon: '@mipmap/ic_launcher');
+            icon: 'drawable/transparent');
 
     const DarwinNotificationDetails darwinNotificationDetails =
         DarwinNotificationDetails(
