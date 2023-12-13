@@ -1258,9 +1258,17 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                         onTap: () async {
                                           await controller
                                               .getNotesOfMeeting(context);
-                                          context.push(
-                                            '${Routes.dashboard}/${Routes.meetingDetails}/${ViewNotesDetails.routeNamed}/:${meetingData.id}',
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (_) => ViewNotesDetails(
+                                                id: meetingData.id.toString(),
+                                              ),
+                                            ),
                                           );
+
+                                          // context.push(
+                                          //   '${Routes.dashboard}/${Routes.meetingDetails}/${ViewNotesDetails.routeNamed}/:${meetingData.id}',
+                                          // );
                                           // Get.to(ViewNotesDetails(),
                                           //     arguments: meetingData.id);
                                         },

@@ -20,11 +20,10 @@ class ViewNotesDetails extends StatelessWidget {
     print(id);
 
     return PopScope(
-      canPop: false,
+      canPop: true,
       onPopInvoked: (didPop) {
         print('objectdeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
         controller.viewNotesSection = 0;
-        context.pop();
       },
       child: Scaffold(
           body: controller.obx(
