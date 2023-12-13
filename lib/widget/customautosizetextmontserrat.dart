@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:meeting_module2/utils/constants.dart';
 
 class CustomAutoSizeTextMontserrat extends StatelessWidget {
   bool? underline;
@@ -27,10 +28,12 @@ class CustomAutoSizeTextMontserrat extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoSizeText.rich(
       // text ?? "",
-      TextSpan(text: text, children: <InlineSpan>[
-        if (mandatory == true)
-          const TextSpan(text: '*', style: TextStyle(color: Colors.red))
-      ]),
+      TextSpan(
+          text: getNUllChecker(text) == false ? text : "",
+          children: <InlineSpan>[
+            if (mandatory == true)
+              const TextSpan(text: '*', style: TextStyle(color: Colors.red))
+          ]),
       textAlign: align,
 
       maxLines: maxLines ?? 100000,
