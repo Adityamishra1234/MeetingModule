@@ -389,7 +389,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                                               Row(
                                                 children: [
                                                   CustomAutoSizeTextMontserrat(
-                                                    text: 'Task Close',
+                                                    text: 'Close Task ',
                                                     textColor: ThemeConstants
                                                         .bluecolor,
                                                     fontSize: ThemeConstants
@@ -1374,7 +1374,7 @@ class MeetingTaskNoClose extends StatelessWidget {
                 // key: _keyForReasonOfNotAttending,
                 child: CustomTextField(
                     validator: Validator.notEmpty,
-                    hint: 'Enter',
+                    hint: 'Please specify one',
                     controller: reasonOfNotAttending),
               ),
               CustomButton(

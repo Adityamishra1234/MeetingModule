@@ -472,7 +472,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                                                 Row(
                                                   children: [
                                                     CustomAutoSizeTextMontserrat(
-                                                      text: 'Task Close',
+                                                      text: 'Close Task',
                                                       textColor: ThemeConstants
                                                           .bluecolor,
                                                       fontSize: ThemeConstants
@@ -743,27 +743,27 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            CustomAutoSizeTextMontserrat(
-                              text: 'Created By',
-                              fontSize: ThemeConstants.fontSizeSmall,
-                              textColor: ThemeConstants.TextColor,
-                              fontWeight: ThemeConstants.fontWeightBold,
-                            ),
-                            Spacer(),
-                            // MeetingStat (listToShow: listToShow),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            CustomAutoSizeTextMontserrat(
-                              text: '${widget.data.createdBy}',
-                              fontSize: ThemeConstants.fontSizeSmall,
-                              textColor: ThemeConstants.TextColor,
-                              fontWeight: ThemeConstants.fontWeightBold,
-                            ),
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     CustomAutoSizeTextMontserrat(
+                        //       text: 'Created By',
+                        //       fontSize: ThemeConstants.fontSizeSmall,
+                        //       textColor: ThemeConstants.TextColor,
+                        //       fontWeight: ThemeConstants.fontWeightBold,
+                        //     ),
+                        //     Spacer(),
+                        //     // MeetingStat (listToShow: listToShow),
+                        //     SizedBox(
+                        //       width: 10,
+                        //     ),
+                        //     CustomAutoSizeTextMontserrat(
+                        //       text: '${widget.data.createdBy}',
+                        //       fontSize: ThemeConstants.fontSizeSmall,
+                        //       textColor: ThemeConstants.TextColor,
+                        //       fontWeight: ThemeConstants.fontWeightBold,
+                        //     ),
+                        //   ],
+                        // ),
                         Row(
                           children: [
                             CustomAutoSizeTextMontserrat(
@@ -1505,7 +1505,7 @@ class MeetingTaskNoClose extends StatelessWidget {
               Form(
                 child: CustomTextField(
                     validator: Validator.notEmpty,
-                    hint: 'Enter',
+                    hint: 'Please specify one',
                     controller: reasonOfNotAttending),
               ),
               CustomButton(

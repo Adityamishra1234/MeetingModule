@@ -325,7 +325,9 @@ class _MyAppState extends State<MyApp> {
       routerDelegate: router.routerDelegate,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primaryColor: ThemeConstants.bluecolor, primarySwatch: Colors.blue),
+          useMaterial3: false,
+          primaryColor: ThemeConstants.bluecolor,
+          primarySwatch: Colors.blue),
       // routerConfig: GoRouterConfig().router,
       //         routerDelegate: routerDelegate,
 // routeInformationParser: BeamerParser(),
