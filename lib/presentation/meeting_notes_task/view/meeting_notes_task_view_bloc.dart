@@ -778,7 +778,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                               width: 10,
                             ),
                             CustomAutoSizeTextMontserrat(
-                              text: '${widget.data.createdAt!.split('T')[1]}',
+                              text: '${widget.data.createdAt?.split('T')[1]}',
                               fontSize: ThemeConstants.fontSizeSmall,
                               textColor: ThemeConstants.TextColor,
                               fontWeight: ThemeConstants.fontWeightBold,
