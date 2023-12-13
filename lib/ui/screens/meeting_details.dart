@@ -79,11 +79,9 @@ class _MeetingDetailsState extends State<MeetingDetails> {
   Widget build(BuildContext context) {
     bool isExpanded = MediaQuery.of(context).size.width > 400;
 
-    return WillPopScope(
-      onWillPop: () async {
-        context.pop('true');
-        return true;
-      },
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (didPop) {},
       child: Scaffold(
         backgroundColor: ThemeConstants.lightVioletColor,
         body: controller.obx(
@@ -1260,9 +1258,17 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                                         onTap: () async {
                                           await controller
                                               .getNotesOfMeeting(context);
-                                          context.push(
-                                            '${Routes.dashboard}/${Routes.meetingDetails}/${ViewNotesDetails.routeNamed}/:${meetingData.id}',
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (_) => ViewNotesDetails(
+                                                id: meetingData.id.toString(),
+                                              ),
+                                            ),
                                           );
+
+                                          // context.push(
+                                          //   '${Routes.dashboard}/${Routes.meetingDetails}/${ViewNotesDetails.routeNamed}/:${meetingData.id}',
+                                          // );
                                           // Get.to(ViewNotesDetails(),
                                           //     arguments: meetingData.id);
                                         },
