@@ -116,6 +116,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
     meetingStartedValue = baseController.selectedMeetingData.meetingStarted!;
     meetingEndedValue = baseController.selectedMeetingData.meetingEnded!;
+
     print('$id fffff');
     // await meetingId();
 
