@@ -527,7 +527,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
                 Align(
                   alignment: AlignmentDirectional.topStart,
                   child: CustomAutoSizeTextMontserrat(
-                    text: "${notesList[i].createdAt}",
+                    text: "${notesList[i].createdAt?.split('T')[0]}",
                     textColor: ThemeConstants.TextColor,
                     fontSize: 12,
                   ),
