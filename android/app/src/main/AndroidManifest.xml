@@ -4,23 +4,19 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
     <uses-feature android:name="android.hardware.fingerprint" android:required="true" />
-   <application
+    <application
         android:label="SIEC Organisers"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/ic_launcher"
        android:enableOnBackInvokedCallback="false"
         >
-       
-
-
     <meta-data
-        android:name="com.google.firebase.messaging.default_notification_icon"
-android:resource="@mipmap/ic_launcher_foreground" />
-
-<meta-data
-    android:name="com.google.firebase.messaging.default_notification_color"
-    android:resource="@color/colorPrimary" />
-
+            android:name="com.google.firebase.messaging.default_notification_icon"
+    android:resource="@drawable/transparent" />
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_color"
+        android:resource="@color/colorPrimary" />
+    
         <activity
    
             android:name=".MainActivity"
