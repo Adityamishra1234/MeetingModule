@@ -79,10 +79,9 @@ class _MeetingDetailsState extends State<MeetingDetails> {
   Widget build(BuildContext context) {
     bool isExpanded = MediaQuery.of(context).size.width > 400;
 
-    return WillPopScope(
-      onWillPop: () async {
-        return true;
-      },
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (didPop) {},
       child: Scaffold(
         backgroundColor: ThemeConstants.lightVioletColor,
         body: controller.obx(

@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/ui/controller/add_more_notes_controller.dart';
 import 'package:meeting_module2/utils/theme.dart';
 import 'package:meeting_module2/widget/custom_tab_widget.dart';
@@ -18,10 +19,12 @@ class ViewNotesDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     print(id);
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        print('objectdeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
         controller.viewNotesSection = 0;
-        return true;
+        context.pop();
       },
       child: Scaffold(
           body: controller.obx(
