@@ -445,6 +445,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                             ),
                             child: CustomAutoSizeTextMontserrat(
                               text: "Date",
+                              mandatory: true,
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                             ),
@@ -496,6 +497,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                             ),
                             child: CustomAutoSizeTextMontserrat(
                               text: "Time",
+                              mandatory: true,
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                             ),
@@ -549,6 +551,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                             ),
                             child: CustomAutoSizeTextMontserrat(
                               text: "Proposed Duration",
+                              mandatory: true,
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                             ),
@@ -1143,7 +1146,6 @@ class CreateNewMeeting2 extends StatelessWidget {
                       child: Align(
                         alignment: AlignmentDirectional.topStart,
                         child: CustomAutoSizeTextMontserrat(
-                          mandatory: true,
                           text: "Meeting Link",
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -1169,7 +1171,6 @@ class CreateNewMeeting2 extends StatelessWidget {
                       child: Align(
                         alignment: AlignmentDirectional.topStart,
                         child: CustomAutoSizeTextMontserrat(
-                          mandatory: true,
                           text: "Registration Link",
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
