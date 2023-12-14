@@ -620,44 +620,44 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            CustomAutoSizeTextMontserrat(
-                              text: 'Created By',
-                              fontSize: ThemeConstants.fontSizeMedium,
-                              textColor: ThemeConstants.TextColor,
-                            ),
-                            Spacer(),
-                            // MeetingStat (listToShow: listToShow),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            CustomAutoSizeTextMontserrat(
-                              text: '${widget.idToNameDataString.createdBy}',
-                              fontSize: ThemeConstants.fontSizeMedium,
-                              textColor: ThemeConstants.TextColor,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            CustomAutoSizeTextMontserrat(
-                              text: 'Created By',
-                              fontSize: ThemeConstants.fontSizeMedium,
-                              textColor: ThemeConstants.TextColor,
-                            ),
-                            Spacer(),
-                            // MeetingStat (listToShow: listToShow),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            CustomAutoSizeTextMontserrat(
-                              text: '${widget.data.createdBy}',
-                              fontSize: ThemeConstants.fontSizeMedium,
-                              textColor: ThemeConstants.TextColor,
-                            ),
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     CustomAutoSizeTextMontserrat(
+                        //       text: 'Created By',
+                        //       fontSize: ThemeConstants.fontSizeMedium,
+                        //       textColor: ThemeConstants.TextColor,
+                        //     ),
+                        //     Spacer(),
+                        //     // MeetingStat (listToShow: listToShow),
+                        //     SizedBox(
+                        //       width: 10,
+                        //     ),
+                        //     CustomAutoSizeTextMontserrat(
+                        //       text: '${widget.idToNameDataString.createdBy}',
+                        //       fontSize: ThemeConstants.fontSizeMedium,
+                        //       textColor: ThemeConstants.TextColor,
+                        //     ),
+                        //   ],
+                        // ),
+                        //  Row(
+                        //     children: [
+                        //       CustomAutoSizeTextMontserrat(
+                        //         text: 'Created By',
+                        //         fontSize: ThemeConstants.fontSizeMedium,
+                        //         textColor: ThemeConstants.TextColor,
+                        //       ),
+                        //       Spacer(),
+                        //       // MeetingStat (listToShow: listToShow),
+                        //       SizedBox(
+                        //         width: 10,
+                        //       ),
+                        //       CustomAutoSizeTextMontserrat(
+                        //         text: '${widget.data.createdBy}',
+                        //         fontSize: ThemeConstants.fontSizeMedium,
+                        //         textColor: ThemeConstants.TextColor,
+                        //       ),
+                        //     ],
+                        //   ),
                         Row(
                           children: [
                             CustomAutoSizeTextMontserrat(

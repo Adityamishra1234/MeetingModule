@@ -722,27 +722,28 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            CustomAutoSizeTextMontserrat(
-                              text: 'Created By',
-                              fontSize: ThemeConstants.fontSizeSmall,
-                              textColor: ThemeConstants.TextColor,
-                              fontWeight: ThemeConstants.fontWeightBold,
-                            ),
-                            Spacer(),
-                            // MeetingStat (listToShow: listToShow),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            CustomAutoSizeTextMontserrat(
-                              text: '${widget.idToNameDataString.createdBy}',
-                              fontSize: ThemeConstants.fontSizeSmall,
-                              textColor: ThemeConstants.TextColor,
-                              fontWeight: ThemeConstants.fontWeightBold,
-                            ),
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     CustomAutoSizeTextMontserrat(
+                        //       text: 'Created By',
+                        //       fontSize: ThemeConstants.fontSizeSmall,
+                        //       textColor: ThemeConstants.TextColor,
+                        //       fontWeight: ThemeConstants.fontWeightBold,
+                        //     ),
+                        //     Spacer(),
+                        //     // MeetingStat (listToShow: listToShow),
+                        //     SizedBox(
+                        //       width: 10,
+                        //     ),
+                        //     CustomAutoSizeTextMontserrat(
+                        //       text: '${widget.idToNameDataString.createdBy}',
+                        //       fontSize: ThemeConstants.fontSizeSmall,
+                        //       textColor: ThemeConstants.TextColor,
+                        //       fontWeight: ThemeConstants.fontWeightBold,
+                        //     ),
+                        //   ],
+                        // ),
+
                         // Row(
                         //   children: [
                         //     CustomAutoSizeTextMontserrat(
