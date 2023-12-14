@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +70,7 @@ class BaseController extends GetxController {
 
   Future<void> hideScreen() async {
     if (GetPlatform.isIOS) {
-      await Future.delayed(const Duration(milliseconds: 1000), () {
+      await Future.delayed(const Duration(milliseconds: 3000), () {
         FlutterSplashScreen.hide();
       });
     } else {

@@ -30,7 +30,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'fcm/firebase_options.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
-
+import 'package:flutter_splash_screen/flutter_splash_screen.dart';
 // @pragma('vm:entry-point')
 // Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 //   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -162,9 +162,8 @@ Future<void> main() async {
       const SystemUiOverlayStyle(systemStatusBarContrastEnforced: true));
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
   await setupDI();
-
+  // FlutterSplashScreen.
   // await _showNotification();
   runApp(MyApp());
 }
@@ -316,6 +315,7 @@ class _MyAppState extends State<MyApp> {
   NotificationServices notificationServices = NotificationServices();
   @override
   void initState() {
+    // hideScreen();
     notificationServices.requestNotificationPermission();
     notificationServices.forgroundMessage();
     notificationServices.firebaseInit(context);
@@ -334,11 +334,28 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
-  // data() async {
-  //   var data = await Future.delayed(Duration(seconds: 2));
+  // Future<void> hideScreen() async {
+  //   // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  //   // String phonenumber = sharedPreferences.getString("phonenumber").toString();
+  //   // if (getNUllChecker(phonenumber) == false) {
+  //   //   var controller = Get.put(BaseController(), permanent: true);
+  //   // }
+
+  //   if (Platform.isIOS) {
+  //     Future.delayed(const Duration(milliseconds: 8000), () {
+  //       FlutterSplashScreen.hide();
+  //     });
+  //   } else {
+  //     Future.delayed(const Duration(milliseconds: 5100), () {
+  //       FlutterSplashScreen.hide();
+  //     });
+  //   }
   // }
 
   var controllerBase = Get.put(BaseController(), permanent: true);
+  // data() async {
+  //   var data = await Future.delayed(Duration(seconds: 2));
+  // }
 
   // final routerDelegate = BeamerDelegate(
   //   locationBuilder: BeamerLocationBuilder(
