@@ -148,7 +148,8 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                   Container(
                     height: 45,
                     child: CustomTimerWidget(
-                        startingDate: DateTime.now(),
+                        startingDate:
+                            DateTime.now().subtract(Duration(days: 30)),
                         initialTime: widget.meetingData.dateOfMeeting,
                         callback: (val) {
                           date = val;
@@ -686,13 +687,9 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                               backgroundColor: ThemeConstants.bluecolor,
                               text: 'Update',
                               onPressed: () async {
-//  AllMeetings data =
-//                         widget.controller.listToShow[widget.indexz];
-
                                 if (key.currentState!.validate() == true) {
                                   String link = meetingLink.value.text;
 
-                                  // online => mode of the meeting,meeting link
                                   if (meetingType == '1') {
                                     meetingLocation = "";
                                     selectedBranchForUserList = 0;
