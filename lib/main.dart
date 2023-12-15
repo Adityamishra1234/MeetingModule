@@ -6,7 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_splash_screen/flutter_splash_screen.dart';
+// import 'package:flutter_splash_screen/flutter_splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/bindings/dashboardBindings.dart';
@@ -30,7 +30,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'fcm/firebase_options.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
-import 'package:flutter_splash_screen/flutter_splash_screen.dart';
+// import 'package:flutter_splash_screen/flutter_splash_screen.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 // @pragma('vm:entry-point')
 // Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 //   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -154,7 +155,8 @@ Future<void> main() async {
   //   DeviceOrientation.portraitUp,
   //   DeviceOrientation.portraitDown,
   // ]).then((value) => runApp(MyApp()));
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);

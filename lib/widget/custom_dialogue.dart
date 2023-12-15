@@ -697,6 +697,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                     meetingLocation = "";
                                     selectedBranchForUserList = 0;
                                     specifyLocation.text = "";
+                                    // meetingLocation = "";
                                   } else {
                                     modeOfMeeting = "";
                                     meetingLink.text = "";
@@ -1242,7 +1243,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
   getMeetingLocation(String meetingLocation) {
     if (meetingLocation.toString() == true) {
       return "1";
-    } else if (meetingLocation.toString() != true) {
+    } else if (meetingLocation.toString() == false) {
       return "2";
     } else {
       return "";

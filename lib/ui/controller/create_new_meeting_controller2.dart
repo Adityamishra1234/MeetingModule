@@ -510,6 +510,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
   RxList<AllBranchModel> allBranchList = <AllBranchModel>[].obs;
   createNewMeeting(BuildContext context) async {
+    change(null, status: RxStatus.loading());
     meetingModel.value.meetingWith = '';
 
     meetingModel.value.meetingType = 'Internal Meeting';
@@ -647,7 +648,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
       var assignToRes = await api.assignTo(data);
     }
 
-    change(null, status: RxStatus.loading());
+    // change(null, status: RxStatus.loading());
     getToast('Meeting updated');
     await generateTheNotifications();
 

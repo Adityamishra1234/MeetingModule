@@ -249,7 +249,7 @@ class SigninController extends GetxController with StateMixin {
                             ),
                           ),
                           child: CustomAutoSizeTextMontserrat(
-                            text: 'Veridy OTP',
+                            text: 'Verify OTP',
                             textColor: ThemeConstants.whitecolor,
                             fontSize: ThemeConstants.fontSizeMedium,
                           ),
