@@ -648,7 +648,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
       var assignToRes = await api.assignTo(data);
     }
 
-    // change(null, status: RxStatus.loading());
+    change(null, status: RxStatus.loading());
     getToast('Meeting updated');
     await generateTheNotifications();
 
@@ -699,6 +699,8 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
       return true;
     }
+
+    change(null, status: RxStatus.loading());
 
     meetingModel.value.meetingType = 'External Meeting';
 
@@ -857,7 +859,6 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
       var assignToRes = await api.assignTo(data);
     }
 
-    change(null, status: RxStatus.loading());
     getToast('Meeting updated');
 
     await generateTheNotifications();
