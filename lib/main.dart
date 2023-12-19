@@ -49,6 +49,7 @@ Future<void> setupFlutterNotifications() async {
   if (isFlutterLocalNotificationsInitialized) {
     return;
   }
+
   channel = const AndroidNotificationChannel(
     'high_importance_channel', // id
     'High Importance Notifications', // title
@@ -323,11 +324,11 @@ class _MyAppState extends State<MyApp> {
       routeInformationParser: router.routeInformationParser,
       routeInformationProvider: router.routeInformationProvider,
       routerDelegate: router.routerDelegate,
-      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          useMaterial3: false,
-          primaryColor: ThemeConstants.bluecolor,
-          primarySwatch: Colors.blue),
+        useMaterial3: false,
+        primaryColor: ThemeConstants.bluecolor,
+        primarySwatch: Colors.blue,
+      ),
       // routerConfig: GoRouterConfig().router,
       //         routerDelegate: routerDelegate,
 // routeInformationParser: BeamerParser(),

@@ -2492,7 +2492,7 @@ class CreateNewMeeting2 extends StatelessWidget {
                     child: Align(
                       alignment: AlignmentDirectional.topStart,
                       child: CustomAutoSizeTextMontserrat(
-                        text: "Select target Audience Type",
+                        text: "Select target Audience type",
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
