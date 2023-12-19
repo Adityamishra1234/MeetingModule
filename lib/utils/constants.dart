@@ -53,6 +53,7 @@ String getRemoveSquarebracket(String data) {
 }
 
 getToast(String data) {
+  FocusManager.instance.primaryFocus?.unfocus();
   return Fluttertoast.showToast(
       // webBgColor: "linear-gradient(to right, #F1F4FB, #F1F4FB)",
       // webPosition: "Top",
