@@ -1022,7 +1022,7 @@ class _MeetingDetailsState extends State<MeetingDetails> {
                             const SizedBox(
                               height: 5,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 8,
                             ),
 

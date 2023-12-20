@@ -22,7 +22,7 @@ class AssignTo extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: CustomAutoSizeTextMontserrat(
-                text: "Type Of Task",
+                text: "Specify Task Name",
                 mandatory: true,
               ),
             ),

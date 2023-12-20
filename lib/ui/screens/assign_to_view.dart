@@ -44,7 +44,7 @@ class AssignToView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: CustomAutoSizeTextMontserrat(
-                  text: "Type Of Task",
+                  text: "Specify Task Name",
                   mandatory: true,
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
