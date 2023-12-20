@@ -10,7 +10,7 @@ class Endpoints {
   // static String baseUrl = 'http://10.0.2.2:3001/api/';
 
   ///production
-  static String baseUrl = 'http://164.52.208.95:3001/api/';
+  static String baseUrl = 'https://meeting.sieceducation.in/api/';
 
   static String allMeetings = 'getMeetingListByUser';
 
