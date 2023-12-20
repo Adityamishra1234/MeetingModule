@@ -98,6 +98,15 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
   flutter_launcher_icons:
+flutter_native_splash:
+   color: "#3A4F62"
+   image: assets/images/logo.jpg
+   android: true
+   ios: false
+   android_gravity: fill
+   android_12:
+     color: "#3A4F62"
+     image: assets/images/logo.jpg
 
   
 
