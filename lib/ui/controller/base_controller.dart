@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_splash_screen/flutter_splash_screen.dart';
 // import 'package:flutter_splash_screen/flutter_splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -16,7 +17,6 @@ import 'package:meeting_module2/presentation/dashboard/view/ui/dashboard_page.da
 import 'package:meeting_module2/ui/screens/signin_view.dart';
 import 'package:meeting_module2/widget/calender/calendar_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class BaseController extends GetxController {
   ApiServices api = ApiServices();
@@ -72,11 +72,11 @@ class BaseController extends GetxController {
   Future<void> hideScreen() async {
     if (GetPlatform.isIOS) {
       await Future.delayed(const Duration(milliseconds: 1000), () {
-        FlutterNativeSplash.remove();
+        FlutterSplashScreen.hide();
       });
     } else {
       await Future.delayed(const Duration(milliseconds: 1000), () {
-        FlutterNativeSplash.remove();
+        FlutterSplashScreen.hide();
       });
     }
   }
