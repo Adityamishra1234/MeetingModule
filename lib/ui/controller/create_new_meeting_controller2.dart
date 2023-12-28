@@ -650,7 +650,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     change(null, status: RxStatus.loading());
     getToast('Meeting updated');
-    await generateTheNotifications();
+    generateTheNotifications();
 
     Get.delete<CreateNewMeetingController2>();
     Get.put(CreateNewMeetingController2());
@@ -861,7 +861,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
     getToast('Meeting updated');
 
-    await generateTheNotifications();
+    generateTheNotifications();
 
     Get.delete<CreateNewMeetingController2>();
     Get.put(CreateNewMeetingController2());

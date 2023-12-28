@@ -1234,7 +1234,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
     // var title = 'Scheduled a Meeting';
     // var body = "You have a meeting with SIEC Family, scheduled at ";
 
-    var res = await widget.controller.generateRescheduleNotification(idList);
+    var res = widget.controller.generateRescheduleNotification(idList);
   }
 
   getMeetingLocation(String meetingLocation) {
