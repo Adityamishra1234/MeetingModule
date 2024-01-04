@@ -39,7 +39,7 @@ import 'package:meeting_module2/widget/custom_dialogue.dart';
 import 'package:meeting_module2/widget/custom_tab_widget.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 import 'package:meeting_module2/widget/popups/custom_error_popup.dart';
-import 'package:local_auth/local_auth.dart';
+
 import 'package:meeting_module2/widget/calender/src/shared/utils.dart';
 import 'package:provider/provider.dart';
 
@@ -51,10 +51,9 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> {
-  LocalAuthentication auth = LocalAuthentication();
   _SupportState _supportState = _SupportState.unknown;
   bool? _canCheckBiometrics;
-  List<BiometricType>? _availableBiometrics;
+
   String _authorized = 'Not Authorized';
   bool _isAuthenticating = false;
 
@@ -519,12 +518,106 @@ class _DashBoardState extends State<DashBoard> {
                                                           ),
                                                         ],
                                                       ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [],
+                                                      SizedBox(
+                                                        height: 5,
                                                       ),
+                                                      controller.showDeleteOption ==
+                                                              true
+                                                          ? Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                InkWell(
+                                                                  onTap:
+                                                                      () async {
+                                                                    // context.push(
+                                                                    //     '${Routes.dashboard}/${Routes.viewDashboardNotes}');
+                                                                    var res =
+                                                                        await controller
+                                                                            .deleteAccount();
+
+                                                                    if (res ==
+                                                                        true) {
+                                                                      context.go(
+                                                                          '/');
+                                                                    }
+
+                                                                    // Get.deleteAll();
+
+                                                                    // if (controller
+                                                                    //         .meetingStartedValue ==
+                                                                    //     true) {
+                                                                    //   context.push(
+                                                                    //       '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.addMoreNotesView}/${meetingData.id}/0');
+                                                                    //   // Get.toNamed(AddMoreNotesView.routeName,
+                                                                    //   //     arguments: [meetingData.id, 0]);
+                                                                    // } else {
+                                                                    //   getToast(
+                                                                    //       'Meeting not started yet');
+                                                                    //   // showDialog(
+                                                                    //   //     context: context,
+                                                                    //   //     builder: (_) => showPoPUp(
+                                                                    //   //         'Meeting not started yet',
+                                                                    //   //         Icon(
+                                                                    //   //           Icons.error,
+                                                                    //   //           size: 40,
+                                                                    //   //           color: ThemeConstants.bluecolor,
+                                                                    //   //         ),
+                                                                    //   //         context));
+                                                                    // }
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    width: 100,
+                                                                    height: 100,
+                                                                    decoration: BoxDecoration(
+                                                                        color: ThemeConstants
+                                                                            .lightblueColor,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(20)),
+                                                                    child:
+                                                                        Column(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        Container(
+                                                                            padding: EdgeInsets.all(
+                                                                                2),
+                                                                            width:
+                                                                                150,
+                                                                            alignment:
+                                                                                Alignment.center,
+                                                                            child: Icon(
+                                                                              Icons.delete,
+                                                                              size: 30,
+                                                                              color: ThemeConstants.bluecolor,
+                                                                            )),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              100,
+                                                                          child:
+                                                                              CustomAutoSizeTextMontserrat(
+                                                                            align:
+                                                                                TextAlign.center,
+                                                                            text:
+                                                                                'Delete\nProfile',
+                                                                            fontSize:
+                                                                                14,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                            textColor:
+                                                                                ThemeConstants.bluecolor,
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            )
+                                                          : SizedBox.shrink(),
                                                     ],
                                                   )),
                                             ],
@@ -1586,36 +1679,36 @@ class _DashBoardState extends State<DashBoard> {
   //       });
   // }
 
-  Future<void> _authenticate() async {
-    bool authenticated = false;
-    try {
-      setState(() {
-        _isAuthenticating = true;
-        _authorized = 'Authenticating';
-      });
-      authenticated = await auth.authenticate(
-        localizedReason: 'Let OS determine authentication method',
-        options: const AuthenticationOptions(
-          stickyAuth: true,
-        ),
-      );
-      setState(() {
-        _isAuthenticating = false;
-      });
-    } on PlatformException catch (e) {
-      print(e);
-      setState(() {
-        _isAuthenticating = false;
-        _authorized = 'Error - ${e.message}';
-      });
-      return;
-    }
-    if (!mounted) {
-      return;
-    }
+  // Future<void> _authenticate() async {
+  //   bool authenticated = false;
+  //   try {
+  //     setState(() {
+  //       _isAuthenticating = true;
+  //       _authorized = 'Authenticating';
+  //     });
+  //     authenticated = await auth.authenticate(
+  //       localizedReason: 'Let OS determine authentication method',
+  //       options: const AuthenticationOptions(
+  //         stickyAuth: true,
+  //       ),
+  //     );
+  //     setState(() {
+  //       _isAuthenticating = false;
+  //     });
+  //   } on PlatformException catch (e) {
+  //     print(e);
+  //     setState(() {
+  //       _isAuthenticating = false;
+  //       _authorized = 'Error - ${e.message}';
+  //     });
+  //     return;
+  //   }
+  //   if (!mounted) {
+  //     return;
+  //   }
 
-    setState(() => _authorized = authenticated ? 'Authorized' : exit(0));
-  }
+  //   setState(() => _authorized = authenticated ? 'Authorized' : exit(0));
+  // }
 }
 
 enum _SupportState {

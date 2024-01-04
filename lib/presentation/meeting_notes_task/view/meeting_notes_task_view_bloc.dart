@@ -410,7 +410,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                           // ),
                           CustomAutoSizeTextMontserrat(
                             text:
-                                '${widget.data.meetingName!.nameOfTheMeeting}',
+                                '${widget.data.meetingName?.nameOfTheMeeting}',
                             fontSize: ThemeConstants.fontSizeSmall,
                             textColor: ThemeConstants.TextColor,
                           ),

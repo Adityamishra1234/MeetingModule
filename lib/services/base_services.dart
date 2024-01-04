@@ -40,12 +40,14 @@ class BaseServices {
   httpPost(String url, jsonData) async {
     // String? token = await getToken();
     await checkUserConnection();
+
     // jsonData = jsonData.replaceAll('"null"', "");
     var response = await http.post(
       Uri.parse(url),
       body: jsonData,
     );
 
+    errorHandle("78623", url, "${response.statusCode}", jsonData.toString());
     switch (response.statusCode) {
       case 200:
         {
@@ -76,12 +78,15 @@ class BaseServices {
   httpPostHeader(String url, jsonData) async {
     // String? token = await getToken();
     await checkUserConnection();
+
     // jsonData = jsonData.replaceAll('"null"', "");
     var response = await http.post(
       Uri.parse(url),
       body: jsonData,
       headers: {"Content-Type": "application/json"},
     );
+
+    errorHandle("78623", url, "${response.statusCode}", jsonData);
 
     switch (response.statusCode) {
       case 200:
@@ -155,6 +160,8 @@ class BaseServices {
     // jsonData = jsonData.replaceAll('"null"', "");
     var response = await http.post(Uri.parse(url),
         headers: {"Content-Type": "application/json"}, body: jsonData);
+
+    errorHandle("78623", url, "${response.statusCode}", jsonData);
 
     switch (response.statusCode) {
       case 200:
@@ -238,6 +245,9 @@ class BaseServices {
     var response = await http.post(
       Uri.parse(url),
     );
+
+    errorHandle("78623", url, "${response.statusCode}", "jsonData");
+
     switch (response.statusCode) {
       case 200:
         {
@@ -274,6 +284,9 @@ class BaseServices {
     var response = await http.post(
       Uri.parse(url),
     );
+
+    errorHandle("78623", url, "${response.statusCode}", '');
+
     switch (response.statusCode) {
       case 200:
         {
@@ -397,4 +410,64 @@ class BaseServices {
   //     }
   //   } catch (e) {}
   // }
+
+  errorHandle(String enq_id, String error_message, String statusCode,
+      [String extra = ""]) async {
+    String? errorHandlePart1 = "handle-error?enq_id=";
+    String? errorHandlepart2 = "&error_message=";
+    String? errorHandlepart3 = "&status_code=";
+    String? errorHandlepart4 = "&extra=";
+    String endpoint = errorHandlePart1! +
+        enq_id +
+        errorHandlepart2! +
+        error_message +
+        errorHandlepart3! +
+        statusCode +
+        errorHandlepart4! +
+        extra.replaceAll("#", "");
+
+    try {
+      if (statusCode != 440 || statusCode != 440.toString()) {
+        var res = await httpPostNullBodyStoreError(
+            "https://api.sieceducation.in/api/" + endpoint);
+        if (res != null) {}
+      }
+    } catch (e) {}
+  }
+
+  httpPostNullBodyStoreError(String url, {bool login = false}) async {
+    // String? token = await getToken();
+    url = url.replaceAll('"null"', "");
+    if (login == false) {
+      await checkUserConnection();
+      // errorHandle("78623", url, "200", "login");
+    }
+    var response = await http.post(
+      Uri.parse(url),
+    );
+    switch (response.statusCode) {
+      case 200:
+        {
+          var res = json.decode(response.body);
+          if (res['success'] == true) {
+            return res;
+          } else {
+            // getToast(res['message']);
+            return null;
+          }
+        }
+      case 440:
+        throw EmptyDataException("440:${response.body}");
+      case 400:
+        throw BadRequestException("${response.statusCode}:${response.body}");
+      case 401:
+      case 403:
+        throw UnauthorisedException("${response.statusCode}:${response.body}");
+      case 502:
+        throw InternetError("${response.statusCode}:${response.body}");
+      case 500:
+      default:
+        throw FetchDataException("${response.statusCode}:${response.body}");
+    }
+  }
 }

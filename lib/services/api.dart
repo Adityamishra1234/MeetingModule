@@ -127,4 +127,8 @@ abstract class API {
 
   findRepresentativeForDropDownFromBankVendor(String type, String groupName);
   otpMatchForget(String email, String otp);
+
+  showDeleteOption();
+
+  deleteUserData(String id);
 }

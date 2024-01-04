@@ -109,6 +109,10 @@ class Endpoints {
   static String generateNotificationsOnNoteCreation = 'noteForFCM';
 
   static String getVendorBankRepNameDropdown = 'sc_contact_person_vendor';
+
+  static String deleteOption = 'deleteOption';
+
+  static String deleteUserData = 'deleteAccount';
 }
 
 datesOfCalendarMeetingEndpoint(int id, int month, int year) {

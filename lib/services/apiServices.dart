@@ -19,13 +19,15 @@ class ApiServices extends BaseServices implements API {
 /////Auth APIS
   @override
   getEmailverification(String email) async {
-    var url =
-        '${Endpoints.baseUrl}${Endpoints.emailverification + "/${email}"}';
-    var res2 = await httpPostNullBody(url);
+    try {
+      var url =
+          '${Endpoints.baseUrl}${Endpoints.emailverification + "/${email}"}';
+      var res2 = await httpPostNullBody(url);
 
-    if (res2 != null) {
-      return res2;
-    } else {}
+      if (res2 != null) {
+        return res2;
+      } else {}
+    } catch (e) {}
   }
 
   @override
@@ -1187,5 +1189,74 @@ class ApiServices extends BaseServices implements API {
     } catch (e) {
       throw UnimplementedError();
     }
+  }
+
+  @override
+  showDeleteOption() async {
+    // TODO: implement showDeleteOption
+    try {
+      var url = '${Endpoints.baseUrl}${Endpoints.deleteOption}';
+
+      // String idString = String.fromCharCodes(id);
+      // print(idString);
+
+//todoImpo
+      // idString = '103,105';
+
+      // var jsonData = {
+      //   "university": "$university",
+      //   "meetingName": "$meetingName",
+      //   "meetingDate ": "$meetingDate",
+      //   "meetingTime": "$meetingTime",
+      //   "internal": internalOrExternal,
+      //   "userId": userID,
+      // };
+
+      var res = await httpPostNullBody(url);
+
+      if (res != null) {
+        // getToast(res[""]);
+        return res["model"];
+      }
+    } catch (e) {
+      throw UnimplementedError();
+    }
+  }
+
+  @override
+  deleteUserData(String id) async {
+    try {
+      var url = '${Endpoints.baseUrl}${Endpoints.deleteUserData}';
+
+      // String idString = String.fromCharCodes(id);
+      // print(idString);
+
+//todoImpo
+      // idString = '103,105';
+
+      // var jsonData = {
+      //   "university": "$university",
+      //   "meetingName": "$meetingName",
+      //   "meetingDate ": "$meetingDate",
+      //   "meetingTime": "$meetingTime",
+      //   "internal": internalOrExternal,
+      //   "userId": userID,
+      // };
+
+      var jsonData = {
+        "id": "$id",
+      };
+      var data = json.encode(jsonData);
+      var res = await httpPostHeader(url, data);
+
+      if (res != null) {
+        // getToast(res[""]);
+        return res["success"];
+      }
+    } catch (e) {
+      throw UnimplementedError();
+    }
+    // TODO: implement deleteUserData
+    // throw UnimplementedError();
   }
 }

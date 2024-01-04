@@ -34,21 +34,21 @@ class BaseController extends GetxController {
 
   bool connectedToInternet = false;
 
-  connection() {
-    connectionStream = Connectivity().onConnectivityChanged.listen((result) {
-      if (result == ConnectivityResult.wifi ||
-          result == ConnectivityResult.mobile) {
-        connectedToInternet = true;
-        // currentPageBuildContext!.go('/MeetingDetails');
-        update();
-      } else {
-        currentPageBuildContext!.go('/MeetingDetails');
+  // connection() {
+  //   connectionStream = Connectivity().onConnectivityChanged.listen((result) {
+  //     if (result == ConnectivityResult.wifi ||
+  //         result == ConnectivityResult.mobile) {
+  //       connectedToInternet = true;
+  //       // currentPageBuildContext!.go('/MeetingDetails');
+  //       update();
+  //     } else {
+  //       currentPageBuildContext!.go('/MeetingDetails');
 
-        connectedToInternet = false;
-        update();
-      }
-    });
-  }
+  //       connectedToInternet = false;
+  //       update();
+  //     }
+  //   });
+  // }
 
   BuildContext? currentPageBuildContext;
   getBuildContextOfThePage(BuildContext context) {
@@ -57,7 +57,7 @@ class BaseController extends GetxController {
 
   @override
   void onInit() async {
-    connection();
+    // connection();
 
     // await Future.delayed(Duration(seconds: 5));
     // RxStatus.loading();5
@@ -71,11 +71,11 @@ class BaseController extends GetxController {
 
   Future<void> hideScreen() async {
     if (GetPlatform.isIOS) {
-      await Future.delayed(const Duration(milliseconds: 1000), () {
+      await Future.delayed(const Duration(milliseconds: 2000), () {
         FlutterSplashScreen.hide();
       });
     } else {
-      await Future.delayed(const Duration(milliseconds: 1000), () {
+      await Future.delayed(const Duration(milliseconds: 2000), () {
         FlutterSplashScreen.hide();
       });
     }
@@ -109,6 +109,17 @@ class BaseController extends GetxController {
 
   logOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    return true;
+
+    // Get.offAllNamed(SignInView.route);
+    // Get.offAllNamed(SignInView.route);
+  }
+
+  deleteAccount() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
     await prefs.clear();
 
     return true;

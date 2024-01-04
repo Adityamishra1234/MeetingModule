@@ -96,6 +96,7 @@ class DashBoardController extends GetxController with StateMixin {
     //todo
     await getMeetingOfThatDate(DateTime.now());
     await getBranchData2();
+    await showAccountDeleteOption();
 
     // getNotes('1', null);
 
@@ -108,6 +109,26 @@ class DashBoardController extends GetxController with StateMixin {
     // await token();
     // helo.value = 2;
     // await getMeetingData();
+  }
+
+  var showDeleteOption = false;
+  showAccountDeleteOption() async {
+    var res = await api.showDeleteOption();
+    if (res == true) {
+      showDeleteOption = true;
+    }
+  }
+
+  deleteAccount() async {
+    var res =
+        await api.deleteUserData(Get.find<BaseController>().id.toString());
+
+    if (res == true) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      await prefs.clear();
+      return true;
+    }
   }
 
   // Reschedule modification
@@ -247,9 +268,14 @@ class DashBoardController extends GetxController with StateMixin {
 
     // var data = json.decode(login);
 
-    user.value = UserModel.fromJson(login);
+    if (login != null) {
+      user.value = UserModel.fromJson(login);
 
-    if (user.value.isUserActive != 1) {
+      if (user.value.isUserActive != 1) {
+        sharedPreferenceInstance.clear();
+        context.go(Routes.loginPage);
+      }
+    } else {
       sharedPreferenceInstance.clear();
       context.go(Routes.loginPage);
     }
@@ -692,14 +718,19 @@ class DashBoardController extends GetxController with StateMixin {
       var listOfattendes = getlist(i);
 
       late bool showTheStartEndOptions;
-      listToShow[i].meetingCoordinator!.forEach((element) {
-        if (element.id == Get.find<BaseController>().id ||
-            listToShow[i].createdBy == Get.find<BaseController>().id) {
-          showTheStartEndOptions = true;
-        } else {
-          showTheStartEndOptions = false;
-        }
-      });
+
+      if (listToShow[i].meetingCoordinator!.length != 0) {
+        listToShow[i].meetingCoordinator?.forEach((element) {
+          if (element.id == Get.find<BaseController>().id ||
+              listToShow[i].createdBy == Get.find<BaseController>().id) {
+            showTheStartEndOptions = true;
+          } else {
+            showTheStartEndOptions = false;
+          }
+        });
+      } else {
+        showTheStartEndOptions = false;
+      }
 
       if (showTheStartEndOptions == true &&
           listToShow[i].meetingStarted == false &&
