@@ -127,6 +127,7 @@ class DashBoardController extends GetxController with StateMixin {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       await prefs.clear();
+      getToast('Account deleted');
       return true;
     }
   }
