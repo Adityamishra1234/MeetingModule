@@ -389,7 +389,7 @@ class _LoginPageState extends State<LoginPage> {
                                         width: double.infinity,
                                         alignment: Alignment.center,
                                         child: Text(
-                                          "Already registered? Click here",
+                                          "Already validated your account? Click here.",
                                           style: TextStyle(
                                               color: ThemeConstants.blackcolor),
                                         ),

@@ -301,6 +301,7 @@ class LoginPage extends StatelessWidget {
                                     ),
                                   ),
                                 ],
+                                // if (controller.showRegister == true)
                                 GestureDetector(
                                   onTap: () {
                                     Get.offNamed(SignInView.route);
@@ -312,7 +313,7 @@ class LoginPage extends StatelessWidget {
                                       width: double.infinity,
                                       alignment: Alignment.center,
                                       child: Text(
-                                        "Already registered? Click here",
+                                        "Already validated your account? Click here.",
                                         style: TextStyle(
                                             color: ThemeConstants
                                                 .lightVioletColor),

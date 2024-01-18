@@ -445,24 +445,25 @@ class _SignInViewState extends State<SignInView> {
                                   const SizedBox(
                                     height: 10,
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      context.push(LoginPage.routeNamed);
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 20),
-                                      child: Container(
-                                        width: double.infinity,
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          "Don't have account? Register now",
-                                          style: ThemeConstants
-                                              .montserratTextStyleSmall,
+                                  if (controller.showRegister == true)
+                                    GestureDetector(
+                                      onTap: () {
+                                        context.push(LoginPage.routeNamed);
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 5, horizontal: 20),
+                                        child: Container(
+                                          width: double.infinity,
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            "Haven't validated your account? Validate now.",
+                                            style: ThemeConstants
+                                                .montserratTextStyleSmall,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
                                   const SizedBox(
                                     height: 15,
                                   ),

@@ -3,7 +3,7 @@ class Endpoints {
   ///
 
   ///aman pc
-  // static String baseUrl = 'http://192.168.107.88:3001/api/';
+  // static String baseUrl = 'http://192.168.0.104:3001/api/';
 //jp
   // static String baseUrl = 'http://192.168.104.20:3001/api/';
 
@@ -113,6 +113,7 @@ class Endpoints {
   static String deleteOption = 'deleteOption';
 
   static String deleteUserData = 'deleteAccount';
+  static String registerOption = 'registerpage';
 }
 
 datesOfCalendarMeetingEndpoint(int id, int month, int year) {

@@ -131,4 +131,5 @@ abstract class API {
   showDeleteOption();
 
   deleteUserData(String id);
+  getRegisterOption();
 }

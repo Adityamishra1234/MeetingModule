@@ -27,6 +27,7 @@ class LoginController extends GetxController with StateMixin {
   @override
   void onInit() {
     super.onInit();
+
     change(null, status: RxStatus.success());
   }
 

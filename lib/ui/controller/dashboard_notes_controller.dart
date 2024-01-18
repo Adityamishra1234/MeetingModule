@@ -381,14 +381,12 @@ class DashboardNotesController extends GetxController with StateMixin {
             ),
           ),
         ));
-
-        change(null, status: RxStatus.success());
       }
     }
 
     toshow = [];
     toshow = beta;
-    update();
+    change(null, status: RxStatus.success());
   }
 
   var decryptedNoteData = '';

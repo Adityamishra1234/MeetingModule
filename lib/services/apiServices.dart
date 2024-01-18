@@ -1259,4 +1259,36 @@ class ApiServices extends BaseServices implements API {
     // TODO: implement deleteUserData
     // throw UnimplementedError();
   }
+
+  @override
+  getRegisterOption() async {
+    // TODO: implement showDeleteOption
+    try {
+      var url = '${Endpoints.baseUrl}${Endpoints.registerOption}';
+
+      // String idString = String.fromCharCodes(id);
+      // print(idString);
+
+//todoImpo
+      // idString = '103,105';
+
+      // var jsonData = {
+      //   "university": "$university",
+      //   "meetingName": "$meetingName",
+      //   "meetingDate ": "$meetingDate",
+      //   "meetingTime": "$meetingTime",
+      //   "internal": internalOrExternal,
+      //   "userId": userID,
+      // };
+
+      var res = await httpPostNullBody(url);
+
+      if (res != null) {
+        // getToast(res[""]);
+        return res["model"];
+      }
+    } catch (e) {
+      throw UnimplementedError();
+    }
+  }
 }

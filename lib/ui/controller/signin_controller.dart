@@ -76,7 +76,7 @@ class SigninController extends GetxController with StateMixin {
   @override
   void onInit() async {
     change(null, status: RxStatus.loading());
-    // TODO: implement onInit
+    showRegisterOption();
     super.onInit();
 
     change(null, status: RxStatus.success());
@@ -414,6 +414,15 @@ class SigninController extends GetxController with StateMixin {
     var res = await api.otpMatchForget(email, otp);
     if (res != null) {
       return true;
+    }
+  }
+
+  var showRegister = false;
+  showRegisterOption() async {
+    var res = await api.getRegisterOption();
+    if (res == true) {
+      showRegister = true;
+      update();
     }
   }
 }
