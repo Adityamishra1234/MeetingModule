@@ -74,8 +74,45 @@ class BaseServices {
             'Something went to wrong : ${response.statusCode}');
     }
   }
+  //updated here on 30th of may  from{
+  httpGet(String url, jsonData) async{
+    await checkUserConnection();
 
-  httpPostHeader(String url, jsonData) async {
+
+    var response = await http.get(
+      Uri.parse(url),
+    );
+
+    switch (response.statusCode) {
+      case 200:
+        {
+          var res = json.decode(response.body);
+          if (res['status'] == 'success') {
+            return res;
+          } else {
+            getToast(res['status']);
+            return null;
+          }
+        }
+      case 440:
+        throw EmptyDataException("440");
+      case 400:
+        throw BadRequestException(response.body.toString());
+      case 401:
+      case 403:
+        throw UnauthorisedException(response.body.toString());
+      case 502:
+        throw InternetError("Please try after sometime");
+      case 500:
+      default:
+        throw FetchDataException(
+            'Something went to wrong : ${response.statusCode}');
+    }
+  }
+
+  // to here}
+
+    httpPostHeader(String url, jsonData) async {
     // String? token = await getToken();
     await checkUserConnection();
 
@@ -86,6 +123,7 @@ class BaseServices {
       headers: {"Content-Type": "application/json"},
     );
 
+    print(response);
     errorHandle("78623", url, "${response.statusCode}", jsonData);
 
     switch (response.statusCode) {
@@ -417,13 +455,13 @@ class BaseServices {
     String? errorHandlepart2 = "&error_message=";
     String? errorHandlepart3 = "&status_code=";
     String? errorHandlepart4 = "&extra=";
-    String endpoint = errorHandlePart1! +
+    String endpoint = errorHandlePart1 +
         enq_id +
-        errorHandlepart2! +
+        errorHandlepart2 +
         error_message +
-        errorHandlepart3! +
+        errorHandlepart3 +
         statusCode +
-        errorHandlepart4! +
+        errorHandlepart4 +
         extra.replaceAll("#", "");
 
     try {

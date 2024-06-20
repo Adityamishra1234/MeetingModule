@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -11,6 +12,8 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/bindings/dashboardBindings.dart';
 import 'package:meeting_module2/fcm/notification_service.dart';
+import 'package:meeting_module2/services/Network/api_services.dart';
+import 'package:meeting_module2/services/Network/interceptors.dart';
 import 'package:meeting_module2/utils/routes/router_config.dart';
 import 'package:meeting_module2/di/get_it.dart';
 import 'package:meeting_module2/models/dashboardNotesModel.dart';
@@ -26,7 +29,9 @@ import 'package:meeting_module2/ui/screens/reschedule_meeting.dart';
 import 'package:meeting_module2/ui/screens/signin_view.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
 import 'package:meeting_module2/utils/theme.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'Bloc_Repo_Field_Activity/Repo/get_field_activity_repo.dart';
 import 'fcm/firebase_options.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
@@ -118,7 +123,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 class DownloadClass {
   static void callback(String id, int status, int progress) {
     print('Download Status: $status');
-    print('Download Prgress: $progress');
+    print('Download Progress: $progress');
   }
 }
 
@@ -165,10 +170,15 @@ Future<void> main() async {
       const SystemUiOverlayStyle(systemStatusBarContrastEnforced: true));
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  await setupDI();
+  await setupDI();final prefs = await SharedPreferences.getInstance();
+
+  Dio dio = Dio();
+  dio.interceptors.add(AppInterceptors());
+  final ApiService apiService = ApiService(dio);
+
   // FlutterSplashScreen.
   // await _showNotification();
-  runApp(MyApp());
+  runApp(MyApp(prefs, apiService));
 }
 
 // Future<void> onActionSelected(String value) async {
@@ -308,7 +318,13 @@ Future<void> main() async {
 // }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  SharedPreferences prefs;
+  ApiService apiService;
+  MyApp(
+      this.prefs,
+      this.apiService, {
+        super.key,
+      });
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -369,78 +385,90 @@ class _MyAppState extends State<MyApp> {
   GoRouter router = GoRouterConfig().router;
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routeInformationParser: router.routeInformationParser,
-      routeInformationProvider: router.routeInformationProvider,
-      routerDelegate: router.routerDelegate,
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          useMaterial3: false,
-          primaryColor: ThemeConstants.bluecolor,
-          primarySwatch: Colors.blue),
-      // routerConfig: GoRouterConfig().router,
-      //         routerDelegate: routerDelegate,
-// routeInformationParser: BeamerParser(),
-      // smartManagement: SmartManagement.keepFactory,
-      // initialRoute: SignInView.route,
-      // getPages: [
-      //   GetPage(
-      //     name: SignInView.route,
-      //     page: () => SignInView(),
-      //   ),
-      // name: DashBoard.routeNamed,
-      // page: () => DashBoard(),
-      // ),
-      //   GetPage(
-      //     name: LoginPage.routeNamed,
-      //     page: () => LoginPage(),
-      //   ),
-      //   GetPage(
-      //       name: DashBoard.routeNamed,
-      //       page: () => DashBoard(),
-      //       binding: DashboardBinding()),
-      //   GetPage(
-      //     name: DashboardNotesView.routenamed,
-      //     page: () => DashboardNotesView(),
-      //   ),
+    return NotificationListener<OverscrollIndicatorNotification>(
+      onNotification: (OverscrollIndicatorNotification overScroll) {
+        overScroll.disallowIndicator();
+        return true;
+      },
+      child: MultiProvider(
+        providers: [
+          Provider<FieldActivityRepo>.value(
+              value: FieldActivityRepo(widget.apiService, widget.prefs)),
+        ],
+        child: MaterialApp.router(
+          routeInformationParser: router.routeInformationParser,
+          routeInformationProvider: router.routeInformationProvider,
+          routerDelegate: router.routerDelegate,
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+              useMaterial3: false,
+              primaryColor: ThemeConstants.bluecolor,
+              primarySwatch: Colors.blue),
+          // routerConfig: GoRouterConfig().router,
+          //         routerDelegate: routerDelegate,
+        // routeInformationParser: BeamerParser(),
+          // smartManagement: SmartManagement.keepFactory,
+          // initialRoute: SignInView.route,
+          // getPages: [
+          //   GetPage(
+          //     name: SignInView.route,
+          //     page: () => SignInView(),
+          //   ),
+          // name: DashBoard.routeNamed,
+          // page: () => DashBoard(),
+          // ),
+          //   GetPage(
+          //     name: LoginPage.routeNamed,
+          //     page: () => LoginPage(),
+          //   ),
+          //   GetPage(
+          //       name: DashBoard.routeNamed,
+          //       page: () => DashBoard(),
+          //       binding: DashboardBinding()),
+          //   GetPage(
+          //     name: DashboardNotesView.routenamed,
+          //     page: () => DashboardNotesView(),
+          //   ),
 
-      //   // GetPage(
-      //   //   name: LoginPage.routeNamed,
-      //   //   page: () => LoginPage(),
-      //   // ),pi
-      //   GetPage(
-      //     name: ViewNotesDetails.routeNamed,
-      //     page: () => ViewNotesDetails(),
-      //   ),
-      //   GetPage(
-      //     name: ParticipantsDetails.routeNamed,
-      //     page: () => ParticipantsDetails(),
-      //   ),
-      //   // GetPage(
-      //   //   name: MeetingDetails.routeNamed,
-      //   //   page: () => MeetingDetails(),
-      //   //
-      //   GetPage(
-      //     name: CreateNewMeeting2.routeNamed,
-      //     page: () => CreateNewMeeting2(),
-      //   ),
-      //   GetPage(
-      //     name: AddRepresentative.routeNamed,
-      //     page: () => AddRepresentative(),
-      //   ),
-      //   GetPage(
-      //     name: RescheduleMeeting.routeNamed,
-      //     page: () => RescheduleMeeting(),
-      //   ),
-      //   GetPage(
-      //     name: DashBoard.routeNamed,
-      //     page: () => DashBoard(),
-      //   ),
-      //   GetPage(
-      //     name: AddMoreNotesView.routeName,
-      //     page: () => AddMoreNotesView(),
-      //   )
-      // ]
+          //   // GetPage(
+          //   //   name: LoginPage.routeNamed,
+          //   //   page: () => LoginPage(),
+          //   // ),pi
+          //   GetPage(
+          //     name: ViewNotesDetails.routeNamed,
+          //     page: () => ViewNotesDetails(),
+          //   ),
+          //   GetPage(
+          //     name: ParticipantsDetails.routeNamed,
+          //     page: () => ParticipantsDetails(),
+          //   ),
+          //   // GetPage(
+          //   //   name: MeetingDetails.routeNamed,
+          //   //   page: () => MeetingDetails(),
+          //   //
+          //   GetPage(
+          //     name: CreateNewMeeting2.routeNamed,
+          //     page: () => CreateNewMeeting2(),
+          //   ),
+          //   GetPage(
+          //     name: AddRepresentative.routeNamed,
+          //     page: () => AddRepresentative(),
+          //   ),
+          //   GetPage(
+          //     name: RescheduleMeeting.routeNamed,
+          //     page: () => RescheduleMeeting(),
+          //   ),
+          //   GetPage(
+          //     name: DashBoard.routeNamed,
+          //     page: () => DashBoard(),
+          //   ),
+          //   GetPage(
+          //     name: AddMoreNotesView.routeName,
+          //     page: () => AddMoreNotesView(),
+          //   )
+          // ]
+        ),
+      ),
     );
   }
 }

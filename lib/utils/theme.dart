@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -86,4 +88,22 @@ class ThemeConstants {
   static Color Lightcian = const Color(0xFFE9FEFF);
   static Color cianColor = const Color(0xFF0EB0B5);
   static Color firstColor = const Color(0xffff9900);
+
+
+
+
+  static List<String> randomTexts = [
+    "Please wait..",
+    "Gearing up for productivity! 🚀",
+    "Syncing agendas for a meeting of the minds! 🧠📝",
+    "Fueling up for fruitful discussions! 🍇💬",
+    "Gathering thoughts for a collaborative session!",
+  ];
+  static String backgroundTexts = "";
+  static String setBackgroundTexts() {
+    final random = Random();
+    final randomIndex = random.nextInt(randomTexts.length);
+    backgroundTexts = randomTexts[randomIndex];
+    return backgroundTexts;
+  }
 }

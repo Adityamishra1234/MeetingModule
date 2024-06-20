@@ -11,13 +11,18 @@ import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
 // import 'package:studentpanel/widgets/customautosizetextmontserrat.dart';
 // import 'package:studentpanel/widgets/custombutton.dart';
 
-class CustomProfileDialogue extends StatelessWidget {
+class CustomProfileDialogue extends StatefulWidget {
   Widget child;
   String title;
   final Function tap;
   CustomProfileDialogue(
       {super.key, required this.child, required this.title, required this.tap});
 
+  @override
+  State<CustomProfileDialogue> createState() => _CustomProfileDialogueState();
+}
+
+class _CustomProfileDialogueState extends State<CustomProfileDialogue> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -38,7 +43,7 @@ class CustomProfileDialogue extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomAutoSizeTextMontserrat(
-                      text: title,
+                      text: widget.title,
                     ),
                     // GestureDetector(
                     //   onTap: () {
@@ -73,7 +78,7 @@ class CustomProfileDialogue extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: SingleChildScrollView(
                   child: Container(
-                      padding: EdgeInsets.only(bottom: 10), child: child),
+                      padding: EdgeInsets.only(bottom: 10), child: widget.child),
                 ),
               ),
               FractionallySizedBox(
@@ -97,7 +102,7 @@ class CustomProfileDialogue extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          tap(5);
+                          widget.tap(5);
                         },
                         child: Container(
                           // color: ThemeConstants.bluecolor,
