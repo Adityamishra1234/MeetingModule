@@ -2,8 +2,6 @@
     package="com.downtownengineers.meeting_module2">
 
     <uses-permission android:name="android.permission.INTERNET" />
-<!--    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />-->
-<!--    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>-->
     <!-- <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
     <uses-feature android:name="android.hardware.fingerprint" android:required="true" /> -->
   
@@ -21,10 +19,10 @@
     <meta-data
         android:name="com.google.firebase.messaging.default_notification_icon"
 android:resource="@mipmap/ic_launcher_foreground" />
-<!--<meta-data-->
-<!-- android:name="io.flutter.embedding.android.SplashScreenDrawable"-->
-<!-- &lt;!&ndash; android:resource="@drawable/launch_background" &ndash;&gt;-->
-<!-- />-->
+<meta-data
+ android:name="io.flutter.embedding.android.SplashScreenDrawable"
+ android:resource="@drawable/launch_background"
+ />
 <meta-data
     android:name="com.google.firebase.messaging.default_notification_color"
     android:resource="@color/colorPrimary" />
