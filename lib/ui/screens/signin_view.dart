@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/presentation/dashboard/view/ui/dashboard_page.dart';
 import 'package:meeting_module2/utils/snackbarconstants.dart';
 import 'package:meeting_module2/widget/backgroundLogin.dart';
-import 'package:meeting_module2/widget/customBottomNavBar.dart';
 import 'package:nice_loading_button/nice_loading_button.dart';
 
 import 'package:get/get.dart';
@@ -416,8 +415,7 @@ class _SignInViewState extends State<SignInView> {
                                           if (res != false) {
                                             // controllerBase.user.value = res;
 
-                                            // context.go(DashBoard.routeNamed);
-                                            context.go(CustomNavBar.routeNamed);
+                                            context.go(DashBoard.routeNamed);
                                             controllerBase.update();
                                           }
                                           // await download(widget.path);

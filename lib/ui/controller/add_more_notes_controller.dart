@@ -205,81 +205,68 @@ class AddMoreNotesController extends GetxController with StateMixin {
 
     for (var i = 0; i < data.length; i++) {
       var name = await nameFromid(data[i].createdBy);
-      reasonofNotAtteding.add(Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          padding: EdgeInsets.all(8),
-          constraints: BoxConstraints(minHeight: 100),
-          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.blue.withOpacity(0.3),
-                spreadRadius: 0.5,
-                blurRadius: 5,
-                offset: const Offset(0, 4),
-              )],
-            color: Colors.white,
-            // border: Border.all(), borderRadius: BorderRadius.circular(10.0)
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              children: [
-                Align(
-                  alignment: AlignmentDirectional.topStart,
-                  child: CustomAutoSizeTextMontserrat(
-                    text: "${data[i].reasonOfNotAttended}",
-                    fontSize: 14,
-                    textColor: ThemeConstants.bluecolor,
-                  ),
+      reasonofNotAtteding.add(Container(
+        constraints: BoxConstraints(minHeight: 100),
+        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+        decoration: BoxDecoration(
+            border: Border.all(width: 0.8),
+            borderRadius: BorderRadius.circular(10.0)),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            children: [
+              Align(
+                alignment: AlignmentDirectional.topStart,
+                child: CustomAutoSizeTextMontserrat(
+                  text: "${data[i].reasonOfNotAttended}",
+                  fontSize: 14,
+                  textColor: ThemeConstants.bluecolor,
                 ),
-                Align(
-                  alignment: AlignmentDirectional.topStart,
-                  child: CustomAutoSizeTextMontserrat(
-                    text: "${name}",
-                    textColor: ThemeConstants.TextColor,
-                    fontSize: 14,
-                  ),
+              ),
+              Align(
+                alignment: AlignmentDirectional.topStart,
+                child: CustomAutoSizeTextMontserrat(
+                  text: "${name}",
+                  textColor: ThemeConstants.TextColor,
+                  fontSize: 14,
                 ),
-                Align(
-                  alignment: AlignmentDirectional.topStart,
-                  child: CustomAutoSizeTextMontserrat(
-                    text: "${data[i].createdAt!.split('T')[0]}",
-                    textColor: ThemeConstants.TextColor,
-                    fontSize: 14,
-                  ),
+              ),
+              Align(
+                alignment: AlignmentDirectional.topStart,
+                child: CustomAutoSizeTextMontserrat(
+                  text: "${data[i].createdAt!.split('T')[0]}",
+                  textColor: ThemeConstants.TextColor,
+                  fontSize: 14,
                 ),
+              ),
 
-                // InkWell(
-                //   onTap: () {
-                //     // Get.to(AssignToView(), arguments: widget.dataList![i]);
-                //   },
-                //   child: Padding(
-                //     padding: const EdgeInsets.only(top: 10),
-                //     child: Align(
-                //       alignment: AlignmentDirectional.topEnd,
-                //       child: Container(
-                //         height: 30,
-                //         width: 120,
-                //         decoration: BoxDecoration(
-                //             color: ThemeConstants.bluecolor,
-                //             borderRadius:
-                //                 const BorderRadius.all(Radius.circular(30.0))),
-                //         child: Center(
-                //           child: CustomAutoSizeTextMontserrat(
-                //             text: "Assign to",
-                //             textColor: ThemeConstants.whitecolor,
-                //             fontSize: 14,
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // )
-              ],
-            ),
+              // InkWell(
+              //   onTap: () {
+              //     // Get.to(AssignToView(), arguments: widget.dataList![i]);
+              //   },
+              //   child: Padding(
+              //     padding: const EdgeInsets.only(top: 10),
+              //     child: Align(
+              //       alignment: AlignmentDirectional.topEnd,
+              //       child: Container(
+              //         height: 30,
+              //         width: 120,
+              //         decoration: BoxDecoration(
+              //             color: ThemeConstants.bluecolor,
+              //             borderRadius:
+              //                 const BorderRadius.all(Radius.circular(30.0))),
+              //         child: Center(
+              //           child: CustomAutoSizeTextMontserrat(
+              //             text: "Assign to",
+              //             textColor: ThemeConstants.whitecolor,
+              //             fontSize: 14,
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // )
+            ],
           ),
         ),
       ));
@@ -518,111 +505,57 @@ class AddMoreNotesController extends GetxController with StateMixin {
     for (var i = 0; i < notesList.length; i++) {
       bool showPublishorNot = await showPublish(notesList[i]);
       if (selectedDropDown == getNoteTypefromId(notesList[i].noteType!)) {
-        beta.add(
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                padding: const EdgeInsets.all(8.0),
-                        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                        // width: MediaQuery.of(context).size.width - 30,
-                        decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.blue.withOpacity(0.3),
-                    spreadRadius: 0.5,
-                    blurRadius: 5,
-                    offset: const Offset(0, 4),
-                  )],
-              color: Colors.white,
-                // border: Border.all(), borderRadius: BorderRadius.circular(10.0)
-                        ),
-                        child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                children: [
-                  Align(
-                    alignment: AlignmentDirectional.topStart,
-                    child: HtmlWidget(
-                      "${notesList[i].note}",
-                      textStyle: GoogleFonts.montserrat(
-                        fontWeight: FontWeight.w500,
-                        color: ThemeConstants.TextColor,
-                        fontSize: 14.0,
-                      ),
+        beta.add(Container(
+          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+          // width: MediaQuery.of(context).size.width - 30,
+          decoration: BoxDecoration(
+              border: Border.all(), borderRadius: BorderRadius.circular(20.0)),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              children: [
+                Align(
+                  alignment: AlignmentDirectional.topStart,
+                  child: HtmlWidget(
+                    "${notesList[i].note}",
+                    textStyle: GoogleFonts.montserrat(
+                      fontWeight: FontWeight.w500,
+                      color: ThemeConstants.TextColor,
+                      fontSize: 14.0,
                     ),
                   ),
-                  Align(
-                    alignment: AlignmentDirectional.topStart,
-                    child: CustomAutoSizeTextMontserrat(
-                      text: "${notesList[i].createdAt?.split('T')[0]}",
-                      textColor: ThemeConstants.TextColor,
-                      fontSize: 12,
-                    ),
+                ),
+                Align(
+                  alignment: AlignmentDirectional.topStart,
+                  child: CustomAutoSizeTextMontserrat(
+                    text: "${notesList[i].createdAt?.split('T')[0]}",
+                    textColor: ThemeConstants.TextColor,
+                    fontSize: 12,
                   ),
-                  Visibility(
-                    visible: showPublishorNot,
-                    // visible:   true,
-                    child: InkWell(
-                      onTap: () {
-                        publishNote(notesList[i]);
-                        // Get.to( )
-                        // Get.to(AssignToView(), arguments: widget.dataList![i]);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Align(
-                          alignment: AlignmentDirectional.topEnd,
-                          child: Container(
-                            height: 30,
-                            width: 120,
-                            decoration: BoxDecoration(
-                                color: ThemeConstants.GreenColor,
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(30.0))),
-                            child: Center(
-                              child: CustomAutoSizeTextMontserrat(
-                                text: "Publish",
-                                textColor: ThemeConstants.whitecolor,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  InkWell(
+                ),
+                Visibility(
+                  visible: showPublishorNot,
+                  // visible:   true,
+                  child: InkWell(
                     onTap: () {
-                      print(context);
-
-                      context.push('${Routes.assignViewMeetings}',
-                          extra: notesList[i]);
-                      // Get.to(AssignToView(), arguments: notesList![i]);
+                      publishNote(notesList[i]);
+                      // Get.to( )
+                      // Get.to(AssignToView(), arguments: widget.dataList![i]);
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Align(
                         alignment: AlignmentDirectional.topEnd,
                         child: Container(
-                          height: 40,
+                          height: 30,
                           width: 120,
                           decoration: BoxDecoration(
-                            gradient: ThemeConstants.backgroundGradient,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.blue.withOpacity(0.3),
-                                  spreadRadius: 0.5,
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 4),
-                                )],
-                              // color: ThemeConstants.bluecolor,
-                              border: Border.all(color: Colors.blue, width: 1),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(10.0))),
+                              color: ThemeConstants.GreenColor,
+                              borderRadius: const BorderRadius.all(
+                                  Radius.circular(30.0))),
                           child: Center(
                             child: CustomAutoSizeTextMontserrat(
-                              text: "Assign to",
+                              text: "Publish",
                               textColor: ThemeConstants.whitecolor,
                               fontSize: 14,
                             ),
@@ -631,11 +564,41 @@ class AddMoreNotesController extends GetxController with StateMixin {
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+                InkWell(
+                  onTap: () {
+                    print(context);
+
+                    context.push('${Routes.assignViewMeetings}',
+                        extra: notesList[i]);
+                    // Get.to(AssignToView(), arguments: notesList![i]);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Align(
+                      alignment: AlignmentDirectional.topEnd,
+                      child: Container(
+                        height: 30,
+                        width: 120,
+                        decoration: BoxDecoration(
+                            color: ThemeConstants.bluecolor,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(30.0))),
+                        child: Center(
+                          child: CustomAutoSizeTextMontserrat(
+                            text: "Assign to",
+                            textColor: ThemeConstants.whitecolor,
+                            fontSize: 14,
+                          ),
                         ),
                       ),
-            ));
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
       }
     }
     documentlist = [];
@@ -1319,8 +1282,7 @@ class AddMoreNotesController extends GetxController with StateMixin {
           int sizeInBytes = f.lengthSync();
           double sizeInMb = sizeInBytes / (1024 * 1024);
           if (sizeInMb > 5) {
-            getDailog(context, SnackBarConstants.toastForUploadFile?? '');
-            // getToast('${SnackBarConstants.toastForUploadFile}');
+            getToast('${SnackBarConstants.toastForUploadFile}');
           } else {
             // var res = await api.uploadDocumentCommon(
             //   ,

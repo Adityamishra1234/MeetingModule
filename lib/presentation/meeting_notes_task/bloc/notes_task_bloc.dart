@@ -62,7 +62,6 @@ class NotesTaskBloc extends Bloc<NotesTaskEvent, NotesTaskInitial> {
     String closedBy;
 
     for (var i = 0; i < meetingNotesTaskModelList.length; i++) {
-      print(i);
       owner = await nameFromid(meetingNotesTaskModelList[i].taskOwnerId);
       // owner = await nameFromid(136);
 
@@ -83,25 +82,20 @@ class NotesTaskBloc extends Bloc<NotesTaskEvent, NotesTaskInitial> {
   String nameFromid(id) {
     var data = Get.find<BaseController>().allSiecMembersList;
     var name = '';
-    AllUserModel hu;
 
     if (id == 0) {
       return 'null';
     }
 
-    try {
-      hu = data.where((element) => element.id == id).first;
-      name = hu.name!;
-    } catch (e) {}
-
+    AllUserModel hu = data.where((element) => element.id == id).first;
+    name = hu.name!;
     // data.where((element) {
     //   print(element);
     //   if (element.id == id) {
-
     //     name = element.name!;
     //   }
     // });
 
-    return name ?? "Test";
+    return name;
   }
 }

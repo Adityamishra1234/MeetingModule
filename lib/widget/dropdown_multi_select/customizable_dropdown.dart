@@ -437,7 +437,7 @@ class _CustomizableDropdownState extends State<CustomizableDropdown>
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width -
-                                              200,
+                                              140,
                                           child: Wrap(
                                             children: [
                                               Text(items.elementAt(index),

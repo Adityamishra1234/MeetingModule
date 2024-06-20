@@ -1,14 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
+import 'package:meeting_module2/models/commonUploadDocument.dart';
+import 'package:meeting_module2/models/commonUploadStatus.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/models/participantsModel.dart';
 import 'package:meeting_module2/services/api.dart';
 import 'package:meeting_module2/services/base_services.dart';
 import 'package:meeting_module2/services/endpoints.dart';
 import 'package:meeting_module2/utils/constants.dart';
+import 'package:meeting_module2/utils/theme.dart';
 
 class ApiServices extends BaseServices implements API {
 /////Auth APIS
@@ -344,17 +349,6 @@ class ApiServices extends BaseServices implements API {
     // TODO: implement getAllCountries
     // throw UnimplementedError();
   }
-  //updated here on 30th of May
-  getAllState (int stateCode) async {
-    var url = '${Endpoints.baseUrl}${Endpoints.getStateCity}';
-    var jsonData = {'state_id': stateCode};
-    var datas = json.encode(jsonData);
-    var res2 = await httpGet(url,{});
-
-    if(res2 !=null){
-      return res2;
-    }
-  }
 
   @override
   addRepresentative(RepresentativeModel model) async {
@@ -430,19 +424,6 @@ class ApiServices extends BaseServices implements API {
 
     // TODO: implement findRepresentativeForDropDown
     // throw UnimplementedError();
-  }
-
-  //updated here on 30th of May(Aditya)
-  getInstituteStateFromDropDown() async{
-    var url = '${Endpoints.baseUrl}${Endpoints.getStateCity}';
-    Map<String, dynamic> data2 = {};
-    var res = await httpGet(url, data2);
-
-    if (res != null) {
-      return res;
-    }
-
-
   }
 
   @override
@@ -1142,6 +1123,9 @@ class ApiServices extends BaseServices implements API {
 
       String idString = id.join(",");
       print(idString);
+
+//todoImpo
+      // idString = '103,105';
 
       var jsonData = {
         "userId": userID,

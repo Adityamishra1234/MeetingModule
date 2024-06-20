@@ -750,7 +750,6 @@ class DashBoardController extends GetxController with StateMixin {
     }
 
     meetingsToShowInDashboardWidgetList = data;
-    // print("This is the meeting to show in dashboard widget list is coming: ${data}");
     update();
     change(null, status: RxStatus.success());
     return data;
@@ -921,36 +920,25 @@ class SingleMeetingWidget extends StatelessWidget {
           Get.find<CalendarController>().onInit();
           Get.find<DashBoardController>().onInit();
         }
-        // else{
-        //   return;
-        // }
 
         // Get.to(MeetingDetails());
       },
       child: Padding(
         padding: const EdgeInsets.only(bottom: 12),
         child: Container(
-          padding: EdgeInsets.all(10),
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 0.5,
-                  blurRadius: 5,
-                  offset: const Offset(0, 4),
-                )],
               gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
                 colors: [
-                  Color(0xff3088C6),
-                  Color(0xff1556BE),
+                  Color.fromARGB(255, 255, 225, 150),
+                  Color.fromARGB(255, 255, 225, 150),
                   Color.fromARGB(255, 255, 255, 255)
                 ],
                 stops: [0.00, 0.04, 0.04],
               ),
-              border: Border.all(color: Colors.grey.withOpacity(0.4)),
+              border: Border.all(color: const Color(0xff1940b3)),
               borderRadius: BorderRadius.circular(15.0)),
           child: Padding(
             padding: const EdgeInsets.only(left: 30, top: 0),
@@ -1088,7 +1076,7 @@ class SingleMeetingWidget extends StatelessWidget {
                               backgroundColor:
                                   Color.fromARGB(255, 255, 225, 150),
                               text: 'Reschedule',
-                              textColor: ThemeConstants.whitecolor,
+                              textColor: ThemeConstants.blackcolor,
                               onPressed: () async {
                                 late bool showTheStartEndOptions;
                                 listToShow.meetingCoordinator!

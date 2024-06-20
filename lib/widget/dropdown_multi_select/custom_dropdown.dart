@@ -34,6 +34,8 @@ class CustomMultiDownSingle extends StatelessWidget {
         ? Container(
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
+                // color: ThemeConstants.lightblueColor,
+                // border: Border.all(color: ThemeConstants.bluecolor),
                 borderRadius: BorderRadius.circular(10.0)),
             child: Padding(
               padding: const EdgeInsets.all(15.0),
