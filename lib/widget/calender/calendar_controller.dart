@@ -32,7 +32,6 @@ class CalendarController extends GetxController with StateMixin {
   @override
   void onInit() async {
     var date = DateTime.now();
-
     selectedDayGlobal = date;
 
     print(Get.find<BaseController>().id);

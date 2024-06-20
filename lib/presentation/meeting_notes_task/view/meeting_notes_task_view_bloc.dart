@@ -1,11 +1,13 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:meeting_module2/di/get_it.dart';
 import 'package:meeting_module2/models/meeting_notes_task_model.dart';
 import 'package:meeting_module2/presentation/constants/loading.dart';
@@ -36,7 +38,8 @@ class MeetingNotesTaskViewBloc extends StatefulWidget {
 
 class _MeetingNotesTaskViewBlocState extends State<MeetingNotesTaskViewBloc> {
   late NotesTaskBloc notesTaskBloc;
-
+  int current = 0;
+  List<String> notes = ["Ongoing", "Closed"];
   @override
   void initState() {
     notesTaskBloc = locator.get<NotesTaskBloc>();
@@ -58,185 +61,246 @@ class _MeetingNotesTaskViewBlocState extends State<MeetingNotesTaskViewBloc> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ThemeConstants.lightVioletColor,
-      body: SafeArea(
-        child: BlocConsumer<NotesTaskBloc, NotesTaskState>(
-          bloc: notesTaskBloc,
-          listener: (context, state) {
-            // TODO: implement listener
-          },
-          builder: (context, state) {
-            print('deffedced');
-            if (state is NotesTaskInitial) {
-              if (state.status == Status.loading) {
-                return getLoading(context);
-              } else if (state.status == Status.loaded) {
-                return Container(
-                  decoration: BoxDecoration(
-                      gradient: ThemeConstants.backgroundGradient),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 15, top: 20, bottom: 0),
-                          child: CustomAutoSizeTextMontserrat(
-                            text: "Notes Task",
-                            fontSize: 24,
-                            fontWeight: FontWeight.w600,
-                            textColor: ThemeConstants.paleYellow,
+      body: BlocConsumer<NotesTaskBloc, NotesTaskState>(
+        bloc: notesTaskBloc,
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          print('deffedced');
+          if (state is NotesTaskInitial) {
+            if (state.status == Status.loading) {
+              return getLoading(context);
+            } else if (state.status == Status.loaded) {
+              return Container(
+                decoration: BoxDecoration(
+                    gradient: ThemeConstants.backgroundGradient),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 20),
+                      Padding(
+                          padding: EdgeInsets.only(left: 0, top: 50),
+                          child: Text(
+                            "Notes Task",
+                            style: GoogleFonts.aBeeZee(
+                                textStyle: TextStyle(
+                                  fontSize: 22,
+                                  color: ThemeConstants.paleYellow,
+                                  fontWeight: FontWeight.w600,
+                                )
+                            ),
+                          )
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 2),
+                        child: SizedBox(
+                          height: 55,
+                          width: double.infinity,
+                          child: ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: notes.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return InkWell(
+                                onTap: (){
+                                  setState(() {
+                                    current = index;
+                                  });
+                                  if(current == 0){
+                                    setState(() {
+                                      notesTaskBloc
+                                          .add(NotesTaskChangeOpenCloseAllEvent(0));
+                                    });
+                                  }
+                                  if(current == 1){
+                                    setState(() {
+                                      notesTaskBloc
+                                          .add(NotesTaskChangeOpenCloseAllEvent(1));
+                                    });
+                                  }
+                                },
+                                child: AnimatedContainer(
+                                  margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                                  height: 55,
+                                  decoration: BoxDecoration(
+                                    // gradient: current == index ? ThemeConstants.backgroundGradient : LinearGradient(colors: [
+                                    //   Colors.white,
+                                    //   Colors.white
+                                    // ]),
+                                      border:  current  == index ? Border.all(color: Colors.transparent):Border.all(color: Colors.black12),
+                                      color: current == index? ThemeConstants.whitecolor: Color(0x50FFFFFF),
+                                      borderRadius: current == index ? BorderRadius.all(Radius.circular(10)):BorderRadius.all(Radius.circular(5),)
+                                  ),
+                                  duration: Duration(milliseconds: 200),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 58.0, left: 58.0, top: 10, bottom: 10),
+                                    child: Center(
+                                      child: Text("${notes[index]}", style: GoogleFonts.lato(
+                                          textStyle: TextStyle(
+                                              color: current == index? Colors.black : Colors.white,
+                                              fontWeight: FontWeight.w600
+                                          )
+                                      ),),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+
                           ),
                         ),
-                        SizedBox(
-                          height: 2,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 2),
-                          child: CustomTabWidget2(
-                              title0: 'Open',
-                              title1: 'Close',
-                              callback: (v) {
-                                if (v == 0) {
-                                  notesTaskBloc
-                                      .add(NotesTaskChangeOpenCloseAllEvent(0));
-                                } else {
-                                  notesTaskBloc
-                                      .add(NotesTaskChangeOpenCloseAllEvent(1));
-                                }
-                              }),
-                        ),
 
-                        SizedBox(
-                          height: 10,
-                        ),
-                        // Padding(
-                        //   padding: const EdgeInsets.symmetric(
-                        //       vertical: 10, horizontal: 10),
-                        //   child: Row(
-                        //     children: [
-                        //       InkWell(
-                        //         onTap: () async {
-                        //           notesTaskBloc
-                        //               .add(NotesTaskChangeOpenCloseAllEvent(0));
-                        //           // controller.selectedOpenOrClose = 0;
-                        //           // await controller
-                        //           //     .getMeetingNotesTaskListForUser(
-                        //           //         Get.find<BaseController>()
-                        //           //             .id
-                        //           //             .toString());
+                        // CustomTabWidget2(
+                        //     title0: 'Ongoing',
+                        //     title1: 'Closed',
+                        //     callback: (v) {
+                        //       if (v == 0) {
+                        //         notesTaskBloc
+                        //             .add(NotesTaskChangeOpenCloseAllEvent(0));
+                        //       } else {
+                        //         notesTaskBloc
+                        //             .add(NotesTaskChangeOpenCloseAllEvent(1));
+                        //       }
+                        //     }),
+                      ),
 
-                        //           // controller.update();
-                        //         },
-                        //         child: Container(
-                        //           padding: EdgeInsets.symmetric(
-                        //               vertical: 10, horizontal: 20),
-                        //           decoration: BoxDecoration(
-                        //               borderRadius: BorderRadius.circular(200),
-                        //               border: Border.all(
-                        //                   width: 1,
-                        //                   color: state.selectedOpenOrClose == 0
-                        //                       ? ThemeConstants.paleYellow
-                        //                       : ThemeConstants.whitecolor)),
-                        //           child: CustomAutoSizeTextMontserrat(
-                        //             text: 'Open',
-                        //             fontWeight: ThemeConstants.fontWeightBold,
-                        //             textColor: state.selectedOpenOrClose == 0
-                        //                 ? ThemeConstants.paleYellow
-                        //                 : ThemeConstants.whitecolor,
-                        //           ),
-                        //         ),
-                        //       ),
-                        //       SizedBox(
-                        //         width: 10,
-                        //       ),
-                        //       InkWell(
-                        //         onTap: () async {
-                        //           notesTaskBloc
-                        //               .add(NotesTaskChangeOpenCloseAllEvent(1));
-                        //           // controller.selectedOpenOrClose = 1;
+                      SizedBox(
+                        height: 10,
+                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(
+                      //       vertical: 10, horizontal: 10),
+                      //   child: Row(
+                      //     children: [
+                      //       InkWell(
+                      //         onTap: () async {
+                      //           notesTaskBloc
+                      //               .add(NotesTaskChangeOpenCloseAllEvent(0));
+                      //           // controller.selectedOpenOrClose = 0;
+                      //           // await controller
+                      //           //     .getMeetingNotesTaskListForUser(
+                      //           //         Get.find<BaseController>()
+                      //           //             .id
+                      //           //             .toString());
 
-                        //           // await controller
-                        //           //     .getMeetingNotesTaskListForUser(
-                        //           //         Get.find<BaseController>()
-                        //           //             .id
-                        //           //             .toString());
+                      //           // controller.update();
+                      //         },
+                      //         child: Container(
+                      //           padding: EdgeInsets.symmetric(
+                      //               vertical: 10, horizontal: 20),
+                      //           decoration: BoxDecoration(
+                      //               borderRadius: BorderRadius.circular(200),
+                      //               border: Border.all(
+                      //                   width: 1,
+                      //                   color: state.selectedOpenOrClose == 0
+                      //                       ? ThemeConstants.paleYellow
+                      //                       : ThemeConstants.whitecolor)),
+                      //           child: CustomAutoSizeTextMontserrat(
+                      //             text: 'Open',
+                      //             fontWeight: ThemeConstants.fontWeightBold,
+                      //             textColor: state.selectedOpenOrClose == 0
+                      //                 ? ThemeConstants.paleYellow
+                      //                 : ThemeConstants.whitecolor,
+                      //           ),
+                      //         ),
+                      //       ),
+                      //       SizedBox(
+                      //         width: 10,
+                      //       ),
+                      //       InkWell(
+                      //         onTap: () async {
+                      //           notesTaskBloc
+                      //               .add(NotesTaskChangeOpenCloseAllEvent(1));
+                      //           // controller.selectedOpenOrClose = 1;
 
-                        //           // controller.update();
-                        //         },
-                        //         child: Container(
-                        //           padding: EdgeInsets.symmetric(
-                        //               vertical: 10, horizontal: 20),
-                        //           decoration: BoxDecoration(
-                        //               borderRadius: BorderRadius.circular(200),
-                        //               border: Border.all(
-                        //                   width: 1,
-                        //                   color: state.selectedOpenOrClose == 1
-                        //                       ? ThemeConstants.paleYellow
-                        //                       : ThemeConstants.whitecolor)),
-                        //           child: CustomAutoSizeTextMontserrat(
-                        //             text: 'Close',
-                        //             fontWeight: ThemeConstants.fontWeightBold,
-                        //             textColor: state.selectedOpenOrClose == 1
-                        //                 ? ThemeConstants.paleYellow
-                        //                 : ThemeConstants.whitecolor,
-                        //           ),
-                        //         ),
-                        //       )
-                        //     ],
-                        //   ),
-                        // ),
+                      //           // await controller
+                      //           //     .getMeetingNotesTaskListForUser(
+                      //           //         Get.find<BaseController>()
+                      //           //             .id
+                      //           //             .toString());
 
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Expanded(
-                          // padding: EdgeInsets.symmetric(vertical: 20),
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  color: ThemeConstants.whitecolor,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(35),
-                                      topRight: Radius.circular(35))),
-                              padding: const EdgeInsets.only(
-                                  top: 30, left: 25, right: 25),
-                              child: state.statusOnlySpecificRegion ==
-                                      Status.loaded
-                                  ? ListView.builder(
-                                      itemCount: state.meetingNotesTaskModelList
-                                                  .length ==
-                                              0
-                                          ? 1
-                                          : state
-                                              .meetingNotesTaskModelList.length,
-                                      itemBuilder: (context, index) {
-                                        if (state.meetingNotesTaskModelList
+                      //           // controller.update();
+                      //         },
+                      //         child: Container(
+                      //           padding: EdgeInsets.symmetric(
+                      //               vertical: 10, horizontal: 20),
+                      //           decoration: BoxDecoration(
+                      //               borderRadius: BorderRadius.circular(200),
+                      //               border: Border.all(
+                      //                   width: 1,
+                      //                   color: state.selectedOpenOrClose == 1
+                      //                       ? ThemeConstants.paleYellow
+                      //                       : ThemeConstants.whitecolor)),
+                      //           child: CustomAutoSizeTextMontserrat(
+                      //             text: 'Close',
+                      //             fontWeight: ThemeConstants.fontWeightBold,
+                      //             textColor: state.selectedOpenOrClose == 1
+                      //                 ? ThemeConstants.paleYellow
+                      //                 : ThemeConstants.whitecolor,
+                      //           ),
+                      //         ),
+                      //       )
+                      //     ],
+                      //   ),
+                      // ),
+
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Expanded(
+                        // padding: EdgeInsets.symmetric(vertical: 20),
+                        child: Container(
+                            decoration: BoxDecoration(
+                                color: ThemeConstants.whitecolor,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(35),
+                                    topRight: Radius.circular(35))),
+                            // padding: const EdgeInsets.only(
+                            //     top: 30, left: 25, right: 25),
+                            child: state.statusOnlySpecificRegion ==
+                                    Status.loaded
+                                ? ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              padding: EdgeInsets.symmetric(vertical: 18.0,horizontal: 10),
+                                    itemCount: state.meetingNotesTaskModelList
                                                 .length ==
-                                            0) {
-                                          return CustomNoDataWidget(
-                                              text: 'No data found');
-                                        } else {
-                                          return NotesTaskWidget(
-                                              controller: notesTaskBloc,
-                                              idToNameDataString: state
-                                                  .meetingIdStringData[index],
-                                              data: state
-                                                      .meetingNotesTaskModelList[
-                                                  index]);
-                                        }
-                                      },
-                                    )
-                                  : getLoading(context)),
-                        ),
-                      ]),
-                );
-              } else {
-                return SizedBox.shrink();
-              }
+                                            0
+                                        ? 1
+                                        : state
+                                            .meetingNotesTaskModelList.length,
+                                    itemBuilder: (context, index) {
+                                      if (state.meetingNotesTaskModelList
+                                              .length ==
+                                          0) {
+                                        return CustomNoDataWidget(
+                                            text: 'No data found');
+                                      } else {
+                                        return NotesTaskWidget(
+                                            controller: notesTaskBloc,
+                                            idToNameDataString: state
+                                                .meetingIdStringData[index],
+                                            data: state
+                                                    .meetingNotesTaskModelList[
+                                                index]);
+                                      }
+                                    },
+                                  )
+                                : getLoading(context)),
+                      ),
+                    ]),
+              );
             } else {
               return SizedBox.shrink();
             }
-          },
-        ),
+          } else {
+            return SizedBox.shrink();
+          }
+        },
       ),
     );
   }
@@ -290,24 +354,34 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
         // Get.to(MeetingDetails());
       },
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(8.0),
         child: Container(
           width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  spreadRadius: 0.5,
+                  blurRadius: 5,
+                  offset: const Offset(0, 4),
+                )],
               gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
                 colors: [
-                  Color.fromARGB(255, 255, 225, 150),
-                  Color.fromARGB(255, 255, 225, 150),
+                  // Color.fromARGB(255, 255, 225, 150),
+                  // Color.fromARGB(255, 255, 225, 150),
+                  Color(0xff3088C6),
+                  Color(0xff1556BE),
                   Color.fromARGB(255, 255, 255, 255)
                 ],
                 stops: [0.00, 0.04, 0.04],
               ),
-              border: Border.all(color: const Color(0xff1940b3)),
+              border: Border.all(color: Colors.grey.withOpacity(0.4)),
               borderRadius: BorderRadius.circular(15.0)),
           child: Padding(
-            padding: const EdgeInsets.only(left: 20, top: 0, right: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Stack(
               children: [
                 Column(
@@ -344,7 +418,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                           Icon(
                             Icons.calendar_month,
                             color: ThemeConstants.TextColor,
-                            size: 18,
+                            size: 20,
                           ),
                           SizedBox(
                             width: 5,
@@ -370,7 +444,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                       ),
 
                       SizedBox(
-                        height: 5,
+                        height: 10,
                       ),
 
                       Row(
@@ -473,8 +547,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                                                   children: [
                                                     CustomAutoSizeTextMontserrat(
                                                       text: 'Close Task',
-                                                      textColor: ThemeConstants
-                                                          .bluecolor,
+                                                      textColor:  Color(0xff3088C6),
                                                       fontSize: ThemeConstants
                                                           .fontSizelarge,
                                                     ),
@@ -490,7 +563,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                                                   ],
                                                 ),
                                                 SizedBox(
-                                                  height: 10,
+                                                  height: 0,
                                                 ),
                                                 CustomAutoSizeTextMontserrat(
                                                     fontSize: ThemeConstants
@@ -498,9 +571,10 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                                                     text:
                                                         'Did you attend the Meeting?'),
                                                 SizedBox(
-                                                  height: 10,
+                                                  height: 20,
                                                 ),
                                                 Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                   children: [
                                                     InkWell(
                                                       onTap: () async {
@@ -538,22 +612,37 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                                                         alignment:
                                                             Alignment.center,
                                                         decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20),
-                                                            border: Border.all(
-                                                                width: 0.5,
-                                                                color: ThemeConstants
-                                                                    .bluecolor)),
-                                                        child: CustomAutoSizeTextMontserrat(
-                                                            fontWeight:
-                                                                ThemeConstants
-                                                                    .fontWeightThin,
-                                                            fontSize:
-                                                                ThemeConstants
-                                                                    .fontSizeSmall,
-                                                            text: 'Yes'),
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color: Colors.grey.withOpacity(0.5),
+                                                                spreadRadius: 0.5,
+                                                                blurRadius: 5,
+                                                                offset: const Offset(0, 4),
+                                                              )],
+                                                            gradient: ThemeConstants.backgroundGradient,
+                                                            // color: ThemeConstants.bluecolor,
+                                                            borderRadius: BorderRadius.circular(10)),
+                                                        // decoration: BoxDecoration(
+                                                        //     borderRadius:
+                                                        //         BorderRadius
+                                                        //             .circular(
+                                                        //                 20),
+                                                        //     border: Border.all(
+                                                        //         width: 0.5,
+                                                        //         color: ThemeConstants
+                                                        //             .bluecolor)),
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.only(top: 2.0, bottom: 2, right: 20, left: 20),
+                                                          child: CustomAutoSizeTextMontserrat(
+                                                            textColor: Colors.white,
+                                                              fontWeight:
+                                                                  ThemeConstants
+                                                                      .fontWeightThin,
+                                                              fontSize:
+                                                                  ThemeConstants
+                                                                      .fontSizeSmall,
+                                                              text: 'Yes'),
+                                                        ),
                                                       ),
                                                     ),
                                                     SizedBox(
@@ -595,22 +684,37 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                                                         alignment:
                                                             Alignment.center,
                                                         decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20),
-                                                            border: Border.all(
-                                                                width: 0.5,
-                                                                color: ThemeConstants
-                                                                    .bluecolor)),
-                                                        child: CustomAutoSizeTextMontserrat(
-                                                            fontWeight:
-                                                                ThemeConstants
-                                                                    .fontWeightThin,
-                                                            fontSize:
-                                                                ThemeConstants
-                                                                    .fontSizeSmall,
-                                                            text: 'No'),
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color: Colors.grey.withOpacity(0.5),
+                                                                spreadRadius: 0.5,
+                                                                blurRadius: 5,
+                                                                offset: const Offset(0, 4),
+                                                              )],
+                                                            gradient: ThemeConstants.backgroundGradient,
+                                                            // color: ThemeConstants.bluecolor,
+                                                            borderRadius: BorderRadius.circular(10)),
+                                                        // decoration: BoxDecoration(
+                                                        //     borderRadius:
+                                                        //         BorderRadius
+                                                        //             .circular(
+                                                        //                 20),
+                                                        //     border: Border.all(
+                                                        //         width: 0.5,
+                                                        //         color: ThemeConstants
+                                                        //             .bluecolor)),
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.only(top: 2.0, bottom: 2, right: 20, left: 20),
+                                                          child: CustomAutoSizeTextMontserrat(
+                                                            textColor: Colors.white,
+                                                              fontWeight:
+                                                                  ThemeConstants
+                                                                      .fontWeightThin,
+                                                              fontSize:
+                                                                  ThemeConstants
+                                                                      .fontSizeSmall,
+                                                              text: 'No'),
+                                                        ),
                                                       ),
                                                     ),
                                                   ],
@@ -623,8 +727,16 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
-                                      color: ThemeConstants.bluecolor,
-                                      borderRadius: BorderRadius.circular(200)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: -0.2,
+                                          blurRadius: 5,
+                                          offset: const Offset(0, 4),
+                                        )],
+                                      gradient: ThemeConstants.backgroundGradient,
+                                      // color: ThemeConstants.bluecolor,
+                                      borderRadius: BorderRadius.circular(10)),
                                   padding: EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 10),
                                   child: CustomAutoSizeTextMontserrat(
@@ -657,7 +769,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                           ],
                         ),
                       ),
-
+                      const SizedBox(height: 5,),
                       if (isExpanded == true) ...[
                         Row(
                           children: [
@@ -680,6 +792,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                             ),
                           ],
                         ),
+                        const SizedBox(height: 5,),
                         Row(
                           children: [
                             CustomAutoSizeTextMontserrat(
@@ -701,6 +814,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                             ),
                           ],
                         ),
+                        const SizedBox(height: 5,),
                         Row(
                           children: [
                             CustomAutoSizeTextMontserrat(
@@ -765,6 +879,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                         //     ),
                         //   ],
                         // ),
+                        const SizedBox(height: 5,),
                         Row(
                           children: [
                             CustomAutoSizeTextMontserrat(
@@ -786,6 +901,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                             ),
                           ],
                         ),
+                        const SizedBox(height: 5,),
                         Row(
                           children: [
                             CustomAutoSizeTextMontserrat(
@@ -807,6 +923,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                             ),
                           ],
                         ),
+                        const SizedBox(height: 5,),
                         Row(
                           children: [
                             CustomAutoSizeTextMontserrat(
@@ -828,6 +945,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                             ),
                           ],
                         ),
+                        const SizedBox(height: 5,),
                         Row(
                           children: [
                             CustomAutoSizeTextMontserrat(
@@ -849,6 +967,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                             ),
                           ],
                         ),
+                        const SizedBox(height: 5,),
                         Row(
                           children: [
                             CustomAutoSizeTextMontserrat(
@@ -869,6 +988,7 @@ class _NotesTaskWidgetState extends State<NotesTaskWidget>
                             // ),
                           ],
                         ),
+                        const SizedBox(height: 5,),
                         Container(
                           height: 30,
                           width: MediaQuery.of(context).size.width - 20,
@@ -1145,7 +1265,7 @@ class MeetingAttendedAddNoteTask extends StatelessWidget {
               Row(
                 children: [
                   CustomAutoSizeTextMontserrat(
-                      textColor: ThemeConstants.bluecolor, text: "Add Note"),
+                      textColor:   Color(0xff3088C6), text: "Add Note"),
                   Spacer(),
                   IconButton(
                       onPressed: () {
@@ -1198,7 +1318,7 @@ class MeetingAttendedAddNoteTask extends StatelessWidget {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                  width: 1, color: ThemeConstants.bluecolor)),
+                                  width: 1, color:   Color(0xff3088C6),)),
                           child: quil.QuillEditor(
                             configurations: quil.QuillEditorConfigurations(
                               scrollable: false,
@@ -1250,8 +1370,16 @@ class MeetingAttendedAddNoteTask extends StatelessWidget {
                 child: Container(
                   // color: ThemeConstants.bluecolor,
                   decoration: BoxDecoration(
-                      color: ThemeConstants.bluecolor,
-                      borderRadius: BorderRadius.circular(500)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 0.5,
+                          blurRadius: 5,
+                          offset: const Offset(0, 4),
+                        )],
+                    gradient: ThemeConstants.backgroundGradient,
+                      // color: ThemeConstants.bluecolor,
+                      borderRadius: BorderRadius.circular(10)),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   child: Text(
@@ -1294,8 +1422,8 @@ class MeetingTaskNoClose extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomAutoSizeTextMontserrat(
-                      textColor: ThemeConstants.bluecolor,
-                      text: "Reason of Not \nAttending"),
+                      textColor: Color(0xff3088C6),
+                      text: "Absentee Reason"),
                   // InkWell(
                   //   onTap:
                   //       () {
@@ -1328,86 +1456,86 @@ class MeetingTaskNoClose extends StatelessWidget {
                 ],
               ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // CustomAutoSizeTextMontserrat(
-                  //     textColor: ThemeConstants.bluecolor,
-                  //     text: "Mark Attendance"),
-                  // InkWell(
-                  //   onTap:
-                  //       () {
-                  //     context.pop();
-                  //     // Get.back();
-                  //   },
-                  //   child:
-                  //       CircleAvatar(
-                  //     backgroundColor:
-                  //         ThemeConstants.bluecolor,
-                  //     radius:
-                  //         10,
-                  //     child:
-                  //         Icon(
-                  //       Icons.close,
-                  //       size: 16,
-                  //     ),
-                  //   ),
-                  // ),
-                ],
-              ),
-              InkWell(
-                onTap: () {
-                  // setState(() {
-                  //   daata = 1;
-                  // });
-                },
-                child: Row(
-                  children: [
-                    // Radio(
-                    //     value: 1,
-                    //     groupValue: daata,
-                    //     onChanged: (val) async {
-                    //       setState(() {
-                    //         daata = val!;
-                    //       });
-                    //     }),
-                    // CustomAutoSizeTextMontserrat(
-                    //     fontSize: 15,
-                    //     fontWeight: FontWeight.w500,
-                    //     text: "Present")
-                  ],
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  // setState(() {
-                  //   daata = 2;
-                  // });
-                },
-                child: Row(
-                  children: [
-                    // Radio(
-                    //     value: 2,
-                    //     groupValue: daata,
-                    //     onChanged: (val) {
-                    //       print(daata);
-                    //       print(val);
-                    //       setState(() {
-                    //         daata = val!;
-                    //       });
-
-                    //       print(daata);
-                    //       ;
-                    //     }),
-                    // CustomAutoSizeTextMontserrat(
-                    //     fontSize: 15,
-                    //     fontWeight: FontWeight.w500,
-                    //     text: "Absent")
-                  ],
-                ),
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     // CustomAutoSizeTextMontserrat(
+              //     //     textColor: ThemeConstants.bluecolor,
+              //     //     text: "Mark Attendance"),
+              //     // InkWell(
+              //     //   onTap:
+              //     //       () {
+              //     //     context.pop();
+              //     //     // Get.back();
+              //     //   },
+              //     //   child:
+              //     //       CircleAvatar(
+              //     //     backgroundColor:
+              //     //         ThemeConstants.bluecolor,
+              //     //     radius:
+              //     //         10,
+              //     //     child:
+              //     //         Icon(
+              //     //       Icons.close,
+              //     //       size: 16,
+              //     //     ),
+              //     //   ),
+              //     // ),
+              //   ],
+              // ),
+              // InkWell(
+              //   onTap: () {
+              //     // setState(() {
+              //     //   daata = 1;
+              //     // });
+              //   },
+              //   child: Row(
+              //     children: [
+              //       // Radio(
+              //       //     value: 1,
+              //       //     groupValue: daata,
+              //       //     onChanged: (val) async {
+              //       //       setState(() {
+              //       //         daata = val!;
+              //       //       });
+              //       //     }),
+              //       // CustomAutoSizeTextMontserrat(
+              //       //     fontSize: 15,
+              //       //     fontWeight: FontWeight.w500,
+              //       //     text: "Present")
+              //     ],
+              //   ),
+              // ),
+              // InkWell(
+              //   onTap: () {
+              //     // setState(() {
+              //     //   daata = 2;
+              //     // });
+              //   },
+              //   child: Row(
+              //     children: [
+              //       // Radio(
+              //       //     value: 2,
+              //       //     groupValue: daata,
+              //       //     onChanged: (val) {
+              //       //       print(daata);
+              //       //       print(val);
+              //       //       setState(() {
+              //       //         daata = val!;
+              //       //       });
+              //
+              //       //       print(daata);
+              //       //       ;
+              //       //     }),
+              //       // CustomAutoSizeTextMontserrat(
+              //       //     fontSize: 15,
+              //       //     fontWeight: FontWeight.w500,
+              //       //     text: "Absent")
+              //     ],
+              //   ),
+              // ),
               SizedBox(
-                height: 5,
+                height: 0,
               ),
               // if (daata ==
               //     2) ...[
@@ -1492,33 +1620,32 @@ class MeetingTaskNoClose extends StatelessWidget {
               //   height: 5,
               // ),
               // if (daata == 2) ...[
-              Container(
-                width: double.infinity,
-                alignment: Alignment.topLeft,
-                child: CustomAutoSizeTextMontserrat(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    text: 'Please Specify reason of absent'),
-              ),
-              SizedBox(
-                height: 10,
-              ),
+              // Container(
+              //   width: double.infinity,
+              //   alignment: Alignment.topLeft,
+              //   child: CustomAutoSizeTextMontserrat(
+              //       fontSize: 14,
+              //       fontWeight: FontWeight.w500,
+              //       text: 'Please Specify reason of absent'),
+              // ),
+              // SizedBox(
+              //   height: 10,
+              // ),
               Form(
                 child: CustomTextField(
                     validator: Validator.notEmpty,
-                    hint: 'Please specify one',
+                    hint: 'Kindly specify reason for absence',
                     controller: reasonOfNotAttending),
               ),
-              CustomButton(
-                  backgroundColor: ThemeConstants.bluecolor,
-                  text: 'Submit',
-                  onPressed: () async {
+              SizedBox(height: 15,),
+              InkWell(
+                onTap: () async{
                     ApiServices api = ApiServices();
 
                     // reasonOfNotAttendance(meetingID, String text) async {
 
                     if (reasonOfNotAttending.value.text == '') {
-                      getToast('Kindly specify reason of absence');
+                      getToast('Kindly specify reason for absence');
                       return;
                     }
                     var res = await api.reasonOfNotAttending(
@@ -1546,7 +1673,74 @@ class MeetingTaskNoClose extends StatelessWidget {
                     //     print('object');
                     //   }
                     // }
-                  })
+                  },
+                child: Container(
+                  width: MediaQuery.of(context).size.width/2.5,
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: -0.2,
+                          blurRadius: 5,
+                          offset: const Offset(0, 4),
+                        )],
+                      gradient: ThemeConstants.backgroundGradient,
+                      // color: ThemeConstants.bluecolor,
+                      borderRadius: BorderRadius.circular(10)),
+                  padding: EdgeInsets.symmetric(
+                      vertical: 10, horizontal: 10),
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 12.0, left: 12, top: 2, bottom: 2),
+                    child: Center(
+                      child: CustomAutoSizeTextMontserrat(
+                        align: TextAlign.center,
+                          text: 'Submit',
+                          fontSize: 12,
+                          fontWeight: ThemeConstants.fontWeightBold,
+                          textColor: ThemeConstants.whitecolor),
+                    ),
+                  ),
+                ),
+              )
+              // CustomButton(
+              //     backgroundColor: ThemeConstants.bluecolor,
+              //     text: 'Submit',
+              //     onPressed: () async {
+              //       ApiServices api = ApiServices();
+              //
+              //       // reasonOfNotAttendance(meetingID, String text) async {
+              //
+              //       if (reasonOfNotAttending.value.text == '') {
+              //         getToast('Kindly specify reason for absence');
+              //         return;
+              //       }
+              //       var res = await api.reasonOfNotAttending(
+              //           taskId,
+              //           meetingId,
+              //           Get.find<BaseController>().id,
+              //           reasonOfNotAttending.text);
+              //
+              //       await api.updateNoteTaskStatus(
+              //           id: taskId,
+              //           created_by: Get.find<BaseController>().id,
+              //           meeting_attended: false);
+              //
+              //       context.pop();
+              //
+              //       // }
+              //       notesTaskBloc.add(NotesTaskChangeOpenCloseAllEvent(0));
+              //       // if (daata == 1) {
+              //       //   controller.markAttendance(meetingData.id!);
+              //       // } else {
+              //       //   if (_keyForReasonOfNotAttending.currentState!
+              //       //       .validate()) {
+              //       //     controller.reasonOfNotAttendance(
+              //       //         meetingData.id!, reasonOfNotAttending.text);
+              //       //     print('object');
+              //       //   }
+              //       // }
+              //     }
+              //     )
             ],
           )),
     );

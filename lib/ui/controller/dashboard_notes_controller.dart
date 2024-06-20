@@ -104,60 +104,211 @@ class DashboardNotesController extends GetxController with StateMixin {
 
   var decryptedNote = '';
   TextEditingController password = TextEditingController();
+
   showThisNotesList(BuildContext context) {
     beta = [];
     for (var i = 0; i < data.length; i++) {
       if (selectedDropDown == 'All Notes') {
-        beta.add(Container(
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-          // width: MediaQuery.of(context).size.width - 30,
-          decoration: BoxDecoration(
-              border: Border.all(), borderRadius: BorderRadius.circular(20.0)),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              children: [
-                Align(
-                  alignment: AlignmentDirectional.topStart,
-                  child: HtmlWidget(
-                    "${data[i].note}",
-                    textStyle: GoogleFonts.montserrat(
-                      fontWeight: FontWeight.w500,
-                      color: ThemeConstants.TextColor,
-                      fontSize: 14.0,
+        beta.add(Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 5),
+            // width: MediaQuery.of(context).size.width - 30,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                // gradient: ThemeConstants.backgroundGradient,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blueAccent.withOpacity(0.3),
+                    spreadRadius: -0.2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 4),
+                  )
+                ],
+                border: Border.all(
+                    width: 0.8, color: ThemeConstants.lightblueColor2),
+                borderRadius: BorderRadius.circular(8.0)),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Align(
+                    alignment: AlignmentDirectional.topStart,
+                    child: HtmlWidget(
+                      "${data[i].note}",
+                      textStyle: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.w500,
+                        color: ThemeConstants.TextColor,
+                        fontSize: 14.0,
+                      ),
                     ),
                   ),
-                ),
-                Align(
-                  alignment: AlignmentDirectional.topStart,
-                  child: CustomAutoSizeTextMontserrat(
-                    text: "${data[i].createdAt?.split('T')[0]}",
-                    textColor: ThemeConstants.TextColor,
-                    fontSize: 12,
+                  Align(
+                    alignment: AlignmentDirectional.topStart,
+                    child: CustomAutoSizeTextMontserrat(
+                      text: "${data[i].createdAt?.split('T')[0]}",
+                      textColor: ThemeConstants.TextColor,
+                      fontSize: 12,
+                    ),
                   ),
-                ),
-                InkWell(
-                  onTap: () {
-                    // Get.to(AssignToView(), arguments: widget.dataList![i]);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Align(
-                      alignment: AlignmentDirectional.topEnd,
-                      child: Container(
-                        height: 30,
-                        width: 120,
-                        decoration: BoxDecoration(
-                            color: ThemeConstants.bluecolor,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(30.0))),
-                        child: InkWell(
-                          onTap: () {
-                            context.push(
-                                '${Routes.dashboard}/${Routes.viewDashboardNotes}/${Routes.assignDashboardNotes}',
-                                extra: data[i]);
-                            // Get.to(AssignToView2(), arguments: data[i]);
-                          },
+                  InkWell(
+                    onTap: () {
+                      // Get.to(AssignToView(), arguments: widget.dataList![i]);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Align(
+                        alignment: AlignmentDirectional.topEnd,
+                        child: Container(
+                          height: 40,
+                          width: 120,
+                          decoration: BoxDecoration(
+                              gradient: ThemeConstants.backgroundGradient,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: -0.2,
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 4),
+                                )
+                              ],
+                              borderRadius: const BorderRadius.all(
+                                  Radius.circular(10.0))),
+                          child: InkWell(
+                            onTap: () async {
+                              await showAnimatedDialog(
+                                  animationType:
+                                      DialogTransitionType.slideFromBottomFade,
+                                  context: context,
+                                  builder: (_) => AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      contentPadding: EdgeInsets.all(8),
+                                      content: Container(
+                                          height: 450,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: AssignToView2(
+                                              argu: FindNotesModel(),
+                                            ),
+                                          ))));
+                              // context.push(
+                              //     '${Routes.dashboard}/${Routes.viewDashboardNotes}/${Routes.assignDashboardNotes}',
+                              //     extra: data[i]);
+                              // Get.to(AssignToView2(), arguments: data[i]);
+                            },
+                            child: Center(
+                              child: CustomAutoSizeTextMontserrat(
+                                text: "Assign to",
+                                textColor: ThemeConstants.whitecolor,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ));
+      } else if (selectedDropDown == getNoteTypefromId(data[i].noteType!)) {
+        beta.add(Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 5),
+            // width: MediaQuery.of(context).size.width - 30,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                // gradient: ThemeConstants.backgroundGradient,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blueAccent.withOpacity(0.3),
+                    spreadRadius: -0.2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 4),
+                  )
+                ],
+                border: Border.all(
+                    width: 0.8, color: ThemeConstants.lightblueColor2),
+                borderRadius: BorderRadius.circular(8.0)),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                children: [
+                  Align(
+                    alignment: AlignmentDirectional.topStart,
+                    child: HtmlWidget(
+                      "${data[i].note}",
+                      textStyle: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.w500,
+                        color: ThemeConstants.TextColor,
+                        fontSize: 14.0,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional.topStart,
+                    child: CustomAutoSizeTextMontserrat(
+                      text: "${data[i].createdAt?.split('T')[0]}",
+                      textColor: ThemeConstants.TextColor,
+                      fontSize: 12,
+                    ),
+                  ),
+                  InkWell(
+                    // onTap: () async {
+                    //   // await showDialog(context: context, builder: (_)=> AlertDialog(content: AssignToView2(argu: FindNotesModel(),)));
+                    //   context.push(
+                    //       '${Routes.dashboard}/${Routes.viewDashboardNotes}/${Routes.assignDashboardNotes}',
+                    //       extra: data[i]);
+                    //   // Get.to(AssignToView(), arguments: widget.dataList![i]);
+                    // },
+                    //this was silly mistake done by previous developer.
+                    onTap: () async {
+                      await showAnimatedDialog(
+                          animationType:
+                              DialogTransitionType.slideFromBottomFade,
+                          context: context,
+                          builder: (_) => AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              contentPadding: EdgeInsets.all(8),
+                              content: Container(
+                                  height: 450,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: AssignToView2(
+                                      argu: FindNotesModel(),
+                                    ),
+                                  ))));
+                      // context.push(
+                      //     '${Routes.dashboard}/${Routes.viewDashboardNotes}/${Routes.assignDashboardNotes}',
+                      //     extra: data[i]);
+                      // Get.to(AssignToView2(), arguments: data[i]);
+                    },
+
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Align(
+                        alignment: AlignmentDirectional.topEnd,
+                        child: Container(
+                          height: 40,
+                          width: 120,
+                          decoration: BoxDecoration(
+                              gradient: ThemeConstants.backgroundGradient,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: -0.2,
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 4),
+                                )
+                              ],
+                              borderRadius: const BorderRadius.all(
+                                  Radius.circular(10.0))),
                           child: Center(
                             child: CustomAutoSizeTextMontserrat(
                               text: "Assign to",
@@ -169,215 +320,161 @@ class DashboardNotesController extends GetxController with StateMixin {
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-        ));
-      } else if (selectedDropDown == getNoteTypefromId(data[i].noteType!)) {
-        beta.add(Container(
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-          // width: MediaQuery.of(context).size.width - 30,
-          decoration: BoxDecoration(
-              border: Border.all(), borderRadius: BorderRadius.circular(20.0)),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              children: [
-                Align(
-                  alignment: AlignmentDirectional.topStart,
-                  child: HtmlWidget(
-                    "${data[i].note}",
-                    textStyle: GoogleFonts.montserrat(
-                      fontWeight: FontWeight.w500,
-                      color: ThemeConstants.TextColor,
-                      fontSize: 14.0,
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: AlignmentDirectional.topStart,
-                  child: CustomAutoSizeTextMontserrat(
-                    text: "${data[i].createdAt?.split('T')[0]}",
-                    textColor: ThemeConstants.TextColor,
-                    fontSize: 12,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    context.push(
-                        '${Routes.dashboard}/${Routes.viewDashboardNotes}/${Routes.assignDashboardNotes}',
-                        extra: data[i]);
-                    // Get.to(AssignToView(), arguments: widget.dataList![i]);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Align(
-                      alignment: AlignmentDirectional.topEnd,
-                      child: Container(
-                        height: 30,
-                        width: 120,
-                        decoration: BoxDecoration(
-                            color: ThemeConstants.bluecolor,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(30.0))),
-                        child: Center(
-                          child: CustomAutoSizeTextMontserrat(
-                            text: "Assign to",
-                            textColor: ThemeConstants.whitecolor,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                if (data[i].noteType == 10) ...[
-                  InkWell(
-                    onTap: () {
-                      // Get.to(AssignToView(), arguments: widget.dataList![i]);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Align(
-                        alignment: AlignmentDirectional.topEnd,
-                        child: Container(
-                          height: 30,
-                          width: 120,
-                          decoration: BoxDecoration(
-                              color: ThemeConstants.bluecolor,
-                              borderRadius: const BorderRadius.all(
-                                  Radius.circular(30.0))),
-                          child: InkWell(
-                            onTap: () {
-                              // var con = Get.context;
+                  if (data[i].noteType == 10) ...[
+                    InkWell(
+                      onTap: () {
+                        // Get.to(AssignToView(), arguments: widget.dataList![i]);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Align(
+                          alignment: AlignmentDirectional.topEnd,
+                          child: Container(
+                            height: 40,
+                            width: 120,
+                            decoration: BoxDecoration(
+                                gradient: ThemeConstants.backgroundGradient,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: -0.2,
+                                    blurRadius: 5,
+                                    offset: const Offset(0, 4),
+                                  )
+                                ],
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(10.0))),
+                            child: InkWell(
+                              onTap: () {
+                                // var con = Get.context;
 
-                              context.push(
-                                  '${Routes.dashboard}/${Routes.viewDashboardNotes}/${Routes.decryptNoteView}',
-                                  extra: data[i].note!);
+                                context.push(
+                                    '${Routes.dashboard}/${Routes.viewDashboardNotes}/${Routes.decryptNoteView}',
+                                    extra: data[i].note!);
 
-                              // showAnimatedDialog(
-                              //     animationType:
-                              //         DialogTransitionType.slideFromBottomFade,
-                              //     curve: Curves.easeInOutQuart,
-                              //     context: con!,
-                              //     builder: (_) => StatefulBuilder(
-                              //         builder: (context,
-                              //                 StateSetter setState) =>
-                              //             AlertDialog(
-                              //               content: Container(
-                              //                   // height: 300,
-                              //                   child: Column(
-                              //                 mainAxisSize: MainAxisSize.min,
-                              //                 children: [
-                              //                   Text(data[i].note!),
-                              //                   const SizedBox(
-                              //                     height: 20,
-                              //                   ),
-                              //                   CustomTextField(
-                              //                       hint: 'Enter Password',
-                              //                       controller: password),
-                              //                   const SizedBox(
-                              //                     height: 20,
-                              //                   ),
-                              //                   InkWell(
-                              //                     onTap: () async {
-                              //                       // if (type == true) {
-                              //                       //   await data(note, keyBaazi.text);
-                              //                       //   keyBaazi.clear();
-                              //                       // } else if (type == false) {
+                                // showAnimatedDialog(
+                                //     animationType:
+                                //         DialogTransitionType.slideFromBottomFade,
+                                //     curve: Curves.easeInOutQuart,
+                                //     context: con!,
+                                //     builder: (_) => StatefulBuilder(
+                                //         builder: (context,
+                                //                 StateSetter setState) =>
+                                //             AlertDialog(
+                                //               content: Container(
+                                //                   // height: 300,
+                                //                   child: Column(
+                                //                 mainAxisSize: MainAxisSize.min,
+                                //                 children: [
+                                //                   Text(data[i].note!),
+                                //                   const SizedBox(
+                                //                     height: 20,
+                                //                   ),
+                                //                   CustomTextField(
+                                //                       hint: 'Enter Password',
+                                //                       controller: password),
+                                //                   const SizedBox(
+                                //                     height: 20,
+                                //                   ),
+                                //                   InkWell(
+                                //                     onTap: () async {
+                                //                       // if (type == true) {
+                                //                       //   await data(note, keyBaazi.text);
+                                //                       //   keyBaazi.clear();
+                                //                       // } else if (type == false) {
 
-                              //                       // print(pass.text);
-                              //                       decryptedNote =
-                              //                           await getdecryptedNote(
-                              //                               data[i].note,
-                              //                               password.text);
+                                //                       // print(pass.text);
+                                //                       decryptedNote =
+                                //                           await getdecryptedNote(
+                                //                               data[i].note,
+                                //                               password.text);
 
-                              //                       // print(datatoShow);
-                              //                       // stateSetter(() {});
-                              //                       // }
-                              //                     },
-                              //                     child: Container(
-                              //                         decoration: BoxDecoration(
-                              //                           borderRadius:
-                              //                               BorderRadius
-                              //                                   .circular(10),
-                              //                           color:
-                              //                               Colors.blue[300]!,
-                              //                         ),
-                              //                         width: 100,
-                              //                         alignment:
-                              //                             Alignment.center,
-                              //                         padding:
-                              //                             const EdgeInsets.all(
-                              //                                 10),
-                              //                         child: Text('Decrypt')),
-                              //                   ),
-                              //                   const SizedBox(
-                              //                     height: 20,
-                              //                   ),
-                              //                   Container(
-                              //                     decoration: BoxDecoration(
-                              //                         border: Border.all(
-                              //                           width: 1,
-                              //                           color:
-                              //                               Colors.deepOrange,
-                              //                         ),
-                              //                         borderRadius:
-                              //                             BorderRadius.circular(
-                              //                                 20)),
-                              //                     width: double.infinity,
-                              //                     height: 100,
-                              //                     padding:
-                              //                         const EdgeInsets.all(10),
-                              //                     alignment: Alignment.center,
-                              //                     child: Row(
-                              //                       mainAxisAlignment:
-                              //                           MainAxisAlignment
-                              //                               .spaceBetween,
-                              //                       children: [
-                              //                         const Text(
-                              //                             'Decrypted Text:',
-                              //                             style: TextStyle(
-                              //                                 fontWeight:
-                              //                                     FontWeight
-                              //                                         .bold)),
-                              //                         const SizedBox(
-                              //                           width: 20,
-                              //                         ),
-                              //                         Container(
-                              //                           child: Flexible(
-                              //                             child: Text(
-                              //                                 '$decryptedNote',
-                              //                                 style: const TextStyle(
-                              //                                     fontWeight:
-                              //                                         FontWeight
-                              //                                             .bold)),
-                              //                           ),
-                              //                         ),
-                              //                       ],
-                              //                     ),
-                              //                   )
-                              //                 ],
-                              //               )),
-                              //             )));
+                                //                       // print(datatoShow);
+                                //                       // stateSetter(() {});
+                                //                       // }
+                                //                     },
+                                //                     child: Container(
+                                //                         decoration: BoxDecoration(
+                                //                           borderRadius:
+                                //                               BorderRadius
+                                //                                   .circular(10),
+                                //                           color:
+                                //                               Colors.blue[300]!,
+                                //                         ),
+                                //                         width: 100,
+                                //                         alignment:
+                                //                             Alignment.center,
+                                //                         padding:
+                                //                             const EdgeInsets.all(
+                                //                                 10),
+                                //                         child: Text('Decrypt')),
+                                //                   ),
+                                //                   const SizedBox(
+                                //                     height: 20,
+                                //                   ),
+                                //                   Container(
+                                //                     decoration: BoxDecoration(
+                                //                         border: Border.all(
+                                //                           width: 1,
+                                //                           color:
+                                //                               Colors.deepOrange,
+                                //                         ),
+                                //                         borderRadius:
+                                //                             BorderRadius.circular(
+                                //                                 20)),
+                                //                     width: double.infinity,
+                                //                     height: 100,
+                                //                     padding:
+                                //                         const EdgeInsets.all(10),
+                                //                     alignment: Alignment.center,
+                                //                     child: Row(
+                                //                       mainAxisAlignment:
+                                //                           MainAxisAlignment
+                                //                               .spaceBetween,
+                                //                       children: [
+                                //                         const Text(
+                                //                             'Decrypted Text:',
+                                //                             style: TextStyle(
+                                //                                 fontWeight:
+                                //                                     FontWeight
+                                //                                         .bold)),
+                                //                         const SizedBox(
+                                //                           width: 20,
+                                //                         ),
+                                //                         Container(
+                                //                           child: Flexible(
+                                //                             child: Text(
+                                //                                 '$decryptedNote',
+                                //                                 style: const TextStyle(
+                                //                                     fontWeight:
+                                //                                         FontWeight
+                                //                                             .bold)),
+                                //                           ),
+                                //                         ),
+                                //                       ],
+                                //                     ),
+                                //                   )
+                                //                 ],
+                                //               )),
+                                //             )));
 
-                              // // Get.to(AssignToView2(), arguments: data[i]);
-                            },
-                            child: Center(
-                              child: CustomAutoSizeTextMontserrat(
-                                text: "Decrypt",
-                                textColor: ThemeConstants.whitecolor,
-                                fontSize: 14,
+                                // // Get.to(AssignToView2(), arguments: data[i]);
+                              },
+                              child: Center(
+                                child: CustomAutoSizeTextMontserrat(
+                                  text: "Decrypt",
+                                  textColor: ThemeConstants.whitecolor,
+                                  fontSize: 14,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  )
-                ]
-              ],
+                    )
+                  ]
+                ],
+              ),
             ),
           ),
         ));
@@ -390,6 +487,7 @@ class DashboardNotesController extends GetxController with StateMixin {
   }
 
   var decryptedNoteData = '';
+
   getdecryptedNote(note, password) async {
     // var data = await noteText.document.toDelta();
     print(data);

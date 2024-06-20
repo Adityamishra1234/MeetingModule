@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+// import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
 import 'package:meeting_module2/ui/controller/add_more_notes_controller.dart';
@@ -15,15 +15,15 @@ class ViewDocs extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.all(10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 10,
+                height: 20,
               ),
               Container(
+                padding: EdgeInsets.all(10.0),
                 child: CustomAutoSizeTextMontserrat(
                     align: TextAlign.left,
                     textColor: ThemeConstants.bluecolor,
@@ -31,10 +31,10 @@ class ViewDocs extends StatelessWidget {
                     text: 'View Document Notes'),
               ),
               SizedBox(
-                height: 10,
+                height: 20,
               ),
               Expanded(
-                child: ListView.builder(
+                child: ListView.builder(padding: EdgeInsets.all(10),
                     itemCount: Get.find<AddMoreNotesController>()
                         .imageNotesList
                         .length,
@@ -46,15 +46,23 @@ class ViewDocs extends StatelessWidget {
 
                       var date = model.createdAt!.split('T')[0];
                       return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          padding: const EdgeInsets.symmetric(vertical: 10.0),
                           child: Container(
                               decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: ThemeConstants.TextColor),
+                                color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 0.2,
+                                      blurRadius: 5,
+                                      offset: const Offset(0, 4),
+                                    )],
+                                  // border: Border.all(
+                                  //     color: ThemeConstants.TextColor),
                                   borderRadius: const BorderRadius.all(
-                                      Radius.circular(15.0))),
+                                      Radius.circular(10.0))),
                               child: Padding(
-                                padding: const EdgeInsets.all(15.0),
+                                padding: const EdgeInsets.all(25.0),
                                 child: Row(
                                   children: [
                                     // CustomAutoSizeTextMontserrat(

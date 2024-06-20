@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meeting_module2/utils/theme.dart';
 
 class CustomButton extends StatelessWidget {
   CustomButton({
@@ -22,7 +23,8 @@ class CustomButton extends StatelessWidget {
         // alignment: Alignment.center,
         decoration: BoxDecoration(
             color: backgroundColor,
-            borderRadius: BorderRadius.circular(24),
+            gradient: ThemeConstants.backgroundGradient,
+            borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
                   color: Color.fromARGB(0, 0, 0, 0),

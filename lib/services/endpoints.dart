@@ -10,7 +10,15 @@ class Endpoints {
   // static String baseUrl = 'http://10.0.2.2:3001/api/';
 
   ///production
-  static String baseUrl = 'https://meeting.sieceducation.in/api/';
+  // static String baseUrl = 'https://meeting.sieceducation.in/api/';  //production URL
+  // static String baseUrl = 'http://192.168.107.130:3001/api/';  //production URL
+  static String baseUrl = 'http://164.52.208.95:3002/api/';
+  // static String baseUrl = 'http://192.168.107.130:3001/api/';
+
+  //updated here on 30th of May
+
+  static String getStateCity = 'states-city';
+  static String getCities = 'city';
 
   static String allMeetings = 'getMeetingListByUser';
 
