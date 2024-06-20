@@ -19,14 +19,11 @@ class CustomNoDataWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Icon(Icons.error_outline_rounded,
-          //     color: const Color.fromARGB(255, 136, 136, 136)),
-          Center(child: Image.asset("assets/images/noData.gif",scale: 0.6,)),
-          // CustomAutoSizeTextMontserrat(
-          //     text: '$text',
-          //     align: TextAlign.center,
-          //     fontSize: 18,
-          //     textColor: const Color.fromARGB(255, 136, 136, 136)),
+          Icon(Icons.error_outline_rounded,
+              color: const Color.fromARGB(255, 136, 136, 136)),
+          CustomAutoSizeTextMontserrat(
+              text: '$text',
+              textColor: const Color.fromARGB(255, 136, 136, 136)),
         ],
       ),
     );

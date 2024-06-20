@@ -65,7 +65,7 @@ class CalendarHeader extends StatelessWidget {
               padding: headerStyle.leftChevronPadding,
             ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+            padding: const EdgeInsets.only(right: 10),
             child: Icon(
               Icons.calendar_month,
               color: ThemeConstants.whitecolor,
@@ -85,35 +85,35 @@ class CalendarHeader extends StatelessWidget {
                   ),
                 ),
           ),
-          // InkWell(
-          //   onTap: onTapCustomButtonInHeader,
-          //   child: Container(
-          //     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          //     decoration: BoxDecoration(
-          //         borderRadius: BorderRadius.circular(2200),
-          //         border:
-          //             Border.all(width: 1, color: ThemeConstants.whitecolor)),
-          //     child: Row(children: [
-          //       CircleAvatar(
-          //         radius: 9,
-          //         backgroundColor: ThemeConstants.whitecolor,
-          //         child: Icon(
-          //           Icons.add,
-          //           size: 16,
-          //           color: ThemeConstants.bluecolor,
-          //         ),
-          //       ),
-          //       SizedBox(
-          //         width: 8,
-          //       ),
-          //       CustomAutoSizeTextMontserrat(
-          //         text: '',
-          //         fontSize: 10,
-          //         textColor: ThemeConstants.whitecolor,
-          //       )
-          //     ]),
-          //   ),
-          // ),
+          InkWell(
+            onTap: onTapCustomButtonInHeader,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(2200),
+                  border:
+                      Border.all(width: 1, color: ThemeConstants.whitecolor)),
+              child: Row(children: [
+                CircleAvatar(
+                  radius: 9,
+                  backgroundColor: ThemeConstants.whitecolor,
+                  child: Icon(
+                    Icons.add,
+                    size: 16,
+                    color: ThemeConstants.bluecolor,
+                  ),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                CustomAutoSizeTextMontserrat(
+                  text: 'New Meeting',
+                  fontSize: 10,
+                  textColor: ThemeConstants.whitecolor,
+                )
+              ]),
+            ),
+          ),
           if (headerStyle.formatButtonVisible &&
               availableCalendarFormats.length > 1)
             Padding(

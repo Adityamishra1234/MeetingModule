@@ -23,7 +23,6 @@ import 'package:meeting_module2/ui/screens/view_docs.dart';
 import 'package:meeting_module2/ui/screens/view_notes.dart';
 import 'package:meeting_module2/utils/custom_doc_viewer.dart';
 import 'package:meeting_module2/utils/custom_image_viewer.dart';
-import 'package:meeting_module2/widget/customBottomNavBar.dart';
 import 'package:meeting_module2/widget/decryption_popup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -47,7 +46,6 @@ class Routes {
   static const viewDashboardNotes = 'viewDashboardNotes';
 
   static const usesNotesTask = 'userNotesTask';
-  static const navBar = CustomNavBar.routeNamed;
 }
 
 class GoRouterConfig {
@@ -142,12 +140,6 @@ class GoRouterConfig {
       //
       //      )
 
-
-      GoRoute(
-          path: '${Routes.navBar}',
-        builder: (context, state) => CustomNavBar(currentIndex: 0),
-
-      ),
       GoRoute(
         path: '${Routes.assignViewMeetings}',
         builder: (context, state) => AssignToView(
@@ -275,8 +267,7 @@ class GoRouterConfig {
           await Get.find<BaseController>().getId();
           // BuildContext conte = Get.context!;
 
-          return CustomNavBar.routeNamed;
-          // return DashBoard.routeNamed;    //isko comment kra fir jaa kar chala hai code..bottom nav bar!! LOL (16 th April)!!!
+          return DashBoard.routeNamed;
           // context.go(DashBoard.routeNamed);
           // Get.offAllNamed(DashBoard.routeNamed);
         } else {

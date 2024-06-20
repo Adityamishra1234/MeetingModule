@@ -76,7 +76,7 @@ class SigninController extends GetxController with StateMixin {
   @override
   void onInit() async {
     change(null, status: RxStatus.loading());
-    // await showRegisterOption();
+    showRegisterOption();
     super.onInit();
 
     change(null, status: RxStatus.success());

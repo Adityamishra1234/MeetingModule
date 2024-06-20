@@ -96,8 +96,6 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
           borderRadius: BorderRadius.all(Radius.circular(20.0))),
       insetPadding: const EdgeInsets.symmetric(horizontal: 20),
       content: Container(
-        decoration: BoxDecoration(
-        ),
         width: MediaQuery.of(context).size.width * 0.7,
         height: MediaQuery.of(context).size.height * 0.6,
         child: Stack(
@@ -117,7 +115,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                         text: "Reschedule Meeting",
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
-                        textColor: Color(0xff3088C6),
+                        textColor: ThemeConstants.bluecolor,
                       )),
                   Spacer(),
                 ],
@@ -125,9 +123,8 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
             ),
             FractionallySizedBox(
               alignment: Alignment.bottomCenter,
-              heightFactor: 0.93,
+              heightFactor: 0.9,
               child: ListView(
-                physics: const BouncingScrollPhysics(),
                 padding: EdgeInsets.all(0),
                 children: [
                   // Padding(
@@ -386,11 +383,9 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                         Expanded(
                           child: Container(
                             margin: const EdgeInsets.symmetric(vertical: 5),
-                            width: MediaQuery.of(context).size.width,
                             padding: const EdgeInsets.symmetric(vertical: 5),
-                            height: 120,
+                            height: 110,
                             child: ListView.builder(
-                              physics: const BouncingScrollPhysics(),
                                 scrollDirection: Axis.horizontal,
                                 itemCount: 3,
                                 itemBuilder: (context, index) {
@@ -417,30 +412,21 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                       //     controller.branchListwithFlag[index].id!;
                                     },
                                     child: Container(
-                                      padding:
-                                      const EdgeInsets.symmetric(horizontal: 5,vertical: 10),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5),
                                       margin: const EdgeInsets.symmetric(
-                                          horizontal: 10,vertical: 10),
-                                      width: 135,
-                                      height: 110,
+                                          horizontal: 10),
+                                      width: 140,
                                       decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.indigoAccent.withOpacity(0.3),
-                                              spreadRadius: -0.2,
-                                              blurRadius: 5,
-                                              offset: const Offset(0, 4),
-                                            )],
                                           color: modeOfMeeting ==
                                                   modeOfMeetingList[index]
-                                              ? Color(0x803088C6)
+                                              ? ThemeConstants.lightblueColor2
                                               : ThemeConstants.whitecolor,
                                           borderRadius:
                                               BorderRadius.circular(15),
-                                          // border: Border.all(
-                                          //     width: 1,
-                                          //     color: ThemeConstants.bluecolor)
-                                      ),
+                                          border: Border.all(
+                                              width: 1,
+                                              color: ThemeConstants.bluecolor)),
                                       child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -459,11 +445,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                             Text(
                                               '${modeOfMeetingList[index]}',
                                               textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                color: modeOfMeeting ==
-                                                    modeOfMeetingList[index]
-                                                    ? Colors.white
-                                                    : ThemeConstants.blackcolor,
+                                              style: const TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -702,7 +684,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                             ),
                           ),
                           CustomButton(
-                              backgroundColor: Color(0xff3088C6),
+                              backgroundColor: ThemeConstants.bluecolor,
                               text: 'Update',
                               onPressed: () async {
                                 if (key.currentState!.validate() == true) {
@@ -740,7 +722,7 @@ class _ResheduleMeetingDialogueState extends State<ResheduleMeetingDialogue> {
                                       } else {
                                         if (specifyLocation.text.isEmpty) {
                                           getToast(
-                                              "Kindly enter your specified location");
+                                              "Kindly enter your specify location");
                                         } else {
                                           await updateData();
                                         }

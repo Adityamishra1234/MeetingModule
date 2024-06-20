@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:meeting_module2/models/dashboardNotesModel.dart';
 import 'package:meeting_module2/models/findNotesModel.dart';
@@ -47,318 +46,130 @@ class _AssignToView2State extends State<AssignToView2> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: getController.obx(
-          (state) => Form(
-            key: getController.key,
-            child: Container(
-              color: Colors.white,
-              width: 350,
-              // padding: EdgeInsets.only(left: 15, top: 10, right: 15),
-              child: ListView(
-                physics: BouncingScrollPhysics(),
-                children: [
-                  Align(
-                    alignment: AlignmentDirectional.topStart,
-                    child: Text(
-                      "Assign Task",
-                      style: GoogleFonts.aBeeZee(
-                        textStyle: TextStyle(
-                          fontSize: 25,
-                          color:Color(0xff3088C6),
-                          fontWeight: FontWeight.w600,
+          (state) => SafeArea(
+                child: Form(
+                  key: getController.key,
+                  child: Container(
+                    padding: EdgeInsets.only(left: 15, top: 10, right: 15),
+                    child: ListView(
+                      children: [
+                        Align(
+                          alignment: AlignmentDirectional.topStart,
+                          child: CustomAutoSizeTextMontserrat(
+                            text: "Assign Task",
+                            fontSize: 35,
+                            textColor: ThemeConstants.bluecolor,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: CustomAutoSizeTextMontserrat(
-                      text: "Specify Task Name",
-                      mandatory: true,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: CustomTextField(
-                        validator: Validator.notEmpty,
-                        hint: "Type of task",
-                        controller: controller),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: CustomAutoSizeTextMontserrat(
-                      text: "Task Owner",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  CustomMultiDownSingleAllUser(
-
-                    // model: ['d', 'd'],
-                      model:
-                      Get.find<BaseController>().allSiecMembersList,
-                      // callbackFunction: callback,
-                      // callbackFunctionMulti: (val) {
-                      //   print(val);
-                      // },
-                      callbackFunctionSingle: (val) {
-                        getController.taskOwner =
-                        Get.find<BaseController>()
-                            .allSiecMembersList[0];
-                        getController.update();
-                      },
-                      enableMultiSelect: false,
-                      choosefieldtype: false,
-                      initialSelectedValue: "1"),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: CustomAutoSizeTextMontserrat(
-                      text: "Select a deadline for a task",
-                      mandatory: true,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(),
-                    child: Container(
-                      height: 45,
-                      child: CustomTimerWidget(
-                        callback: (value) {
-                          print(value);
-                          getController.deadLine = value;
-                          getController.update();
-                        },
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Row(
-                    children: [
-                      const Spacer(),
-
-                      InkWell(
-                        onTap: (){
-                          if (getController.key.currentState!
-                              .validate()) {
-                            // print(getController.taskOwner.name);
-                            getController.assign(
-                                data, controller.text, context);
-                          }
-                        },
-                        child: Container(
-                          height: 40,
-                          width: 120,
-                          decoration: BoxDecoration(
-                              gradient: ThemeConstants.backgroundGradient,
-                              boxShadow: [
-                                BoxShadow(
-
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: -0.2,
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 4),
-                                )],
-                              borderRadius:
-                              const BorderRadius.all(Radius.circular(10.0))),
-                          child: Center(child: CustomAutoSizeTextMontserrat(text: "Add Task",textColor: Colors.white,align: TextAlign.center,)),
+                        SizedBox(
+                          height: 20,
                         ),
-                      ),
-                      // SizedBox(
-                      //   width: 150,
-                      //   height: 50,
-                      //   child: CustomButton(
-                      //     backgroundColor: ThemeConstants.bluecolor,
-                      //     text: "Add Task",
-                      //     onPressed: () {
-                      //       if (getController.key.currentState!
-                      //           .validate()) {
-                      //         // print(getController.taskOwner.name);
-                      //         getController.assign(
-                      //             data, controller.text, context);
-                      //       }
-                      //       // getController.key.currentState!.save();
-                      //       // print(getController.taskOwner.name);
-                      //     },
-                      //   ),
-                      // ),
-                      SizedBox(
-                        width: 5,
-                      )
-                    ],
-                  )
-                ],
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: CustomAutoSizeTextMontserrat(
+                            text: "Specify Task Name",
+                            mandatory: true,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: CustomTextField(
+                              validator: Validator.notEmpty,
+                              hint: "type of task",
+                              controller: controller),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: CustomAutoSizeTextMontserrat(
+                            text: "Task Owner",
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        CustomMultiDownSingleAllUser(
+
+                            // model: ['d', 'd'],
+                            model:
+                                Get.find<BaseController>().allSiecMembersList,
+                            // callbackFunction: callback,
+                            // callbackFunctionMulti: (val) {
+                            //   print(val);
+                            // },
+                            callbackFunctionSingle: (val) {
+                              getController.taskOwner =
+                                  Get.find<BaseController>()
+                                      .allSiecMembersList[0];
+                              getController.update();
+                            },
+                            enableMultiSelect: false,
+                            choosefieldtype: false,
+                            initialSelectedValue: "1"),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: CustomAutoSizeTextMontserrat(
+                            text: "Select a deadline for a task",
+                            mandatory: true,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(),
+                          child: Container(
+                            height: 45,
+                            child: CustomTimerWidget(
+                              callback: (value) {
+                                print(value);
+                                getController.deadLine = value;
+                                getController.update();
+                              },
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            const Spacer(),
+                            SizedBox(
+                              width: 150,
+                              height: 50,
+                              child: CustomButton(
+                                backgroundColor: ThemeConstants.bluecolor,
+                                text: "Add Task",
+                                onPressed: () {
+                                  if (getController.key.currentState!
+                                      .validate()) {
+                                    // print(getController.taskOwner.name);
+                                    getController.assign(
+                                        data, controller.text, context);
+                                  }
+                                  // getController.key.currentState!.save();
+                                  // print(getController.taskOwner.name);
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
           onLoading: getLoading(context)),
     );
   }
 }
-
-
-// Container(
-//               color: Colors.white,
-//               width: 350,
-//               // padding: EdgeInsets.only(left: 15, top: 10, right: 15),
-//               child: ListView(
-//                 physics: BouncingScrollPhysics(),
-//                 children: [
-//                   Align(
-//                     alignment: AlignmentDirectional.topStart,
-//                     child: Text(
-//                       "Assign Task",
-//                       style: GoogleFonts.aBeeZee(
-//                           textStyle: TextStyle(
-//                             fontSize: 25,
-//                             color:Color(0xff3088C6),
-//                             fontWeight: FontWeight.w600,
-//                           ),
-//                       ),
-//                     ),
-//                   ),
-//                   SizedBox(
-//                     height: 20,
-//                   ),
-//                   Padding(
-//                     padding: const EdgeInsets.only(bottom: 8),
-//                     child: CustomAutoSizeTextMontserrat(
-//                       text: "Specify Task Name",
-//                       mandatory: true,
-//                       fontSize: 14,
-//                       fontWeight: FontWeight.w500,
-//                     ),
-//                   ),
-//                   Padding(
-//                     padding: const EdgeInsets.only(bottom: 10),
-//                     child: CustomTextField(
-//                         validator: Validator.notEmpty,
-//                         hint: "Type of task",
-//                         controller: controller),
-//                   ),
-//                   SizedBox(
-//                     height: 10,
-//                   ),
-//                   Padding(
-//                     padding: const EdgeInsets.only(bottom: 8),
-//                     child: CustomAutoSizeTextMontserrat(
-//                       text: "Task Owner",
-//                       fontSize: 14,
-//                       fontWeight: FontWeight.w500,
-//                     ),
-//                   ),
-//                   CustomMultiDownSingleAllUser(
-//
-//                       // model: ['d', 'd'],
-//                       model:
-//                           Get.find<BaseController>().allSiecMembersList,
-//                       // callbackFunction: callback,
-//                       // callbackFunctionMulti: (val) {
-//                       //   print(val);
-//                       // },
-//                       callbackFunctionSingle: (val) {
-//                         getController.taskOwner =
-//                             Get.find<BaseController>()
-//                                 .allSiecMembersList[0];
-//                         getController.update();
-//                       },
-//                       enableMultiSelect: false,
-//                       choosefieldtype: false,
-//                       initialSelectedValue: "1"),
-//                   SizedBox(
-//                     height: 10,
-//                   ),
-//                   Padding(
-//                     padding: const EdgeInsets.only(bottom: 8),
-//                     child: CustomAutoSizeTextMontserrat(
-//                       text: "Select a deadline for a task",
-//                       mandatory: true,
-//                       fontSize: 14,
-//                       fontWeight: FontWeight.w500,
-//                     ),
-//                   ),
-//                   Padding(
-//                     padding: const EdgeInsets.only(),
-//                     child: Container(
-//                       height: 45,
-//                       child: CustomTimerWidget(
-//                         callback: (value) {
-//                           print(value);
-//                           getController.deadLine = value;
-//                           getController.update();
-//                         },
-//                       ),
-//                     ),
-//                   ),
-//                   SizedBox(
-//                     height: 15,
-//                   ),
-//                   Row(
-//                     children: [
-//                       const Spacer(),
-//
-//                       InkWell(
-//                         onTap: (){
-//                           if (getController.key.currentState!
-//                               .validate()) {
-//                             // print(getController.taskOwner.name);
-//                             getController.assign(
-//                                 data, controller.text, context);
-//                           }
-//                         },
-//                         child: Container(
-//                           height: 40,
-//                           width: 120,
-//                           decoration: BoxDecoration(
-//                               gradient: ThemeConstants.backgroundGradient,
-//                               boxShadow: [
-//                                 BoxShadow(
-//
-//                                   color: Colors.grey.withOpacity(0.5),
-//                                   spreadRadius: -0.2,
-//                                   blurRadius: 5,
-//                                   offset: const Offset(0, 4),
-//                                 )],
-//                               borderRadius:
-//                               const BorderRadius.all(Radius.circular(10.0))),
-//                           child: Center(child: CustomAutoSizeTextMontserrat(text: "Add Task",textColor: Colors.white,align: TextAlign.center,)),
-//                         ),
-//                       ),
-//                       // SizedBox(
-//                       //   width: 150,
-//                       //   height: 50,
-//                       //   child: CustomButton(
-//                       //     backgroundColor: ThemeConstants.bluecolor,
-//                       //     text: "Add Task",
-//                       //     onPressed: () {
-//                       //       if (getController.key.currentState!
-//                       //           .validate()) {
-//                       //         // print(getController.taskOwner.name);
-//                       //         getController.assign(
-//                       //             data, controller.text, context);
-//                       //       }
-//                       //       // getController.key.currentState!.save();
-//                       //       // print(getController.taskOwner.name);
-//                       //     },
-//                       //   ),
-//                       // ),
-//                       SizedBox(
-//                         width: 5,
-//                       )
-//                     ],
-//                   )
-//                 ],
-//               ),
-//             ),
