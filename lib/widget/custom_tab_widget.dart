@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../utils/theme.dart';
 // import 'package:untitled3/custom_widget/custom_tab/custom_tab_list.dart';
 // import 'package:untitled3/custom_widget/custom_timer/custom_timer_widget.dart';
 
@@ -104,10 +102,8 @@ class CustomTabWidgetState extends State<CustomTabWidget> {
                           style: TextStyle(
                               fontSize: 18,
                               color: indexOfTab != 0
-                                  ? Colors.white
-                                  : ThemeConstants.paleYellow,
-                              // Color(0xffff9900)
-                          ),
+                                  ? Colors.black
+                                  : Color(0xffff9900)),
                         ),
                       ))),
 
@@ -138,10 +134,8 @@ class CustomTabWidgetState extends State<CustomTabWidget> {
                           style: TextStyle(
                               fontSize: 18,
                               color: indexOfTab != 1
-                                  ? Colors.white
-                                  : ThemeConstants.paleYellow,
-                              // Color(0xffff9900)
-                          ),
+                                  ? Colors.black
+                                  : Color(0xffff9900)),
                         ),
                       )))
             ],
@@ -159,7 +153,7 @@ class CustomTabWidgetState extends State<CustomTabWidget> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
-                  color: ThemeConstants.paleYellow,
+                  color: Color(0xffff9900),
                 ),
               ),
             ),

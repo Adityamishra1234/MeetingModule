@@ -16,7 +16,7 @@ class AddRepresentative extends StatelessWidget {
             child: Align(
               alignment: AlignmentDirectional.topStart,
               child: CustomAutoSizeTextMontserrat(
-                text: "Create \nNew  Meeting",
+                text: "Create \nNew Meeting",
                 fontSize: 35,
                 textColor: ThemeConstants.bluecolor,
                 fontWeight: FontWeight.bold,
