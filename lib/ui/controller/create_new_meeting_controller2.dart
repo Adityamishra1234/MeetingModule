@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:meeting_module2/models/addRepresentative.dart';
 import 'package:meeting_module2/models/allBranchModel.dart';
 import 'package:meeting_module2/models/allMeetingsModels.dart';
-import 'package:meeting_module2/models/allStatesModel.dart';
 import 'package:meeting_module2/models/allUserModel.dart';
 import 'package:meeting_module2/models/branchesWithImagesModel.dart';
 import 'package:meeting_module2/models/participantsModel.dart';
@@ -119,26 +118,11 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     'Internal Meeting'
   ];
 
-  //added institute Type for Field activity here
-
-  List<String> instituteType = <String>[
-    'School',
-    'College',
-    'Coaching Center',
-    'IELTS Center',
-    'Book Store',
-  ];
-  List<String> instituteSubCategory = <String>[
-    'Public',
-    'Private',
-  ];
-
   List<String> meetingWithList = <String>[
     'University Meetings',
     'Vendor Meeting',
     'Bank Meeting',
   ];
-
   // RxList branchList = [
   //   'IT ssss',
   //   'Australia Applications',
@@ -175,9 +159,6 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
 
   // Rx<TextEditingController> dateController = TextEditingController().obs;
 
-  //updated here on 19th april(Aditya)
-  bool fieldActivity = false;
-  //
   bool externalMeeting = false;
   Rx<AllMeetings> meetingModel = AllMeetings().obs;
   ApiServices api = ApiServices();
@@ -199,10 +180,6 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
   ///
   RxString addRepresentaitveType = 'University'.obs;
   AllUserModel selectedCountry = AllUserModel();
-
-  //updated here on 30 th May(Aditya)
-  AllUserModel selectedState = AllUserModel();
-
   Rx<AllUserModel> selectedUniversityName = AllUserModel().obs;
 
   List<AllUserModel> allCountriesList = <AllUserModel>[];
@@ -216,30 +193,12 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
   // RxString nameOfTheBank = ''.obs;
   RxString meetingWith = 'University Meetings'.obs;
 
-  RxString typeOfInstitute = 'School'.obs;
-  RxString typeOfInstituteSubCategory = 'Public'.obs;
-
   Rx<TextEditingController> nameOfThePerson = TextEditingController().obs;
   Rx<TextEditingController> email = TextEditingController().obs;
   Rx<TextEditingController> designation = TextEditingController().obs;
   Rx<TextEditingController> RePphoneNumber = TextEditingController().obs;
 
   Rx<RepresentativeModel> repModel = RepresentativeModel().obs;
-
-  //updated here on 30th may(aditya)
-  RxString addInstituteType = 'Delhi'.obs;
-  List<AllUserModel> allStatesList = <AllUserModel>[];
-  Rx<AllStatesModel> stateModel = AllStatesModel().obs;
-  Rx<TextEditingController> nameOfInstitute = TextEditingController().obs;
-  Rx<TextEditingController> addressOfInstitute = TextEditingController().obs;
-  Rx<TextEditingController> pinCode = TextEditingController().obs;
-  Rx<TextEditingController> pinCode1 = TextEditingController().obs;
-  Rx<TextEditingController> landMarkOfInstitute = TextEditingController().obs;
-  List<String> instituteUniversityNames = [];
-
-  addNewInstitute() async{
-    stateModel.value.data?[0].stateName = addInstituteType.value;
-  }
 
   addANewRepresentative() async {
     repModel.value.representativeType = addRepresentaitveType.value;
@@ -282,25 +241,6 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     print(allCountriesList);
     update();
     // print(allCountriesList.toString());
-  }
-
-  //Updated on 30th of May
-  List<String>allStates = [];
-  getAllStates() async {
-    // var res = await api.getAllState();
-    // allStatesList= List<AllUserModel>.from(res.map((e) => AllUserModel.fromJson(e)));
-    //
-    // allStatesList.insert(
-    //     0, AllUserModel.fromJson({'name': "Kindly select", "id": 0}));
-    // update();
-    // print(allStatesList.toString());
-    // change(null, status: RxStatus.loading());
-    // var res = await api.getAllState();
-    //
-    // agendaList = List<String>.from(res as List);
-    // change(null, status: RxStatus.success());
-
-    update();
   }
 
   getUniversities(int countryId) async {
@@ -360,10 +300,6 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
     // print(listOfParticipantData.value[0].toJson());
   }
 
-  //updated on 30th of May(Aditya)
-
-  // List<> = <>[];
-
   //// participants
   ///
   ///
@@ -371,8 +307,7 @@ class CreateNewMeetingController2 extends GetxController with StateMixin {
   RepresentativeModel participantData = RepresentativeModel();
 
   fetchParticipantData() async {
-    if (participantID.value != null && participantID.value.id != null)
-      print(participantID.value.id);
+    print(participantID.value.id);
     var res = await api.getRepresentativeAllData(participantID.value.id == null
         ? listOfParticipantData[0].id!
         : participantID.value.id!);

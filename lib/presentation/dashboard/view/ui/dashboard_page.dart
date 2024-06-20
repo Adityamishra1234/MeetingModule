@@ -34,20 +34,14 @@ import 'package:meeting_module2/widget/calender/src/customization/days_of_week_s
 import 'package:meeting_module2/widget/calender/src/customization/header_style.dart';
 import 'package:meeting_module2/widget/calender/src/shared/utils.dart';
 import 'package:meeting_module2/widget/calender/src/table_calendar.dart';
-import 'package:meeting_module2/widget/customBottomNavBar.dart';
 import 'package:meeting_module2/widget/custom_button.dart';
 import 'package:meeting_module2/widget/custom_dialogue.dart';
 import 'package:meeting_module2/widget/custom_tab_widget.dart';
 import 'package:meeting_module2/widget/customautosizetextmontserrat.dart';
-import 'package:meeting_module2/widget/greeting_widget.dart';
 import 'package:meeting_module2/widget/popups/custom_error_popup.dart';
 
 import 'package:meeting_module2/widget/calender/src/shared/utils.dart';
-import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
-
-import 'package:flutter_polygon_clipper/flutter_polygon_clipper.dart';
-import 'package:floating_action_bubble/floating_action_bubble.dart';
 
 class DashBoard extends StatefulWidget {
   static const routeNamed = '/DashBoard';
@@ -56,13 +50,12 @@ class DashBoard extends StatefulWidget {
   State<DashBoard> createState() => _DashBoardState();
 }
 
-class _DashBoardState extends State<DashBoard>  with TickerProviderStateMixin {
+class _DashBoardState extends State<DashBoard> {
   _SupportState _supportState = _SupportState.unknown;
   bool? _canCheckBiometrics;
 
   String _authorized = 'Not Authorized';
   bool _isAuthenticating = false;
-  late AnimationController _animationController;
 
   int siecParticipantsLength = 0;
 
@@ -88,7 +81,6 @@ class _DashBoardState extends State<DashBoard>  with TickerProviderStateMixin {
   //  var    Get.put(CalendarController());
 
   late CalendarController caleCon;
-  bool dialog = false;
 
   String? selectedValue = 'All Meetings';
   bool showFilterList = true;
@@ -98,17 +90,12 @@ class _DashBoardState extends State<DashBoard>  with TickerProviderStateMixin {
     'Bank Meeting',
     'Vendor Meeting',
     'Internal Meeting'
-    'Institute Partnership'
   ];
 
   // late DashboardBloc dashboardBloc;
 
   @override
   void initState() {
-    _animationController = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 300),
-    );
     controllerBase.getId;
 
     print(context);
@@ -145,22 +132,13 @@ class _DashBoardState extends State<DashBoard>  with TickerProviderStateMixin {
   @override
   void dispose() {
     // TODO: implement dispose
-    _animationController.dispose();
     super.dispose();
   }
 
 //
-  void _toggleAnimation() {
-    if (_animationController.isCompleted) {
-      _animationController.reverse();
-    } else {
-      _animationController.forward();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    VersionUtil.fetchAppVersion();
     Color background = Color(0xFFFFEDBE);
     Color fill = ThemeConstants.whitecolor;
 
@@ -174,113 +152,6 @@ class _DashBoardState extends State<DashBoard>  with TickerProviderStateMixin {
     final double fillStop = (100 - fillPercent) / 100;
     final List<double> stops = [0.0, fillStop, fillStop, 1.0];
     return Scaffold(
-      // bottomNavigationBar: CustomNavBar(currentIndex: 0,),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom:8.0, right:10),
-        child: Container(
-          // height: 160,
-          width: double.infinity,
-          child: FloatingActionBubble(
-            items: <Bubble> [
-              Bubble(
-                  icon: Icons.meeting_room,
-                  iconColor: Colors.white,
-                  title: 'New Meeting',
-                  titleStyle: TextStyle(
-                    fontSize: 12,
-                    color: Colors.white
-                  ),
-                  bubbleColor: Colors.blue,
-                  onPress: () async {
-                   _toggleAnimation();
-                      var result = await context.push(
-                          '/DashBoard/${Routes.createMeeting}');
-                      // print(
-                      //     '$result efdddeeeeeeeeeeeeee\f\e\ffefefeef');
-
-                      Get.find<DashBoardController>().onInit();
-                      // calendarController.onInit();
-                      //
-                      // calendarController.selectedDayGlobal =
-                      //     DateTime.now();
-                      //
-                      // calendarController.update();
-                      setState(() {});
-                  }),
-              // Bubble(
-              //     icon: Icons.logout_rounded,
-              //     iconColor: Colors.white,
-              //     title: 'Log Out',
-              //     titleStyle: TextStyle(
-              //       fontSize: 12,
-              //       color: Colors.white
-              //     ),
-              //     bubbleColor: Colors.blue,
-              //     onPress: (){
-              //       _toggleAnimation();
-              //       showDialog(
-              //           barrierDismissible: dialog,
-              //           context: context,
-              //           builder: (context) {
-              //             return AlertDialog(
-              //               title: const Text("Logout"),
-              //               content: const Text("Are you sure you want to Logout?"),
-              //               actions: [
-              //                 TextButton(
-              //                   onPressed: () async {
-              //                     // controllerBase.logOut();
-              //                     // context.go('/');
-              //                     controller.change(null,
-              //                                 status: RxStatus.loading());
-              //                             var res = await controllerBase.logOut();
-              //                         //
-              //                             if (res) {
-              //                               context.go('/');
-              //                             }
-              //                             controller.change(null,
-              //                                 status: RxStatus.success());
-              //                   },
-              //                   child: const Text(
-              //                     "Yes",
-              //                     style: TextStyle(
-              //                       color: Colors.grey,
-              //                     ),
-              //                   ),
-              //                 ),
-              //                 TextButton(
-              //                   onPressed: () {
-              //                    Navigator.pop(context);
-              //                     setState(() {
-              //                       dialog  = !dialog;
-              //                     });
-              //                   },
-              //                   child: const Text(
-              //                     "No",
-              //                     style: TextStyle(
-              //                         color: Colors.blueAccent,
-              //                         fontWeight: FontWeight.bold
-              //                     ),
-              //                   ),
-              //                 ),
-              //               ],
-              //             );
-              //           });
-              //     }),
-            ],
-          onPress: () {
-              _toggleAnimation();
-
-          },
-            iconColor: Colors.white,
-            backGroundColor: Colors.blue,
-            animation: _animationController,
-            animatedIconData: AnimatedIcons.add_event,
-
-
-          ),
-        ),
-      ),
       // appBar: CustomAppBar('title'),
       // drawer: CustomDrawer(),
       // body: controller.obx((state) {
@@ -291,1258 +162,1001 @@ class _DashBoardState extends State<DashBoard>  with TickerProviderStateMixin {
             // listener: (context, state) {
             // TODO: implement listener
             // }, builder: (context, state) {
-            Container(
+            SafeArea(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              child: Container(
-                height: MediaQuery.of(context).size.height,
+              decoration:
+                  BoxDecoration(gradient: ThemeConstants.backgroundGradient),
+              child: SizedBox(
                 width: MediaQuery.of(context).size.width,
-                decoration:
-                    BoxDecoration(gradient: ThemeConstants.backgroundGradient),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(top: 40, left: 15, right: 15),
-                        child: SizedBox(
-                          height: 68,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CircleAvatar(
-                                radius: 19.5,
-                                backgroundColor: Colors.white,
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
-                                    child: Center(
-                                      child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(200),
-                                            color: Colors.white,
-                                          ),
-                                          // width: MediaQuery.of(context).size.width/2,
-                                          padding: EdgeInsets.all(8.0),
-                                          height: 30,
-                                          child: Image.asset("assets/images/logo.jpg", scale: 15,)),
-                                    )),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 20, left: 25, right: 25),
+                      child: SizedBox(
+                        height: 80,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              // height: 70,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CustomAutoSizeTextMontserrat(
+                                    text: "Hello,",
+                                    textColor: ThemeConstants.whitecolor,
+                                    fontSize: 16,
+                                  ),
+                                  SizedBox(
+                                    height: 6,
+                                  ),
+                                  CustomAutoSizeTextMontserrat(
+                                    text: "${controller.user.value.name}",
+                                    textColor: ThemeConstants.paleYellow,
+                                    fontSize: 20,
+                                  ),
+                                ],
                               ),
-                              GreetingWidget(),
-                              InkWell(onTap: () async{
-                                await showAnimatedDialog(
-                                  barrierDismissible: true,
-                                animationType:
-                                DialogTransitionType
-                                    .slideFromBottomFade,
-                                context: context,
-                                builder: (_) =>
-                                    AlertDialog(
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                      content: Container(
-                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(200)),
-                                          width: 350,
+                            ),
+                            Spacer(),
+                            IconButton(
+                                onPressed: () {
+                                  showModalBottomSheet<void>(
+                                    backgroundColor: ThemeConstants.whitecolor,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(40),
+                                    )),
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        decoration: BoxDecoration(),
+                                        height: 300,
+                                        child: Center(
                                           child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  CustomAutoSizeTextMontserrat(
-                                                      textColor: Color(0xff3088C6),
-                                                      fontSize: ThemeConstants.fontSizeSmall,
-                                                      text: "Version"),
-                                                  // InkWell(
-                                                  //   onTap:
-                                                  //       () {
-                                                  //     context.pop();
-                                                  //     // Get.back();
-                                                  //   },
-                                                  //   child:
-                                                  //       CircleAvatar(
-                                                  //     backgroundColor:
-                                                  //         ThemeConstants.bluecolor,
-                                                  //     radius:
-                                                  //         10,
-                                                  //     child:
-                                                  //         Icon(
-                                                  //       Icons.close,
-                                                  //       size: 16,
-                                                  //     ),
-                                                  //   ),
-                                                  // ),
-
-                                                  Spacer(),
-                                                  CustomAutoSizeTextMontserrat(   fontSize: ThemeConstants.fontSizeSmall,text: "Version ${VersionUtil.getAppVersion()}")
-                                                  // IconButton(
-                                                  //     onPressed: () {
-                                                  //       context.pop();
-                                                  //     },
-                                                  //     icon: Icon(
-                                                  //       Icons.close,
-                                                  //       size: 20,
-                                                  //     ))
-                                                ],
-                                              ),
-                                              const SizedBox(height: 15,),
-                                              InkWell(
-                                                onTap: () async {
-                                                  context.pop();
-                                                  await showAnimatedDialog(
-                                                      curve: Curves.easeInOutQuart,
-                                                    animationType: DialogTransitionType.slideFromBottomFade,
-                                                      context: context,
-                                                      builder: (_){
-                                                        return AlertDialog(
-                                                          title: const Text("Logout"),
-                                                          content: const Text("Are you sure you want to Logout?"),
-                                                          actions: [
-                                                            TextButton(
-                                                              onPressed: () async {
-                                                                // controllerBase.logOut();
-                                                                // context.go('/');
-                                                                controller.change(null,
-                                                                    status: RxStatus.loading());
-                                                                var res = await controllerBase.logOut();
-                                                                //
-                                                                if (res) {
-                                                                  context.go('/');
-                                                                }
-                                                                controller.change(null,
-                                                                    status: RxStatus.success());
-                                                              },
-                                                              child: const Text(
-                                                                "Yes",
-                                                                style: TextStyle(
-                                                                  color: Colors.grey,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            TextButton(
-                                                              onPressed: () {
-                                                                Navigator.pop(context);
-                                                                setState(() {
-                                                                  dialog  = !dialog;
-                                                                });
-                                                              },
-                                                              child: const Text(
-                                                                "No",
-                                                                style: TextStyle(
-                                                                    color: Colors.blueAccent,
-                                                                    fontWeight: FontWeight.bold
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        );
-                                                      });
-                                                },
-                                                child: Container(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Container(
+                                                  alignment:
+                                                      Alignment.topCenter,
                                                   width: double.infinity,
+                                                  padding: EdgeInsets.only(
+                                                      top: 0,
+                                                      left: 0,
+                                                      bottom: 5,
+                                                      right: 0),
+                                                  margin: EdgeInsets.only(
+                                                      left: 0,
+                                                      right: 0,
+                                                      top: 0,
+                                                      bottom: 0),
                                                   decoration: BoxDecoration(
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: Colors.grey.withOpacity(0.5),
-                                                          spreadRadius: -0.2,
-                                                          blurRadius: 5,
-                                                          offset: const Offset(0, 4),
-                                                        )],
-                                                      gradient: ThemeConstants.backgroundGradient,
-                                                      // color: ThemeConstants.bluecolor,
-                                                      borderRadius: BorderRadius.circular(10)),
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical: 10, horizontal: 10),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.only(right: 12.0, left: 12, top: 2, bottom: 2),
-                                                    child: Center(
-                                                      child: CustomAutoSizeTextMontserrat(
-                                                          align: TextAlign.center,
-                                                          text: 'LOGOUT',
-                                                          fontSize: 12,
-                                                          fontWeight: FontWeight.bold,
-                                                          textColor: ThemeConstants.whitecolor),
-                                                    ),
+                                                    border: Border.all(
+                                                        width: 1,
+                                                        color: ThemeConstants
+                                                            .whitecolor),
+                                                    // boxShadow: [
+                                                    //   const BoxShadow(
+                                                    //       blurRadius: 0.5,
+                                                    //       spreadRadius: 0.1,
+                                                    //       color: Color.fromARGB(40, 0, 0, 0))
+                                                    // ],
+                                                    color: Colors.transparent,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            13),
                                                   ),
-                                                ),
-                                              ),
+                                                  child: Column(
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          InkWell(
+                                                            onTap: () {
+                                                              context.push(
+                                                                  '${Routes.dashboard}/${Routes.viewDashboardNotes}');
+                                                              // Get.deleteAll();
 
-                                              // Row(
-                                              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              //   children: [
-                                              //     // CustomAutoSizeTextMontserrat(
-                                              //     //     textColor: ThemeConstants.bluecolor,
-                                              //     //     text: "Mark Attendance"),
-                                              //     // InkWell(
-                                              //     //   onTap:
-                                              //     //       () {
-                                              //     //     context.pop();
-                                              //     //     // Get.back();
-                                              //     //   },
-                                              //     //   child:
-                                              //     //       CircleAvatar(
-                                              //     //     backgroundColor:
-                                              //     //         ThemeConstants.bluecolor,
-                                              //     //     radius:
-                                              //     //         10,
-                                              //     //     child:
-                                              //     //         Icon(
-                                              //     //       Icons.close,
-                                              //     //       size: 16,
-                                              //     //     ),
-                                              //     //   ),
-                                              //     // ),
-                                              //   ],
-                                              // ),
-                                              // InkWell(
-                                              //   onTap: () {
-                                              //     // setState(() {
-                                              //     //   daata = 1;
-                                              //     // });
-                                              //   },
-                                              //   child: Row(
-                                              //     children: [
-                                              //       // Radio(
-                                              //       //     value: 1,
-                                              //       //     groupValue: daata,
-                                              //       //     onChanged: (val) async {
-                                              //       //       setState(() {
-                                              //       //         daata = val!;
-                                              //       //       });
-                                              //       //     }),
-                                              //       // CustomAutoSizeTextMontserrat(
-                                              //       //     fontSize: 15,
-                                              //       //     fontWeight: FontWeight.w500,
-                                              //       //     text: "Present")
-                                              //     ],
-                                              //   ),
-                                              // ),
-                                              // InkWell(
-                                              //   onTap: () {
-                                              //     // setState(() {
-                                              //     //   daata = 2;
-                                              //     // });
-                                              //   },
-                                              //   child: Row(
-                                              //     children: [
-                                              //       // Radio(
-                                              //       //     value: 2,
-                                              //       //     groupValue: daata,
-                                              //       //     onChanged: (val) {
-                                              //       //       print(daata);
-                                              //       //       print(val);
-                                              //       //       setState(() {
-                                              //       //         daata = val!;
-                                              //       //       });
-                                              //
-                                              //       //       print(daata);
-                                              //       //       ;
-                                              //       //     }),
-                                              //       // CustomAutoSizeTextMontserrat(
-                                              //       //     fontSize: 15,
-                                              //       //     fontWeight: FontWeight.w500,
-                                              //       //     text: "Absent")
-                                              //     ],
-                                              //   ),
-                                              // ),
-                                              SizedBox(
-                                                height: 0,
-                                              ),
+                                                              // if (controller
+                                                              //         .meetingStartedValue ==
+                                                              //     true) {
+                                                              //   context.push(
+                                                              //       '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.addMoreNotesView}/${meetingData.id}/0');
+                                                              //   // Get.toNamed(AddMoreNotesView.routeName,
+                                                              //   //     arguments: [meetingData.id, 0]);
+                                                              // } else {
+                                                              //   getToast(
+                                                              //       'Meeting not started yet');
+                                                              //   // showDialog(
+                                                              //   //     context: context,
+                                                              //   //     builder: (_) => showPoPUp(
+                                                              //   //         'Meeting not started yet',
+                                                              //   //         Icon(
+                                                              //   //           Icons.error,
+                                                              //   //           size: 40,
+                                                              //   //           color: ThemeConstants.bluecolor,
+                                                              //   //         ),
+                                                              //   //         context));
+                                                              // }
+                                                            },
+                                                            child: Container(
+                                                              width: 100,
+                                                              height: 100,
+                                                              decoration: BoxDecoration(
+                                                                  color: ThemeConstants
+                                                                      .lightblueColor,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20)),
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Container(
+                                                                    // decoration: BoxDecoration(
+                                                                    //     color: ThemeConstants
+                                                                    //         .GreenColor),
+                                                                    width: 150,
+                                                                    color: Colors
+                                                                        .transparent,
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    child: SvgPicture
+                                                                        .asset(
+                                                                      'assets/images/View Note.svg',
+                                                                      color: ThemeConstants
+                                                                          .bluecolor,
+                                                                      // color: index == 5
+                                                                      //     ? ThemeConstants.bluecolor
+                                                                      //     : const Color.fromARGB(
+                                                                      //         255, 31, 31, 31),
+                                                                      width: 30,
+                                                                    ),
+                                                                    // child: Icon(
+                                                                    //   Icons.add,
+                                                                    //   size: 30,
+                                                                    //   color: ThemeConstants.blackcolor,
+                                                                    // )
+                                                                  ),
+                                                                  CustomAutoSizeTextMontserrat(
+                                                                    text:
+                                                                        'My Notes',
+                                                                    fontSize:
+                                                                        14,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    textColor:
+                                                                        ThemeConstants
+                                                                            .bluecolor,
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Container(
+                                                            width: 100,
+                                                            height: 100,
+                                                            decoration: BoxDecoration(
+                                                                color: ThemeConstants
+                                                                    .lightblueColor,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20)),
+                                                            child: InkWell(
+                                                              onTap: () {
+                                                                context.push(
+                                                                    '${Routes.dashboard}/${Routes.usesNotesTask}/${controller.user.value.id}');
+                                                                // Get.deleteAll();
+
+                                                                // if (controller
+                                                                //         .meetingStartedValue ==
+                                                                //     true) {
+                                                                //   context.push(
+                                                                //       '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.addMoreNotesView}/${meetingData.id}/0');
+                                                                //   // Get.toNamed(AddMoreNotesView.routeName,
+                                                                //   //     arguments: [meetingData.id, 0]);
+                                                                // } else {
+                                                                //   getToast(
+                                                                //       'Meeting not started yet');
+                                                                //   // showDialog(
+                                                                //   //     context: context,
+                                                                //   //     builder: (_) => showPoPUp(
+                                                                //   //         'Meeting not started yet',
+                                                                //   //         Icon(
+                                                                //   //           Icons.error,
+                                                                //   //           size: 40,
+                                                                //   //           color: ThemeConstants.bluecolor,
+                                                                //   //         ),
+                                                                //   //         context));
+                                                                // }
+                                                              },
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Container(
+                                                                    width: 150,
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    child: SvgPicture
+                                                                        .asset(
+                                                                      'assets/images/View Note.svg',
+                                                                      color: ThemeConstants
+                                                                          .bluecolor,
+                                                                      // color: index == 5
+                                                                      //     ? ThemeConstants.bluecolor
+                                                                      //     : const Color.fromARGB(
+                                                                      //         255, 31, 31, 31),
+                                                                      width: 30,
+                                                                    ),
+                                                                    // child: Icon(
+                                                                    //   Icons.add,
+                                                                    //   size: 30,
+                                                                    //   color: ThemeConstants.blackcolor,
+                                                                    // )
+                                                                  ),
+                                                                  CustomAutoSizeTextMontserrat(
+                                                                    text:
+                                                                        'My Tasks',
+                                                                    fontSize:
+                                                                        14,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    textColor:
+                                                                        ThemeConstants
+                                                                            .bluecolor,
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          InkWell(
+                                                            onTap: () async {
+                                                              // context.push(
+                                                              //     '${Routes.dashboard}/${Routes.viewDashboardNotes}');
+
+                                                              await controllerBase
+                                                                  .logOut();
+
+                                                              context.go('/');
+
+                                                              // Get.deleteAll();
+
+                                                              // if (controller
+                                                              //         .meetingStartedValue ==
+                                                              //     true) {
+                                                              //   context.push(
+                                                              //       '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.addMoreNotesView}/${meetingData.id}/0');
+                                                              //   // Get.toNamed(AddMoreNotesView.routeName,
+                                                              //   //     arguments: [meetingData.id, 0]);
+                                                              // } else {
+                                                              //   getToast(
+                                                              //       'Meeting not started yet');
+                                                              //   // showDialog(
+                                                              //   //     context: context,
+                                                              //   //     builder: (_) => showPoPUp(
+                                                              //   //         'Meeting not started yet',
+                                                              //   //         Icon(
+                                                              //   //           Icons.error,
+                                                              //   //           size: 40,
+                                                              //   //           color: ThemeConstants.bluecolor,
+                                                              //   //         ),
+                                                              //   //         context));
+                                                              // }
+                                                            },
+                                                            child: Container(
+                                                              width: 100,
+                                                              height: 100,
+                                                              decoration: BoxDecoration(
+                                                                  color: ThemeConstants
+                                                                      .lightblueColor,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20)),
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Container(
+                                                                      width:
+                                                                          150,
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .center,
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .logout,
+                                                                        size:
+                                                                            30,
+                                                                        color: ThemeConstants
+                                                                            .bluecolor,
+                                                                      )),
+                                                                  CustomAutoSizeTextMontserrat(
+                                                                    text:
+                                                                        'Logout',
+                                                                    fontSize:
+                                                                        14,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    textColor:
+                                                                        ThemeConstants
+                                                                            .bluecolor,
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      controller.showDeleteOption ==
+                                                              true
+                                                          ? Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                InkWell(
+                                                                  onTap:
+                                                                      () async {
+                                                                    // context.push(
+                                                                    //     '${Routes.dashboard}/${Routes.viewDashboardNotes}');
+                                                                    var res =
+                                                                        await controller
+                                                                            .deleteAccount();
+
+                                                                    if (res ==
+                                                                        true) {
+                                                                      context.go(
+                                                                          '/');
+                                                                    }
+
+                                                                    // Get.deleteAll();
+
+                                                                    // if (controller
+                                                                    //         .meetingStartedValue ==
+                                                                    //     true) {
+                                                                    //   context.push(
+                                                                    //       '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.addMoreNotesView}/${meetingData.id}/0');
+                                                                    //   // Get.toNamed(AddMoreNotesView.routeName,
+                                                                    //   //     arguments: [meetingData.id, 0]);
+                                                                    // } else {
+                                                                    //   getToast(
+                                                                    //       'Meeting not started yet');
+                                                                    //   // showDialog(
+                                                                    //   //     context: context,
+                                                                    //   //     builder: (_) => showPoPUp(
+                                                                    //   //         'Meeting not started yet',
+                                                                    //   //         Icon(
+                                                                    //   //           Icons.error,
+                                                                    //   //           size: 40,
+                                                                    //   //           color: ThemeConstants.bluecolor,
+                                                                    //   //         ),
+                                                                    //   //         context));
+                                                                    // }
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    width: 100,
+                                                                    height: 100,
+                                                                    decoration: BoxDecoration(
+                                                                        color: ThemeConstants
+                                                                            .lightblueColor,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(20)),
+                                                                    child:
+                                                                        Column(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        Container(
+                                                                            padding: EdgeInsets.all(
+                                                                                2),
+                                                                            width:
+                                                                                150,
+                                                                            alignment:
+                                                                                Alignment.center,
+                                                                            child: Icon(
+                                                                              Icons.delete,
+                                                                              size: 30,
+                                                                              color: ThemeConstants.bluecolor,
+                                                                            )),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              100,
+                                                                          child:
+                                                                              CustomAutoSizeTextMontserrat(
+                                                                            align:
+                                                                                TextAlign.center,
+                                                                            text:
+                                                                                'Delete\nProfile',
+                                                                            fontSize:
+                                                                                14,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                            textColor:
+                                                                                ThemeConstants.bluecolor,
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            )
+                                                          : SizedBox.shrink(),
+                                                    ],
+                                                  )),
                                             ],
-                                          )),
-                                    ),
-                                    // AlertDialog(
-                                    //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                    //   content:  Container(
-                                    //     height: 100,
-                                    //     width: 350,
-                                    //     decoration: BoxDecoration(
-                                    //         color: Colors.white,
-                                    //         // boxShadow: [
-                                    //         //   BoxShadow(
-                                    //         //       color: Colors.grey.withOpacity(0.3),
-                                    //         //       offset: Offset(0, 0.3),
-                                    //         //       blurRadius: 5,
-                                    //         //       spreadRadius: 0.5
-                                    //         //   )
-                                    //         // ]
-                                    //     ),
-                                    //     child: Center(
-                                    //       child: CustomAutoSizeTextMontserrat(
-                                    //         text: "Log Out",
-                                    //         textColor: Colors.black,
-                                    //
-                                    //       ),
-                                    //     ),
-                                    //   ),
-                                    // )
-                                );
-                              },
-                                child: CircleAvatar(
-                                 child: Icon(Icons.person),
-                                ),
-                              )
-                              // Spacer(),
-                              // IconButton(
-                              //     onPressed: () {
-                              //       showModalBottomSheet<void>(
-                              //         backgroundColor: ThemeConstants.whitecolor,
-                              //         shape: RoundedRectangleBorder(
-                              //             borderRadius: BorderRadius.vertical(
-                              //           top: Radius.circular(40),
-                              //         )),
-                              //         context: context,
-                              //         builder: (BuildContext context) {
-                              //           return Container(
-                              //             decoration: BoxDecoration(),
-                              //             height: 300,
-                              //             child: Center(
-                              //               child: Column(
-                              //                 mainAxisAlignment:
-                              //                     MainAxisAlignment.center,
-                              //                 children: <Widget>[
-                              //                   Container(
-                              //                       alignment:
-                              //                           Alignment.topCenter,
-                              //                       width: double.infinity,
-                              //                       padding: EdgeInsets.only(
-                              //                           top: 0,
-                              //                           left: 0,
-                              //                           bottom: 5,
-                              //                           right: 0),
-                              //                       margin: EdgeInsets.only(
-                              //                           left: 0,
-                              //                           right: 0,
-                              //                           top: 0,
-                              //                           bottom: 0),
-                              //                       decoration: BoxDecoration(
-                              //                         border: Border.all(
-                              //                             width: 1,
-                              //                             color: ThemeConstants
-                              //                                 .whitecolor),
-                              //                         // boxShadow: [
-                              //                         //   const BoxShadow(
-                              //                         //       blurRadius: 0.5,
-                              //                         //       spreadRadius: 0.1,
-                              //                         //       color: Color.fromARGB(40, 0, 0, 0))
-                              //                         // ],
-                              //                         color: Colors.transparent,
-                              //                         borderRadius:
-                              //                             BorderRadius.circular(
-                              //                                 13),
-                              //                       ),
-                              //                       child: Column(
-                              //                         children: [
-                              //                           Row(
-                              //                             mainAxisAlignment:
-                              //                                 MainAxisAlignment
-                              //                                     .center,
-                              //                             children: [
-                              //                               InkWell(
-                              //                                 onTap: () {
-                              //                                   context.push(
-                              //                                       '${Routes.dashboard}/${Routes.viewDashboardNotes}');
-                              //                                   // Get.deleteAll();
-                              //
-                              //                                   // if (controller
-                              //                                   //         .meetingStartedValue ==
-                              //                                   //     true) {
-                              //                                   //   context.push(
-                              //                                   //       '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.addMoreNotesView}/${meetingData.id}/0');
-                              //                                   //   // Get.toNamed(AddMoreNotesView.routeName,
-                              //                                   //   //     arguments: [meetingData.id, 0]);
-                              //                                   // } else {
-                              //                                   //   getToast(
-                              //                                   //       'Meeting not started yet');
-                              //                                   //   // showDialog(
-                              //                                   //   //     context: context,
-                              //                                   //   //     builder: (_) => showPoPUp(
-                              //                                   //   //         'Meeting not started yet',
-                              //                                   //   //         Icon(
-                              //                                   //   //           Icons.error,
-                              //                                   //   //           size: 40,
-                              //                                   //   //           color: ThemeConstants.bluecolor,
-                              //                                   //   //         ),
-                              //                                   //   //         context));
-                              //                                   // }
-                              //                                 },
-                              //                                 child: Container(
-                              //                                   width: 100,
-                              //                                   height: 100,
-                              //                                   decoration: BoxDecoration(
-                              //                                       color: ThemeConstants
-                              //                                           .lightblueColor,
-                              //                                       borderRadius:
-                              //                                           BorderRadius
-                              //                                               .circular(
-                              //                                                   20)),
-                              //                                   child: Column(
-                              //                                     mainAxisAlignment:
-                              //                                         MainAxisAlignment
-                              //                                             .center,
-                              //                                     children: [
-                              //                                       Container(
-                              //                                         // decoration: BoxDecoration(
-                              //                                         //     color: ThemeConstants
-                              //                                         //         .GreenColor),
-                              //                                         width: 150,
-                              //                                         color: Colors
-                              //                                             .transparent,
-                              //                                         alignment:
-                              //                                             Alignment
-                              //                                                 .center,
-                              //                                         child: SvgPicture
-                              //                                             .asset(
-                              //                                           'assets/images/View Note.svg',
-                              //                                           color: ThemeConstants
-                              //                                               .bluecolor,
-                              //                                           // color: index == 5
-                              //                                           //     ? ThemeConstants.bluecolor
-                              //                                           //     : const Color.fromARGB(
-                              //                                           //         255, 31, 31, 31),
-                              //                                           width: 30,
-                              //                                         ),
-                              //                                         // child: Icon(
-                              //                                         //   Icons.add,
-                              //                                         //   size: 30,
-                              //                                         //   color: ThemeConstants.blackcolor,
-                              //                                         // )
-                              //                                       ),
-                              //                                       CustomAutoSizeTextMontserrat(
-                              //                                         text:
-                              //                                             'My Notes',
-                              //                                         fontSize:
-                              //                                             14,
-                              //                                         fontWeight:
-                              //                                             FontWeight
-                              //                                                 .w500,
-                              //                                         textColor:
-                              //                                             ThemeConstants
-                              //                                                 .bluecolor,
-                              //                                       )
-                              //                                     ],
-                              //                                   ),
-                              //                                 ),
-                              //                               ),
-                              //                               SizedBox(
-                              //                                 width: 10,
-                              //                               ),
-                              //                               Container(
-                              //                                 width: 100,
-                              //                                 height: 100,
-                              //                                 decoration: BoxDecoration(
-                              //                                     color: ThemeConstants
-                              //                                         .lightblueColor,
-                              //                                     borderRadius:
-                              //                                         BorderRadius
-                              //                                             .circular(
-                              //                                                 20)),
-                              //                                 child: InkWell(
-                              //                                   onTap: () {
-                              //                                     context.push(
-                              //                                         '${Routes.dashboard}/${Routes.usesNotesTask}/${controller.user.value.id}');
-                              //                                     // Get.deleteAll();
-                              //
-                              //                                     // if (controller
-                              //                                     //         .meetingStartedValue ==
-                              //                                     //     true) {
-                              //                                     //   context.push(
-                              //                                     //       '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.addMoreNotesView}/${meetingData.id}/0');
-                              //                                     //   // Get.toNamed(AddMoreNotesView.routeName,
-                              //                                     //   //     arguments: [meetingData.id, 0]);
-                              //                                     // } else {
-                              //                                     //   getToast(
-                              //                                     //       'Meeting not started yet');
-                              //                                     //   // showDialog(
-                              //                                     //   //     context: context,
-                              //                                     //   //     builder: (_) => showPoPUp(
-                              //                                     //   //         'Meeting not started yet',
-                              //                                     //   //         Icon(
-                              //                                     //   //           Icons.error,
-                              //                                     //   //           size: 40,
-                              //                                     //   //           color: ThemeConstants.bluecolor,
-                              //                                     //   //         ),
-                              //                                     //   //         context));
-                              //                                     // }
-                              //                                   },
-                              //                                   child: Column(
-                              //                                     mainAxisAlignment:
-                              //                                         MainAxisAlignment
-                              //                                             .center,
-                              //                                     children: [
-                              //                                       Container(
-                              //                                         width: 150,
-                              //                                         alignment:
-                              //                                             Alignment
-                              //                                                 .center,
-                              //                                         child: SvgPicture
-                              //                                             .asset(
-                              //                                           'assets/images/View Note.svg',
-                              //                                           color: ThemeConstants
-                              //                                               .bluecolor,
-                              //                                           // color: index == 5
-                              //                                           //     ? ThemeConstants.bluecolor
-                              //                                           //     : const Color.fromARGB(
-                              //                                           //         255, 31, 31, 31),
-                              //                                           width: 30,
-                              //                                         ),
-                              //                                         // child: Icon(
-                              //                                         //   Icons.add,
-                              //                                         //   size: 30,
-                              //                                         //   color: ThemeConstants.blackcolor,
-                              //                                         // )
-                              //                                       ),
-                              //                                       CustomAutoSizeTextMontserrat(
-                              //                                         text:
-                              //                                             'My Tasks',
-                              //                                         fontSize:
-                              //                                             14,
-                              //                                         fontWeight:
-                              //                                             FontWeight
-                              //                                                 .w500,
-                              //                                         textColor:
-                              //                                             ThemeConstants
-                              //                                                 .bluecolor,
-                              //                                       )
-                              //                                     ],
-                              //                                   ),
-                              //                                 ),
-                              //                               ),
-                              //                               SizedBox(
-                              //                                 width: 10,
-                              //                               ),
-                              //                               InkWell(
-                              //                                 onTap: () async {
-                              //                                   // context.push(
-                              //                                   //     '${Routes.dashboard}/${Routes.viewDashboardNotes}');
-                              //
-                              //                                   await controllerBase
-                              //                                       .logOut();
-                              //
-                              //                                   context.go('/');
-                              //
-                              //                                   // Get.deleteAll();
-                              //
-                              //                                   // if (controller
-                              //                                   //         .meetingStartedValue ==
-                              //                                   //     true) {
-                              //                                   //   context.push(
-                              //                                   //       '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.addMoreNotesView}/${meetingData.id}/0');
-                              //                                   //   // Get.toNamed(AddMoreNotesView.routeName,
-                              //                                   //   //     arguments: [meetingData.id, 0]);
-                              //                                   // } else {
-                              //                                   //   getToast(
-                              //                                   //       'Meeting not started yet');
-                              //                                   //   // showDialog(
-                              //                                   //   //     context: context,
-                              //                                   //   //     builder: (_) => showPoPUp(
-                              //                                   //   //         'Meeting not started yet',
-                              //                                   //   //         Icon(
-                              //                                   //   //           Icons.error,
-                              //                                   //   //           size: 40,
-                              //                                   //   //           color: ThemeConstants.bluecolor,
-                              //                                   //   //         ),
-                              //                                   //   //         context));
-                              //                                   // }
-                              //                                 },
-                              //                                 child: Container(
-                              //                                   width: 100,
-                              //                                   height: 100,
-                              //                                   decoration: BoxDecoration(
-                              //                                       color: ThemeConstants
-                              //                                           .lightblueColor,
-                              //                                       borderRadius:
-                              //                                           BorderRadius
-                              //                                               .circular(
-                              //                                                   20)),
-                              //                                   child: Column(
-                              //                                     mainAxisAlignment:
-                              //                                         MainAxisAlignment
-                              //                                             .center,
-                              //                                     children: [
-                              //                                       Container(
-                              //                                           width:
-                              //                                               150,
-                              //                                           alignment:
-                              //                                               Alignment
-                              //                                                   .center,
-                              //                                           child:
-                              //                                               Icon(
-                              //                                             Icons
-                              //                                                 .logout,
-                              //                                             size:
-                              //                                                 30,
-                              //                                             color: ThemeConstants
-                              //                                                 .bluecolor,
-                              //                                           )),
-                              //                                       CustomAutoSizeTextMontserrat(
-                              //                                         text:
-                              //                                             'Logout',
-                              //                                         fontSize:
-                              //                                             14,
-                              //                                         fontWeight:
-                              //                                             FontWeight
-                              //                                                 .w500,
-                              //                                         textColor:
-                              //                                             ThemeConstants
-                              //                                                 .bluecolor,
-                              //                                       )
-                              //                                     ],
-                              //                                   ),
-                              //                                 ),
-                              //                               ),
-                              //                             ],
-                              //                           ),
-                              //                           SizedBox(
-                              //                             height: 5,
-                              //                           ),
-                              //                           controller.showDeleteOption ==
-                              //                                   true
-                              //                               ? Row(
-                              //                                   mainAxisAlignment:
-                              //                                       MainAxisAlignment
-                              //                                           .center,
-                              //                                   children: [
-                              //                                     InkWell(
-                              //                                       onTap:
-                              //                                           () async {
-                              //                                         // context.push(
-                              //                                         //     '${Routes.dashboard}/${Routes.viewDashboardNotes}');
-                              //                                         var res =
-                              //                                             await controller
-                              //                                                 .deleteAccount();
-                              //
-                              //                                         if (res ==
-                              //                                             true) {
-                              //                                           context.go(
-                              //                                               '/');
-                              //                                         }
-                              //
-                              //                                         // Get.deleteAll();
-                              //
-                              //                                         // if (controller
-                              //                                         //         .meetingStartedValue ==
-                              //                                         //     true) {
-                              //                                         //   context.push(
-                              //                                         //       '${Routes.dashboard}/${Routes.meetingDetails}/${Routes.addMoreNotesView}/${meetingData.id}/0');
-                              //                                         //   // Get.toNamed(AddMoreNotesView.routeName,
-                              //                                         //   //     arguments: [meetingData.id, 0]);
-                              //                                         // } else {
-                              //                                         //   getToast(
-                              //                                         //       'Meeting not started yet');
-                              //                                         //   // showDialog(
-                              //                                         //   //     context: context,
-                              //                                         //   //     builder: (_) => showPoPUp(
-                              //                                         //   //         'Meeting not started yet',
-                              //                                         //   //         Icon(
-                              //                                         //   //           Icons.error,
-                              //                                         //   //           size: 40,
-                              //                                         //   //           color: ThemeConstants.bluecolor,
-                              //                                         //   //         ),
-                              //                                         //   //         context));
-                              //                                         // }
-                              //                                       },
-                              //                                       child:
-                              //                                           Container(
-                              //                                         width: 100,
-                              //                                         height: 100,
-                              //                                         decoration: BoxDecoration(
-                              //                                             color: ThemeConstants
-                              //                                                 .lightblueColor,
-                              //                                             borderRadius:
-                              //                                                 BorderRadius.circular(20)),
-                              //                                         child:
-                              //                                             Column(
-                              //                                           mainAxisAlignment:
-                              //                                               MainAxisAlignment
-                              //                                                   .center,
-                              //                                           children: [
-                              //                                             Container(
-                              //                                                 padding: EdgeInsets.all(
-                              //                                                     2),
-                              //                                                 width:
-                              //                                                     150,
-                              //                                                 alignment:
-                              //                                                     Alignment.center,
-                              //                                                 child: Icon(
-                              //                                                   Icons.delete,
-                              //                                                   size: 30,
-                              //                                                   color: ThemeConstants.bluecolor,
-                              //                                                 )),
-                              //                                             SizedBox(
-                              //                                               width:
-                              //                                                   100,
-                              //                                               child:
-                              //                                                   CustomAutoSizeTextMontserrat(
-                              //                                                 align:
-                              //                                                     TextAlign.center,
-                              //                                                 text:
-                              //                                                     'Delete\nProfile',
-                              //                                                 fontSize:
-                              //                                                     14,
-                              //                                                 fontWeight:
-                              //                                                     FontWeight.w500,
-                              //                                                 textColor:
-                              //                                                     ThemeConstants.bluecolor,
-                              //                                               ),
-                              //                                             )
-                              //                                           ],
-                              //                                         ),
-                              //                                       ),
-                              //                                     ),
-                              //                                   ],
-                              //                                 )
-                              //                               : SizedBox.shrink(),
-                              //                         ],
-                              //                       )),
-                              //                 ],
-                              //               ),
-                              //             ),
-                              //           );
-                              //         },
-                              //       );
-                              //       // Scaffold.of(ctx).openDrawer();
-                              //     },
-                              //     icon: Icon(
-                              //       Icons.menu,
-                              //       color: ThemeConstants.whitecolor,
-                              //       size: 30,
-                              //     )),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                  // Scaffold.of(ctx).openDrawer();
+                                },
+                                icon: Icon(
+                                  Icons.menu,
+                                  color: ThemeConstants.whitecolor,
+                                  size: 30,
+                                )),
 
-                              // SizedBox(
-                              //     width: 60,
-                              //     height: 60,
-                              //     child: Stack(
-                              //       alignment: Alignment.center,
-                              //       children: [
-                              //         CircleAvatar(
-                              //           backgroundColor: ThemeConstants.whitecolor,
-                              //           radius: 35,
-                              //         ),
-                              //         CircleAvatar(
-                              //           backgroundColor: ThemeConstants.bluecolor,
-                              //           radius: 28.5,
-                              //         ),
-                              //         CircleAvatar(
-                              //           backgroundColor: ThemeConstants.whitecolor,
-                              //           radius: 25,
-                              //           child: Icon(
-                              //             Icons.person,
-                              //             size: 35,
-                              //             color: ThemeConstants.bluecolor,
-                              //           ),
-                              //         ),
-                              //       ],
-                              //     )),
-                              // SizedBox(
-                              //   width: 10,
-                              // ),
-                              // InkWell(
-                              //   onTap: () async {
-                              //     controller.change(null,
-                              //         status: RxStatus.loading());
-                              //     var res = await controllerBase.logOut();
+                            // SizedBox(
+                            //     width: 60,
+                            //     height: 60,
+                            //     child: Stack(
+                            //       alignment: Alignment.center,
+                            //       children: [
+                            //         CircleAvatar(
+                            //           backgroundColor: ThemeConstants.whitecolor,
+                            //           radius: 35,
+                            //         ),
+                            //         CircleAvatar(
+                            //           backgroundColor: ThemeConstants.bluecolor,
+                            //           radius: 28.5,
+                            //         ),
+                            //         CircleAvatar(
+                            //           backgroundColor: ThemeConstants.whitecolor,
+                            //           radius: 25,
+                            //           child: Icon(
+                            //             Icons.person,
+                            //             size: 35,
+                            //             color: ThemeConstants.bluecolor,
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     )),
+                            // SizedBox(
+                            //   width: 10,
+                            // ),
+                            // InkWell(
+                            //   onTap: () async {
+                            //     controller.change(null,
+                            //         status: RxStatus.loading());
+                            //     var res = await controllerBase.logOut();
 
-                              //     if (res) {
-                              //       context.go('/');
-                              //     }
-                              //     controller.change(null,
-                              //         status: RxStatus.success());
-                              //   },
-                              //   child: SizedBox(
-                              //       width: 60,
-                              //       height: 60,
-                              //       child: Stack(
-                              //         alignment: Alignment.center,
-                              //         children: [
-                              //           CircleAvatar(
-                              //             backgroundColor:
-                              //                 ThemeConstants.whitecolor,
-                              //             radius: 35,
-                              //           ),
-                              //           CircleAvatar(
-                              //             backgroundColor: ThemeConstants.bluecolor,
-                              //             radius: 28.5,
-                              //           ),
-                              //           CircleAvatar(
-                              //             backgroundColor:
-                              //                 ThemeConstants.whitecolor,
-                              //             radius: 25,
-                              //             child: Icon(
-                              //               Icons.logout,
-                              //               size: 30,
-                              //               color: ThemeConstants.bluecolor,
-                              //             ),
-                              //           ),
-                              //         ],
-                              //       )),
-                              // ),
-                              // SizedBox(
-                              //   width: 5,
-                              // ),
+                            //     if (res) {
+                            //       context.go('/');
+                            //     }
+                            //     controller.change(null,
+                            //         status: RxStatus.success());
+                            //   },
+                            //   child: SizedBox(
+                            //       width: 60,
+                            //       height: 60,
+                            //       child: Stack(
+                            //         alignment: Alignment.center,
+                            //         children: [
+                            //           CircleAvatar(
+                            //             backgroundColor:
+                            //                 ThemeConstants.whitecolor,
+                            //             radius: 35,
+                            //           ),
+                            //           CircleAvatar(
+                            //             backgroundColor: ThemeConstants.bluecolor,
+                            //             radius: 28.5,
+                            //           ),
+                            //           CircleAvatar(
+                            //             backgroundColor:
+                            //                 ThemeConstants.whitecolor,
+                            //             radius: 25,
+                            //             child: Icon(
+                            //               Icons.logout,
+                            //               size: 30,
+                            //               color: ThemeConstants.bluecolor,
+                            //             ),
+                            //           ),
+                            //         ],
+                            //       )),
+                            // ),
+                            // SizedBox(
+                            //   width: 5,
+                            // ),
 
-                              // InkWell(
-                              //   onTap: () {
-                              //     context.push(
-                              //         '${Routes.dashboard}/${Routes.viewDashboardNotes}');
-                              //     // Get.toNamed(DashboardNotesView.routenamed);
-                              //   },
-                              //   child: SizedBox(
-                              //       width: 60,
-                              //       height: 60,
-                              //       child: Stack(
-                              //         alignment: Alignment.center,
-                              //         children: [
-                              //           CircleAvatar(
-                              //             backgroundColor:
-                              //                 ThemeConstants.whitecolor,
-                              //             radius: 35,
-                              //           ),
-                              //           CircleAvatar(
-                              //             backgroundColor: ThemeConstants.bluecolor,
-                              //             radius: 28.5,
-                              //           ),
-                              //           CircleAvatar(
-                              //             backgroundColor:
-                              //                 ThemeConstants.whitecolor,
-                              //             radius: 25,
-                              //             child: SvgPicture.asset(
-                              //               'assets/images/note.svg',
-                              //               width: 30,
-                              //               color: ThemeConstants.bluecolor,
-                              //               height: 30,
-                              //             ),
-                              //           ),
-                              //         ],
-                              //       )),
-                              //   // Container(
-                              //   //   width: 45,
-                              //   //   padding: EdgeInsets.all(10),
-                              //   //   decoration: BoxDecoration(
-                              //   //       borderRadius: BorderRadius.circular(200),
-                              //   //       border: Border.all(
-                              //   //           width: 1.5, color: ThemeConstants.yellow),
-                              //   //       color: ThemeConstants.lightYellow),
-                              //   //   height: 45,
-                              //   //   child: SvgPicture.asset('assets/images/note.svg'),
-                              //   // ),
-                              // ),
-                              // InkWell(
-                              //   onTap: () {
-                              //     controllerBase.logOut();
-                              //   },
-                              //   child: Container(
-                              //     width: 45,
-                              //     padding: EdgeInsets.all(10),
-                              //     decoration: BoxDecoration(
-                              //         borderRadius: BorderRadius.circular(200),
-                              //         border: Border.all(
-                              //             width: 1.5,
-                              //             color: ThemeConstants.bluecolor),
-                              //         color: ThemeConstants.lightblueColor),
-                              //     height: 45,
-                              //     child: Icon(Icons.logout),
-                              //   ),
-                              // ),
-                              // SizedBox(
-                              //   width: 10,
-                              // ),
-                            ],
-                          ),
+                            // InkWell(
+                            //   onTap: () {
+                            //     context.push(
+                            //         '${Routes.dashboard}/${Routes.viewDashboardNotes}');
+                            //     // Get.toNamed(DashboardNotesView.routenamed);
+                            //   },
+                            //   child: SizedBox(
+                            //       width: 60,
+                            //       height: 60,
+                            //       child: Stack(
+                            //         alignment: Alignment.center,
+                            //         children: [
+                            //           CircleAvatar(
+                            //             backgroundColor:
+                            //                 ThemeConstants.whitecolor,
+                            //             radius: 35,
+                            //           ),
+                            //           CircleAvatar(
+                            //             backgroundColor: ThemeConstants.bluecolor,
+                            //             radius: 28.5,
+                            //           ),
+                            //           CircleAvatar(
+                            //             backgroundColor:
+                            //                 ThemeConstants.whitecolor,
+                            //             radius: 25,
+                            //             child: SvgPicture.asset(
+                            //               'assets/images/note.svg',
+                            //               width: 30,
+                            //               color: ThemeConstants.bluecolor,
+                            //               height: 30,
+                            //             ),
+                            //           ),
+                            //         ],
+                            //       )),
+                            //   // Container(
+                            //   //   width: 45,
+                            //   //   padding: EdgeInsets.all(10),
+                            //   //   decoration: BoxDecoration(
+                            //   //       borderRadius: BorderRadius.circular(200),
+                            //   //       border: Border.all(
+                            //   //           width: 1.5, color: ThemeConstants.yellow),
+                            //   //       color: ThemeConstants.lightYellow),
+                            //   //   height: 45,
+                            //   //   child: SvgPicture.asset('assets/images/note.svg'),
+                            //   // ),
+                            // ),
+                            // InkWell(
+                            //   onTap: () {
+                            //     controllerBase.logOut();
+                            //   },
+                            //   child: Container(
+                            //     width: 45,
+                            //     padding: EdgeInsets.all(10),
+                            //     decoration: BoxDecoration(
+                            //         borderRadius: BorderRadius.circular(200),
+                            //         border: Border.all(
+                            //             width: 1.5,
+                            //             color: ThemeConstants.bluecolor),
+                            //         color: ThemeConstants.lightblueColor),
+                            //     height: 45,
+                            //     child: Icon(Icons.logout),
+                            //   ),
+                            // ),
+                            // SizedBox(
+                            //   width: 10,
+                            // ),
+                          ],
                         ),
                       ),
-                      //
-                      Divider(
-                        height: 0.0,
-                        color: Colors.blue,
+                    ),
 
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 5, left: 25, right: 25),
+                      child: Divider(
+                        color: Colors.white,
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(top: 5, left: 25, right: 25),
-                      //   child: CustomAutoSizeTextMontserrat(
-                      //     text: "Your Meetings",
-                      //     fontSize: 30,
-                      //     textColor: ThemeConstants.bluecolor,
-                      //     fontWeight: FontWeight.bold,
-                      //   ),
-                      // ),
-                      // ChangeNotifierProvider<CalendarController>(
-                      //   create: (_) => CalendarController(),
-                      //   builder: (context, child) {
-                      //     return
-                      GetBuilder<CalendarController>(
-                          init: Get.put(CalendarController()),
-                          builder: (calendarController) {
-                            if (calendarController.loading == true){
-                              return getLoading(context);
-                            } else {
-                              return Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 5, left: 5, right: 5),
-                                child: TableCalendar<Event>(
-                                    selectedDayPredicate: (day) => isSameDay(
-                                        calendarController.selectedDayGlobal,
-                                        day),
-                                    eventLoader:
-                                        calendarController.getEventsForDay,
-                                    daysOfWeekStyle: DaysOfWeekStyle(
-                                      weekendStyle: TextStyle(
+                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(top: 5, left: 25, right: 25),
+                    //   child: CustomAutoSizeTextMontserrat(
+                    //     text: "Your Meetings",
+                    //     fontSize: 30,
+                    //     textColor: ThemeConstants.bluecolor,
+                    //     fontWeight: FontWeight.bold,
+                    //   ),
+                    // ),
+                    // ChangeNotifierProvider<CalendarController>(
+                    //   create: (_) => CalendarController(),
+                    //   builder: (context, child) {
+                    //     return
+                    GetBuilder<CalendarController>(
+                        init: Get.put(CalendarController()),
+                        builder: (calendarController) {
+                          if (calendarController.loading == true) {
+                            return getLoading(context);
+                          } else {
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 5, left: 25, right: 25),
+                              child: TableCalendar<Event>(
+                                  selectedDayPredicate: (day) => isSameDay(
+                                      calendarController.selectedDayGlobal,
+                                      day),
+                                  eventLoader:
+                                      calendarController.getEventsForDay,
+                                  daysOfWeekStyle: DaysOfWeekStyle(
+                                    weekendStyle: TextStyle(
+                                        color: ThemeConstants.whitecolor),
+                                    weekdayStyle: TextStyle(
+                                        color: ThemeConstants.whitecolor),
+                                  ),
+                                  calendarStyle: CalendarStyle(
+                                      isTodayHighlighted: true,
+                                      selectedDecoration: BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        borderRadius:
+                                            BorderRadius.circular(200),
+                                        border: Border.all(
+                                            width: 1,
+                                            color: ThemeConstants.yellow),
+                                      ),
+                                      defaultDecoration: BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        borderRadius:
+                                            BorderRadius.circular(200),
+                                      ),
+                                      weekendDecoration: BoxDecoration(
+                                          color: ThemeConstants.whitecolor,
+                                          shape: BoxShape.rectangle,
+                                          borderRadius:
+                                              BorderRadius.circular(200)),
+                                      outsideDecoration: BoxDecoration(
+                                          shape: BoxShape.rectangle,
+                                          borderRadius:
+                                              BorderRadius.circular(200)),
+                                      disabledDecoration: BoxDecoration(
+                                          shape: BoxShape.rectangle,
+                                          borderRadius:
+                                              BorderRadius.circular(200)),
+                                      outsideDaysVisible: true,
+                                      selectedTextStyle: TextStyle(
                                           color: ThemeConstants.whitecolor),
-                                      weekdayStyle: TextStyle(
+                                      outsideTextStyle:
+                                          TextStyle(color: Colors.yellow),
+                                      defaultTextStyle: TextStyle(
                                           color: ThemeConstants.whitecolor),
-                                    ),
-                                    calendarStyle: CalendarStyle(
-                                        isTodayHighlighted: true,
-                                        selectedDecoration: BoxDecoration(
+                                      weekendTextStyle: TextStyle(
+                                          color: ThemeConstants.blackcolor),
+                                      todayTextStyle: TextStyle(
+                                          color: ThemeConstants.blackcolor),
+                                      todayDecoration: BoxDecoration(
                                           shape: BoxShape.rectangle,
                                           borderRadius:
                                               BorderRadius.circular(200),
-                                          border: Border.all(
-                                              width: 1,
-                                              color: ThemeConstants.lightRed),
-                                        ),
-                                        defaultDecoration: BoxDecoration(
-                                          shape: BoxShape.rectangle,
-                                          borderRadius:
-                                              BorderRadius.circular(250),
-                                        ),
-                                        weekendDecoration: BoxDecoration(
-                                            color: ThemeConstants.whitecolor,
-                                            shape: BoxShape.rectangle,
-                                            borderRadius:
-                                                BorderRadius.circular(200)),
-                                        outsideDecoration: BoxDecoration(
-                                            shape: BoxShape.rectangle,
-                                            borderRadius:
-                                                BorderRadius.circular(200)),
-                                        disabledDecoration: BoxDecoration(
-                                            shape: BoxShape.rectangle,
-                                            borderRadius:
-                                                BorderRadius.circular(200)),
-                                        outsideDaysVisible: false,
-                                        selectedTextStyle: TextStyle(
-                                            color: ThemeConstants.whitecolor),
-                                        outsideTextStyle:
-                                            TextStyle(color: Colors.yellow),
-                                        defaultTextStyle: TextStyle(
-                                            color: ThemeConstants.whitecolor),
-                                        weekendTextStyle: TextStyle(
-                                            color: ThemeConstants.blackcolor),
-                                        todayTextStyle: TextStyle(
-                                            color: ThemeConstants.blackcolor),
-                                        todayDecoration: BoxDecoration(
-                                            shape: BoxShape.rectangle,
-                                            borderRadius:
-                                                BorderRadius.circular(200),
-                                            color: ThemeConstants.yellow)),
-                                    // onTapHeaderCustomButton: () async {
-                                    //   var result = await context.push(
-                                    //       '/DashBoard/${Routes.createMeeting}');
-                                    //   // print(
-                                    //   //     '$result efdddeeeeeeeeeeeeee\f\e\ffefefeef');
-                                    //
-                                    //   Get.find<DashBoardController>().onInit();
-                                    //   calendarController.onInit();
-                                    //
-                                    //   calendarController.selectedDayGlobal =
-                                    //       DateTime.now();
-                                    //
-                                    //   calendarController.update();
-                                    //   setState(() {});
-                                    //
-                                    //   // Get.to(CreateNewMeeting2());
-                                    //   print('ddd');
-                                    // },
-                                    headerStyle: HeaderStyle(
-                                        headerPadding: EdgeInsets.symmetric(
-                                            horizontal: 0, vertical: 10),
-                                        titleTextStyle: TextStyle(
-                                            fontSize: 14,
-                                            color: ThemeConstants.whitecolor),
-                                        formatButtonVisible: false,
-                                        leftChevronVisible: false,
-                                        rightChevronVisible: false),
-                                    calendarFormat: controller.calendarFormat,
-                                    onDaySelected:
-                                        calendarController.onDaySelected,
-                                    onFormatChanged: (format) {
-                                      if (controller.calendarFormat != format) {
-                                        // Call `setState()` when updating calendar format
+                                          color: ThemeConstants.yellow)),
+                                  onTapHeaderCustomButton: () async {
+                                    var result = await context.push(
+                                        '/DashBoard/${Routes.createMeeting}');
+                                    // print(
+                                    //     '$result efdddeeeeeeeeeeeeee\f\e\ffefefeef');
 
-                                        controller.calendarFormat = format;
-                                      }
-                                      controller.update();
-                                    },
-                                    // calendarStyle: CalendarStyle(
-                                    //   // Use `CalendarStyle` to customize the UI
-                                    //   outsideDaysVisible: false,
-                                    // ),
-                                    onPageChanged:
-                                        calendarController.onPageChanged,
-                                    focusedDay:
-                                        calendarController.focusedDayGlobal!,
-                                    firstDay: DateTime(2017, 9, 10),
-                                    lastDay: DateTime(2027, 9, 10)),
-                              );
-                            }
-                          }),
+                                    Get.find<DashBoardController>().onInit();
+                                    calendarController.onInit();
 
-                      // },
-                      // ),
-                      const SizedBox(
-                        height: 5,
+                                    calendarController.selectedDayGlobal =
+                                        DateTime.now();
+
+                                    calendarController.update();
+                                    setState(() {});
+
+                                    // Get.to(CreateNewMeeting2());
+                                    print('ddd');
+                                  },
+                                  headerStyle: HeaderStyle(
+                                      headerPadding: EdgeInsets.symmetric(
+                                          horizontal: 0, vertical: 20),
+                                      titleTextStyle: TextStyle(
+                                          fontSize: 14,
+                                          color: ThemeConstants.whitecolor),
+                                      formatButtonVisible: false,
+                                      leftChevronVisible: false,
+                                      rightChevronVisible: false),
+                                  calendarFormat: controller.calendarFormat,
+                                  onDaySelected:
+                                      calendarController.onDaySelected,
+                                  onFormatChanged: (format) {
+                                    if (controller.calendarFormat != format) {
+                                      // Call `setState()` when updating calendar format
+
+                                      controller.calendarFormat = format;
+                                    }
+                                    controller.update();
+                                  },
+                                  // calendarStyle: CalendarStyle(
+                                  //   // Use `CalendarStyle` to customize the UI
+                                  //   outsideDaysVisible: false,
+                                  // ),
+                                  onPageChanged:
+                                      calendarController.onPageChanged,
+                                  focusedDay:
+                                      calendarController.focusedDayGlobal!,
+                                  firstDay: DateTime(2017, 9, 10),
+                                  lastDay: DateTime(2027, 9, 10)),
+                            );
+                          }
+                        }),
+
+                    // },
+                    // ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    // Wrap(
+                    //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Container(
+                    //       child: CustomTabWidget(
+                    //         key: _childKey,
+                    //         title0: "Upcoming",
+                    //         title1: "Done",
+                    //         callback: (val) => {
+                    //           controller.indexOfTab = val,
+                    //           print(val == 1),
+                    //           if (val == 0)
+                    //             {
+                    //               print('dcdfrfvfvf'),
+                    //               controller.showUpcomingList(),
+                    //               controller.update()
+                    //             }
+                    //           else if (val == 1)
+                    //             {
+                    //               print('$val dcdcd'),
+                    //               controller.showDoneList(),
+                    //               controller.update()
+                    //             }
+                    //         },
+                    //       ),
+                    //     ),
+                    //     // DropdownButton<String>(
+                    //     //   // value: dropdownValue,
+                    //     //   icon: const Icon(Icons.arrow_downward),
+                    //     //   elevation: 16,
+                    //     //   style: const TextStyle(color: Colors.deepPurple),
+                    //     //   underline: Container(
+                    //     //     height: 2,
+                    //     //     color: Colors.deepPurpleAccent,
+                    //     //   ),
+                    //     //   onChanged: (String? value) {
+                    //     //     // This is called when the user selects an item.
+                    //     //     setState(() {
+                    //     //       // dropdownValue = value!;
+                    //     //     });
+                    //     //   },
+                    //     //   items: list.map<DropdownMenuItem<String>>(
+                    //     //       (String value) {
+                    //     //     return DropdownMenuItem<String>(
+                    //     //       value: value,
+                    //     //       child: Text(value),
+                    //     //     );
+                    //     //   }).toList(),
+                    //     // ),
+                    //     SizedBox(
+                    //       width: 30,
+                    //     ),
+
+                    //     Padding(
+                    //       padding: const EdgeInsets.only(top: 8),
+                    //       child: Obx(
+                    //         () => DropdownButton2(
+                    //           underline: Container(),
+                    //           buttonStyleData: ButtonStyleData(
+                    //               elevation: 0,
+                    //               height: 40,
+                    //               decoration: BoxDecoration(
+                    //                   color: Colors.transparent,
+                    //                   borderRadius: BorderRadius.circular(20),
+                    //                   border: Border.all(
+                    //                       width: 1,
+                    //                       color: ThemeConstants.blackcolor))),
+                    //           dropdownStyleData: DropdownStyleData(elevation: 1),
+                    //           hint: Text(
+                    //             '${controller.selectedFilter.value}',
+                    //             style: TextStyle(
+                    //               fontSize: 14,
+                    //               color: Theme.of(context).hintColor,
+                    //             ),
+                    //           ),
+
+                    //           items: list
+                    //               .map((item) => DropdownMenuItem<String>(
+                    //                     value: item,
+                    //                     child: Text(
+                    //                       item,
+                    //                       style: const TextStyle(
+                    //                         fontSize: 14,
+                    //                       ),
+                    //                     ),
+                    //                   ))
+                    //               .toList(),
+                    //           value: controller.selectedFilter.value == null
+                    //               ? selectedValue
+                    //               : controller.selectedFilter.value,
+                    //           onChanged: (value) {
+                    //             // controller.frfr(value);
+
+                    //             controller.selectedFilter.value =
+                    //                 value.toString();
+
+                    //             controller.changeInFilter();
+
+                    //             controller.update();
+
+                    //             // controller.showSpecificMeeting(value);
+                    //           },
+                    //           // buttonHeight: 40,
+                    //           // buttonWidth: 140,
+                    //           // itemHeight: 40,
+                    //           // itemWidth: 140,
+                    //         ),
+                    //       ),
+                    //     )
+
+                    //     // CustomFilterSelector(
+                    //     //   callBack: (val) {
+                    //     //     // showDialog(
+                    //     //     //     context: context,
+                    //     //     //     builder: (_) => AlertDialog(
+                    //     //     //           content: Container(
+                    //     //     //             width: 40,
+                    //     //     //             height: 40,
+                    //     //     //             child: Text('dd'),
+                    //     //     //           ),
+                    //     //     //         ));
+                    //     //     print(val);
+                    //     //     setState(() {
+                    //     //       showFilterList = val;
+                    //     //     });
+                    //     //   },
+                    //     // ),
+                    //   ],
+                    // ),
+                    // GetX<DashBoardController>(
+                    //   init: DashBoardController(),
+                    //   builder: (controller) {
+                    //     if (controller.loading.value == true) {
+                    //       return CircularProgressIndicator();
+                    //     } else {
+                    //       return Container(
+                    //         child: Text('ddd'),
+                    //       );
+                    //
+                    // }
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Expanded(
+                      // padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: ThemeConstants.whitecolor,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(35),
+                                topRight: Radius.circular(35))),
+                        padding: const EdgeInsets.only(
+                            top: 30, left: 25, right: 25, bottom: 30),
+                        child: ListView(children: [
+                          if (controller.loadingMeetingSection == false) ...[
+                            ...controller.meetingsToShowInDashboardWidgetList
+                          ] else ...[
+                            CircularProgressIndicator(
+                              color: ThemeConstants.bluecolor,
+                            )
+                          ]
+                          // ...controller.singleMeetingDetails(context),
+                        ]),
                       ),
-                      // Wrap(
-                      //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Container(
-                      //       child: CustomTabWidget(
-                      //         key: _childKey,
-                      //         title0: "Upcoming",
-                      //         title1: "Done",
-                      //         callback: (val) => {
-                      //           controller.indexOfTab = val,
-                      //           print(val == 1),
-                      //           if (val == 0)
-                      //             {
-                      //               print('dcdfrfvfvf'),
-                      //               controller.showUpcomingList(),
-                      //               controller.update()
-                      //             }
-                      //           else if (val == 1)
-                      //             {
-                      //               print('$val dcdcd'),
-                      //               controller.showDoneList(),
-                      //               controller.update()
-                      //             }
-                      //         },
-                      //       ),
-                      //     ),
-                      //     // DropdownButton<String>(
-                      //     //   // value: dropdownValue,
-                      //     //   icon: const Icon(Icons.arrow_downward),
-                      //     //   elevation: 16,
-                      //     //   style: const TextStyle(color: Colors.deepPurple),
-                      //     //   underline: Container(
-                      //     //     height: 2,
-                      //     //     color: Colors.deepPurpleAccent,
-                      //     //   ),
-                      //     //   onChanged: (String? value) {
-                      //     //     // This is called when the user selects an item.
-                      //     //     setState(() {
-                      //     //       // dropdownValue = value!;
-                      //     //     });
-                      //     //   },
-                      //     //   items: list.map<DropdownMenuItem<String>>(
-                      //     //       (String value) {
-                      //     //     return DropdownMenuItem<String>(
-                      //     //       value: value,
-                      //     //       child: Text(value),
-                      //     //     );
-                      //     //   }).toList(),
-                      //     // ),
-                      //     SizedBox(
-                      //       width: 30,
-                      //     ),
+                    ),
 
-                      //     Padding(
-                      //       padding: const EdgeInsets.only(top: 8),
-                      //       child: Obx(
-                      //         () => DropdownButton2(
-                      //           underline: Container(),
-                      //           buttonStyleData: ButtonStyleData(
-                      //               elevation: 0,
-                      //               height: 40,
-                      //               decoration: BoxDecoration(
-                      //                   color: Colors.transparent,
-                      //                   borderRadius: BorderRadius.circular(20),
-                      //                   border: Border.all(
-                      //                       width: 1,
-                      //                       color: ThemeConstants.blackcolor))),
-                      //           dropdownStyleData: DropdownStyleData(elevation: 1),
-                      //           hint: Text(
-                      //             '${controller.selectedFilter.value}',
-                      //             style: TextStyle(
-                      //               fontSize: 14,
-                      //               color: Theme.of(context).hintColor,
-                      //             ),
-                      //           ),
+                    // SizedBox(
+                    //   height: 10,
+                    // )
 
-                      //           items: list
-                      //               .map((item) => DropdownMenuItem<String>(
-                      //                     value: item,
-                      //                     child: Text(
-                      //                       item,
-                      //                       style: const TextStyle(
-                      //                         fontSize: 14,
-                      //                       ),
-                      //                     ),
-                      //                   ))
-                      //               .toList(),
-                      //           value: controller.selectedFilter.value == null
-                      //               ? selectedValue
-                      //               : controller.selectedFilter.value,
-                      //           onChanged: (value) {
-                      //             // controller.frfr(value);
+                    // Row(
+                    //   children: [
+                    //     const SizedBox(
+                    //       width: 20,
+                    //     ),
+                    //     // InkWell(
+                    //     //   onTap: () {
+                    //     //     if (controller.upcomingbuttonEnable.value ==
+                    //     //         false) {
+                    //     //       controller.upcomingbuttonEnable.value = true;
+                    //     //       controller.update();
+                    //     //     }
+                    //     //   },
+                    //     //   child: TextUnderLine(
+                    //     //     text1: "Upco",
+                    //     //     text: "ming",
+                    //     //     textColor:
+                    //     //         controller.upcomingbuttonEnable.value == true
+                    //     //             ? ThemeConstants.firstColor
+                    //     //             : ThemeConstants.blackcolor,
+                    //     //     underlinceColor:
+                    //     //         controller.upcomingbuttonEnable.value == true
+                    //     //             ? ThemeConstants.firstColor
+                    //     //             : Colors.transparent,
+                    //     //   ),
+                    //     // ),
+                    //     // const SizedBox(
+                    //     //   width: 20,
+                    //     // ),
+                    //     // InkWell(
+                    //     //   onTap: () {
+                    //     //     if (controller.upcomingbuttonEnable.value == true) {
+                    //     //       controller.upcomingbuttonEnable.value = false;
+                    //     //       controller.update();
+                    //     //     }
+                    //     //   },
+                    //     //   child: TextUnderLine(
+                    //     //     text1: "Do",
+                    //     //     text: "ne",
+                    //     //     textColor:
+                    //     //         controller.upcomingbuttonEnable.value == false
+                    //     //             ? ThemeConstants.firstColor
+                    //     //             : ThemeConstants.blackcolor,
+                    //     //     underlinceColor:
+                    //     //         controller.upcomingbuttonEnable.value == false
+                    //     //             ? ThemeConstants.firstColor
+                    //     //             : Colors.transparent,
+                    //     //   ),
+                    //     // ),
+                    //   ],
+                    // ),
 
-                      //             controller.selectedFilter.value =
-                      //                 value.toString();
-
-                      //             controller.changeInFilter();
-
-                      //             controller.update();
-
-                      //             // controller.showSpecificMeeting(value);
-                      //           },
-                      //           // buttonHeight: 40,
-                      //           // buttonWidth: 140,
-                      //           // itemHeight: 40,
-                      //           // itemWidth: 140,
-                      //         ),
-                      //       ),
-                      //     )
-
-                      //     // CustomFilterSelector(
-                      //     //   callBack: (val) {
-                      //     //     // showDialog(
-                      //     //     //     context: context,
-                      //     //     //     builder: (_) => AlertDialog(
-                      //     //     //           content: Container(
-                      //     //     //             width: 40,
-                      //     //     //             height: 40,
-                      //     //     //             child: Text('dd'),
-                      //     //     //           ),
-                      //     //     //         ));
-                      //     //     print(val);
-                      //     //     setState(() {
-                      //     //       showFilterList = val;
-                      //     //     });
-                      //     //   },
-                      //     // ),
-                      //   ],
-                      // ),
-                      // GetX<DashBoardController>(
-                      //   init: DashBoardController(),
-                      //   builder: (controller) {
-                      //     if (controller.loading.value == true) {
-                      //       return CircularProgressIndicator();
-                      //     } else {
-                      //       return Container(
-                      //         child: Text('ddd'),
-                      //       );
-                      //
-                      // }
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Expanded(
-                        // padding: EdgeInsets.symmetric(vertical: 20),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(35),
-                                  topRight: Radius.circular(35))),
-                          // padding: const EdgeInsets.only(
-                          //     top: 30, left: 25, right: 25, bottom: 30),
-                          child: ListView(
-                            padding: const EdgeInsets.only(
-                                  top: 30, left: 25, right: 25, bottom: 30),
-                              children: [
-                            if (controller.loadingMeetingSection == false) ...[
-                             ...controller.meetingsToShowInDashboardWidgetList,
-                            ]
-                            else ...[
-                              Center(
-                                child: Container(
-                                  width: 40,
-                                  child: Center(
-                                    child: CircularProgressIndicator(
-                                      color: ThemeConstants.bluecolor,
-
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ]
-                            // ...controller.singleMeetingDetails(context),
-                          ]),
-                        ),
-                      ),
-
-                      // SizedBox(
-                      //   height: 10,
-                      // )
-
-                      // Row(
-                      //   children: [
-                      //     const SizedBox(
-                      //       width: 20,
-                      //     ),
-                      //     // InkWell(
-                      //     //   onTap: () {
-                      //     //     if (controller.upcomingbuttonEnable.value ==
-                      //     //         false) {
-                      //     //       controller.upcomingbuttonEnable.value = true;
-                      //     //       controller.update();
-                      //     //     }
-                      //     //   },
-                      //     //   child: TextUnderLine(
-                      //     //     text1: "Upco",
-                      //     //     text: "ming",
-                      //     //     textColor:
-                      //     //         controller.upcomingbuttonEnable.value == true
-                      //     //             ? ThemeConstants.firstColor
-                      //     //             : ThemeConstants.blackcolor,
-                      //     //     underlinceColor:
-                      //     //         controller.upcomingbuttonEnable.value == true
-                      //     //             ? ThemeConstants.firstColor
-                      //     //             : Colors.transparent,
-                      //     //   ),
-                      //     // ),
-                      //     // const SizedBox(
-                      //     //   width: 20,
-                      //     // ),
-                      //     // InkWell(
-                      //     //   onTap: () {
-                      //     //     if (controller.upcomingbuttonEnable.value == true) {
-                      //     //       controller.upcomingbuttonEnable.value = false;
-                      //     //       controller.update();
-                      //     //     }
-                      //     //   },
-                      //     //   child: TextUnderLine(
-                      //     //     text1: "Do",
-                      //     //     text: "ne",
-                      //     //     textColor:
-                      //     //         controller.upcomingbuttonEnable.value == false
-                      //     //             ? ThemeConstants.firstColor
-                      //     //             : ThemeConstants.blackcolor,
-                      //     //     underlinceColor:
-                      //     //         controller.upcomingbuttonEnable.value == false
-                      //     //             ? ThemeConstants.firstColor
-                      //     //             : Colors.transparent,
-                      //     //   ),
-                      //     // ),
-                      //   ],
-                      // ),
-
-                      // const SizedBox(
-                      //   height: 5,
-                      // ),
-                      // Expanded(
-                      //   child: ListView(
-                      //     children: [
-                      //       ...getMeetingDetails(context, gradient, stops)
-                      //     ],
-                      //   ),
-                      // )
-                    ],
-                  ),
+                    // const SizedBox(
+                    //   height: 5,
+                    // ),
+                    // Expanded(
+                    //   child: ListView(
+                    //     children: [
+                    //       ...getMeetingDetails(context, gradient, stops)
+                    //     ],
+                    //   ),
+                    // )
+                  ],
                 ),
               ),
             ),
+          ),
+        ),
         onLoading: getLoading(context),
       ),
 
@@ -2523,21 +2137,5 @@ class DashboardMeetings extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-//app version
-class VersionUtil {
-  static String? _cachedVersion;
-
-  static Future<void> fetchAppVersion() async {
-    if (_cachedVersion == null) {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      _cachedVersion = packageInfo.version;
-    }
-  }
-
-  static String getAppVersion() {
-    return _cachedVersion ?? 'Unknown';
   }
 }
